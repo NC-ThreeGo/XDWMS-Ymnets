@@ -1,0 +1,181 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Spl_WarehouseWarrantOUT";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div class="mvctool">
+    @*<select class="searchDrop" id="selCheck">
+        <option value="1">全部</option>
+        <option value="2">审核</option>
+        <option value="3">未审核</option>
+    </select>*@
+    @*<input value="@(Model.OutTime.ToString("yyyy-MM-dd"))" id="OutTime" name="OutTime" onclick="WdatePicker()" style="width:105px" type="text">*@
+    @*<input value="@(Model.OutTime.ToString("yyyy-MM-dd"))" id="OutTime1" name="OutTime" onclick="WdatePicker()" style="width:105px" type="text">*@
+   <input id="txtQuery" placeholder="请输入关键字" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+    @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details,ref perm, "Details", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+    @Html.ToolButton("btnCheck", "fa  fa-check", Resource.Check, ref perm, "Check", true)
+    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
+</div>
+<table id="List"></table>
+        
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width:SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onLoadSuccess: function (data) {
+            },//修改于2018年1月22日
+            columns: [[
+                { field: 'Id', title: '单号', width: 80,hidden:true },
+                { field: 'OutTime', title: '出库时间', width: 120, sortable: true, formatter: function (value) { return SubStrYMD(value) } },
+                { field: 'WarehouseId', title: '所属仓库', width: 120, sortable: false, hidden: true },
+                { field: 'WarehouseName', title: '所属仓库', width:120 },
+                { field: 'Handler', title: '经手人', width: 80, sortable: false },
+                { field: 'Remark', title: '说明', width: 180, sortable: false },
+                { field: 'PriceTotal', title: '总价', width: 80,sortable:true },
+                { field: 'State', title: '状态', width: 80, sortable: false, formatter: function (value) { return CheckFormatter(value == 1) } },
+                { field: 'CheckerName', title: '审核人', width: 80, sortable: false },
+                { field: 'CheckTime', title: '审核时间', width: 120,sortable:true },
+                { field: 'CreateTime', title: '创建时间', width: 120,sortable:true },
+                { field: 'CreatePerson', title: '制单人', width: 80, sortable: false, hidden: true },
+                { field: 'CreatePersonName', title: '制单人', width: 80, sortable: false },
+                { field: 'ModifyTime', title: '修改时间', width: 80,sortable:true },
+                { field: 'ModifyPerson', title: '修改人', width: 80,sortable:false },
+                                { field: 'Confirmation', title: '单据确认', width: 80, sortable: false, formatter: function (value) { return CustomFormatter(value, "已确认", "未确认") } },
+                { field: 'InOutCategoryId', title: '出库类别', width: 80, sortable: false, hidden: true },
+                { field: 'InOutCategoryName', title: '出库类别', width: 80 },
+                { field: 'ContractNumber', title: '合同编号', width: 80 },
+                 {
+                     field: 'Action', title: '操作', width: 100, sortable: false, align: 'center', formatter: function (value, row, index) {
+                         return "<a href='#' title='打印' class='btn btn-default' onclick='ShowPrint(\"" + row.Id + "\")'>预览打印</a>";
+                     }
+                 }
+            ]]
+        });
+        $("#btnExport").click(function () {
+            $.post("@Url.Action("CheckExportData")", function (data) {
+                if (data.type == 1) {
+                    window.location = "@Url.Action("Export")";
+                } else {
+                    $.messageBox5s(Lang.Tip, data.message);
+                }
+
+            }, "json");
+        });
+    });
+
+    function ShowPrint(id)
+    {
+        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("Print")?id=" + id + "&Ieguid=" + GetGuid() + "'></iframe>");
+        $("#modalwindow").window({ title: '预览与打印', width: 780, height: $(window).height()-50, iconCls: 'fa fa-plus' }).window('open');
+    }
+    function ShowExport(id) {
+        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("Edit")?id=" + id + "&Ieguid=" + GetGuid() + "'></iframe>");
+        $("#modalwindow").window({ title: '导出', width: 780, height: $(window).height()-50, iconCls: 'fa fa-plus' }).window('open');
+
+    }
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("Create")'></iframe>");
+            $("#modalwindow").window({ title: '新建出库单', width: $(window).width()-50, height: $(window).height()-50, iconCls: 'fa fa-plus' }).window('open');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row.Confirmation == true) {
+                $.messager.confirm(index_lang_tip, "该单据已经被确认不能被修改")
+            }
+            else if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: $(window).width() - 50, height: $(window).height() - 50, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='98%' scrolling='auto' frameborder='0' src='@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Details', width: 700, height: 400, iconCls: 'fa fa-list' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+	        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+           // $("#List").datagrid("load", { queryStr: queryStr });
+            $("#List").datagrid("load", { queryStr: encodeURI(queryStr) });//修改2018年3月6
+     //  $('#List').datagrid({ url: '/WarehosueWarrantOUT/GetList?queryStr=' +queryStr });
+
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row.Confirmation == true) {
+                $.messager.confirm(index_lang_tip, "该单据已经被确认不能被删除")
+            }
+            else if (row != null) {
+                $.messager.confirm(index_lang_tip, '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+	                    if (r) {
+	                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+	                            if (data.type == 1)
+	                                $("#List").datagrid('load');
+	                            $.messageBox5s(Lang.Tip, data.message);
+	                        }, "json");
+
+	                    }
+	                });
+	            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnCheck").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.ajax({
+                    url: "/Spl/WarehouseWarrantOUT/Check",
+                    type: "Post",
+                    data: { Id: row.Id },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1)
+                            $("#List").datagrid('reload');
+                        $.messageBox5s('@Resource.Tip', data.message);
+                    }
+                });
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+    });
+</script>
+

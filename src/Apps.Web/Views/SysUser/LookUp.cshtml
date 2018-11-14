@@ -1,0 +1,72 @@
+﻿@using System.Globalization;
+@using Apps.Common;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@{
+
+    ViewBag.Title = "选择用户";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+}
+
+<style type="text/css">
+    #userListPager #userListPager_right{ width:120px}
+</style>
+<div class="mvctool bgb">
+<input id="txtQuery" type="text" class="searchText"/>
+    @Html.ToolButton("btnSearch", "but-search", Resource.Query,true)
+    @Html.ToolButton("btnSelect", "but-select", "选择",false)
+    
+</div>
+
+<table id="List">
+</table>
+
+
+<script type="text/javascript">
+    $(function () {
+        //查询
+        $("#btnSearch").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: queryStr });
+        });
+
+        //选择
+        $("#btnSelect").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row == null) {
+                $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords');
+                return;
+            }
+            window.parent.ReturnSelectUser("@(ViewBag.owner)", row.Id);
+            window.parent.frameReturnByClose();
+        });
+
+        //角色表格
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+             width: SetGridWidthSub(10),
+             methord: 'post',
+             height: SetGridHeightSub(37),
+             fitColumns: true,
+             sortName: 'Id',
+             sortOrder: 'desc',
+             idField: 'Id',
+             pageSize: 15,
+             pageList: [15, 20, 30, 40, 50],
+             pagination: true,
+             striped: true, //奇偶行是否区分
+             singleSelect: true,//单选模式
+             //rownumbers: true,//行号
+             columns: [[
+                 { field: 'Id', title: 'ID', width: 80, hidden: true },
+                 { field: 'UserName', title: '用户名', width: 80, sortable: true },
+                 { field: 'TrueName', title: '名称', width: 80, sortable: true }
+                 
+             ]]
+         });
+
+    });
+</script>

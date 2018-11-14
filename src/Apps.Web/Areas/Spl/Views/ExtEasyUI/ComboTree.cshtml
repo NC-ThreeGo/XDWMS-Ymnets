@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "ComboTree";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+
+<input class="easyui-combotree" id="cc" style="width:200px;">
+
+
+<script>
+    $(function () {
+        //数据源，数据库数据来源
+        var roots = [{
+            id: 1,
+            text: '蔬菜',
+            children: [{
+                id: 11,
+                text: '绿色蔬菜',
+                children: [{
+                    id: 111,
+                    text: '竹笋'
+                }, {
+                    id: 112,
+                    text: '茄子'
+                }]
+            }, {
+                id: 12,
+                text: '有机蔬菜'
+            }]
+        }, {
+            id: 2,
+            text: '水果',
+            children: [{
+                id: 21,
+                text: '绿色水果',
+                children: [{
+                    id: 21,
+                    text: '山竹'
+                }, {
+                    id: 22,
+                    text: '橙子'
+                }]
+            }, {
+                id: 22,
+                text: '有机水果'
+            }]
+        }];
+        //
+        $('#cc').combotree({
+            editable: true,
+            valueField: 'id',
+            textField: 'text',
+            keyHandler: {
+                query:function (q) {
+                    queryComboTree(q, this, roots);
+                }
+            }
+        }).combotree("loadData",roots);
+    });
+
+   
+
+</script>
+

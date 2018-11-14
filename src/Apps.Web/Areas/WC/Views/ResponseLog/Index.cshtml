@@ -1,0 +1,163 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "主页";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+
+<div id="uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+    <form name="form1" method="post" id="form1">
+        <table>
+            <tr>
+                <th style="padding:20px;">Excel：</th>
+                <td style="padding:20px;">
+                    <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                    <a href="javascript:$('#FileUpload').trigger('click');" class="files">@Resource.Browse</a>
+                    <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload');">
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+            </tr>
+        </table>
+        <div class="endbtndiv">
+            <a id="btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">@Resource.Save</a>
+            <a id="btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+        </div>
+    </form>
+</div>
+<div class="mvctool">
+    <input id="txtQuery" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+    @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details,ref perm, "Details", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+    @Html.ToolButton("btnDown", "fa fa-download", Resource.DownTemplate, true)
+    @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import,ref perm, "Import", true)
+    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export,ref perm, "Export", true)
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
+                { field: 'Name', title: 'Name', width: 80, sortable: true },
+                { field: 'Sex', title: 'Sex', width: 80, sortable: true },
+                { field: 'Age', title: 'Age', width: 80, sortable: true },
+                { field: 'IDCard', title: 'IDCard', width: 80, sortable: true },
+                { field: 'Phone', title: 'Phone', width: 80, sortable: true },
+                { field: 'Email', title: 'Email', width: 80, sortable: true },
+                { field: 'Address', title: 'Address', width: 80, sortable: true },
+                { field: 'CreateTime', title: 'CreateTime', width: 80, sortable: true },
+                { field: 'Region', title: 'Region', width: 80, sortable: true },
+                { field: 'Category', title: 'Category', width: 80, sortable: true }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("Create")'></iframe>");
+            $("#modalwindow").window({ title: '@Resource.Create', width: 700, height: 400, iconCls: 'icon-add' }).window('open');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: 700, height: 400, iconCls: 'icon-edit' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='98%' scrolling='auto' frameborder='0' src='@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Details', width: 700, height: 400, iconCls: 'icon-details' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: encodeURI(queryStr) });
+
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+                            if (data.type == 1)
+                                $("#List").datagrid('load');
+                            $.messageBox5s('@Resource.Tip', data.message);
+                        }, "json");
+
+                    }
+                });
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+
+        $("#btnImport").click(function () {
+            $("#txtExcelPath").val("");
+            $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 160, iconCls: 'fa fa-level-down' }).window('open');
+        });
+        $("#btnExport").click(function () {
+            $.post("@Url.Action("CheckExportData")", function (data) {
+                if (data.type == 1) {
+                    window.location = "@Url.Action("Export")";
+                } else {
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+
+            }, "json");
+        });
+        $("#btnDown").click(function () {
+            window.location = "/Content/Templete/Person.xlsx";
+        });
+    });
+    function ImportData()
+    {
+        $.post("@Url.Action("Import")?filePath=" + $("#txtExcelPath").val(), function (data) {
+            if (data.type == 1) {
+                $("#List").datagrid('load');
+                $('#uploadExcel').window('close');
+            }
+            $.messageBox5s('@Resource.Tip', data.message);
+
+        }, "json");
+    }
+</script>

@@ -1,0 +1,422 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E4E6F8B0-636A-44E7-BEDB-1AC222CE47F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Apps.BLL</RootNamespace>
+    <AssemblyName>Apps.BLL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.6\lib\net45\CommonServiceLocator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqToExcel, Version=1.10.1.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=x86">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\LinqToExcel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Data.Linq, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.Data.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Interfaces, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Unity.Configuration, Version=5.2.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.8.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.Container.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Unity.Interception, Version=5.5.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.Interception.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Unity.Interception.Configuration, Version=5.1.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.Interception.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Unity.RegistrationByConvention, Version=2.1.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.RegistrationByConvention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Unity.ServiceLocation, Version=2.1.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountBLL.cs" />
+    <Compile Include="AutoGenerated\PartialBLL.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_ExternalBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_FormAttrBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_FormBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_FormContentBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_FormContentStepCheckBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_FormContentStepCheckStateBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_SealBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_StepBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_StepRuleBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_TypeBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_JOB_TASKJOBSBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_JOB_TASKJOBS_LOGBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_ArticleBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_Article_AlbumsBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_Article_CategoryBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_Article_CommentBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_WebIM_CommonTalkBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_WebIM_MessageBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_WebIM_Message_RecBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_WebIM_RecentContactBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_ContactCompanyBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_ContactCompanyCategoryBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_EarlyWareingGoodBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_InOutCategoryBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_PersonBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_ProductBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_ProductCategoryBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_TestClassBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_TestStudentsBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WareCategoryBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WareCheckTotalBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WareDetailsBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WarehouseAllocationBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WarehouseAllocationDetailsBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WarehouseBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WarehouseCategoryBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WarehouseWarrantBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WarehouseWarrantDetailsBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WarehouseWarrantDetailsOUTBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WarehouseWarrantOUTBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WareStockPileBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_WareUnitConvertBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysAreasBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysCalendarPlanBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysExceptionBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysLogBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysModuleBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysModuleDataFilterBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysModuleOperateBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysPositionBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysRightBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysRightDataFilterBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysRightOperateBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysRoleBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysSampleBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysSettingsBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysStructBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysUserBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysUserConfigBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_WC_GroupBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_WC_MessageResponseBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_WC_OfficalAccountsBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_WC_ResponseLogBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_WC_UserBLL.cs">
+      <DependentUpon>PartialBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\BaseBLL.cs" />
+    <Compile Include="Core\ExceptionHandler.cs" />
+    <Compile Include="Flow\FlowHelper.cs" />
+    <Compile Include="Flow\Flow_ExternalBLL.cs" />
+    <Compile Include="Flow\Flow_FormAttrBLL.cs" />
+    <Compile Include="Flow\Flow_FormBLL.cs" />
+    <Compile Include="Flow\Flow_FormContentBLL.cs" />
+    <Compile Include="Flow\Flow_FormContentStepCheckBLL.cs" />
+    <Compile Include="Flow\Flow_FormContentStepCheckStateBLL.cs" />
+    <Compile Include="Flow\Flow_StepBLL.cs" />
+    <Compile Include="Flow\Flow_StepRuleBLL.cs" />
+    <Compile Include="Flow\Flow_TypeBLL.cs" />
+    <Compile Include="HomeBLL.cs" />
+    <Compile Include="Spl\Spl_ContactCompanyBLL.cs" />
+    <Compile Include="Spl\Spl_ContactCompanyCategoryBLL.cs" />
+    <Compile Include="Spl\Spl_EarlyWareingGoodBLL.cs" />
+    <Compile Include="Spl\Spl_InOutCategoryBLL.cs" />
+    <Compile Include="Spl\Spl_WareCategoryBLL.cs" />
+    <Compile Include="Spl\Spl_WareCheckTotalBLL.cs" />
+    <Compile Include="Spl\Spl_WareDetailsBLL.cs" />
+    <Compile Include="Spl\Spl_WarehouseAllocationBLL.cs" />
+    <Compile Include="Spl\Spl_WarehouseAllocationDetailsBLL.cs" />
+    <Compile Include="Spl\Spl_WarehouseBLL.cs" />
+    <Compile Include="Spl\Spl_WarehouseCategoryBLL.cs" />
+    <Compile Include="Spl\Spl_WarehouseOutBLL.cs" />
+    <Compile Include="Spl\Spl_WarehouseWarrantBLL.cs" />
+    <Compile Include="Spl\Spl_WarehouseWarrantDetailsBLL.cs" />
+    <Compile Include="Spl\Spl_WarehouseWarrantDetailsOUTBLL.cs" />
+    <Compile Include="Spl\Spl_WarehouseWarrantOUTBLL.cs" />
+    <Compile Include="Spl\Spl_WareStockPileBLL.cs" />
+    <Compile Include="Sys\JOB_TASKJOBSBLL.cs" />
+    <Compile Include="Sys\JOB_TASKJOBS_LOGBLL.cs" />
+    <Compile Include="MIS\MIS_ArticleBLL.cs" />
+    <Compile Include="MIS\MIS_Article_AlbumsBLL.cs" />
+    <Compile Include="MIS\MIS_Article_CategoryBLL.cs" />
+    <Compile Include="MIS\MIS_Article_CommentBLL.cs" />
+    <Compile Include="MIS\MIS_WebIM_CommonTalkBLL.cs" />
+    <Compile Include="MIS\MIS_WebIM_MessageBLL.cs" />
+    <Compile Include="MIS\MIS_WebIM_RecentContactBLL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Spl\Spl_PersonBLL.cs" />
+    <Compile Include="Spl\Spl_ProductBLL.cs" />
+    <Compile Include="Sys\SysAreasBLL.cs" />
+    <Compile Include="Sys\SysCalendarPlanBLL.cs" />
+    <Compile Include="Sys\SysConfigBLL.cs" />
+    <Compile Include="Sys\SysExceptionBLL.cs" />
+    <Compile Include="Sys\SysLogBLL.cs" />
+    <Compile Include="Sys\SysModuleBLL.cs" />
+    <Compile Include="Sys\SysModuleDataFilterBLL.cs" />
+    <Compile Include="Sys\SysModuleOperateBLL.cs" />
+    <Compile Include="Sys\SysPositionBLL.cs" />
+    <Compile Include="Sys\SysRightBLL.cs" />
+    <Compile Include="Sys\SysRightGetModuleRightBLL.cs" />
+    <Compile Include="Sys\SysRightGetRoleRightBLL.cs" />
+    <Compile Include="Sys\SysRightGetUserRightBLL.cs" />
+    <Compile Include="Sys\SysRightOperateBLL.cs" />
+    <Compile Include="Sys\SysRoleBLL.cs" />
+    <Compile Include="Sys\SysSampleBLL.cs" />
+    <Compile Include="Sys\SysSettingsBLL.cs" />
+    <Compile Include="Sys\SysStructBLL.cs" />
+    <Compile Include="Sys\SysUserBLL.cs" />
+    <Compile Include="Sys\SysUserConfigBLL.cs" />
+    <Compile Include="WC\WC_GroupBLL.cs" />
+    <Compile Include="WC\WC_MessageResponseBLL.cs" />
+    <Compile Include="WC\WC_OfficalAccountsBLL.cs" />
+    <Compile Include="WC\WC_UserBLL.cs" />
+    <Compile Include="WebpartBLL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Apps.Common\Apps.Common.csproj">
+      <Project>{6847a12a-20b8-4902-a688-2866c716a1ec}</Project>
+      <Name>Apps.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Apps.DAL\Apps.DAL.csproj">
+      <Project>{920cf227-4a18-44d2-a54a-38c88646d070}</Project>
+      <Name>Apps.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Apps.IBLL\Apps.IBLL.csproj">
+      <Project>{d6c8a784-ec1d-4191-b7df-ef0f46cadfc2}</Project>
+      <Name>Apps.IBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Apps.IDAL\Apps.IDAL.csproj">
+      <Project>{c713a4e3-bcc9-4c72-ba67-8323632d8aa1}</Project>
+      <Name>Apps.IDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Apps.Locale\Apps.Locale.csproj">
+      <Project>{a670269b-b46c-4c77-be86-4be2d26cd126}</Project>
+      <Name>Apps.Locale</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Apps.Models\Apps.Models.csproj">
+      <Project>{54f6cd9e-178f-4240-8a67-33e79cb5f2c9}</Project>
+      <Name>Apps.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="AutoGenerated\PartialBLL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PartialBLL.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

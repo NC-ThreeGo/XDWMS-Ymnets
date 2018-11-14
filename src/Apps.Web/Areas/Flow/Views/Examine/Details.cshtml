@@ -1,0 +1,82 @@
+﻿@model Apps.Models.Flow.Flow_FormModel
+@using Apps.Common;
+@using Apps.Models.Flow;
+@using Apps.Web.Core;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@using Apps.Models.Enum;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<style>
+
+    .tbdetail { width: 98%; border-collapse: collapse; }
+.tbdetail .alignRight { width: 150px; text-align: right; }
+.tbdetail td { border-bottom: 1px solid #F4F4F4; height: 30px; word-wrap:break-word; word-break:break-all; }
+.tbcalendar, .tbcalendar td, .tbcalendar th { border: 1px solid #cccccc; border-collapse: collapse; padding: 5px; text-align: center; }
+.tbcalendar th{ background: #f4f4f4; }
+</style>
+       <div class="tc" style="padding:10px;"> @Model.Name</div>
+
+ <table class="tbdetail">
+
+@{
+    int i = 0;
+    foreach (var item in Model.stepList)
+    {
+        i++; 
+            <tr>
+                <td align="center">
+         <table class="tbdetail">
+                        <tr>
+                            <td class="alignRight">
+                                第
+                                @i
+                                步：
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="alignRight">
+                                流转规则：
+                            </td>
+                            <td>
+                               @(item.FlowRule==(int)FlowRuleEnum.Customer?"自行指定人":item.FlowRule==(int)FlowRuleEnum.Lead?"按上级":item.FlowRule==(int)FlowRuleEnum.Position?"按职位":item.FlowRule==(int)FlowRuleEnum.Department?"按部门":"按人员")
+                            </td>
+                        </tr>
+                        @{
+                            int j = 0;
+                            foreach (var judge in item.stepRuleList)
+                            {
+                                j++;
+                                            <tr>
+                                                <td class="alignRight">
+                                                    分支
+                                                    @j：
+                                                </td>
+                                                <td>
+                                                    @String.Format("如果 [{0} {1} {2}] → [{3}]", judge.AttrName, judge.Operator, judge.Result, judge.NextStep == "0" ? "流程结束" : judge.NextStepName)
+                                                </td>
+                                            </tr>
+                            }
+                         }
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    ↓
+                </td>
+            </tr>
+    }
+}
+        <tr>
+            <td align="center">
+                流程结束
+            </td>
+        </tr>
+        </table>

@@ -1,0 +1,310 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+
+    List<permModel> perm = null;
+}
+        
+
+<table style="width: 100%">
+    <tr>
+        <td style="vertical-align: top">
+            <div class="mvctool">
+
+                   菜单类型切换： <select class="easyui-combobox" name="swicthType" id="swicthType" style="width:80px;height:26px;margin-right:10px; ">
+                        <option value="menu">系统菜单</option>
+                        <option value="api">Api接口</option>
+                    </select>
+     
+               @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+               @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+               @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+               
+            </div>
+            <table id="List"></table>
+        </td>
+        <td style="width:3px;"></td>
+        <td style="width: 200px;  vertical-align: top">
+            <div class="mvctool" style="width:200px;">
+                @Html.ToolButton("btnCreateOpt", "fa fa-plus", "新增操作",ref perm, "Create", true)
+                @Html.ToolButton("btnDeleteOpt", "fa fa-trash", "删除操作",ref perm, "Delete", false)
+            </div>
+            <table id="OptList"></table>
+        </td>
+        <td style="width:3px;"></td>
+
+        <td style="width: 200px;  vertical-align: top">
+            <div class="mvctool" style="width:200px;">
+                @Html.ToolButton("btnCreateDataFilter", "fa fa-plus", "新增字段", ref perm, "Create", true)
+                @Html.ToolButton("btnDeleteDataFilter", "fa fa-trash", "删除字段", ref perm, "Delete", false)
+            </div>
+            <table id="DataFilterList"></table> 
+        </td>
+</tr>
+</table>
+
+<div id="modalwindow" class="easyui-window" data-options="modal:true,width:800,height:530,closed:true,minimizable:false,shadow:false"></div>
+
+<div id="modalwindowicon" style="display:none;overflow-y:auto;" class="easyui-window" data-options="width:800,height:530,closed:true,minimizable:false,shadow:false">
+    @Html.Partial("~/Views/Shared/_iconlist.cshtml")
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#structTreeDiv").height(SetGridHeightSub(47));
+        $('#swicthType').combobox({
+            editable: false,
+            onSelect: function (record) {
+                if (record.value == "api") {
+                    $('#List').treegrid({"url":'@Url.Action("GetList")?id=ApiInterfaceAuth'});
+                } else {
+                    $('#List').treegrid({ "url": '@Url.Action("GetList")?id=0' });
+                }
+
+            }
+        });
+
+        $('#List').treegrid({
+            url: '@Url.Action("GetList")',
+            width: SetGridWidthSub(517),
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            treeField: 'Name',
+            idField: 'Id',
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onLoadSuccess:function(data)
+            {
+                $('#OptList').datagrid('loadData', { total: 0, rows: [] });
+            },
+            columns: [[
+                { field: 'Id', title: 'ID', width: 50,hidden:true },
+                { field: 'Name', title: '名称', width: 350, sortable: true, formatter: function (value,row) {
+                    return "<a class='color-blue' href='javascript:$(\"#btnEdit\").trigger(\"click\")'>"+value+"</a>"+(row.IsLast?" (链接："+row.Url+")":"");
+                }
+                },
+                { field: 'EnglishName', title: '英文名称', width: 220, sortable: true },
+                { field: 'ParentId', title: '上级', width: 80, sortable: true,hidden:true },
+                { field: 'Url', title: 'Url', width: 80, sortable: true,hidden:true  },
+                {field: 'Iconic', title: '图标', width: 80, sortable: true,hidden:true},
+                { field: 'Sort', title: '排序', width:70, sortable: true },
+                { field: 'Remark', title: '备注', width: 90, sortable: true,hidden:true  },
+                 { field: 'Enable', title: '显示', width: 80, align: 'center', formatter: function (value) { return CustomFormatter(value,"显示","隐藏") } },
+                { field: 'CreatePerson', title: '创建人', width: 80, sortable: true,hidden:true },
+                { field: 'CreateTime', title: '创建时间', width: 120, sortable: true, hidden: true },
+                { field: 'IsLast', title: '最后项', align: 'center', formatter: function (value) { return CustomFormatter(value,"是","否") } },
+            ]],
+            onClickRow: function (index, data) {
+                var row = $('#List').treegrid('getSelected');
+                if (row != null) {
+                    $('#OptList').datagrid({ url: '@Url.Action("GetOptListByModule")?mid=' + row.Id });
+                    $('#DataFilterList').datagrid({ url: '@Url.Action("GetDataListByModule")?mid=' + row.Id });
+                }
+              }
+        });
+        $('#DataFilterList').datagrid({
+            url: '@Url.Action("GetDataListByModule")',
+            width: 250,
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'Sort',
+            sortOrder: 'asc',
+            idField: 'Id',
+            pageSize: 1000,
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: '', width: 80, hidden: true },
+                { field: 'Name', title: '字段描述', width: 80, sortable: true },
+                { field: 'KeyCode', title: '字段', width: 80, sortable: true },
+                { field: 'ModuleId', title: '所属模块', width: 80, sortable: true, hidden: true },
+                 {
+                     field: 'IsValid', title: '验证', width: 80, align: 'center', hidden: true, formatter: function (value) {
+                         if (value) {
+                             return "<span class='color-green fa fa-circle'></span>";
+                         } else {
+                             return "<span class='color-blue fa fa-circle'></span>";
+                         }
+                     }
+                 },
+                { field: 'Sort', title: '@Resource.TitleSort', width:50, sortable: true }
+            ]]
+        });
+        $('#OptList').datagrid({
+            url: '@Url.Action("GetOptListByModule")',
+            width: 250,
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'Sort',
+            sortOrder: 'asc',
+            idField: 'Id',
+            pageSize: 1000,
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: '', width: 80, hidden: true },
+                { field: 'Name', title: '名称', width: 80, sortable: true },
+                { field: 'KeyCode', title: '操作码', width: 80, sortable: true },
+                { field: 'ModuleId', title: '所属模块', width: 80, sortable: true, hidden: true },
+                 {
+                     field: 'IsValid', title: '验证', width: 80, align: 'center', hidden: true, formatter: function (value) {
+                         if (value) {
+                             return "<span class='color-green fa fa-circle'></span>";
+                         } else {
+                             return "<span class='color-blue fa fa-circle'></span>";
+                         }
+                     }
+                 },
+                { field: 'Sort', title: '@Resource.TitleSort', width: 50, sortable: true }
+            ]]
+        });
+        //自动宽高
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+                width: SetGridWidthSub(517),
+                height: SetGridHeightSub(37)
+            }).datagrid('resize', {
+                width: SetGridWidthSub(517),
+            });
+            $('#OptList').datagrid('resize', {
+                width: 250,
+                height: SetGridHeightSub(37)
+            });
+        });
+    });
+
+
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").treegrid('reload');
+        else
+            $("#List").treegrid('load');
+    }
+    function frameReturnByReloadOpt(flag) {
+        if (flag)
+            $("#OptList").datagrid('load');
+        else
+            $("#OptList").datagrid('reload');
+
+    }
+    function frameReturnByReloadDataFilter(flag) {
+        if (flag)
+            $("#DataFilterList").datagrid('load');
+        else
+            $("DataFilterList").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            var row = $('#List').treegrid('getSelected');
+            $("#modalwindow").html("<iframe id='editWin' width='100%' height='100%'  frameborder='0'' src='/SysModule/Create?id=" + (row != null ? row.Id : "0") + "&Ieguid=" + GetGuid() + "'></iframe>");
+            $("#modalwindow").window({ title: Lang.Create, width: 700, height: 550, iconCls: 'fa fa-plus' }).window('open');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').treegrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe id='editWin' width='100%' height='100%'  frameborder='0' src='/SysModule/Edit?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: 700, height: 550, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').treegrid('getSelected');
+            if (row != null) {
+                $.messager.confirm(index_lang_tip, '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+                            if (data.type == 1)
+                                $("#List").treegrid('reload');
+                            $.messageBox5s(Lang.Tip, data.message);
+                        }, "json");
+
+                    }
+                });
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        //操作码操作
+        $("#btnCreateOpt").click(function () {
+            var row = $('#List').treegrid('getSelected');
+            if (row != null) {
+                if (row.IsLast) {
+                    $("#modalwindow").html("<iframe width='100%' height='100%'  frameborder='0' src='/SysModule/CreateOpt?moduleId=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                    $("#modalwindow").window({ title: '新增操作码', width: 500, height: 350, iconCls: 'fa fa-pencil' }).window('open');
+                } else {
+                    $.messageBox5s(Lang.Tip, '只有最后一项的菜单才能设置操作码!');
+                }
+            } else { $.messageBox5s(Lang.Tip, '请选择一个要赋予操作码的模块!'); }
+        });
+        $("#btnDeleteOpt").click(function () {
+            var row = $('#OptList').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm(index_lang_tip, '您确定要删除“' + row.Name + '”这个操作码？', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("DeleteOpt")?id=" + row.Id, function (data) {
+                            if (data.type == 1) {
+                                $("#OptList").datagrid('load');
+                            }
+                        }, "json");
+
+                    }
+                });
+            } else { $.messageBox5s(Lang.Tip, '请选择一个模块!'); }
+        });
+
+        //数据列操作
+        $("#btnCreateDataFilter").click(function () {
+            var row = $('#List').treegrid('getSelected');
+            if (row != null) {
+                if (row.IsLast) {
+                    $("#modalwindow").html("<iframe width='100%' height='100%'  frameborder='0' src='/SysModule/CreateDataFilter?moduleId=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                    $("#modalwindow").window({ title: '新增字段过滤', width: 500, height: 350, iconCls: 'fa fa-pencil' }).window('open');
+
+                } else {
+                    $.messageBox5s(Lang.Tip, '只有最后一项的菜单才能设置字段过滤!');
+                }
+
+            } else { $.messageBox5s(Lang.Tip, '请选择一个要赋予字段过滤的模块!'); }
+        });
+        $("#btnDeleteDataFilter").click(function () {
+            var row = $('#DataFilterList').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm(index_lang_tip, '您确定要删除“' + row.Name + '”这个字段过滤？', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("DeleteDataFilter")?id=" + row.Id, function (data) {
+                            if (data.type == 1) {
+                                $("#DataFilterList").datagrid('load');
+                            }
+                        }, "json");
+
+                    }
+                });
+            } else { $.messageBox5s(Lang.Tip, '请选择一个模块!'); }
+        });
+
+    });
+
+    function openIconList(){
+        $('#modalwindowicon').window({ title: '@Resource.Edit', iconCls: 'fa fa-pencil' }).window('open');
+        $('#modalwindowicon').parent("div").css("top", "50px");
+        $('#modalwindowicon').show();
+    }
+</script>
+

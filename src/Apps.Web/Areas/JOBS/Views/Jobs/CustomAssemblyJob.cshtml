@@ -1,0 +1,622 @@
+﻿@model Apps.Models.JOB.JobModel
+@using Apps.Common;
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "用户过程调度";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+}
+@{
+    List<permModel> perm = null;
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script type="text/javascript">    var parserArr = ["tabs"];</script>
+<script src="@Url.Content("~/Resources/Easyui/src/jquery.parser.js")" type="text/javascript"></script>
+
+<style type="text/css">
+    .top1 {
+        width: 100%;
+    }
+
+    .top2 {
+        clear: both;
+        width: 100%;
+    }
+
+    .noteText {
+        display: none;
+    }
+
+    #noneText {
+        display: block;
+    }
+
+    #tabs {
+        height: 230px;
+    }
+
+
+    #procName {
+        width: 320px;
+    }
+</style>
+<script type="text/javascript">
+
+    function schInitDate(addMinute) {
+        var startdt = new Date();
+        if (addMinute == null || addMinute == undefined) {
+            addMinute = 0;
+        }
+        $("#plandate").val(startdt.getFullYear() + "-" + (startdt.getMonth() + 1) + "-" + startdt.getDate());
+        $("#planhour").val(startdt.getHours());
+        $("#planminute").val(startdt.getMinutes() + addMinute);
+    };
+  
+    function schSetSampleStartDate() {//加载任务对象
+        //简单任务
+        /*
+        当前任务设置一个执行时间
+        */
+        var optHour = "";
+        for (var oi = 0; oi < 24; oi++) {
+            optHour = optHour + '<option value="' + oi + '">' + oi + '</option>';
+        }
+        var optMin = "";
+        for (var oi = 0; oi < 60; oi++) {
+            optMin = optMin + '<option value="' + oi + '">' + oi + '</option>';
+        }
+        var html = '	<!--设置计划任务--plan-->	'
+                    + '	<table id="plantimezone" style="width: 230px"><tr>'
+                    + '	<td ><input id="plandate" type="text" class="Wdate" onClick="WdatePicker()"  style="width:80px" /></td>	'
+                    + ' <td>时:</td>	'
+                    + '	<td><select id="planhour" style="width: 50px">	'
+                    + optHour
+                    + '	</select></td>	'
+                    + '<td>分:</td>	'
+                    + '	<td><select id="planminute" style="width: 50px">	'
+                    + optMin
+                    + '	</select></td>	'
+                    + '	</tr></table>	'
+                    + '	<!--end-->	';
+
+        $("#task").append(html);
+
+    };
+    function schGetSampleTask() {//取当前任务内容
+        //检查启用计划任务--plan
+        var plantime = "";
+        var plan = $("#cbxSetPlan").prop("checked");
+        if (plan) {
+            var date = $("#plandate").val();
+            var hour = $("#planhour").val();
+            var minute = $("#planminute").val();
+            if (!isDate_yyyyMMdd(date)) {
+                $.messageBox5s('@Resource.Tip', "日期不能为空!");
+                return null;
+            }
+            if (hour == null || hour == undefined) {
+                hour = 0;
+            }
+            if (minute == null || minute == undefined) {
+                minute = 0;
+
+            }
+
+            var dt = new Date(date);
+            dt.setHours(hour);
+            dt.setMinutes(minute);
+
+            var now = new Date();
+
+            if ((dt.getTime() - now.getTime()) < 0.00) {
+                $.messageBox5s('@Resource.Tip', "计划时间不能少于当前时间");
+                return null;
+            }
+
+            plantime = date + " " + hour + ":" + minute + ":00";
+
+            var task = plan + "," + plantime;
+            return task;
+        }
+        else {
+            var task = plan + ",0";
+            return task;
+        }
+    };
+    function schGetSampleStartDate() {//取当前任务内容
+        //检查启用计划任务--plan
+        var plantime = "";
+        var date = $("#plandate").val();
+        var hour = $("#planhour").val();
+        var minute = $("#planminute").val();
+        if (!isDate_yyyyMMdd(date)) {
+            $.messageBox5s('@Resource.Tip', "日期不能为空!");
+            return null;
+        }
+        if (hour == null || hour == undefined) {
+            hour = 0;
+        }
+        if (minute == null || minute == undefined) {
+            minute = 0;
+
+        }
+
+        var dt = new Date(date);
+        dt.setHours(hour);
+        dt.setMinutes(minute);
+
+        var now = new Date();
+
+        if ((dt.getTime() - now.getTime()) < 0.00) {
+            $.messageBox5s('@Resource.Tip', "计划时间不能少于当前时间");
+            return null;
+        }
+
+        plantime = date + " " + hour + ":" + minute + ":00";
+
+        return plantime;
+    };
+    function schIsRunPlan() {//判定是否执行任务
+        return $("#cbxSetPlan").prop("checked");
+    };
+    function schSampleJobRun(forminfo) {
+        if (forminfo != null) {
+            $.ajax({
+                url: "../../JOBS/Jobs/scheduler",
+                type: "Post",
+                data: forminfo,
+                dataType: "json",
+                success: function (data) {
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        }
+    };
+    $(function () {
+
+        //初始化
+        function initPage() {
+            $('#tabs').tabs({
+                select: function (event, ui) {
+
+                    var selectedId = ui.panel.id;
+
+                    if (selectedId == "tabs-1") {
+                        $("#taskType").val(0);
+                    } else {
+                        $("#taskType").val(1);
+                    }
+
+                }
+            });
+
+
+            //启动任务栏
+            schSetSampleStartDate();
+            schInitDate(2);
+            //验证输入控件
+            $("form").validate();
+
+        }
+        initPage();
+
+        //
+        $("#complex input").click(function (e) {
+            var input = $(this);
+            $(".noteText").hide();
+            $("#" + input.attr("id") + "Text").show();
+            //messagebox(input.attr("id") + "Text");
+        });
+
+        //
+        //改变简单、复杂框的显示状态
+        $("#taskType").change(function () {
+
+            var taskType = $("#taskType").val();
+            if (taskType == "0") {
+                $("#complex input").prop("disabled", true);
+                $("#sample input").prop("disabled", false);
+            } else {
+                $("#complex input").prop("disabled", false);
+                $("#sample input").prop("disabled", true);
+            }
+        });
+        //提交数据
+        $("#btnSubmit").click(function () {
+            if (!$("form").valid()) {
+                $.messageBox5s('@Resource.Tip', '数据不能为空');
+                return;
+            }
+            var selected = $(".tabs-selected .tabs-inner .tabs-title").text();
+
+            if (selected == "简单任务") {
+                //执行简单任务
+                $("#taskType").val(0);
+            } else {
+                //执行复杂任务
+                $("#taskType").val(1);
+
+            }
+
+            $("#complex input").prop("disabled", false);
+            $("#sample input").prop("disabled", false);
+
+            if ($("#cbxRepeatForever").prop("checked") == true) {
+                $("#repeatForever").val(true);
+            } else {
+                $("#repeatForever").val(false);
+            }
+            //任务类型
+            var taskType = $("#taskType").val();
+            //简单任务设置日期
+            if (taskType == "0") {
+
+                var startdate = schGetSampleStartDate();
+                if (startdate == null) {
+                    return;
+                }
+                $("#startDate").val(startdate);
+                //设置间隔类型
+                $("#intervalType").val($("#intervalTypeSel").val());
+
+            } else {
+                //复杂任务
+                if (!CreateCronExpression()) {
+                    return;
+                }
+            }
+
+            //生成任务结构
+            var model = 'seconds^' + $("#seconds").val() + '&' +
+                        'minutes^' + $("#minutes").val() + '&' +
+                        'hours^' + $("#hours").val() + '&' +
+                        'dayOfMonth^' + $("#dayOfMonth").val() + '&' +
+                        'Month^' + $("#month").val() + '&' +
+                        'dayOfWeek^' + $("#dayOfWeek").val() + '&' +
+                        'year^' + $("#year").val() + '&' +
+                        'repeatCount^' + $("#repeatCount").val() + '&' +
+                        'intervalCount^' + $("#intervalCount").val() + '&' +
+                        'intervalType^' + $("#intervalType").val() + '&' +
+                        'startDate^' + $("#startDate").val() + '&' +
+                        'endDate^' + $("#endDate").val() + '&' +
+                        'taskType^' + $("#taskType").val() + '&' +
+                        'taskName^' + $("#taskName").val() + '&' +
+                        'id^' + $("#id").val() + '&' +
+                        'cronExpression^' + $("#cronExpression").val() + '&' +
+                        'repeatForever^' + $("#repeatForever").val() + '&' +
+                        'taskTitle^' + $("#taskTitle").val() + '&' +
+                        'creator^' + $("#creator").val() + '&' +
+                        'procName^' + $("#procName").val() + '&' +
+                        'procParams^' + $("#procParams").val() + '';
+
+
+
+            //显示
+            if (taskType == "0") {
+                $("#complex input").prop("disabled", true);
+                $("#sample input").prop("disabled", false);
+            } else {
+                $("#complex input").prop("disabled", false);
+                $("#sample input").prop("disabled", true);
+            }
+            if (model != null) {
+                //提交任务
+                $.post("/JOBS/Jobs/CustomAssemblyJob",
+                { task: model, assembly: $("#procName").val(), id: $("#procName").val(), title: $("#procName").val() },
+                function (data) {
+                    window.parent.frameReturnByMes(data.message);
+                    window.parent.frameReturnByReload(true);
+                    window.parent.frameReturnByClose()
+                }
+              );
+            }
+        });
+
+        //返回
+        $("#btnReturn").click(function () {
+            $("#modalwindow").window('close');
+        });
+        //复杂任务生成CronExpression表达式
+        function CreateCronExpression() {
+            var seconds = $("#seconds").val();
+            var minutes = $("#minutes").val();
+            var hours = $("#hours").val();
+            var dayOfMonth = $("#dayOfMonth").val();
+            var month = $("#month").val();
+            var dayOfWeek = $("#dayOfWeek").val();
+
+            var _seconds = seconds + ",";
+            var _minutes = minutes + ",";
+            var _hours = hours + ",";
+            var _dayOfMonth = dayOfMonth + ",";
+            var _month = month + ",";
+            var _dayOfWeek = dayOfWeek + ",";
+
+            //var year = $("#year").val();//不使用年
+            //            var repeatCount = $("#repeatCount").val();
+            //            var intervalCount = $("#intervalCount").val();
+            //            var intervalType = $("#intervalType").val();
+            //            var startDate = $("#startDate").val();
+            //            var endDate = $("#endDate").val();
+            //            var taskType = $("#taskType").val();
+            //            var taskName = $("#taskName").val();
+            //            var id = $("#id").val();
+
+            //校验表达是否合法
+
+            var patt1 = /^[1-5]{0,1}[0-9]{1}\/[1-5]{0,1}[0-9]{1},/; //秒，分 格式：[0-59]/[1-59]
+            var patt2 = /^[0-5]{0,1}[0-9]{1},/; //秒，分 格式：[0-59]
+            var patt3 = /^\*,/; //秒，分,小时,dayOfMonth,month,dayOfWeek 格式：*
+            var patt4 = /^\?,/; //dayOfMonth ,dayOfWeek 格式：?
+            var patt5 = /(^[0-9]{1}|^[1]{0,1}[0-9]{0,1}|^[2]{1}[0-3]{1}),$/; //小时 格式：[0-23]
+            var patt6 = /^[0-2]{0,1}[0-9]{0,1}[3]{0,1}[0-1]{0,1},/;  //dayOfMonth 格式：[0-31]
+            var patt7 = /^[0]{0,1}[0-9]{0,1}[]{0,1}[0-1]{0,1},/; //Month 格式：[0-11]
+            var patt8 = /\b[JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC]{3},/; //Month 格式：[JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC]
+            var patt9 = /^[1-7],/; //dayOfWeek 格式1-7
+            var patt10 = /\b[SUN|MON|TUE|WED|THU|FRI|SAT]{3},/; //dayOfWeek 格式[SUN|MON|TUE|WED|THU|FRI|SAT]
+            var patt11 = /(^[0-9]{1}|^[1]{0,1}[0-9]{0,1}|^[2]{1}[0-3]{1})\/([0-9]{1}|[1]{0,1}[0-9]{0,1}|[2]{1}[0-3]{1}),$/;  //小时 格式：[0-23]/[1-23]
+
+
+            var error = "";
+            //秒
+
+            if (!(patt1.test(_seconds) || patt2.test(_seconds))) {
+                error += "秒：设置数值错误,格式:[0-59]/[1-59]或[0-59]";
+            }
+            //分
+            if (!(patt1.test(_minutes) || patt2.test(_minutes) || patt3.test(_minutes))) {
+                error += "分：设置数值错误,格式:[0-59]/[1-59]或[0-59]或*";
+            }
+            //小时
+            if (!(patt3.test(_hours) || patt5.test(_hours) || patt11.test(_hours))) {
+                error += "小时：设置数值错误,格式:[0-23]或*或[0-23]/[0-23]";
+            }
+            //天/月
+            if (!(patt5.test(_dayOfMonth) || patt3.test(_dayOfMonth) || patt6.test(_dayOfMonth))) {
+                error += "天/月：设置数值错误,格式:[0-23]或*或?";
+            }
+
+            //月份
+            if (!(patt7.test(_month) || patt8.test(_month) || patt3.test(_month))) {
+                error += "月份：设置数值错误,格式:[0-11]或JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC";
+            }
+            //日/周
+            if (!(patt3.test(_dayOfWeek) || patt4.test(_dayOfWeek) || patt9.test(_dayOfWeek) || patt10.test(_dayOfWeek))) {
+                error += "日/周：设置数值错误,格式:[0-23]或*或?或SUN,MON,TUE,WED,THU,FRI,SAT";
+            }
+
+            if (error.length > 1) {
+                $.messageBox5s('@Resource.Tip', error);
+                return false;
+            }
+            $.messageBox5s('@Resource.Tip', "表达式通过！");
+            ////////////////////////////////////////////////////////////////////
+            var cmdtext = seconds + " " + minutes + " " + hours + " " + dayOfMonth + " " + month + " " + dayOfWeek;
+
+            $("#cronExpression").val(cmdtext);
+            $("#cmdText").val(cmdtext);
+            return true;
+        }
+        //检查是否合法
+        $("#btnCheckTask").click(function () {
+            //复杂任务生成CronExpression表达式
+            CreateCronExpression();
+        });
+
+    });
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSubmit", "fa fa-save", "新增",ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+<div style="padding: 5px 5px 0 5px;">
+    <div class="top1">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+           <table class="formtable" style="width:100%">
+                <tr class="displaynone">
+                    <th>@Html.LabelFor(model => model.taskTitle)：</th>
+                    <td style="width:320px;">
+                        <input class="required" id="taskTitle" name="taskTitle" type="text" value="" style="width: 300px" /></td>
+                    <td><span class="color-red">*</span></td>
+                </tr>
+                <tr>
+                    <th>程序集名称：</th>
+                    <td>
+                        <textarea class="required" cols="15" id="procName" name="procName" rows="3" style="height: 30px; width: 300px; "></textarea></td>
+                    <td><span class="color-red">* 格式：命名空间+类</span></td>
+                </tr>
+                <tr class="displaynone">
+                    <th>@Html.LabelFor(model => model.procParams)：</th>
+                    <td >@Html.TextAreaFor(model => model.procParams, 3, 15, new { style = "height:30px;width:300px" })</td>
+                    <td>格式：@@par1='string',@@par2=100</td>
+                </tr>
+            </table>
+            
+           
+            
+            <div style="clear: both">
+                <div id="tt" class="easyui-tabs" style="width: 576px; height: 284px;">
+                    <div title="简单任务">
+                        <table id="sample" class="formtable" >
+                                <tbody>
+                                    <tr>
+                                        <th >
+                                            @Html.LabelFor(model => model.startDate)：
+                                        </th>
+                                        <td>
+                                            <span id="task"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th >
+                                            @Html.LabelFor(model => model.intervalCount)：
+                                        </th>
+                                        <td>
+                                            @Html.EditorFor(model => model.intervalCount)  @Html.ValidationMessageFor(model => model.intervalCount)
+
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th >
+                                            @Html.LabelFor(model => model.intervalType)：
+                                        </th>
+                                        <td>
+                                            <select id="intervalTypeSel" style="width: 50px">
+                                                <option value="second" selected="SELECTED">秒</option>
+                                                <option value="minute">分</option>
+                                                <option value="hour">小时</option>
+                                                <option value="day">天</option>
+                                            </select>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            @(Html.LabelFor(model => model.repeatCount))(0只执行一次)：<br />
+                                        </th>
+                                        <td>
+                                            @Html.EditorFor(model => model.repeatCount) @Html.ValidationMessageFor(model => model.repeatCount)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            @Html.LabelFor(model => model.repeatForever)：
+                                        </th>
+                                        <td>
+                                            <input id="cbxRepeatForever" type="checkbox" />
+                                            @Html.ValidationMessageFor(model => model.repeatForever)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+</div>
+                    <div title="复杂任务" style="overflow: auto; padding: 5px;">
+
+                        <table>
+                            <tr>
+                                <td style="width: 230px;">
+
+                                    <table id="complex" >
+                                            <tbody>
+                                                <tr>
+                                                    <th style="width: 50px;height:40px;text-align: right;">@Html.LabelFor(model => model.seconds)：</th>
+                                                    <td>@Html.EditorFor(model => model.seconds)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width: 50px; height: 40px; text-align: right;">
+                                                        @Html.LabelFor(model => model.minutes)：
+                                                    </th>
+                                                    <td>@Html.EditorFor(model => model.minutes)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width: 50px; height: 40px; text-align: right;">
+                                                        @Html.LabelFor(model => model.hours)：
+                                                    </th>
+                                                    <td>@Html.EditorFor(model => model.hours)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width: 50px; height: 40px; text-align: right;">@Html.LabelFor(model => model.dayOfMonth)：</th>
+                                                    <td>@Html.EditorFor(model => model.dayOfMonth)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width: 50px; height: 40px; text-align: right;">
+                                                        @Html.LabelFor(model => model.month)：
+                                                    </th>
+                                                    <td>@Html.EditorFor(model => model.month)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width: 50px; height: 40px; text-align: right;">@Html.LabelFor(model => model.dayOfWeek)：</th>
+                                                    <td>@Html.EditorFor(model => model.dayOfWeek)</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+</td>
+                                <td style="vertical-align: top">
+                                    <div style="padding: 10px;">
+                                        <a href="javascript:void(0)" id="btnCheckTask" class="easyui-linkbutton">检查表达式</a>
+                                        <br />
+                                        <ul id="noneText" class='noteText'>
+                                            <li>在左边栏中设置任务执行时间</li>
+                                        </ul>
+                                        <ul id="secondsText" class='noteText'>
+                                            <li>--秒--</li>
+                                            <li>默认为0</li>
+                                            <li>在...秒范围或之间,格式1:1,2,5秒 格式2:1-3秒</li>
+                                            <li>每...秒重复执行,格式1:0/10每10秒重复执行,格式2:3/30由第3秒开始每隔30秒重复执行</li>
+                                        </ul>
+                                        <ul id="minutesText" class='noteText'>
+                                            <li>--分--</li>
+                                            <li>默认为0</li>
+                                            <li>*表示为每分钟</li>
+                                            <li>在...分钟范围或之间,格式1:1,2,5 表示在1,2,5分钟 格式2:1-3 表示在1-3分钟</li>
+                                            <li>每...分钟重复执行,格式1:0/10 表示每10分钟重复执行,格式2:3/30 表示由第3分钟开始每隔30分钟重复执行</li>
+                                        </ul>
+                                        <ul id="hoursText" class='noteText'>
+                                            <li>--小时--</li>
+                                            <li>默认为0</li>
+                                            <li>*表示为每小时</li>
+                                            <li>在...小时范围或之间,格式1:1,2,5 表示1，2，5小时 格式2:1-3 表示1-3小时</li>
+                                            <li>每...小时重复执行,格式1:0/3 表示每3小时重复执行,格式2:3/2 表示由第3小时开始每隔2小时重复执行</li>
+                                        </ul>
+                                        <ul id="dayOfMonthText" class='noteText'>
+                                            <li>--天/月--</li>
+                                            <li>默认为*</li>
+                                            <li>*表示为月中的所有日</li>
+                                            <li>在...天范围或之间,格式1:1,2,5 表示月中的1,2,5天; 格式2:1-3 表示月中的1至3天</li>
+                                            <li>每...天重复执行,格式1:0/3 表示第3天重复执行,格式2:3/2表示由月的第3天开始每隔2天重复执行</li>
+                                        </ul>
+                                        <ul id="monthText" class='noteText'>
+                                            <li>--月--</li>
+                                            <li>默认为*</li>
+                                            <li>*表示为所有月份</li>
+                                            <li>?表示不设置值</li>
+                                            <li>在...月范围或之间,格式1:1,2,5 表示在1,2,5月; 格式2:1-3 表示1至3月</li>
+                                            <li>每...月重复执行,格式1:0/3 表示第3月重复执行,格式2:3/2表示由月的第3月开始每隔2月重复执行</li>
+                                        </ul>
+                                        <ul id="dayOfWeekText" class='noteText'>
+                                            <li>--日/周--</li>
+                                            <li>默认为*</li>
+                                            <li>*表示为周中的所有日</li>
+                                            <li>?表示不设置值</li>
+                                            <li>在...天范围或之间,格式1:1,2,5 表示周中的1,2,5天; 格式2:1-3 表示周中的1至3天</li>
+                                            <li>每...天重复执行,格式1:0/3 表示在周的第3天重复执行</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div style="clear: both; display: none">
+                            <div class="editor-label">
+                                <span>任务详细</span>
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" value="" id="cmdText" style="width: 300px" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @Html.HiddenFor(model => model.intervalType)
+            @Html.HiddenFor(model => model.seconds)
+            @Html.HiddenFor(model => model.repeatForever)
+            @Html.HiddenFor(model => model.startDate)
+            @Html.HiddenFor(model => model.endDate)
+            @Html.HiddenFor(model => model.year)
+            @Html.HiddenFor(model => model.cronExpression)
+            @Html.HiddenFor(model => model.taskType)
+            //任务名称及ID由调者指定
+            @Html.HiddenFor(model => model.id)
+            @Html.HiddenFor(model => model.taskName)
+           
+            @Html.HiddenFor(model => model.creator)
+        }
+    </div>
+</div>

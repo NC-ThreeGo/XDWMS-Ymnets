@@ -1,0 +1,116 @@
+﻿@using Apps.Core.PageControl;
+@model Apps.Core.PageControl.BaseList<Apps.Models.MIS.MIS_ArticleModel>
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        var par = getQueryString("category");
+        if (par != null) {
+            $("#category_" + par).addClass("current");
+        }
+        $("#Search").click(function () {
+            window.location = "/Mis/Article/Index/1?querystr=" + encodeURI($("#keywords").val());
+        });
+        $("#keywords").keydown(function (e) {
+            if (e.which == 13) {
+                $("#Search").trigger("click");
+                return false
+            }
+        });
+
+        $(".left710").height($(window).height() - 10);
+    });
+    function Show(title, url) {
+        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0''  src='" + url + "'></iframe>");
+        $("#modalwindow").window({ title: title, width: 800, height: 600, iconCls: 'fa fa-list' }).window('open');
+    }
+
+    function Del(id)
+    {
+        alert("this is:"+id);
+    }
+
+</script>
+
+<style>
+.pagelist {padding: 0 10px 0 10px}
+.pagelist li { margin:15px 0 15px 0px;}
+.pagecontent { width:100%;border:1px solid #e9e9e9;height:135px;color:#444}
+.pagecontent .firsttb {background:#f1f1f1;height:25px;line-height:25px;padding:6px;}
+.pagecontent .borderright {border-right:1px solid #e9e9e9; }
+.pagecontent .contents {height:80px;padding:10px; overflow:hidden}
+.contents  a:link,.firsttb a:link{color: #555}
+.contents  a:visited,.firsttb a:visited{color: #444}
+.contents  a:hover,.firsttb a:hover{color: #222}
+.contents  a:active,.firsttb a:active{color: #444}
+</style>
+
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div style="width:90%;margin:0 auto">
+
+    <ul class="pagelist" style="">
+        @foreach (Apps.Models.MIS.MIS_ArticleModel art in Model)
+        {
+        <li>
+                <table class="pagecontent" ><tr>
+                    <td colspan="2" class="firsttb">
+                        <table style="width:100%"><tr>
+                            <td><i class="fa color-gray2 fa-google-plus"></i>&nbsp;[@(art.CategoryName)]&nbsp;&nbsp;
+                                <a href="javascript:Show('@(art.Title)','/Mis/Article/Details?id=@(art.Id)')">@art.Title </a></td>
+                             <td></td>
+                             <td style="width:30px;">
+                                 <!--<span onclick="Del('@art.Id')" class="fa fa-trash color-gray2 fa-2x"></span>-->
+
+                             </td>
+                                                  </tr></table>
+                         
+                    </td>
+                    </tr><tr>
+                    <td class="borderright">
+                        <div class="contents">
+                            <a href="javascript:Show('@(art.Title)','/Mis/Article/Details?id=@(art.Id)')">@Html.Raw(art.BodyContent)</a>
+                        </div>
+                        <div style="height:15px; padding:10px; ">
+                            <table><tr><td><span class="fa fa-history color-gray2"></span></td>
+                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                <td class="color-gray">@art.CreateTime</td></tr></table>
+                        </div>
+                    </td>
+                    <td style="width:160px;text-align:center">
+                        <a  href="javascript:Show('@(art.Title)','/Mis/Article/Details?id=@(art.Id)')" class="btn btn-warning">查看详情</a>
+                    </td>
+               </tr></table>
+            </li>
+        }
+    </ul>
+    <table class="pages-box">
+        <tr>
+            <!--<td>
+                共 @Model.TotalPage 页，@Model.TotalItemCount 条记录
+            </td>-->
+            <td>    
+                @Html.Pager(Model, new PagerOptions()
+                {
+                    CurrentPagerItemWrapperFormatString = "<span class='cpb'>{0}</span>",
+                    NumericPagerItemWrapperFormatString = "<span class='item'>{0}</span>",
+                    CssClass = "pages",
+                    SeparatorHtml = " ",
+                    ShowPageIndexBox = false,
+                    ShowGoButton = false,
+                    PageIndexBoxWrapperFormatString = "&nbsp;&nbsp;第 {0} 页",
+                    PageIndexParameterName = "id",
+                    AlwaysShowFirstLastPageNumber = false
+                })
+            </td>
+        </tr>
+    </table>
+</div>
+               

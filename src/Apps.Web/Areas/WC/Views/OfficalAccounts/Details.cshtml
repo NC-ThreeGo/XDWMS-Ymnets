@@ -1,0 +1,203 @@
+﻿@model Apps.Models.WC.WC_OfficalAccountsModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WC;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CreateTime)
+    <table class="formtable">
+        <tbody>
+           
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficalName)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OfficalName)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OfficalName)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficalCode)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OfficalCode)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OfficalCode)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficalPhoto)：
+                </th>
+                <td>
+                    @Html.HiddenFor(model => model.OfficalPhoto)
+                    <img class="expic" src="@((Model.OfficalPhoto==null||Model.OfficalPhoto=="")?"/Content/Images/NotPic.jpg":Model.OfficalPhoto)" /><br />
+                    <a href="javascript:$('#FileUpload').trigger('click');" class="files">@Resource.Browse</a>
+                    <input type="file" id="FileUpload" name="FileUpload" class="displaynone"  onchange="Upload('SingleFile', 'OfficalPhoto', 'FileUpload','1','1');" />
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OfficalPhoto)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ApiUrl)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.ApiUrl)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ApiUrl)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Token)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Token)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Token)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AppId)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.AppId)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.AppId)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AppSecret)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.AppSecret)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.AppSecret)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AccessToken)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.AccessToken)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.AccessToken)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Remark)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Remark)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Enable)：
+                </th>
+                <td>
+                    @Html.CheckBoxFor(model => model.Enable)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Enable)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.IsDefault)：
+                </th>
+                <td>
+                    @Html.CheckBoxFor(model => model.IsDefault)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.IsDefault)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Category)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Category)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Category)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CreateTime)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.CreateTime)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.CreateTime)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CreateBy)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.CreateBy)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.CreateBy)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ModifyTime)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.ModifyTime)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ModifyBy)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.ModifyBy)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ModifyBy)</td>
+            </tr>
+        </tbody>
+    </table>
+}

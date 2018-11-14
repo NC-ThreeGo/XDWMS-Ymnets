@@ -1,0 +1,153 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<table>
+    <tr>
+        <td>
+            <table id="List"></table>
+        </td>
+        <td style="width: 180px; vertical-align: top">
+            <table style="line-height: 40px;">
+                <tr>
+                    <td class="tr">字段：</td>
+                    <td>
+                        <select id="LeftVal">
+                            @foreach (var r in (List<Apps.Models.Flow.Flow_FormAttrModel>)ViewBag.AttrList)
+                            { 
+                                <option value="@r.Id">@r.Title</option>
+                            }
+                        </select></td>
+                </tr>
+                <tr>
+                    <td class="tr">操作：</td>
+                    <td>
+                        <select id="CenterVal">
+                            <option value="=">= </option>
+                            <option value=">">> </option>
+                            <option value="<">< </option>
+                            <option value="<="><= </option>
+                            <option value=">=">>= </option>
+                            <option value=">=">!= </option>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td class="tr">值：</td>
+                    <td>
+                        <input id="RightVal" type="text" style="width: 80px;" /></td>
+                    <tr>
+                        <td class="tr">下一步：</td>
+                        <td>
+                            <select id="NextVal">
+                                <option value="0">结束流程</option>
+                                @foreach (var r in (List<Apps.Models.Flow.Flow_StepModel>)ViewBag.StepList)
+                                { 
+                                    <option value="@r.Id">@r.Name</option>
+                                }
+                            </select></td>
+                    </tr>
+
+                <tr><td></td>
+                    <td style="line-height:0px">
+                        <a id="Result" href="javascript:AddEvent('@(ViewBag.StepId)')" class="easyui-linkbutton" data-options="iconCls:'fa fa-plus'">添加分支</a>
+               
+                        </td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetStepRuleList")?stepId=@(ViewBag.StepId)',
+            width: SetGridWidthSub(180),
+            methord: 'post',
+            height: SetGridHeightSub(14),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 115,
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: 'ID', width: 80, hidden: true },
+                { field: 'Mes', title: 'Mes', width: 80, hidden: true },
+                { field: 'StepId', title: '步骤ID', width: 80, sortable: true, hidden: true },
+                { field: 'AttrId', title: '字段ID', width: 80, sortable: true, hidden: true },
+                { field: 'AttrName', title: '字段', width: 80, sortable: true },
+                { field: 'Operator', title: '操作', width: 80, sortable: true },
+                { field: 'Result', title: '值', width: 80, sortable: true },
+                { field: 'NextStep', title: '下一步ID', width: 80, sortable: true, hidden: true },
+                { field: 'NextStepName', title: '下一步', width: 80, sortable: true },
+                {
+                    field: 'Action', title: '操作', width: 80,align:'center', formatter: function (value,row,index) {
+                        return "<a href='#' title='删除' class='fa fa-trash color-black' onclick='DeleteEvent(\"" + row.Id + "\")'></a>"
+                    }
+                },
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+
+    //添加条件
+    function AddEvent(stepId) {
+        var leftVal = $("#LeftVal").val();
+        var leftText = $("option[value='" + leftVal + "']").html();
+        var centerVal = $("#CenterVal").val();
+        var rightVal = $("#RightVal").val();
+        var nextVal = $("#NextVal").val();
+        if (rightVal == "") {
+            $.messageBox5s(Lang.Tip, "值不能为空");
+            return;
+        }
+        $.post("@Url.Action("CreateStepEvent")", { "StepId": stepId, "AttrId": leftVal, "Operator": centerVal, "Result": rightVal, "NextStep": nextVal },
+           function (data) {
+               if (data.type == 1) {
+                   $("#List").datagrid('load');
+               } else {
+                   $.messageBox5s(Lang.Tip, data.message);
+                   return
+               }
+           }, "json");
+    }
+
+    function DeleteEvent(stepId) {
+        $.messager.confirm(index_lang_tip, '你要删除此条件吗？', function (r) {
+            if (r) {
+                $.post("@Url.Action("DeleteStepRule")?id=" + stepId, function (data) {
+                    if (data.type == 1) {
+                        $("#List").datagrid('load');
+                    } else {
+                        $.messageBox5s(Lang.Tip, data.message);
+                        return
+                    }
+                }, "json");
+            }
+        });
+
+    }
+</script>

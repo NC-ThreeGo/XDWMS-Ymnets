@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4347eebad5bc4aa1bb240674ec01dd92" Name="Diagram1" ZoomLevel="81" >
+        <EntityTypeShape EntityType="DB.SysAreas" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="DB.SysException" Width="1.5" PointX="2.75" PointY="10.75" />
+        <EntityTypeShape EntityType="DB.SysLog" Width="1.5" PointX="12.75" PointY="9.75" />
+        <EntityTypeShape EntityType="DB.SysModule" Width="1.5" PointX="0.75" PointY="1.625" />
+        <EntityTypeShape EntityType="DB.SysModuleOperate" Width="1.5" PointX="3" PointY="2.625" />
+        <EntityTypeShape EntityType="DB.SysPosition" Width="1.5" PointX="13" PointY="1.125" />
+        <EntityTypeShape EntityType="DB.SysRight" Width="1.5" PointX="6" PointY="2.625" />
+        <EntityTypeShape EntityType="DB.SysRightOperate" Width="1.5" PointX="8.25" PointY="2.75" />
+        <EntityTypeShape EntityType="DB.SysRole" Width="1.5" PointX="3.75" PointY="7.625" />
+        <EntityTypeShape EntityType="DB.SysSample" Width="1.5" PointX="12.75" PointY="13.75" />
+        <EntityTypeShape EntityType="DB.SysSettings" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="DB.SysStruct" Width="1.5" PointX="10.75" PointY="1" />
+        <EntityTypeShape EntityType="DB.SysUserConfig" Width="1.5" PointX="8.25" PointY="26.625" />
+        <AssociationConnector Association="DB.FK_SysAreas_SysAreas" />
+        <AssociationConnector Association="DB.FK_SysModule_SysModule" />
+        <AssociationConnector Association="DB.FK_SysModuleOperate_SysModule" />
+        <AssociationConnector Association="DB.FK_SysRight_SysModule" />
+        <AssociationConnector Association="DB.FK_SysPosition_SysStruct" />
+        <AssociationConnector Association="DB.FK_SysRight_SysRole" />
+        <AssociationConnector Association="DB.FK_SysRightOperate_SysRight" />
+        <AssociationConnector Association="DB.FK_SysStruct_SysStruct" />
+        <EntityTypeShape EntityType="DB.SysUser" Width="1.5" PointX="6" PointY="23.625" />
+        <AssociationConnector Association="DB.FK_SysUserConfig_SysUser" />
+        <AssociationConnector Association="DB.SysRoleSysUser" />
+        <EntityTypeShape EntityType="DB.MIS_Article" Width="1.5" PointX="11.25" PointY="25.875" />
+        <EntityTypeShape EntityType="DB.MIS_Article_Albums" Width="1.5" PointX="13.5" PointY="33.25" />
+        <EntityTypeShape EntityType="DB.MIS_Article_Category" Width="1.5" PointX="9" PointY="40.625" />
+        <EntityTypeShape EntityType="DB.MIS_Article_Comment" Width="1.5" PointX="16.5" PointY="22.625" />
+        <EntityTypeShape EntityType="DB.MIS_WebIM_CommonTalk" Width="1.5" PointX="15.375" PointY="4.75" />
+        <EntityTypeShape EntityType="DB.MIS_WebIM_Message" Width="1.5" PointX="15.375" PointY="1" />
+        <EntityTypeShape EntityType="DB.MIS_WebIM_Message_Rec" Width="1.5" PointX="17.625" PointY="1.25" />
+        <EntityTypeShape EntityType="DB.MIS_WebIM_RecentContact" Width="1.5" PointX="15.375" PointY="13.75" />
+        <AssociationConnector Association="DB.FK_MIS_Article_Albums_MIS_Article" />
+        <AssociationConnector Association="DB.FK_MIS_Article_Comment_MIS_Article" />
+        <AssociationConnector Association="DB.FK_MIS_Article_MIS_Article_Category" />
+        <AssociationConnector Association="DB.FK_MIS_Article_SysUser" />
+        <AssociationConnector Association="DB.FK_MIS_Article_SysUser1" />
+        <AssociationConnector Association="DB.FK_MIS_Article_Category_MIS_Article_Category" />
+        <AssociationConnector Association="DB.FK_MIS_Article_Comment_SysUser" />
+        <AssociationConnector Association="DB.FK_MIS_MESS_REFERENCE_MIS_MESS" />
+        <EntityTypeShape EntityType="DB.JOB_TASKJOBS" Width="1.5" PointX="15.375" PointY="17" />
+        <EntityTypeShape EntityType="DB.JOB_TASKJOBS_LOG" Width="1.5" PointX="17.625" PointY="17.25" />
+        <AssociationConnector Association="DB.FK_JOB_TASKJOBS_LOG_JOB_TASKJOBS" />
+        <AssociationConnector Association="DB.FK_SysUser_SysPosition" />
+        <AssociationConnector Association="DB.FK_SysUser_SysStruct" />
+        <EntityTypeShape EntityType="DB.WC_MessageResponse" Width="1.5" PointX="10.5" PointY="49.25" />
+        <EntityTypeShape EntityType="DB.WC_OfficalAccounts" Width="1.5" PointX="8.25" PointY="47" />
+        <EntityTypeShape EntityType="DB.WC_ResponseLog" Width="1.5" PointX="10.5" PointY="45.25" />
+        <AssociationConnector Association="DB.FK_WC_OfficalAcconts_SysUser" />
+        <AssociationConnector Association="DB.FK_WC_MessageResponse_WC_OfficalAcconts" />
+        <AssociationConnector Association="DB.FK_WC_UserResponseLog_WC_OfficalAcconts" />
+        <EntityTypeShape EntityType="DB.WC_Group" Width="1.5" PointX="10.5" PointY="55.625" />
+        <EntityTypeShape EntityType="DB.WC_User" Width="1.5" PointX="12.75" PointY="50.25" />
+        <AssociationConnector Association="DB.FK_WC_Group_WC_OfficalAccounts" />
+        <AssociationConnector Association="DB.FK_WC_User_WC_Group" />
+        <AssociationConnector Association="DB.FK_WC_User_WC_OfficalAccounts" />
+        <EntityTypeShape EntityType="DB.SysModuleDataFilter" Width="1.5" PointX="3" PointY="26.625" />
+        <EntityTypeShape EntityType="DB.SysRightDataFilter" Width="1.5" PointX="8.25" PointY="0.75" />
+        <AssociationConnector Association="DB.FK_SysModuleDataFilter_SysModule" />
+        <AssociationConnector Association="DB.FK_SysRightDataFilter_SysRight" />
+        <EntityTypeShape EntityType="DB.SysCalendarPlan" Width="1.5" PointX="8.25" PointY="54.25" />
+        <AssociationConnector Association="DB.FK_SysCalendarPlan_SysUser" />
+        <EntityTypeShape EntityType="DB.Flow_External" Width="1.5" PointX="6.375" PointY="6.75" />
+        <EntityTypeShape EntityType="DB.Flow_Form" Width="1.5" PointX="24.625" PointY="12.625" />
+        <EntityTypeShape EntityType="DB.Flow_FormAttr" Width="1.5" PointX="24.625" PointY="21.875" />
+        <EntityTypeShape EntityType="DB.Flow_FormContent" Width="1.5" PointX="26.875" PointY="20.25" />
+        <EntityTypeShape EntityType="DB.Flow_FormContentStepCheck" Width="1.5" PointX="29.125" PointY="23" />
+        <EntityTypeShape EntityType="DB.Flow_FormContentStepCheckState" Width="1.5" PointX="31.375" PointY="27.25" />
+        <EntityTypeShape EntityType="DB.Flow_Seal" Width="1.5" PointX="8.25" PointY="29.875" />
+        <EntityTypeShape EntityType="DB.Flow_Step" Width="1.5" PointX="26.875" PointY="15.125" />
+        <EntityTypeShape EntityType="DB.Flow_StepRule" Width="1.5" PointX="29.125" PointY="15.75" />
+        <EntityTypeShape EntityType="DB.Flow_Type" Width="1.5" PointX="22.375" PointY="17.5" />
+        <AssociationConnector Association="DB.FK_Flow_Form_Flow_Type" />
+        <AssociationConnector Association="DB.FK_Flow_FormContent_Flow_Form" />
+        <AssociationConnector Association="DB.FK_Flow_Step_Flow_Form" />
+        <AssociationConnector Association="DB.FK_Flow_FormAttr_Flow_Type" />
+        <AssociationConnector Association="DB.FK_Flow_FormContent_SysUser" />
+        <AssociationConnector Association="DB.FK_Flow_StepState_Flow_StepState" />
+        <AssociationConnector Association="DB.FK_Flow_FormContentStepCheckState_Flow_FormContentStepCheck" />
+        <AssociationConnector Association="DB.FK_Flow_FormContentStepCheckState_SysUser" />
+        <AssociationConnector Association="DB.FK_Flow_Seal_SysUser" />
+        <AssociationConnector Association="DB.FK_Flow_StepRule_Flow_Step" />
+        <EntityTypeShape EntityType="DB.Spl_ContactCompany" Width="1.5" PointX="5.625" PointY="16" />
+        <EntityTypeShape EntityType="DB.Spl_ContactCompanyCategory" Width="1.5" PointX="3.375" PointY="16.375" />
+        <EntityTypeShape EntityType="DB.Spl_EarlyWareingGood" Width="1.5" PointX="23.875" PointY="42.875" />
+        <EntityTypeShape EntityType="DB.Spl_InOutCategory" Width="1.5" PointX="18.625" PointY="28.25" />
+        <EntityTypeShape EntityType="DB.Spl_Person" Width="1.5" PointX="15.375" PointY="7.75" />
+        <EntityTypeShape EntityType="DB.Spl_Product" Width="1.5" PointX="7.625" PointY="11" />
+        <EntityTypeShape EntityType="DB.Spl_ProductCategory" Width="1.5" PointX="5.375" PointY="11.5" />
+        <EntityTypeShape EntityType="DB.Spl_TestClass" Width="1.5" PointX="8.375" PointY="6.25" />
+        <EntityTypeShape EntityType="DB.Spl_TestStudents" Width="1.5" PointX="10.625" PointY="6" />
+        <EntityTypeShape EntityType="DB.Spl_WareCategory" Width="1.5" PointX="21.625" PointY="51.5" />
+        <EntityTypeShape EntityType="DB.Spl_WareCheckTotal" Width="1.5" PointX="20.875" PointY="33.25" />
+        <EntityTypeShape EntityType="DB.Spl_WareDetails" Width="1.5" PointX="23.875" PointY="48.75" />
+        <EntityTypeShape EntityType="DB.Spl_Warehouse" Width="1.5" PointX="18.625" PointY="41.875" />
+        <EntityTypeShape EntityType="DB.Spl_WarehouseAllocation" Width="1.5" PointX="20.875" PointY="39" />
+        <EntityTypeShape EntityType="DB.Spl_WarehouseAllocationDetails" Width="1.5" PointX="26.125" PointY="42.375" />
+        <EntityTypeShape EntityType="DB.Spl_WarehouseCategory" Width="1.5" PointX="16.375" PointY="43.125" />
+        <EntityTypeShape EntityType="DB.Spl_WarehouseWarrant" Width="1.5" PointX="20.875" PointY="27" />
+        <EntityTypeShape EntityType="DB.Spl_WarehouseWarrantDetails" Width="1.5" PointX="26.125" PointY="34.375" />
+        <EntityTypeShape EntityType="DB.Spl_WarehouseWarrantDetailsOUT" Width="1.5" PointX="26.125" PointY="38.375" />
+        <EntityTypeShape EntityType="DB.Spl_WarehouseWarrantOUT" Width="1.5" PointX="23.875" PointY="33" />
+        <EntityTypeShape EntityType="DB.Spl_WareStockPile" Width="1.5" PointX="20.875" PointY="44.875" />
+        <EntityTypeShape EntityType="DB.Spl_WareUnitConvert" Width="1.5" PointX="8.375" PointY="15.75" />
+        <AssociationConnector Association="DB.FK_Spl_ContactCompany_Spl_ContactCompanyCategory" />
+        <AssociationConnector Association="DB.FK_Spl_EarlyWareingGood_Spl_WareDetails" />
+        <AssociationConnector Association="DB.FK_Spl_EarlyWareingGood_Spl_Warehouse" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrant_Spl_WarehouseWarrant" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantOUT_Spl_InOutCategory" />
+        <AssociationConnector Association="DB.FK_Spl_Product_Spl_ProductCategory" />
+        <AssociationConnector Association="DB.FK_Spl_TestStudents_Spl_TestStudents" />
+        <AssociationConnector Association="DB.FK_Spl_WareCategory_Spl_WareCategory" />
+        <AssociationConnector Association="DB.FK_Spl_WareDetails_Spl_WareCategory" />
+        <AssociationConnector Association="DB.FK_Spl_WareCheckTotal_Spl_WareDetails" />
+        <AssociationConnector Association="DB.FK_Spl_WareCheckTotal_Spl_Warehouse" />
+        <AssociationConnector Association="DB.FK_Spl_WareCheckTotal_SysUser" />
+        <AssociationConnector Association="DB.FK_Spl_WareCheckTotal_SysUser1" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseAllocationDetails_Spl_WareDetails" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantDetails_Spl_WareDetails" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantDetailsOUT_Spl_WareDetails" />
+        <AssociationConnector Association="DB.FK_Spl_WareStockPile_Spl_WareDetails" />
+        <AssociationConnector Association="DB.FK_Spl_Warehouse_Spl_WarehouseCategory" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseAllocation_Spl_Warehouse" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseAllocation_Spl_Warehouse1" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseAllocationDetails_Spl_Warehouse" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrant_Spl_Warehouse" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantDetails_Spl_Warehouse" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantDetailsOUT_Spl_Warehouse" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantOUT_Spl_Warehouse" />
+        <AssociationConnector Association="DB.FK_Spl_WareStockPile_Spl_Warehouse" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseAllocation_SysUser" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseAllocationDetails_Spl_WarehouseAllocation" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrant_SysUser" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantDetails_Spl_WarehouseWarrant" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantDetailsOUT_Spl_WarehouseWarrantOUT" />
+        <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantOUT_SysUser" />
+        <AssociationConnector Association="DB.SysRoleSpl_Warehouse" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

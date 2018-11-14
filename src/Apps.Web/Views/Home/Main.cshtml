@@ -1,0 +1,272 @@
+﻿@using Apps.Web.Core;
+@using Apps.Locale;
+@using Apps.Models.Enum;
+@{
+    ViewBag.Title = "Main";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/echarts.min.js")"></script>
+<script src="@Url.Content("~/Scripts/echarts.theme.shine.js")"></script>
+
+<link href="~/Scripts/fullcalendar/fullcalendar.css" rel="stylesheet" />
+<script src="~/Scripts/fullcalendar/moment.min.js"></script>
+<script src="~/Scripts/fullcalendar/fullcalendar.min.js"></script>
+<script src="~/Scripts/fullcalendar/zh-cn.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/AdminLTE/AdminLTE.min.css" rel="stylesheet" />
+<style>
+    body {font-size:13px;font-family:'Microsoft YaHei' !important}
+    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {font-family:'Microsoft YaHei' !important}
+    .box-body {min-height:190px;}
+    .box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {font-size: 14px;}
+    .label {line-height:2px; padding:1px;}
+    #notePartContent h2 {font-size:14px;}
+</style>
+<script>
+    $(function () {
+        //我的批阅
+        Load_MyJobPart();
+        //通知公告
+        Load_NoticePart();
+        //charts
+        Load_DataPart();
+        //日程管理
+        Load_NotePart();
+
+    });
+    function Load_NoticePart() {
+        $.post("../Home/GetPartDataByNotice", function (data) {
+            var sb = "";
+            for (var i = 0; i < data.rows.length; i++)
+            {
+                sb = sb + "<div class='exceed'><a style='float:left;' class=\"color-black\" href=\"javascript:ShowInfo('" + data.rows[i].Title + "','" + data.rows[i].Id + "')\"><p>[" + data.rows[i].CategoryName + "]&nbsp;" + data.rows[i].Title + "</p></a><div style='float:right;width:100px;'><p>[" + SubStrYMD(data.rows[i].CreateTime) + "]</p></div></div>";
+            }
+            $("#noticePartContent").html(sb);
+        }, "json");
+    }
+    function Load_MyJobPart() {
+        $.post("../Home/GetPartDataByMyJob", function (data) {
+            var str = "";
+            for (var i = 0; i < data.rows.length; i++) {
+                str = str + "<div class='exceed'><a style='float:left;' href='javascript:ManageFlow(\"" + data.rows[i].Title + "\",\"" + data.rows[i].FormId + "\",\"" + data.rows[i].Id + "\");' class=\"color-black\">" + getFlowLevel(data.rows[i].FormLevel) + "&nbsp;" + data.rows[i].UserName + "-&nbsp;" + data.rows[i].Title + "-处理状态：" + getCurrentState(data.rows[i].CurrentState) + "</a><div style='float:right;width:100px;'><p>[" + SubStrYMD(data.rows[i].CreateTime) + "]</p></div></div>";
+            }
+            $("#myJobPartContent").html(str);
+        }, "json");
+
+    }
+    function getFlowLevel(value) {
+        if(value==1){return "<span class='label label-success'>普通</span>";}
+        if(value==2){return "<span class='label label-info'>重要</span>";}
+        if(value==3){return "<span class='label label-error'>紧急</span>";}
+        return "";
+    }
+    function getCurrentState(value) {
+        var _pass = "<span class='label label-success'>已结束</span>";
+        var _progress = "<span class='label label-info'>进行中</span>";
+        var _reject = "<span class='label label-error'>已驳回</span>";
+        var _close = "<span class='label label-error'>已超时</span>";
+        if(value==1){ return _pass;}
+        if(value==2){ return _progress;}
+        if(value==0){ return _reject;}
+        return _close;
+    }
+
+    function Load_DataPart() {
+        //$.post("../Home/GetPartDataByData", function (data) {
+        //    $("#dataPartContent").html(data);
+        //}, "json");
+
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['EasyUI', 'Asp.Net Mvc', 'Html+Css', 'JavaScript']
+            },
+            series: [
+                {
+                    name: '比重',
+                    type: 'pie',
+                    selectedMode: 'single',
+                    radius: [0, '30%'],
+
+                    label: {
+                        normal: {
+                            position: 'inner'
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: [
+                        { value: 560, name: 'JS' },
+                        { value: 330, name: 'Html' },
+                        { value: 308, name: 'Css' },
+                        { value: 448, name: 'C#', selected: true }
+                    ]
+                },
+                {
+                    name: '比重',
+                    type: 'pie',
+                    radius: ['40%', '55%'],
+
+                    data: [
+                        { value: 535, name: 'EasyUI' },
+                        { value: 250, name: 'JavaScript' },
+                        { value: 100, name: 'Html+Css' },
+                        { value: 205, name: 'Asp.Net Mvc' },
+
+                    ]
+                }
+            ]
+        };
+
+        $("#dataPartContent").attr("style", "border:0px;height:250px;");
+        var myChart = echarts.init(document.getElementById('dataPartContent'), "shine");
+        myChart.setOption(option);
+    }
+    function Load_NotePart() {
+        
+
+        $('#calendar').fullCalendar({
+            weekNumbers: true,
+            weekNumbersWithinDays: true,
+            weekNumberCalculation: 'ISO',
+            editable: true,
+            navLinks: true, // can click day/week names to navigate views
+            defaultView: 'listWeek',
+            contentHeight: 165,
+            selectable: true,
+            selectHelper: true,//在agenda视图下选择时会带上对应的时间
+            dragOpacity: 0.5, //Event被拖动时的不透明度
+            droppable: true, // this allows things to be dropped onto the calendar
+            drop: function () {
+                // is the "remove after drop" checkbox checked?
+
+            },
+            eventLimit: true, // allow "more" link when too many events
+            events: {
+                url: '/SysCalendarPlan/GetList',
+                error: function () {
+                    $.messageBox5s(Lang.Tip, "请求错误");
+                }
+            },//点击
+            windowResize: function (view) {
+
+            }
+        });
+
+
+    }
+
+    //打开文章
+    function ShowInfo(name, url) {
+        $("#modalwindowContent").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0''  src='/MIS/Article/Details?id=" + url + "'></iframe>");
+        $("#modalwindowContent").window({ title: name, width: 800, height: 600, iconCls: 'fa fa-list' }).window('open');
+    }
+
+    //打开工作流
+    function ManageFlow(winTitle, formId, id) {
+        var url = "/Flow/Examine/Edit?formId=" + formId + "&id=" + id + "&Ieguid=" + GetGuid() + "";
+        $("#modalwindowContent").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='" + url + "'></iframe>");
+        $("#modalwindowContent").window({ title: winTitle, width: SetGridWidthSub(100), height: SetGridHeightSub(100), iconCls: 'fa fa-file-text-o' }).window('open');
+    }
+</script>
+
+<div id="modalwindowContent" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="row" style="margin-top:10px;">
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i style="font-size:45px;" class="fa fa-envelope-o"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Messages</span>
+                <span class="info-box-number">1,410</span>
+            </div><!-- /.info-box-content -->
+        </div><!-- /.info-box -->
+    </div><!-- /.col -->
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-green"><i style="font-size:45px;" class="fa fa-flag-o"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Bookmarks</span>
+                <span class="info-box-number">410</span>
+            </div><!-- /.info-box-content -->
+        </div><!-- /.info-box -->
+    </div><!-- /.col -->
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i style="font-size:45px;" class="fa fa-files-o"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Uploads</span>
+                <span class="info-box-number">13,648</span>
+            </div><!-- /.info-box-content -->
+        </div><!-- /.info-box -->
+    </div><!-- /.col -->
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-red"><i style="font-size:45px;" class="fa fa-star-o"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text">Likes</span>
+                <span class="info-box-number">93,139</span>
+            </div><!-- /.info-box-content -->
+        </div><!-- /.info-box -->
+    </div><!-- /.col -->
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-bullhorn"></i>&nbsp;通知公告</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body" id="noticePartContent">
+                <div class="panel-loading">
+                    Loading...
+                </div>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-file-text-o"></i>&nbsp;我的批阅</h3>
+              
+            </div><!-- /.box-header -->
+            <div class="box-body" id="myJobPartContent">
+                <div class="panel-loading">
+                    Loading...
+                </div>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-bar-chart"></i>&nbsp;数据统计</h3>
+              
+            </div><!-- /.box-header -->
+            <div class="box-body" id="dataPartContent">
+                <div class="panel-loading">
+                    Loading...
+                </div>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-calendar"></i>&nbsp;日程管理</h3>
+              
+            </div><!-- /.box-header -->
+            <div class="box-body" id="notePartContent">
+                <div  id="calendar"></div>
+
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->
+    </div><!-- /.col -->
+</div>

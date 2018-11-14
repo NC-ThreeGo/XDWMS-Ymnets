@@ -1,0 +1,117 @@
+﻿@model Apps.Models.MIS.MIS_Article_CategoryModel
+@using Apps.Common;
+@using Apps.Models.MIS;
+@using Apps.Models.Sys;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSave").click(function () {
+            if ($("form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("Create")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+        window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+            
+     <input type="hidden" value="0" name="ChannelId" id="ChannelId"/>
+             <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+ <table class="formtable">
+    <tbody>
+    <tr>
+        <th>
+            @Html.LabelFor(model => model.Id)：
+        </th>
+          <td>
+                @Html.EditorFor(model => model.Id)
+            @Html.ValidationMessageFor(model => model.Id)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Name)：
+            </th>
+          <td>
+                @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ParentId)：
+             </th>
+          <td>
+                @Html.EditorFor(model => model.ParentId)
+            @Html.ValidationMessageFor(model => model.ParentId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Sort)：
+            </th>
+          <td>
+                @Html.EditorFor(model => model.Sort)
+            @Html.ValidationMessageFor(model => model.Sort)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ImgUrl)：
+           </th>
+          <td>
+             @Html.HiddenFor(model => model.ImgUrl)
+             <img class="expic" src="/Content/Images/NotPic.jpg" /><br />
+              <a href="javascript:$('#FileUpload').trigger('click');" class="files">@Resource.Browse</a>
+             <input type="file" class="displaynone" id="FileUpload" name="FileUpload" onchange="Upload('SingleFile', 'ImgUrl', 'FileUpload','1','1');" />
+             <span class="uploading">@Resource.Uploading</span>
+
+        
+
+            @Html.ValidationMessageFor(model => model.ImgUrl)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.BodyContent)：
+            </th>
+          <td>
+                @Html.EditorFor(model => model.BodyContent)
+            @Html.ValidationMessageFor(model => model.BodyContent)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Enable)：
+           </th>
+          <td>
+              @Html.RadioFor("Enable", true,"","")
+            @Html.ValidationMessageFor(model => model.Enable)</td>
+        </tr>
+    </tbody>
+</table>
+}

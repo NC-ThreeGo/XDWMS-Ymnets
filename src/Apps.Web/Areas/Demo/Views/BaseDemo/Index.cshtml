@@ -1,0 +1,373 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Demo";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<form>
+    <div class="easyui-tabs" style="width:1000px;height:700px">
+        <div title="form demo" style="padding:10px">
+            <table class="formtable">
+                <tr>
+                    <th>普通按钮：</th>
+                    <td>
+                        <a id="btndefault" class="btn btn-default"><span class="fa fa-list"></span>&nbsp;普通</a>
+                        <a id="primary" class="btn btn-primary"><span class="fa fa-list"></span>&nbsp;主要</a>
+                        <a id="success" class="btn btn-success"><span class="fa fa-list"></span>&nbsp;成功</a>
+                        <a id="info" class="btn btn-info"><span class="fa fa-list"></span>&nbsp;信息</a>
+                        <a id="warning" class="btn btn-warning"><span class="fa fa-list"></span>&nbsp;警告</a>
+                        <a id="danger" class="btn btn-danger"><span class="fa fa-list"></span>&nbsp;危险</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        下拉按钮：
+                    </th>
+                    <td>
+                        <div class="mvctool">
+                            <a href="#" class="easyui-menubutton" style="height:24px;" data-options="menu:'#mm2',iconCls:'fa fa-download'">下拉有值</a>
+                            <div id="mm2" style="width:160px;">
+                                <div><a href="#">下拉选择一</a></div>
+                                <div><a href="#">下拉选择二</a></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>多行文本：</th>
+                    <td>
+                        <textarea style="width:350px;height:50px;">
+                            在w3school，你可以找到你所需要的所有的网站建设教程。
+                        </textarea>
+                        @*@Html.TextAreaFor(model => model.Expertise, new { style = "width:350px;height:50px;" })*@
+                    </td>
+                </tr>
+                <tr>
+                    <th>日期选择：</th>
+                    <td>
+                        <input id="queryBegin" value="@ViewBag.Begin" type="text" style="width: 80px;" class="Wdate" onfocus="WdatePicker({ dateFmt: 'yyyy-MM-dd', isShowToday: true, isShowClear: false })" />
+                        @*动态值格式化@Html.TextBoxFor(model => model.Birthday, new {  @onClick = "WdatePicker()",@class= "Wdate",@class= "Wdate", Value = String.Format("{0:yyyy-MM-dd}", Model.Birthday), @style = "width:105px" })*@
+                    </td>
+                </tr>
+                <tr>
+                    <th>用户单选：</th>
+                    <td>
+                        <div style="height:0;width:0;overflow:hidden">
+                            <input type="text" name="Checker" id="Checker" />
+                        </div>
+                        <input id="CheckerName" name="CheckerName" readonly="readonly" type="text" style="width: 90px; display: inline; background: #dedede; ">
+                        <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelUser()"></a>
+                        <script type="text/javascript">
+                function showSelUser() {
+                    $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/UserSingleLookUp?key=Checker&val=CheckerName'></iframe>");
+                    $("#modalwindow").window({ title: '选择人员', width: 780, height: 388, iconCls: 'fa fa-plus' }).window('open');
+                }
+
+                function SetSelResult(result, resultName, key, val) {
+                    $("#" + key).val(result);
+                    $("#" + val).val(resultName);
+                }
+                function GetSelResult(key, val) {
+                    var arrayObj = new Array()
+                    arrayObj[0] = $("#" + key).val();
+                    arrayObj[1] = $("#" + val).val();
+                    return arrayObj;
+                }
+                function frameReturnByClose() {
+                    $("#modalwindow").window('close');
+                }
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <th>用户多选：</th>
+                    <td>
+                        <div style="height:0;width:0;overflow:hidden">
+                            <input type="text" name="Lead" id="Lead" />
+                        </div>
+                        <input id="LeadName" name="LeadName" value="" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
+                        <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelMulUser()"></a>
+                        <script type="text/javascript">
+                function showSelMulUser() {
+                    $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/UserLookUp?key=Lead&val=LeadName'></iframe>");
+                    $("#modalwindow").window({ title: '选择人员', width: 620, height: 388, iconCls: 'fa fa-plus' }).window('open');
+                }
+
+                function SetSelResult(result, resultName, key, val) {
+                    $("#" + key).val(result);
+                    $("#" + val).val(resultName);
+                }
+                function GetSelResult(key, val) {
+                    var arrayObj = new Array()
+                    arrayObj[0] = $("#" + key).val();
+                    arrayObj[1] = $("#" + val).val();
+                    return arrayObj;
+                }
+                //ifram 返回
+                function frameReturnByClose() {
+                    $("#modalwindow").window('close');
+                }
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        上传图片：
+                    </th>
+                    <td>
+                        <input type="hidden" name="Photo" id="Photo" />
+                        <img class="expic" src="/Content/Images/NotPic.jpg" /><br />
+                        <a class="files">
+                            @Resource.Browse
+                            <input type="file" id="FileUploadPhoto" name="FileUploadPhoto" onchange="Upload('SingleFile', 'Photo', 'FileUploadPhoto', '1', '1');" />
+                        </a>
+                        <span class="uploading">@Resource.Uploading</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th> 上传Excel：</th>
+                    <td>
+                        <input name="txtExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" class="txtInput normal left">
+                        <a class="files">
+                            @Resource.Browse
+                            <input type="file" id="FileExcelUpload" name="FileExcelUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileExcelUpload'); " />
+                        </a>
+                        <span class="uploading">@Resource.Uploading</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>单个文件上传：</th>
+                    <td>
+                        <input name="txtUrl" type="text" maxlength="255" id="txtUrl" readonly="readonly" class="txtInput normal left">
+                        <a class="files">
+                            @Resource.Browse
+                            <input type="file" id="FileUpload" name="FileUpload" onchange="Upload('AttachFile', 'txtUrl', 'FileUpload');">
+                        </a>
+                        <span class="uploading">@Resource.Uploading</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>多个文件：</th>
+                    <td>
+                        <div>
+                            <script type='text/javascript' src="/scripts/swfupload/swfupload.js"></script>
+                            <script type='text/javascript' src="/scripts/swfupload/swfupload.queue.js"></script>
+                            <script type="text/javascript" src="/scripts/swfupload/swfupload.handlers.js"></script>
+                            <style type="text/css">
+                                #SWFUpload_0 {
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    right: 0;
+                                    bottom: 0;
+                                    opacity: 0;
+                                }
+                            </style>
+                            <div class="upload_btn btn btn-Defalt" style="padding:0 10px;float:left;font-size:12px;line-height:28px;position:relative;">浏览...<span id="upload"></span></div>
+                            <a href="#" class="btn btn-default" id="btnSave">保存</a>
+                            <span style="float:left;line-height:30px;margin-left:10px;color:#d9534f">可以上传多个文件。</span>
+                        </div>
+                        <div class="clear"></div>
+                        <input type="hidden" name="focus_photo" id="focus_photo">
+                        <!--封面隐藏值.结束-->
+                        <!--上传提示.开始-->
+                        <div id="show"></div>
+                        <!--上传提示.结束-->
+                        <!--文件列表.开始-->
+                        <div id="show_list">
+                            <ul style="line-height:22px;"></ul>
+                        </div>
+                        <!--文件列表.结束-->
+                        <script>
+             //初始化上传控件
+                $(function () {
+                    //指定目录 InitSWFUpload("/Core/upload_ajax.ashx", "Filedata", "11111111KB", "/scripts/swfupload/swfupload.swf", 1, 1, "/upload/General/Photo/");
+                    InitSWFUpload("/Core/upload_ajax.ashx", "Filedata", "11111111KB", "/scripts/swfupload/swfupload.swf");
+                });
+                $(function(){
+                    $("#btnSave").click(function () {
+
+                        //var list = "";
+                        //$("#show_list ul li input[name='true_photo_name']").each(function (i) {
+                        //    if (list != "") {
+                        //        list += ",";
+                        //    }
+                        //    var val = $(this).val();
+                        //    list += val.substr(val.lastIndexOf("/") + 1, val.length);
+                        //});
+
+
+                        var fileName = "";
+                        $(".k_fileName").each(function(i){
+                            fileName += (i == 0?'':',') + $(this).text();
+                        });
+                        alert(fileName);
+                    });
+                });
+                        </script>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div title="datagrid" style="padding:10px">
+            <table class="formtable">
+                <tr>
+                    <th>
+                        多选操作：
+                    </th>
+                    <td>
+                        <div class="mvctool">
+                            <a id="selMul" class="btn btn-default"><span class="fa fa-list"></span>&nbsp;获取多选的值</a>
+                        </div>
+                        <table id="mulList"></table>
+                        <script type="text/javascript">
+                $(function () {
+                    $('#mulList').datagrid({
+                        url: '/Demo/BaseDemo/GetListDemo',
+                        width: 800,
+                        height: 300,
+                        methord: 'Post',
+                        queryParams: { name: "easyui" },
+                        fitColumns: true,
+                        sortName: 'Id',
+                        sortOrder: 'desc',
+                        idField: 'Id',
+                        pageSize: 3,
+                        pageList: [3, 5, 7],
+                        pagination: true,
+                        striped: true, //奇偶行是否区分
+                        singleSelect: false,//多选模式
+                        selectOnCheck: true,//选择带上复选框
+                        checkOnSelect: true,//复选框带上选择
+                        columns: [[
+                            { field: 'ck', checkbox: true },
+                            { field: 'Id', title: 'Id', width: 50, align: 'right', sortable: false, hidden: true },
+                            { field: 'Name', title: '居中', width: 50, align: 'right', sortable: false },
+                            { field: 'Enable', title: '默认布尔格式', width: 50, align: 'right', sortable: false, formatter: function (value) { return EnableFormatter(value) } },
+                            { field: 'Enable', title: '自定义布尔格式', width: 50, align: 'right', sortable: false, formatter: function (value) { return CustomFormatter(value, "是", "否") } },
+                            { field: 'CreateTime', title: '默认长时间', width: 50, align: 'right', sortable: false },
+                            { field: 'CreateTime', title: '格式化短时间', width: 50, align: 'right', sortable: false, formatter: function (value) { return SubStrYMD(value) } },
+                        ]]
+                    });
+
+                    $("#selMul").click(function () {
+                        var ids = [];
+                        $($('#mulList').datagrid('getSelections')).each(function () {
+                            ids.push(this.Id);
+                        });
+                        if (ids.length > 0) {
+                            $.messageBox5s(Lang.Tip, '你选择了'+ids.join(','));
+                        } else { $.messageBox5s(Lang.Tip, '没有选择的行'); }
+                    });
+
+                });
+                        </script>
+                    </td>
+                </tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr>
+                    <th>混合功能： </th>
+                    <td>
+                        <table id="allList"></table>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#allList').datagrid({
+                                    url: '/Demo/BaseDemo/GetListDemo',
+                                    width: 800,
+                                    height: 300,
+                                    methord: 'Post',
+                                    fitColumns: true,
+                                    queryParams: { name: "easyui" },
+                                    sortName: 'Id',
+                                    sortOrder: 'desc',
+                                    idField: 'Id',
+                                    pageSize: 3,
+                                    pageList: [3, 5, 7],
+                                    pagination: true,
+                                    striped: true, //奇偶行是否区分
+                                    singleSelect: true,//单选模式
+                                    onClickRow: function (index, row) {
+                                       // $.messageBox5s(Lang.Tip, "点击事件");
+                                    },
+                                    onLoadSuccess: function (data) {
+                                       // $.messageBox5s(Lang.Tip, "加载成功事件");
+                                       //$(".datagrid-row td div").addClass("exceed");
+                                       // $('#List').datagrid("resize");
+                                    },
+                                    columns: [[
+                                        { field: 'Id', title: '全居中', width: 50, align: 'center', sortable: false },
+                                        { field: 'Name', title: '头部居中', width: 50,align: 'right', halign:'center', sortable: false },
+                                        { field: 'Enable', title: '默认布尔格式', width: 50, align: 'right', sortable: false, formatter: function (value) { return EnableFormatter(value) } },
+                                        { field: 'Enable', title: '自定义布尔格式', width: 50, align: 'right', sortable: false, formatter: function (value) { return CustomFormatter(value,"是","否") } },
+                                        { field: 'CreateTime', title: '默认长时间', width: 50, align: 'right', sortable: false },
+                                        { field: 'CreateTime', title: '格式化短时间', width: 50, align: 'right', sortable: false, formatter: function (value) { return SubStrYMD(value) } },
+                                    ]]
+                                });
+                            });
+                        </script>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div title="combobox" style="padding:10px">
+            <table class="formtable">
+                <tr>
+                    <th>
+                        单选操作：
+                    </th>
+                    <td>
+                        <div class="mvctool">
+                            <a id="selSingle" class="btn btn-default"><span class="fa fa-list"></span>&nbsp;获取单选的值</a>
+                        </div>
+
+                        <div style="width:0px;height:0px;overflow:hidden"><input type="text" name="comboSignle" /></div>
+                        <input style="width:288px;" class="easyui-combobox" id="comboSignle" data-options="valueField:'Id',textField:'Name',editable:false,url:'/Demo/BaseDemo/GetListDemoCombo'">
+                        <script>
+                            $(function () {
+                                //点击获取值
+                                $("#selSingle").click(function () {
+                                    $("input[name='comboSignle']").val($('#comboSignle').combobox('getValue'));
+                                    alert($('#comboSignle').combobox('getValue'));
+                                });
+                                //设置默认值
+                                $('#comboSignle').combobox('setValue', '100005');
+                            });
+                        </script>
+
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        多选操作：
+                    </th>
+                    <td>
+                        <div class="mvctool">
+                            <a id="selBoMul" class="btn btn-default"><span class="fa fa-list"></span>&nbsp;获取多选的值</a>
+                        </div>
+                        <div style="width:0px;height:0px;overflow:hidden"><input type="text" name="comboMul" /></div>
+                        <input style="width:288px;" class="easyui-combobox" id="comboMul" data-options="valueField:'Id',textField:'Name',editable:false,multiple:true,url:'/Demo/BaseDemo/GetListDemoCombo'">
+                        <script>
+                            $(function () {
+                                //点击获取值
+                                $("#selBoMul").click(function () {
+                                    $("input[name='comboMul']").val($('#comboMul').combobox('getValues'));
+                                    alert($('#comboMul').combobox('getValues'));
+                                });
+                                //设置默认值
+                                $('#comboMul').combobox('setValues', ['100005', '100006']);
+                            });
+                        </script>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>
+

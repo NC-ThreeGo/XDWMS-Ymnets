@@ -1,0 +1,127 @@
+﻿@model Apps.Models.MIS.MIS_MailBoxModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.MIS;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             @Html.HiddenFor(model => model.CreateTime)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Subject)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Subject)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Subject)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ContentBody)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ContentBody)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ContentBody)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attachment)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Attachment)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attachment)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.FolderType)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.FolderType)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.FolderType)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.UserId)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.UserId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.UserId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.StarFlag)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.StarFlag)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.StarFlag)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Status)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Status)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Status)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CreateTime)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.CreateTime)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.CreateTime)</td>
+        </tr>
+    </tbody>
+</table>
+}
+

@@ -1,0 +1,138 @@
+﻿@using Apps.Web.Core;
+@using Apps.Models.Sys;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Locale;
+@using Apps.Models.WC;
+@{
+    ViewBag.Title = "主页";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div class="mvctool">
+    <input id="txtQuery" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+    @*@Html.ToolButton("btnGetGroup", "fa fa-pencil", "获取服务器分组", ref perm, "Create", true)*@
+
+
+    <div class="rightdiv color-green">
+        当前操作公众号：<span id="CurrentOfficalAccount">@(ViewBag.CurrentOfficalAcount)</span>
+    </div>
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width:SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: 'Id', width: 80,hidden:true },
+                { field: 'Name', title: '分组名称', width: 80,sortable:true },
+                { field: 'Count', title: 'Count', width: 80,sortable:true },
+                { field: 'OfficalAccountId', title: '所属公众号', width: 80,sortable:true,hidden:true }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("Create")'></iframe>");
+            $("#modalwindow").window({ title: '@Resource.Create', width: 500, height:200, iconCls: 'fa fa-plus' }).window('open');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: 700, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: encodeURI(queryStr) });
+
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+	                    if (r) {
+	                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+	                            if (data.type == 1)
+	                                $("#List").datagrid('load');
+	                            $.messageBox5s('@Resource.Tip', data.message);
+	                        }, "json");
+
+	                    }
+	                });
+	            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+
+        //获取服务器分组
+        $("#btnGetGroup").click(function () {
+            $.ajax({
+                url: "@Url.Action("GetNetList")",
+                type: "Post",
+            dataType: "json",
+            success: function (data) {
+                if (data.type == 1) {
+                    $.messageBox5s('@Resource.Tip', "获取成功");
+                    $('#btnQuery').click();
+                }
+                else {
+                    $.messageBox5s('@Resource.Tip', "获取失败");
+                }
+            }});
+        });
+
+        ///更新到服务器分组
+        $("#btnUpdateGroup").click(function () {
+            $.ajax({
+                url: "@Url.Action("UpdateNet")",
+                type: "Post",
+            dataType: "json",
+            success: function (data) {
+                if (data.type == 1) {
+                    $.messageBox5s('@Resource.Tip', "更新成功");
+                    $('#btnQuery').click();
+                }
+                else {
+                    $.messageBox5s('@Resource.Tip', "更新失败");
+                }
+            }
+        });
+        });
+    });
+</script>

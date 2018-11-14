@@ -1,0 +1,102 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+
+    List<permModel> perm = null;
+}
+
+<div class="mvctool">
+<input id="txtQuery" type="text" class="searchText"/>
+@Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+@Html.ToolButton("btnDetails", "fa fa-list", Resource.Details,ref perm, "Details", true)
+@Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+</div>
+
+<table id="List"></table>
+<div id="Pager"></div>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@*Jqgrid*@
+<script type="text/javascript">
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+
+    $(function () {
+        $('#List').datagrid({
+            url: '/SysLog/GetList',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            columns: [[
+                { field: 'Id', title: '@Resource.TitleID', width: 40, hidden: true },
+                { field: 'Operator', title: '操作人', width: 40 },
+                { field: 'Message', title: '信息', width: 280 },
+                { field: 'Result', title: '结果', width: 40, align: 'center' },
+                { field: 'Type', title: '类型', width: 40, align: 'center' },
+                { field: 'Module', title: '模块', width: 60, align: 'center' },
+                { field: 'CreateTime', title: '添加时间', width: 65, align: 'center' }
+            ]]
+        });
+    });
+
+</script>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+@*operation*@
+<script type="text/javascript">
+    $(function () {
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+
+                $("#modalwindow").html("<iframe width='100%' height='100%' frameborder='0' src='/SysLog/Details?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Details', width: 500, height: 400, iconCls: 'fa fa-list' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            //如果查询条件为空默认查询全部
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $('#List').datagrid({ url: '/SysLog/GetList?queryStr=' + encodeURI(queryStr)});
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm( '提示', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                    if (r) {
+                        $.post("/SysLog/Delete?ids=" + row.Id, function (data) {
+                            if (data.type == 1)
+                                $("#List").datagrid('reload');
+                            $.messageBox5s('@Resource.Tip',data.message);
+                        }, "json");
+
+                    }
+                });
+            } else {$.messageBox5s('@Resource.Tip','@Resource.PlaseChooseToOperatingRecords'); }
+        });
+    });
+</script>

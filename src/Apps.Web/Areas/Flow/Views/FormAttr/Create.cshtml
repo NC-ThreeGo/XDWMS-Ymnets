@@ -1,0 +1,138 @@
+﻿@model Apps.Models.Flow.Flow_FormAttrModel
+@using Apps.Common;
+@using Apps.Models.Flow;
+@using Apps.Web.Core;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSave").click(function () {
+
+            //非空
+            if($("#NotNull").prop("checked"))
+            {
+                $("#CheckRule").val("NotNull");
+            }
+            //数字
+            if($("#IsNaN").prop("checked"))
+            {
+                $("#CheckRule").val($("#CheckRule").val()+"IsNaN")
+            }
+            //日期
+            if($("#IsDate").prop("checked"))
+            {
+              $("#CheckRule").val($("#CheckRule").val()+"IsDate")
+            }
+
+            if ($("form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("Create")",
+                    type: "Post",
+                    data: $("form").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1) {
+                            window.parent.frameReturnByMes(data.message);
+                            window.parent.frameReturnByReload(true);
+                            window.parent.frameReturnByClose()
+                        }
+                        else {
+                            window.parent.frameReturnByMes(data.message);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Title)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Title)
+                @Html.ValidationMessageFor(model => model.Title)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Name)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AttrType)：
+                </th>
+                <td>
+                    <select id="AttrType" name="AttrType">
+                        <option value='文本'>文本</option>
+                        <option value='多行文本'>多行文本</option>
+                        <option value='日期'>日期</option>
+                        <option value='数字'>数字</option>
+                        <option value='附件'>附件</option>
+                        <option value='下拉框'>下拉框</option>
+                        <option value='单选按钮'>单选按钮</option>
+                        <option value='复选框'>复选框</option>
+                        <option value='人员弹出框'>人员弹出框</option>
+                    </select>
+                @Html.ValidationMessageFor(model => model.AttrType)</td>
+            </tr>
+             <tr>
+                <th>
+                   下拉|单选|多选默认值：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OptionList)
+                    使用,隔开
+                @Html.ValidationMessageFor(model => model.OptionList)</td>
+            </tr>
+             <tr>
+                <th>
+                    @Html.LabelFor(model => model.CheckRule)：
+                </th>
+                <td>
+                    <input id="NotNull" type="checkbox" checked="checked" />非空
+                    <input id="IsNaN" type="checkbox" />数字
+                    <input id="IsDate" type="checkbox" />日期
+                    @Html.HiddenFor(model => model.CheckRule)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CheckJS)：
+                </th>
+                 <td style="width: 310px" colspan="2">
+                    @Html.TextAreaFor(model => model.CheckJS, 10, 80, new {@style="width:500px;height:100px;" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.TypeId)：
+                </th>
+                <td>
+                      @Html.DropDownListFor(model => model.TypeId, ViewBag.FlowType as SelectList)
+                @Html.ValidationMessageFor(model => model.TypeId)</td>
+            </tr>
+        </tbody>
+    </table>
+}

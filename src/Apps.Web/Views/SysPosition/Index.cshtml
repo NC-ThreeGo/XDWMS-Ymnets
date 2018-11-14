@@ -1,0 +1,112 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div class="mvctool">
+    <input id="txtQuery" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+     @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+   @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+    @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details,ref perm, "Details", true)
+   @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width:SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'Sort',
+            sortOrder: 'asc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: '@Resource.TitleID', width: 80,hidden:true },
+                { field: 'Name', title: '@Resource.TitleName', width: 80,sortable:true },
+                { field: 'Remark', title: '@Resource.TitleRemark', width: 80,sortable:true },
+                { field: 'Sort', title: '@Resource.TitleSort', width: 80,sortable:true },
+                { field: 'CreateTime', title: '@Resource.TitleCreateTime', width: 80,sortable:true },
+                { field: 'Enable', title: '@Resource.TitleEnable', width: 40, align:'center', sortable: true, formatter: function (value) { return EnableFormatter(value) } },
+                { field: 'MemberCount', title: '职位允许人数', width: 80,sortable:true },
+                { field: 'DepName', title: '所在部门', width: 80,sortable:true }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+    $(function () {
+       
+        $("#btnExport").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/ReportControl'></iframe>");
+            $("#modalwindow").window({ title: '@Resource.Export', width: 320, height: 200, iconCls: 'fa fa-plus' }).window('open');
+        });
+        $("#btnCreate").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysPosition/Create'></iframe>");
+            $("#modalwindow").window({ title: '@Resource.Create', width: 700, height: 400, iconCls: 'fa fa-plus' }).window('open');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='100%'  frameborder='0' src='/SysPosition/Edit?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: 700, height: 430, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0' src='/SysPosition/Details?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Details', width: 500, height: 300, iconCls: 'fa fa-list' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+	        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: encodeURI(queryStr) });
+
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+	                    if (r) {
+	                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+	                            if (data.type == 1)
+	                                $("#List").datagrid('load');
+	                            $.messageBox5s('@Resource.Tip', data.message);
+	                        }, "json");
+
+	                    }
+	                });
+	            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+	        });
+    });
+</script>

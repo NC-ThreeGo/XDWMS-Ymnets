@@ -1,0 +1,119 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "设置角色包含的用户";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+
+    List<permModel> perm = null;
+}
+
+<div class="mvctool bgb">
+     <input id="txtQuery" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,  true)
+     @Html.ToolButton("btnClear", "fa fa-trash", Resource.Clear,  false)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)  <span style="line-height:26px;float:right;margin-right:5px;" id="selCount"></span>
+</div>
+<table>
+    <tr>
+        <td style="vertical-align: top; width: 200px;">
+            @Html.Raw(ViewBag.StructTree)
+        </td>
+        <td style="vertical-align: top;padding: 3px">
+            <table id="UserList"></table>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    function getSelected() {
+        var node = $('#StructTree').tree('getSelected');
+        if (node) {
+            var id = node.attributes.id;
+            $("#UserList").datagrid("load", { depId: id });
+        }
+    }
+    $(function () {
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#UserList").datagrid("load", { depId: 'root', queryStr: queryStr });
+        });
+
+        $("#btnClear").click(function () {
+            $("input[type='radio']").prop("checked", false);
+            window.parent.SetSelResult("", "")
+            $("#selCount").html("已经选择了 0 人");
+        });
+        $('#UserList').datagrid({
+            url: '/SysHelper/GetUserSingleListByDep?depId=root',
+            width: SetGridWidthSub(190),
+            methord: 'post',
+            height: SetGridHeightSub(46),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 12,
+            pageList: [12, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            columns: [[
+                { field: 'Id', title: '@Resource.TitleID', width: 80, hidden: true },
+                { field: 'UserName', title: '用户名', width: 120 },
+                { field: 'TrueName', title: '姓名', width: 80 },
+                { field: 'DepName', title: '部门', width: 80 },
+                { field: 'PosName', title: '职位', width: 80 },
+                { field: 'Flag', title: '是否选择了', width: 80}
+            ]],
+            onLoadSuccess: function () {
+                var rows = $("#UserList").datagrid("getRows");
+                for (var i = 0; i < rows.length; i++) {
+                    //获取每一行的数据
+                    $('#UserList').datagrid('beginEdit', i);
+                }
+                var arrVal = window.parent.GetSelResult();//获得已经选择的值
+                if (arrVal[0]!="")
+                {
+                    var arr = new Array();
+                    arr = arrVal[0].split(',');
+                    for (var i = 0; i < arr.length; i++)
+                    {
+                        $("#cb_" + arr[i]).prop("checked",true);
+                    }
+                    $("#selCount").html("已经选择了 " + arr.length + " 人");
+                }
+              
+            }
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+</script>
+
+@*operation*@
+<script type="text/javascript">
+    function SetValue(id,name)
+    {
+         window.parent.SetSelResult(id, name)
+         $("#selCount").html("已经选择了 1 人");
+    }
+</script>
+
+@* 在上级页面必须加入这2个方法才能调用 function SetSelResult(result,resultName)
+    {
+        
+        $("#Execution").val(result);
+        $("#ExecutionName").val(resultName);
+    }
+    function GetSelResult()
+    {
+        var arrayObj = new Array()
+        arrayObj[0]= $("#Execution").val();
+        arrayObj[1]= $("#ExecutionName").val();
+        return arrayObj;
+    }*@

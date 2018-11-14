@@ -1,0 +1,178 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Spl_WareStockPile";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="~/Scripts/jquery.jqprint-0.3.js"></script>
+<script src="~/Scripts/ExeclHelper.js"></script>
+<table style="width:100%">
+<tbody>
+    <tr>
+        <td colspan="3">
+         <div class="mvctool">
+    @*&nbsp;开始时间：<input type="text" id="BeginDate" style="width:100px;" value="@(DateTimeHelper.FirstDayOfMonth())"  class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})"/>
+    结束时间：<input type="text" id="EndDate" style="width:100px;"  value="@(DateTimeHelper.LastDayOfMonth())" class="wdate"  onclick="WdatePicker({startDate:'1980-05-01'})"/>*@
+                 @Html.ToolButton("btnPrint", "fa fa-print", "打印", false)
+                @Html.ToolButton("btnExport", "fa fa-print", "导出", false) 
+             <a id="dlink" style="display: none;"></a>
+             </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:330px;vertical-align: top">
+  
+            <table id="ListParent"></table>
+        </td>
+        <td style="width:3px;"></td>
+        <td style="vertical-align:top">
+            <div id="setFormLayout" class="easyui-panel" style="width:720px;border:0px;" >
+                <table class="printTablec" style="width:700px">
+        <tr>
+            <td  style="text-align:center; line-height:40px; font-size:20px;">库存统计表</td>
+        </tr>
+        <tr>
+            <td>
+                <table class="printTablec" style="text-align: left; width:100%">
+                    <tr>
+                        <td style="width:50%;padding:3px;">制表单位：@ViewBag.ComName</td>
+                        <td style="width:50%;padding:3px; text-align:right">制表时间：@DateTime.Now.ToString("yyyy年MM月dd日")&nbsp;&nbsp;</td>
+                        @*<span id="TimeTable">@(DateTimeHelper.FirstDayOfMonth())-@(DateTimeHelper.LastDayOfMonth())</span>*@
+                    </tr>
+                </table>
+            </td>
+        </tr>
+      
+        <tr>
+              <td >
+                <table class="printTablec" style="text-align: left; width:100%">
+                    <tr>
+                        <td style="width:50%;"></td>
+                        <td style="width:50%; text-align:right">所属仓库：<span id="categoryName"></span>&nbsp;&nbsp;</td>
+                    </tr>
+                </table></td>
+        </tr>
+        </table>
+                <table  class="printTable" id="detailsTable" style="border-right:0px;border-bottom:0px;width:700px; text-align: left; border-collapse: collapse;"> 
+                     <tr><td>请选择对应的仓库和日期范围来显示报表</td></tr>
+                </table>
+                <table class="printTablec" style="text-align: left;width:700px">
+                                <tr>
+                        <td style="width:50%;padding:3px;">制表人：@ViewBag.TrueName</td>
+                        <td style="width:50%;padding:3px; text-align:right">打印时间：@DateTime.Now.ToString("yyyy年MM月dd日")&nbsp;&nbsp;</td>
+                                </tr>
+                            </table>
+            </div>
+        </td>
+    </tr>
+</tbody>
+</table>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<script type="text/javascript">
+    $(function () {
+        $("#btnExport").click(function () {
+            exportOffice(this, 'setFormLayout', 'excel下载');
+        });
+
+        $("#btnPrint").click(function () {
+            $("#setFormLayout").jqprint();
+        });
+        $("#BeginDate,#EndDate").blur(function () {
+            $("#TimeTable").html($("#BeginDate").val() + "-" + $("#EndDate").val());
+        });
+
+        $('#ListParent').datagrid({
+            url: '@Url.Action("GetListParent")',
+            width:320,
+            methord: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onLoadSuccess: function(data) {            },
+            columns: [[
+                { field: 'Id', title: '主键ID', width: 80,hidden:true },
+                { field: 'Name', title: '仓库名称', width: 80,sortable:true },
+                { field: 'Code', title: '仓库编码', width: 80,sortable:true },
+            ]]
+         , onClickRow: function (index, row) {
+             showLoading();
+             $("#categoryName").html(row.Name);//, begin: $("#BeginDate").val(), end: $("#EndDate").val()
+             $.post("/Spl/WareStockReport/GetWareStockList", { warehouseId: row.Id }, function (data) {
+                
+                 var rows = data.rows;
+                 var footer = data.footer;
+                 var sbstr = "<tr style='text-align:center;'>" +
+        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;border-left:1px windowtext solid;padding:3px;' colspan='6'>货品基本信息</td>" +
+        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;' rowspan='2'>库存数</td>" +
+        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;' rowspan='2'>合计(元)</td>" +
+        "</tr>" +
+        "<tr style='text-align:center;'>" +
+        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;border-left:1px windowtext solid;padding:3px;'>编号</td>" +
+        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;' >商品名称</td>" +
+        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;' >品牌</td>" +
+        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;'>型号</td>" +
+        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;'>单价</td>" +
+        //"<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;'>数量</td>" +
+        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;'>单位</td>" +
+        //"<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;'>单价</td>" +
+
+        //"<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;'>最低库存</td>" +
+        //"<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;'>技术参数</td>" +
+        "</tr>";
+
+
+
+                 for (var i = 0; i < data.rows.length; i++) {
+                     sbstr = sbstr + "<tr style='text-align:center'>" +
+                        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px; border-left:1px windowtext solid;text-align:left;'>" + rows[i].Code + "</td>" +
+                        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; width:80px;'>" + rows[i].Name + "</td>" +
+                        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; '>" + rows[i].Brand + "</td>" +
+                        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; '>" + (rows[i].Size != undefined ? rows[i].Size : "无") + "</td>" +
+                        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; '>" + rows[i].SalePrice + "</td>" +
+                        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; '>" + rows[i].Unit + "</td>" +
+                        //"<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; '>" + rows[i].Unit + "</td>" +
+                        //"<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; '>" + rows[i].SalePrice + "</td>" +
+
+                        //"<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; '>" + (rows[i].LowerLimit != undefined ? rows[i].LowerLimit : "无") + "</td>" +
+                        //"<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; '>" + (rows[i].Material != undefined ? rows[i].Material : "无") + "</td>" +
+                        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; '>" + rows[i].nowQuantity + "</td>" +
+                        "<td style='border-right:1px windowtext solid;border-top:1px windowtext solid;padding:3px;text-align:left; '>" + rows[i].QuantityTotal + "</td></tr>";
+                 }
+                 sbstr = sbstr + " <tr><td style='text-align:right;border:1px windowtext solid;'>合计：</td>" +
+                     "<td colspan='8' style='text-align:right;border-top:1px windowtext  solid;border-bottom:1px windowtext solid;border-right:1px windowtext solid'>￥" + footer[0].TotalPrice + "&nbsp;</td></tr>";
+
+                 $("#detailsTable").html(sbstr);
+                 hideLoading();
+             });
+
+        }
+        }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
+         $(window).resize(function() {
+             //resizeLayout();//这个方法缺失
+         });
+    
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+ 
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+
+</script>
+

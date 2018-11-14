@@ -1,0 +1,81 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Spl_WareStockPile";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script type="text/javascript">
+    $(function () {
+
+
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+
+        $('#List').datagrid({
+            url: '@Url.Action("GetWatchList")?WareDetailsId=@ViewBag.WareDetailsId&WarehouseId=@ViewBag.WarehouseId',
+            width:SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onLoadSuccess: function(data) {
+            },
+            columns: [[
+            //    { field: 'Id', title: '主键', width: 80,hidden:true },
+                { field: 'Type', title: '类型', width: 80,sortable:true },
+                { field: 'Code', title: '货品编码', width: 80,sortable:true },
+                { field: 'Quantity', title: '数量', width: 80,sortable:true },
+                { field: 'Price', title: '单价', width: 80,sortable:true },
+                { field: 'ExecTime', title: '处理时间', width: 80, sortable: true }
+
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+   
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+             
+    });
+    function ImportData()
+    {
+        showLoading();
+        var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
+        $.post(url, function(data) {
+            if (data.type == 1)
+            {
+             $("#List").datagrid('load');
+             $('#uploadExcel').window('close');
+             $('#FileUpload').val('');
+            }
+            hideLoading();
+            $.messageBox5s('提示', data.message);
+        }, "json");
+    }
+</script>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<div class="mvctool bgb">
+   
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+
+<table id="List"></table>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>

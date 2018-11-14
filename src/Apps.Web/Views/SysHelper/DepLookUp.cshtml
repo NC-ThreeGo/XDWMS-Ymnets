@@ -1,0 +1,50 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "设置部门";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+
+    List<permModel> perm = null;
+}
+<div class="mvctool bgb">
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+
+<div style="height:265px;overflow:auto">
+            @Html.Raw(ViewBag.StructTree)
+</div>
+
+<script type="text/javascript">
+    function getSelected() {
+        var node = $('#StructTree').tree('getSelected');
+        if (node) {
+            var id = node.attributes.id;
+            var text = node.text;
+            window.parent.SetSelResult(id, text);
+        }
+        window.parent.frameReturnByClose();
+    }
+    $(function () {
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+
+</script>
+
+
+@* 在上级页面必须加入这2个方法才能调用 function SetSelResult(result,resultName)
+    {
+        
+        $("#Execution").val(result);
+        $("#ExecutionName").val(resultName);
+    }
+    function GetSelResult()
+    {
+        var arrayObj = new Array()
+        arrayObj[0]= $("#Execution").val();
+        arrayObj[1]= $("#ExecutionName").val();
+        return arrayObj;
+    }*@

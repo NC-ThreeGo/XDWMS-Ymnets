@@ -1,0 +1,65 @@
+﻿@using Apps.Common;
+@using Apps.Web.Core;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+}
+<link href="../../../../Content/WebIM/css/tree.css" rel="stylesheet" type="text/css" />
+<script src="../../../../Content/WebIM/src/Plugins/jquery.tree.js" type="text/javascript"></script>
+<script src="../../../../Resources/kindeditor/kindeditor-min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    //定时刷新聊天内容时间
+    var MIS0002 =@(ViewBag.MIS0002)000;
+    //刷新最近联系人
+    var MIS0003 = @(ViewBag.MIS0003)000;
+    //定时刷新是否有新消息
+    var MIS0004 = @(ViewBag.MIS0004)000;
+</script>
+<script src="../../../../Scripts/WebIM2.js" type="text/javascript"></script>
+<div style="width:726px; height:206px; overflow:hidden">
+        <div class="webim-lfbox" style="height: 205px;">
+
+            <div class="webim-send">
+                <div style="height:170px;z-index:998">
+                    <textarea id="content" cols="100" rows="8" style="width: 545px; height: 168px; visibility: hidden;"></textarea>
+                </div>
+                <div class="webim-send-butbox" style="z-index:999">
+                    <p>
+                        <span class="inter">
+                            <a id="ClearWaitList" href="javascript:void(0)">[清空]</a> 发送给：
+                            <span class="inter-ps" id="WaitMemberList"></span>
+                        </span>
+                    </p>
+                    <input id="SendMessage" class="webim-send-but" name="" type="button" />
+                </div>
+            </div>
+        </div>
+        <div class="webim-rtbox" style="height: 205px;">
+            <div class="webim-person">
+                <strong>@ViewBag.UserName</strong>@*<a href="javascript:void(0)">[个人资料]</a>*@</div>
+            <ul class="webim-list-tab">
+                <li id="MemberList" class="current"><a href="javascript:void(0)">人员列表</a></li>
+                <li id="LatestList"><a href="javascript:void(0)">最近联系人</a></li>
+            </ul>
+            <div id="MemberListDiv" class="webim-org">
+                <div class="webim-org-search">
+                    <input name="" id="SelTxt" type="text" />
+               </div>
+                <div style="height: 125px; overflow: auto">
+                     <ul id="SelMemberList" style=" display:none;   position:absolute; right:66px; top:79px; width:90px; background-color:#fff; border:1px #ccc solid; padding:5px;">
+                       
+                     </ul>
+                    <div id="MemberListTree">
+                        <div class="panel-loading">
+                            Loading...</div>
+                    </div>
+                </div>
+            
+           
+        </div>
+         <div id="LatertDiv" style="display:none" class="webim-latest">
+                
+            </div>
+    </div>
+</div>
+

@@ -1,0 +1,60 @@
+﻿@model Apps.Models.Flow.Flow_ExternalModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Flow;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+
+<table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Title)：
+            </th>
+            <td >
+                @Html.DisplayFor(model => model.Title)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Title)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Remark)：
+            </th>
+            <td >
+                @Html.DisplayFor(model => model.Remark)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Photo)：
+            </th>
+            <td>
+             @Html.HiddenFor(model => model.Photo)
+             <img class="expic" src="@((Model.Photo==null||Model.Photo=="")?"/Content/Images/NotPic.jpg":Model.Photo)" /><br />
+            
+            
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Photo)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.SysUserId)：
+            </th>
+            <td >
+                @Html.DisplayFor(model => model.SysUserId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.SysUserId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.TrueName)：
+            </th>
+            <td >
+                @Html.DisplayFor(model => model.TrueName)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.TrueName)</td>
+        </tr>
+    </tbody>
+</table>

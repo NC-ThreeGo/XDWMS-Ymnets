@@ -1,0 +1,166 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "主页";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<script src="@Url.Content("~/Scripts/echarts.min.js")"></script>
+<script src="@Url.Content("~/Scripts/echarts.theme.shine.js")"></script>
+@Scripts.Render("~/bundles/easyui/datagridfilter")
+<div class="mvctool">
+   <input id="txtQuery" placeholder="请输入关键字" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+    @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details,ref perm, "Details", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+</div>
+
+  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main"></div>
+
+
+<table id="List"></table>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: $(window).height()/2-35,
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            remoteFilter:true,
+            //rownumbers: true,//行号
+            onLoadSuccess: function (data) {
+                var grid = $('#List');
+                var options = grid.datagrid('options');
+                var m_page = options.pageNumber;
+                var m_rows = options.pageSize;
+                var m_sort = options.sortName;
+                var m_order = options.sortOrder
+                $.post("@Url.Action("GetOptionByBarChart")", { page: m_page, rows: m_rows, order: m_order, sort: m_sort }, function (option) {
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                });
+            },
+            columns: [[
+                { field: 'Id', title: 'Id', width: 80,hidden:true},
+                { field: 'Name', title: '产品名称', width: 80, sortable: true },
+                { field: 'Code', title: '产品代码', width: 80, sortable: true },
+                { field: 'Price', title: '产品价格', width: 80, sortable: true },
+                { field: 'Color', title: '产品颜色', width: 80, sortable: true },
+                { field: 'Number', title: '产品数量', width: 80, sortable: true },
+                {
+                    field: 'CategoryId', title: '类别', width: 80, sortable: true, formatter: function (value, row, index) {
+                        return row.ProductCategory;
+                    }
+                },
+                { field: 'ProductCategory', title: '类别', width: 80, sortable: true,hidden:true },
+                { field: 'CreateTime', title: 'CreateTime', width: 80, sortable: true },
+                { field: 'CreateBy', title: 'CreateBy', width: 80, sortable: true }
+            ]]
+        });
+        var dg = $('#List');
+        var op = ['equal', 'notequal', 'less', 'greater'];
+        var comboData={Category:[]}; //[{ value: '', text: 'All' }, { value: 'P', text: 'P' }, { value: 'N', text: 'N' }]
+       
+        dg.datagrid('enableFilter', [
+            InitNumberFilter(dg, 'Price', op),
+            InitNumberFilter(dg, 'Number', op),
+            InitDateFilter(dg, 'CreateTime', op),
+            InitComboFilter(dg, 'CategoryId', comboData, '../Spl/ProductCategory/GetComboxData', 'Id', 'Name', 'Name', "post")
+        ]);
+        //$('#List').datagrid('destroyFilter', 'Name');
+
+        // 基于准备好的dom，初始化echarts实例
+        $("#main").width($(window).width()-10).height($(window).height() / 2 - 10);
+        var myChart =  echarts.init(document.getElementById('main'),"shine");
+        //$("#main").width($(window).width()-50).height($(window).height() / 2 - 10);
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='@Url.Action("Create")'></iframe>");
+            $("#modalwindow").window({ title: Lang.Create, width: 700, height: 400, iconCls: 'icon-add' }).window('open');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: 700, height: 400, iconCls: 'icon-edit' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='98%' scrolling='no' frameborder='0' src='@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Details', width: 700, height: 400, iconCls: 'icon-details' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: encodeURI(queryStr) });
+
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm(index_lang_tip, '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+                            if (data.type == 1)
+                                $("#List").datagrid('load');
+                            $.messageBox5s(Lang.Tip, data.message);
+                        }, "json");
+
+                    }
+                });
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#main canvas").width( SetGridWidthSub(10)).height($(window).height() / 2 - 10);
+
+        $(window).resize(function () {
+           
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(10),
+                height: $(window).height() / 2 - 15
+            });
+            setTimeout(function () {
+            $("#main canvas").width( SetGridWidthSub(10)).height($(window).height() / 2 - 10);
+            }, 500);
+          
+        });
+    });
+</script>
+
+

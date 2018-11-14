@@ -1,0 +1,135 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "设置角色包含的用户";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+
+    List<permModel> perm = null;
+}
+
+<div class="mvctool bgb">
+     @Html.ToolButton("btnClear", "fa fa-trash", Resource.Clear,  false)  
+    <span style="line-height:26px;float:right;margin-right:5px;" id="selCount"></span>
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+<table>
+    <tr>
+        <td style="vertical-align: top; width: 200px;">
+            @Html.Raw(ViewBag.StructTree)
+        </td>
+        <td style="padding: 3px">
+            <table id="PosList"></table>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    function getSelected() {
+        var node = $('#StructTree').tree('getSelected');
+        if (node) {
+            var id = node.attributes.id;
+            $("#PosList").datagrid("load", { depId: id });
+        }
+    }
+    $(function () {
+        $("#btnClear").click(function () {
+            $("input[type='checkbox']").prop("checked", false);
+            window.parent.SetSelResult("", "")
+            $("#selCount").html("已经选择了 0 个");
+        });
+        $('#PosList').datagrid({
+            url: '/SysHelper/GetPosListByDep?depId=',
+            width: SetGridWidthSub(190),
+            methord: 'post',
+            height: SetGridHeightSub(46),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 12,
+            pageList: [12, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            columns: [[
+                { field: 'Id', title: '@Resource.TitleID', width: 80, hidden: true },
+                { field: 'Name', title: '职位名称', width: 120 },
+                { field: 'DepName', title: '部门', width: 80 },
+                { field: 'Flag', title: '是否选择了', width: 80 }
+            ]],
+            onLoadSuccess: function () {
+                var rows = $("#PosList").datagrid("getRows");
+                for (var i = 0; i < rows.length; i++) {
+                    //获取每一行的数据
+                    $('#PosList').datagrid('beginEdit', i);
+                }
+                var arrVal = window.parent.GetSelResult();//获得已经选择的值
+                if (arrVal[0] != "") {
+                    var arr = new Array();
+                    arr = arrVal[0].split(',');
+                    for (var i = 0; i < arr.length; i++) {
+                        $("#cb_" + arr[i]).prop("checked", true);
+                    }
+                    $("#selCount").html("已经选择了 " + arr.length + " 个");
+                }
+
+            }
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+</script>
+
+@*operation*@
+<script type="text/javascript">
+    function SetValue(id, name) {
+        var b = false;
+        var arrVal = window.parent.GetSelResult();//获得已经选择的值
+        if (arrVal[0] != "") {
+            var arr = new Array();
+            var arrName = new Array();
+            arr = arrVal[0].split(',');
+            arrName = arrVal[1].split(',');
+            for (var i = 0; i < arr.length; i++) {
+                if (id == arr[i]) {
+                    if (!$("#cb_" + id).prop("checked"))//如果不是选择就是撤销
+                    {
+                        arr.splice(i, 1);
+                        arrName.splice(i, 1);
+                        b = true;
+                    }
+                }
+            }
+            if (!b) {
+                arr.push(id);
+                arrName.push(name);
+            }
+            var data = arr.join(',');
+            var dataName = arrName.join(',');
+            window.parent.SetSelResult(data, dataName)
+            $("#selCount").html("已经选择了 " + arr.length + " 个");
+        }
+        else {
+
+            window.parent.SetSelResult(id, name)
+            $("#selCount").html("已经选择了 1 个");
+        }
+
+    }
+</script>
+
+@* 在上级页面必须加入这2个方法才能调用 function SetSelResult(result,resultName)
+    {
+        
+        $("#Execution").val(result);
+        $("#ExecutionName").val(resultName);
+    }
+    function GetSelResult()
+    {
+        var arrayObj = new Array()
+        arrayObj[0]= $("#Execution").val();
+        arrayObj[1]= $("#ExecutionName").val();
+        return arrayObj;
+    }*@

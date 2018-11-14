@@ -1,0 +1,106 @@
+﻿@model Apps.Models.Spl.Spl_WarehouseAllocationModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Spl;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script src="~/Scripts/jquery.jqprint-0.3.js"></script>
+<script language="javascript">
+    $(function(){
+        $("#btnPrint").click(function () {
+            $("#setFormLayout").jqprint();
+        });
+
+        $.post("/Spl/WarehouseAllocation/GetPrintDetailsList", { warrantId: '@(Model.Id)' }, function (data) {
+
+            var rows = data.rows;
+            var footer = data.footer;
+            var sbstr = "<tr style='text-align:center;'>" +
+                "<td style='border-right:1px #000 solid;border-top:1px #000 solid;border-left:1px #000 solid;padding:3px;'>编号</td>" +
+                "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;'>商品名称</td>" +
+                "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;'>品牌</td>" +
+                "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;'>型号</td>" +
+                "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;'>供货商</td>" +
+                "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;'>数量</td>" +
+                "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;'>单位</td>" +
+                "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;'>单价</td>" +
+                //"<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;'>数量</td>" +
+                "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;'>小计/元</td></tr>";
+            for (var i = 0; i < data.rows.length; i++) {
+                sbstr = sbstr + "<tr style='text-align:center'>"+
+                   "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px; border-left:1px #000 solid;text-align:left;'>" + rows[i].WareDetailsCode + "</td>" +
+                   "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;text-align:left; '>" + rows[i].WareDetailsName + "</td>" +
+                   "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;text-align:left; '>" + rows[i].WareDetailsBrand + "</td>" +
+                   "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;text-align:left; '>" + (rows[i].Size != undefined ? rows[i].Size : "") + "</td>" +
+                   "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;text-align:left; '>" + rows[i].WareDetailsVender + "</td>" +
+                   "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;text-align:left; '>" + rows[i].Quantity + "</td>" +
+                   "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;text-align:left; '>" + rows[i].WareDetailsUnit + "</td>" +
+                   "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;text-align:left; '>" + rows[i].Price + "</td>" +
+                   //"<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;text-align:left; '>" + rows[i].Quantity + "</td>" +
+                   "<td style='border-right:1px #000 solid;border-top:1px #000 solid;padding:3px;text-align:left; '>" + rows[i].TotalPrice + "</td></tr>";
+            }
+            sbstr = sbstr + " <tr><td style='text-align:right;border:1px #000 solid;'>合计：</td>" +
+                "<td colspan='9' style='text-align:right;border-top:1px #000  solid;border-bottom:1px #000 solid;border-right:1px #000 solid'>￥" + footer[0].TotalPrice + "&nbsp;</td></tr>";
+
+            $("#detailsTable").html(sbstr);
+        });
+
+    });
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnPrint", "fa fa-print", "打印", false)
+</div>
+<div id="setFormLayout" class="easyui-panel" style="width:720px;border:0px;" >
+    <table class="printTablec" style="width:700px">
+        <tr>
+            <td  style="text-align:center; line-height:40px; font-size:20px;">调拨单</td>
+        </tr>
+        <tr>
+            <td>
+                <table class="printTablec" style="text-align: left; width:100%">
+                    <tr>
+                        <td style="width:50%;padding:3px;">制表单位：@ViewBag.ComName</td>
+                        <td style="width:50%;padding:3px; text-align:right">制表时间：@(Model.CreateTime.ToString("yyyy年MM月dd日hh小时mm分"))</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td >
+                <table class="printTablec" style="text-align: left; width:100%">
+                    <tr>
+                        <td style="width:50%;padding:3px;">调拨单号：@Html.DisplayFor(model => model.Id)</td>
+                      @*  <td style="width:50%;padding:3px; text-align:right">入库类别：@Html.DisplayFor(model => model.InOutCategoryName)&nbsp;&nbsp;</td>*@
+                    </tr>
+                </table></td>
+        </tr>
+        <tr>
+              <td >
+                <table class="printTablec" style="text-align: left; width:100%">
+                    <tr>
+                        <td style="width:50%;">合同号：@Html.DisplayFor(model => model.ContractNumber)</td>
+                        <td style="width:20%; text-align:right">从仓库：@Html.DisplayFor(model => model.FromWarehouseName)&nbsp;&nbsp;</td>
+                        <td style="width:20%; text-align:right">到仓库：@Html.DisplayFor(model => model.ToWarehouseName)&nbsp;&nbsp;</td>
+                    </tr>
+                </table></td>
+        </tr>
+        </table>
+    <table class="printTable" id="detailsTable" style="border-right:0px;border-bottom:0px;width:700px; text-align: left; border-collapse: collapse;"> </table>
+    <table class="printTablec" style="text-align: left;width:700px">
+                    <tr>
+            <td style="width:25%;padding:3px;">经手人：@Html.DisplayFor(model => model.Handler)</td>
+            <td style="width:25%;padding:3px;">审核人：@Html.DisplayFor(model => model.CheckerName)</td>
+            <td style="width:50%;padding:3px; text-align:right">调拨时间：@Model.InTime.ToString("yyyy年MM月dd日")&nbsp;&nbsp;</td>
+                    </tr>
+          <tr>
+            <td colspan="3" style="padding:3px;">备注：@Html.DisplayFor(model => model.Remark)</td>
+          </tr>
+                </table>
+</div>

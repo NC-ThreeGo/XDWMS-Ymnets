@@ -1,0 +1,101 @@
+﻿@model Apps.Models.Sys.AccountModel
+@{
+    ViewBag.Title = "IM";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <!--这里要注意,这是虚拟目录,也就是你在OWIN Startup中注册的地址-->
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+        var Clients = [];
+        $(function () {
+            chat = $.connection.WebIMHub;
+            //注册提示信息方法
+            chat.client.showMessage = function (Message) {
+                alert(Message);
+            }
+            //注册显示信息的方法
+            chat.client.addMessage = function (Message, contextID) {
+                if ($.inArray(contextID, Clients) == -1) {
+                    AddRoom(contextID);
+                }
+                $("#" + contextID).find("ul").each(function () {
+                    $(this).append('<li>' + Message + '</li>')
+                })
+            }
+            //获取用户列表更新界面
+            chat.client.getUserlist = function (data) {
+                if (data) {
+                    var jsondata = $.parseJSON(data);
+                    $("#userlist").html(" ");
+                    for (var i = 0; i < jsondata.length; i++) {
+                        var html = ' <li>用户名:' + jsondata[i].TrueName + '状态：' + jsondata[i].Status + '当前ID：' + jsondata[i].ContextId + '<button receiver="' + jsondata[i].ContextId + '" onclick="PtoPSendStart(this)">与他聊天</button></li>';
+                        $("#userlist").append(html);
+                    }
+                }
+            }
+            //注册显示个人信息的方法
+            chat.client.showInfo = function (data) {
+                var jsondata = $.parseJSON(data)
+                $("#contextId").html(jsondata.ContextId);
+                $("#trueName").html(jsondata.TrueName);
+                $("#photo").attr("src", jsondata.Photo);
+                Clients.push(data);
+            }
+            //连接成功后获取自己的信息
+            $.connection.hub.start().done(function () {
+                //更新用户状态,和窗口列表
+                chat.server.registerUser('@Model.Id');
+            });
+
+        });
+        //开始聊天
+        function PtoPSendStart(data) {
+            var val = $(data).attr('receiver');
+            AddRoom(val);
+        }
+        //显示聊天窗口
+        function AddRoom(val) {
+            Clients.push(val)
+            var html = '<div style="float:left; margin-left:30px; border:double" id="' + val + '" receiver="' + val + '"><button onclick="RemoveRoom(this)">退出</button>\
+                                    ' + val + '对象\
+                                                聊天记录如下:<ul>\
+                                                </ul>\
+                                    <input type="text" /> <button onclick="SendMessage(this)">发送</button>\
+                                    </div>'
+            $("#RoomList").append(html);
+
+        }
+        //发送消息
+        function SendMessage(data) {
+            var message = $(data).prev().val();
+            var room = $(data).parent();
+            var username = $("#trueName").html();
+            message = username + ":" + message;
+            var receiver = $(room).attr("receiver");
+            chat.server.sendMessage(receiver, message);
+        }
+
+    </script>
+
+    <table>
+        <tr>
+            <td>名称:</td><td><p id="trueName"></p></td>
+        </tr>
+        <tr>
+            <td>用户唯一编码:</td>
+            <td><p id="contextId"></p></td>
+        </tr>
+        <tr>
+            <td>头像:</td>
+            <td><img id="photo"></img></td>
+        </tr>
+    </table>
+    <div style="float:left;border:double">
+        <div>在线用户列表</div>
+        <ul id="userlist"></ul>
+    </div>
+    <div id="RoomList">
+    </div>

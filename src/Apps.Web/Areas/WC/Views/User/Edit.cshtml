@@ -1,0 +1,194 @@
+﻿@model Apps.Models.WC.WC_UserModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WC;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(false);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.OpenId)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.OpenId)：
+            </th>
+            <td >
+                @Html.DisplayFor(model => model.OpenId)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.NickName)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.NickName)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.NickName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Sex)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Sex)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Sex)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Language)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Language)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Language)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.City)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.City)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.City)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Province)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Province)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Province)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Country)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Country)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Country)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.HeadImgUrl)：
+            </th>
+            <td>
+             @Html.HiddenFor(model => model.HeadImgUrl)
+             <img class="expic" src="@((Model.HeadImgUrl==null||Model.HeadImgUrl=="")?"/Content/Images/NotPic.jpg":Model.HeadImgUrl)" /><br />
+             <a href="javascript:$('#FileUpload').trigger('click');" class="files">@Resource.Browse</a>
+             <input type="file" class="displaynone" id="FileUpload" name="FileUpload" onchange="Upload('SingleFile', 'HeadImgUrl', 'FileUpload','1','1');" />
+             <span class="uploading">@Resource.Uploading</span>
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.HeadImgUrl)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.SubscribeTime)：
+            </th>
+            <td >
+               @Html.TextBoxFor(model => model.SubscribeTime, new {  @onClick = "WdatePicker()",@class= "Wdate",@style = "width: 105px" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.SubscribeTime)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.UnionId)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.UnionId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.UnionId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Remark)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Remark)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.GroupId)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.GroupId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.GroupId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.TagidList)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.TagidList)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.TagidList)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Subscribe)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Subscribe)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Subscribe)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.OfficalAccountId)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.OfficalAccountId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.OfficalAccountId)</td>
+        </tr>
+    </tbody>
+</table>
+}
+

@@ -1,0 +1,275 @@
+﻿@using Apps.Locale
+@model Apps.Models.Sys.AccountModel
+@using Apps.Common;
+@{
+    Layout = null;
+    //主题
+    string themes = Session["themes"] == null ? "coolblack" : Session["themes"].ToString();
+    string menu = Session["menu"] == null ? "accordion,topmenu" : Session["menu"].ToString();
+    string info = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ymnets-Admin</title>
+    <meta name="renderer" content="webkit" />
+    <meta name="viewport" content="width=device-width" />
+    <script src="@Url.Content("~/Scripts/jquery.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/easyui/jquery.easyui.min.js")" type="text/javascript"></script>
+    @Scripts.Render("~/bundles/easyui/easyuiplus")
+    <script src="@Url.Content("~/Scripts/easyui/easyui-lang-" + info + ".js")" type="text/javascript"></script>
+    <link href="~/Content/themes/base/easyui.css" rel="stylesheet" />
+    @Styles.Render("~/Content/themes/" + themes + "/css")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/common")
+    @Scripts.Render("~/bundles/home")
+    @Scripts.Render("~/" + info + "/Home/ConfigJs")
+    @*<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+        <script src="~/signalr/hubs"></script>*@
+    <link href="~/Content/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+    @if (menu.Contains("tree"))
+    {
+        <script>
+            $(function () {
+                $.post("../../@info/Home/GetTopMenu", //获取顶级菜单
+                    function (data) {
+                        //开启顶部菜单模式
+                       var flag =@(menu.Contains("topmenu").ToString().ToLower());
+                           var parentId =flag?data[0].id:"0";
+                           if(flag)
+                           {
+                               var topmenuHtml = "";
+                               for(var i=0;i<data.length;i++)
+                               {
+                                   topmenuHtml = topmenuHtml+'<div style="float:left" id="'+data[i].id+'" class="topmenu  '+(i==0?'selected':'')+'" ><a onclick="loadAccordionMenu(\''+data[i].id+'\')"  title="'+data[i].text+'" class="l-btn-text bannerMenu" href="#"><lable class="'+data[i].iconCls+'"></lable><br /><span style="white-space:nowrap;">'+data[i].text+'</span></a></div>';
+                               }
+                               //填充顶部菜单
+                               $("#topmenucontent").html(topmenuHtml);
+                               $("#topmenu").width($(window).width()-560);
+                           }
+                        //加载左侧菜单
+                    loadTreeMenu(parentId);
+                }, "json");
+            });
+        </script>
+    }
+    else
+    {
+        <script>
+
+            $(function(){
+                $("#RightAccordion").accordion({ //初始化accordion
+                    fillSpace:true,
+                    fit:true,
+                    border:false,
+                    animate:false
+                });
+                $.post("../../@info/Home/GetTopMenu", //获取顶级菜单
+                               function (data) {
+                                   //开启顶部菜单模式
+                                   var flag =@(menu.Contains("topmenu").ToString().ToLower());
+                                   var parentId =flag?data[0].id:"0";
+                                   if(flag)
+                                   {
+                                       var topmenuHtml = "";
+                                       for(var i=0;i<data.length;i++)
+                                       {
+                                           topmenuHtml = topmenuHtml+'<div style="float:left" id="'+data[i].id+'" class="topmenu  '+(i==0?'selected':'')+'" ><a onclick="loadAccordionMenu(\''+data[i].id+'\')"  title="'+data[i].text+'" class="l-btn-text bannerMenu" href="#"><lable class="'+data[i].iconCls+'"></lable><br /><span style="white-space:nowrap;">'+data[i].text+'</span></a></div>';
+                                       }
+                                       //填充顶部菜单
+                                       $("#topmenucontent").html(topmenuHtml);
+                                       $("#topmenu").width($(window).width()-560);
+                                   }
+                                   //加载左侧菜单
+                                   loadAccordionMenu(parentId);
+                               }, "json");
+                $("#RightAccordion ").parent().css("overflow","hidden");//外部隐藏
+            });
+        </script>
+    }
+
+</head>
+<body class="easyui-layout" id="easyLayout">
+
+    <div id="modalwindow" class="easyui-window" data-options="closed:true,minimizable:false,shadow:false,collapsible:true">
+    </div>
+
+    <div id="north" data-options="region:'north',border:false,split:false" style="height: 50px; padding:0;margin:0">
+
+        <div class="banner" style="border-spacing:0px; overflow:hidden;">
+
+            <div class="webname" style="width:214px;float:left;height:50px; line-height:50px;">
+                <span style="font-size:100%;white-space:nowrap ">
+                    <span class="fa fa-yelp" style="font-size:26px; padding-right:8px;"></span>@ViewBag.WebName
+                </span>
+            </div>
+            <div id="topmenu" style="float:left;overflow-x:hidden;overflow-y:auto; height:50px;">
+                <div id="topmenucontent"></div>
+            </div>
+
+            <div style="width:182px;float:right; ">
+                <a id="showUserInfo" style="display:inline-block;white-space:nowrap " class="fa bannerbtn" href="javascript:void()">
+                    <img src="@(Model.Photo)" class="user-image" alt="User Image">
+                    <span class="user-name">@Model.TrueName</span>
+                </a>
+            </div>
+            <div style="width: 80px;float:right;">
+                <a title="切换主题" id="SetThemes" class="l-btn-text fa fa-cogs fa-lg bannerbtn" href="#"> </a>
+            </div>
+            <div style="width: 40px;float:right;">
+                @if (ViewBag.IsEnable == 1)
+                {//是否开启WEBIM
+                    <a id="WebIM" title="内部聊天" class="l-btn-text fa fa-commenting  fa-lg bannerbtn" href="#">
+                        <span id="mesCount" class="label-mes label-success">11</span>
+                    </a>
+                    <script type="text/javascript">
+                        $(function () {
+                            $("#WebIM").click(function () {
+                                $("#modalwindow").html("<iframe width='100%' height='100%'  scrolling='no' frameborder='0'' src='/MIS/WebIM'></iframe>");
+                                $("#modalwindow").dialog({ title:index_lang_tip, width: 740, height: 545, iconCls: 'fa fa-group' }).window('open');
+                            });
+                            refresh_newMessage();
+                        });
+                        var IsLogin = false;
+                        function refresh_newMessage() {
+                            $.post("/MIS/WebIM/GetNewMessages", function (data) {
+                                //系统超时
+                                if(data.message=="overtime" && !IsLogin)
+                                {
+                                    $("#modalwindow").html("<iframwidth='100%' height='98%'  scrolling='no' frameborder='0'' src='/Account/OverTimeLogin'></iframe>");
+                                    $("#modalwindow").window({ title: index_lang_tip, width: 726, height: 497, iconCls: 'fa fa-key' }).window('open');
+                                    IsLogin = true;
+                                }
+                                $("#OnlineCount").html(data.type);
+                                if (data.message != "|")//有新信息来
+                                {
+                                    $("#mesCount").html(data.value).show();
+                                }
+                                else
+                                {
+                                    $("#mesCount").hide();
+                                }
+                            }, "json");
+                            //定时更新
+                            window.setTimeout(refresh_newMessage, @(ViewBag.NewMesTime));
+                        }
+                        function LoginSuccess()
+                        {
+                            $.messager.alert(index_lang_tip,'登陆成功','info');
+                            IsLogin=false;
+                            $('#OverTimeLogin').window("close");
+                        }
+                    </script>
+                }
+            </div>
+
+
+
+            <div style="width: 40px;float:right;">
+                <a title="等待开放..." class="l-btn-text fa fa-envelope-o  fa-lg bannerbtn" href="#"> </a>
+            </div>
+            <div style="width: 40px;float:right;">
+                <a title="等待开放..." class="l-btn-text fa fa-bell-o  fa-lg bannerbtn" href="#"> </a>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    @*<div data-options="region:'south',split:false" style="height:20px; background:#f9fafc; text-align:center">@ViewBag.CopyRight</div>*@
+
+    <div id="west" data-options="region:'west',split:true,title:'MAIN NAVIGATION',collapsible:false" style="width: 220px; height: 100%;  overflow: auto; border-bottom:0px;">
+
+        <div id="RightAccordion" class="easyui-accordion"></div>
+        <div id="RightTree" class="easyui-tree"></div>
+
+    </div>
+    @*<div data-options="region:'south',border:false" style="height: 20px;">
+                           @if (ViewBag.IsEnable == 1)
+                        {//是否开启WEBIM
+
+                            <a id="WebIM" class="webim-logo" href="javascript:void(0)">
+                                在线[<span id="OnlineCount">@ViewBag.OnlineCount</span>]人
+                            </a>
+                        }
+        </div>*@
+    <div id="center" data-options="region:'center',border:false">
+        <div id="mainTab" class="easyui-tabs" data-options="fit:true">
+            @*<div title="我的桌面" data-options="closable:true,iconCls:'fa fa-tachometer'">
+                    <iframe scrolling="auto" frameborder="0" src="/SysSample/Index" style="width: 100%; height: 100%;"></iframe>
+                </div>*@
+        </div>
+    </div>
+
+
+    <div id="tab_menu" class="easyui-menu" style="width: 150px;">
+        <div id="tab_menu-tabrefresh" data-options="iconCls:'icon-reload'">
+            刷新
+        </div>
+        <div id="tab_menu-openFrame">
+            在新的窗体打开
+        </div>
+        <div id="tab_menu-tabcloseall">
+            关闭所有
+        </div>
+        <div id="tab_menu-tabcloseother">
+            关闭其他标签页
+        </div>
+        <div class="menu-sep">
+        </div>
+        <div id="tab_menu-tabcloseright">
+            关闭右边
+        </div>
+        <div id="tab_menu-tabcloseleft">
+            关闭左边
+        </div>
+        <div id="tab_menu-tabclose" data-options="iconCls:'fa fa-trash'">
+            关闭
+        </div>
+        <div id="menu" class="easyui-menu" style="width: 150px;">
+        </div>
+    </div>
+
+    <div id="ModalStyle" class="easyui-dialog" style="width:600px;height:340px" data-options="iconCls:'fa fa-save',modal:true,closed:true">
+        <table style="width:100%; padding:20px; line-height:30px;text-align:center;">
+            <tr>
+                <td><img src="~/content/images/skin/skin-coolblack.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="coolblack" checked="checked" /></td>
+                <td><img src="~/content/images/skin/skin-red.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="red" /></td>
+                <td><img src="~/content/images/skin/skin-green.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="green" /></td>
+                <td><img src="~/content/images/skin/skin-purple.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="purple" /></td>
+                <td><img src="~/content/images/skin/skin-blue.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="blue" /></td>
+                <td><img src="~/content/images/skin/skin-yellow.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="yellow" /></td>
+            </tr>
+            <tr>
+                <td><img src="~/content/images/skin/skin-coolblacklight.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="coolblacklight" /></td>
+                <td><img src="~/content/images/skin/skin-redlight.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="redlight" /></td>
+                <td><img src="~/content/images/skin/skin-greenlight.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="greenlight" /></td>
+                <td><img src="~/content/images/skin/skin-purplelight.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="purplelight" /></td>
+                <td> <img src="~/content/images/skin/skin-bluelight.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="bluelight" /></td>
+                <td><img src="~/content/images/skin/skin-yellowlight.png" style="width:60px;height:30px;" /><br /><input type="radio" name="themes" value="yellowlight" /></td>
+            </tr>
+        </table>
+        <table style="width: 100%; padding: 20px; line-height: 30px; text-align: center;">
+            <tr>
+                <td>
+                    <input type="radio" name="menustyle" value="accordion" checked="checked" />@Resource.Accordion
+                </td>
+                <td>
+                    <input type="radio" name="menustyle" value="tree" />@Resource.Tree
+                </td>
+                <td>
+                    <input type="checkbox" checked="checked" name="topmenu" value="topmenu" />开启顶部菜单
+                </td>
+            </tr>
+        </table>
+        <div class="endbtndiv">
+            <a id="btnSave" href="javascript:SetThemes()" class="easyui-linkbutton btns">@Resource.Save</a>
+            <a id="btnReturn" href="javascript:$('#ModalStyle').dialog('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

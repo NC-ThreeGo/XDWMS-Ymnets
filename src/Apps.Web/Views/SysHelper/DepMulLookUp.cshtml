@@ -1,0 +1,77 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "设置角色包含的用户";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+
+    List<permModel> perm = null;
+}
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save, true)
+
+</div>
+<div style="height:265px;overflow:auto">
+            @Html.Raw(ViewBag.StructMulTree)
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSave").click(function () {
+            var nodes = $('#StructMulTree').tree('getChecked');
+            var ids = '';
+            var names = '';
+            for (var i = 0; i < nodes.length; i++) {
+                if (ids != '') {
+                    ids += ',';
+                    names += ',';
+                }
+                names += nodes[i].text;
+                ids += nodes[i].attributes.id;
+            }
+            window.parent.SetSelResult(ids, names);
+            window.parent.frameReturnByClose();
+        });
+        Travel("StructMulTree");
+      
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+    function Travel(treeID) {//参数为树的ID，注意不要添加#
+        var result = window.parent.GetSelResult();
+        var array = result[0].split(',');
+        if (result[1] != "") {
+            var roots = $('#' + treeID).tree('getRoots'), children, i, j,k;
+            for (i = 0; i < roots.length; i++) {
+                children = $('#' + treeID).tree('getChildren', roots[i].target);
+                for (j = 0; j < children.length; j++) {
+                    for (k = 0; k < array.length; k++) {
+                    
+                        if (array[k] == children[j].attributes.id)
+                        {
+                            $('#StructMulTree').tree('check', children[j].target);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+</script>
+
+
+@* 在上级页面必须加入这2个方法才能调用 function SetSelResult(result,resultName)
+    {
+        
+        $("#Execution").val(result);
+        $("#ExecutionName").val(resultName);
+    }
+    function GetSelResult()
+    {
+        var arrayObj = new Array()
+        arrayObj[0]= $("#Execution").val();
+        arrayObj[1]= $("#ExecutionName").val();
+        return arrayObj;
+    }*@

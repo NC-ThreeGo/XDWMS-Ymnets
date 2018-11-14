@@ -1,0 +1,187 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    
+    List<permModel> perm = null;
+}
+
+<div class="mvctool">
+<input id="txtQuery" type="text" class="searchText"/>
+@Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+@Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+@Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+@Html.ToolButton("btnDetails", "fa fa-list", Resource.Details,ref perm, "Details", true)
+@Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+@Html.ToolButton("btnReSet", "fa fa-key", Resource.ResetPassword,ref perm, "Edit", true)
+@Html.ToolButton("btnAllot", "fa fa-user-plus", Resource.AssignRole,ref perm, "Allot", true)
+</div>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<table>
+    <tr>
+        <td style="vertical-align: top; width: 210px;padding-top:3px">
+            <div id="p" class="easyui-panel" title="组织架构" style="width:205px;padding:10px;">
+                @Html.Raw(ViewBag.StructTree)
+                </div>
+</td>
+        <td style="width:3px;">&nbsp;</td>
+        <td style="padding: 3px">
+            <table id="List"></table>
+        </td>
+    </tr>
+</table>
+<div id="Pager"></div>
+
+<script type="text/javascript">
+
+    function getSelected() {
+        var node = $('#StructTree').tree('getSelected');
+        if (node) {
+            //var s = node.text;
+            //if (node.attributes) {
+            //    s += "," + node.attributes.id;
+            //}
+            var id = node.attributes.id;
+            $("#List").datagrid("load", { depId: id });
+        }
+    }
+
+    $(function () {
+        $('#List').datagrid({
+            url: '/SysUser/GetList?depId=root',
+            width: SetGridWidthSub(220),
+            methord: 'post',
+            height: SetGridHeightSub(46),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            onLoadSuccess: function (data) {
+                $(".datagrid-row td div").addClass("exceed");
+            },
+            columns: [[
+                        { field: 'Id', title: 'ID', width: 25, hidden: true },
+                        { field: 'UserName', title: '用户名', width: 55 },
+                        { field: 'TrueName', title: '真实名称', width: 55 },
+                         { field: 'DepName', title: '部门', width: 55 },
+                         { field: 'PosName', title: '职位', width: 55 },
+                        { field: 'MobileNumber', title: '手机号码', width: 55 },
+                        { field: 'PhoneNumber', hidden: true, title: '电话号码', width: 55 },
+                        { field: 'QQ', hidden: true, title: 'QQ', width: 55 },
+                        { field: 'EmailAddress', hidden: true, title: 'Email', width: 55 },
+                        { field: 'OtherContact', hidden: true, title: '其他联系方式', width: 55 },
+                        { field: 'Province', hidden: true, title: '省份', width: 55 },
+                        { field: 'City', hidden: true, title: '城市', width: 55 },
+                        { field: 'Village', hidden: true, title: '地区', width: 55 },
+                        { field: 'Address', hidden: true, title: '详细地址', width: 55 },
+                        {field: 'State', title: '是否启用', width: 35,align:'center', formatter: function (value) {return EnableFormatter(value)}},
+                        { field: 'CreateTime', title: '创建时间', width: 75 },
+                        { field: 'CreatePerson', title: '创建人', width: 55 },
+                        { field: 'RoleName', title: '拥有角色', width: 255 }
+            ]]
+        });
+    });
+</script>
+
+@*operation*@
+<script type="text/javascript">
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnReSet").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                    
+                var SelId = row.Id;
+                $.messager.prompt('初始化密码', row.TrueName + '的密码:', function (r) {
+                        if (r == "" || r.length < 6) {
+                            $.messageBox5s(Lang.Tip, '请输入一个5位以上的密码');
+                        }
+                        else {
+                            $.post("/SysUser/ReSet", { Id: SelId, Pwd: r }, function (data) {
+                                if (data.type == 1) {
+                                    $.messageBox5s(Lang.Tip,data.message);
+                                }
+                                else {
+                                     $.messageBox5s(Lang.Tip, data.message);
+                                }
+                            }, "json");
+                        }
+                    });
+            } else {$.messageBox5s(Lang.Tip,'@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnCreate").click(function () {
+            window.parent.addTab("@Resource.Create", "/SysUser/Create", "fa fa-plus");
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                window.parent.addTab("编辑"+row.TrueName+"的基本信息", "/SysUser/Edit?id=" + row.Id + "&Iedate=" + GetGuid() + "", "fa fa-pencil");
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                    $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0' src='/SysUser/Details?id=" + row.Id + "&Iedate=" + GetGuid() + "'></iframe>");
+                    $("#modalwindow").window({ title: '@Resource.Details', width: 720, height: 400, iconCls: 'fa fa-list' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { depId: 'root', queryStr: queryStr });
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm(index_lang_tip, '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                    if (r) {
+                        $.post("/SysUser/Delete?id=" + row.Id, function (data) {
+                            if (data.type == 1)
+                                $("#List").datagrid('load');
+                            $.messageBox5s(Lang.Tip,data.message);
+                        }, "json");
+
+                    }
+                });
+            } else {$.messageBox5s(Lang.Tip,'@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnAllot").click(function () {
+           var row = $('#List').datagrid('getSelected');
+           if (row != null) {
+               
+               $("#modalwindow").html("<iframe width='100%'  height='100%' scrolling='auto' frameborder='0' src='/SysUser/GetRoleByUser?userId=" + row.Id + "&Iedate=" + GetGuid() + "'></iframe>");
+               $("#modalwindow").window({ title: '@Resource.AssignRole', width: 720, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+           } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(220),
+                height: SetGridHeightSub(46)
+            });
+        });
+    });
+</script>

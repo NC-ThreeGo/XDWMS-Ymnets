@@ -1,0 +1,378 @@
+﻿@model Apps.Models.Spl.Spl_WarehouseAllocationModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Spl;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script type="text/javascript">
+    $(function () {
+        $("#btnSave").click(function () {
+            if (!$("form").valid()) {
+                $.messageBox5s('提示', $("#ErrMesList").html());
+                return;
+            }
+            if ($("form").valid()) {
+                endEditing();
+                var $dg = $('#List');
+                var rows = $dg.datagrid('getRows');
+                //设置子表的数据
+                $("#inserted").val(JSON.stringify(rows));;
+                if (rows.length) {
+                    showLoading();
+                    $.ajax({
+                        url: "@Url.Action("Edit")",
+                        type: "Post",
+                        data: $("form").serialize(),
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.type == 1) {
+                                hideLoading();
+                                window.parent.frameReturnByMes(data.message);
+                                window.parent.frameReturnByReload(true);
+                                window.parent.frameReturnByClose()
+                                window.parent.frameReturnByMes("保存成功！");
+                            } else {
+                                window.parent.frameReturnByMes(data.message);
+                                hideLoading();
+
+                            }
+                        }
+                    });
+                } else {
+                    $.messageBox5s('提示', "没有数据需要保存！");
+                }
+            }
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(30),
+                height: SetGridHeightSub(50)
+            });
+        });
+
+    });
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetDetailsList")?warrantId=@Model.Id',
+            width: SetGridWidthSub(10),
+        methord: 'post',
+        height: SetGridHeightSub(202),
+        fitColumns: true,
+        idField: 'Id',
+        pageSize: 15,
+        pageList: [15, 20, 30, 40, 50],
+        pagination: true,
+        striped: true, //奇偶行是否区分
+        singleSelect: true,//单选模式
+        onClickCell: onClickCell,
+        onEndEdit: onEndEdit,
+        onBeginEdit: onBeginEdit,
+        remotesort: false,
+        showFooter: false,
+        onLoadSuccess: function (data) {
+            append();
+        },
+        columns: [[
+            { field: 'Id', title: 'Id', width: 80, hidden: true },
+            { field: 'WarehouseWarrantId', title: 'WarehouseWarrantId', width: 80,  hidden: true },
+            {
+                field: 'oper', title: '操作', width: 80, formatter: function (value) {
+                    if (value == null)
+                        return "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-red' href='javascript:removeit()'><a>";
+                    else
+                        return value;
+                }
+            },
+            { field: 'WareDetailsId', title: '明细ID', width: 80,  hidden: true },
+            {
+                field: 'WareDetailsName', title: '明细', width: 80,  editor: { type: 'seltext', options: { required: true } },
+                styler: function (value, row, index) {
+                    return 'color:blue;';
+                }
+            },
+            { field: 'Quantity', title: '数量', width: 80,  editor: { type: 'textevent' } },
+            { field: 'Price', title: '单价', width: 80, sortable: true },
+            { field: 'TotalPrice', title: '总价', width: 80,  editor: { type: 'textreadonly' } },
+            { field: 'Defined', title: '自定义属性', width: 80,  editor: { type: 'text' } },
+            { field: 'CreateTime', title: '创建时间', width: 80,  hidden: true }
+        ]]
+    });
+
+
+    //var rows = $('#List').datagrid('getFooterRows');
+    //rows[0]["Price"] = 0;
+    //rows[0]["Manufacturer"] = "合计：";
+    //$('#List').datagrid('reloadFooter');
+    });
+    //自动计算列数据 单价*数量=总价
+    function setKeyUpValue()
+    {
+        var row = $('#List').datagrid('getSelected');
+        var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
+        var thisTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'Quantity' }).target;
+        var thisValue = thisTarget.val();
+        var target = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'TotalPrice' }).target;
+        ccc(target);
+        target.val(thisValue * row.Price);
+
+    }
+
+
+    //编辑的行
+    var editIndex = undefined;
+    function endEditing() {
+        if (editIndex == undefined) { return true }
+        $('#List').datagrid('endEdit', editIndex);
+        editIndex = undefined;
+        return true;
+    }
+    function onClickCell(index, field) {
+
+        if (editIndex != index) {
+            if (endEditing()) {
+                $('#List').datagrid('selectRow', index)
+                        .datagrid('beginEdit', index);
+                var ed = $('#List').datagrid('getEditor', { index: index, field: field });
+                if (ed) {
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                }
+                editIndex = index;
+            } else {
+                setTimeout(function () {
+                    $('#List').datagrid('selectRow', editIndex);
+                }, 0);
+            }
+        }
+    }
+    function onEndEdit(index, row) {
+
+
+    }
+    //进入编辑前设置
+    function onBeginEdit(index, row) {
+
+    }
+    //-------------------------------明细处理------------------------------------//
+    //弹出选择明细
+    function SelDetails() {
+        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("WareDetails")?wareHouse="+$("#FromWarehouseId").val()+"'></iframe>");
+        $("#modalwindow").window({ title: '请选择现有从仓库['+$("#FromWarehouseId").text()+']需要调拨的商品', width: $(window).width() - 50, height: $(window).height() - 50, iconCls: 'fa fa-plus' }).window('open');
+    }
+    //返回值并设置到列表中来
+    function SetDetails(rows) {
+        var index = $('#List').datagrid('getRowIndex', $('#List').datagrid('getSelected'));
+        if (index == -1)
+            index = 0;
+        editIndex = $('#List').datagrid('getRows').length + rows.length - 1;
+        for (var i = 0; i < rows.length; i++) {
+            $("#List").datagrid("insertRow", {
+                index: index + i,
+                row: {
+                    oper: "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus  color-red' href='javascript:removeit()'><a>",
+                    WareDetailsId: rows[i].Id,
+                    WareDetailsName: rows[i].Name,
+                    Price: rows[i].SalePrice,
+                    Quantity: 1,
+                    TotalPrice: (rows[i].SalePrice*1)
+
+                }
+            });
+        }
+        //endEditing();
+    }
+    function append() {
+        var index = $('#List').datagrid('getRowIndex', $('#List').datagrid('getSelected'));
+        if (index == -1)
+            index = 0;
+        $("#List").datagrid("insertRow", {
+            index: index + 1,
+            row: {
+                oper: "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-red' href='javascript:removeit()'><a>",
+                WarehouseId: $("#WarehouseId").val(),
+                WarehouseName: $("#WarehouseId").find("option:selected").text()
+            }
+        });
+    }
+    //-------------------------------经手人处理------------------------------------//
+    //弹出经手人选择
+    function showHandlePerson() {
+        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/UserLookUp'></iframe>");
+        $("#modalwindow").window({ title: '选择人员', width: 620, height: 388, iconCls: 'fa fa-plus' }).window('open');
+    }
+    //接收设置经手人
+    function setHandlePerson() {
+
+    }
+    function GetSelResult() {
+        var arrayObj = new Array()
+        arrayObj[0] = $("#Checker").val();
+        arrayObj[1] = $("#CustomMemberList").val();
+        return arrayObj;
+    }
+
+    //关闭模式窗口
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+
+    function removeit() {
+        if (editIndex == undefined) { return }
+        $('#List').datagrid('selectRow', editIndex);
+
+        $('#List').datagrid('cancelEdit', editIndex)
+           .datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+    }
+
+    function reject() {
+        $('#List').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+    function getChanges() {
+        var rows = $('#List').datagrid('getChanges');
+        alert(rows.length + ' rows are changed!');
+    }
+
+    function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            if (arr[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s('提示', mes);
+    }
+</script>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+        @Html.HiddenFor(model => model.State)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.PriceTotal)
+        @Html.HiddenFor(model => model.CheckTime)
+        @Html.HiddenFor(model => model.CreatePerson)
+        @Html.HiddenFor(model => model.ModifyTime)
+        @Html.HiddenFor(model => model.ModifyPerson)
+        <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+        <input id="inserted" type="hidden" name="inserted" value="" />
+        <table class="formtable">
+            <tbody>
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.InTime)：
+                    </th>
+                    <td>
+                        <input value="@(Model.InTime.ToString("yyyy-MM-dd"))" id="InTime" name="InTime" onclick="WdatePicker()" class="Wdate" type="text">
+                    </td>
+                    <th>
+                        @Html.LabelFor(model => model.Id)：
+                    </th>
+                    <td>
+                        @Model.Id（自动生成）
+                    </td>
+                    <th>
+                        @Html.LabelFor(model => model.Handler)：
+                    </th>
+                    <td>
+                        @Html.EditorFor(model => model.Handler)
+                    </td>
+
+                </tr>
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.FromWarehouseId)：
+                    </th>
+                    <td>
+                        @Html.DropDownListFor(model => model.FromWarehouseId, ViewBag.FromWarehouse as SelectList)
+                    </td>
+                    <th>
+                        @Html.LabelFor(model => model.ToWarehouseId)：
+                    </th>
+                    <td>
+                        @Html.DropDownListFor(model => model.ToWarehouseId, ViewBag.ToWarehouse as SelectList)
+                    </td>
+
+                    <th>
+                        @Html.LabelFor(model => model.Checker)：
+                    </th>
+                    <td>
+                        <div style="height:0;width:0;overflow:hidden">
+                            @Html.EditorFor(model => model.Checker)
+                        </div>
+                        <input id="CustomMemberList" name="CustomMemberList" readonly="readonly" type="text" style="width: 90px; display: inline; background: #dedede; ">
+                        <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelUser()"></a>
+                        <script type="text/javascript">
+                            function showSelUser()
+                            {
+                                $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/UserSingleLookUp'></iframe>");
+                                $("#modalwindow").window({ title: '选择人员', width: 620, height: 388, iconCls: 'fa fa-plus' }).window('open');
+                            }
+
+                            function SetSelResult(result, resultName) {
+                                $("#Checker").val(result);
+                                $("#CustomMemberList").val(resultName);
+                            }
+
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.Remark)：
+                    </th>
+                    <td colspan="3">
+                        @Html.TextAreaFor(model => model.Remark, new { @style = "width:100%;height:40px;" })
+                    </td>
+
+                    <th>
+                        @Html.LabelFor(model => model.Confirmation)：
+                    </th>
+                    <td>
+                        @Html.RadioFor("Confirmation", true, "已确认", "未确认")
+                    </td>
+                </tr>
+
+
+            </tbody>
+        </table>
+}
+<table>
+    <tr>
+        <td colspan="7" style="padding:4px;">
+            <table id="List"></table>
+        </td>
+    </tr>
+
+</table>

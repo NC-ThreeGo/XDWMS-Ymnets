@@ -1,0 +1,279 @@
+﻿@model Apps.Models.Flow.Flow_FormModel
+@using Apps.Common;
+@using Apps.Models.Flow;
+@using Apps.Web.Core;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        jQuery("#accordion").accordion({ //初始化accordion
+            fillSpace: true,
+            fit: false,
+            border: false,
+            animate: false
+        });
+
+        $("#btnSave").click(function () {
+            if ($("form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("Edit")",
+                    type: "Post",
+                    data: $("form").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1) {
+                            window.parent.frameReturnByMes(data.message);
+                            window.parent.frameReturnByReload(true);
+                            window.parent.frameReturnByClose()
+                        }
+                        else {
+                            window.parent.frameReturnByMes(data.message);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+        //改变字段列表
+        $("#TypeName").change(function () {
+            $('#attrVal').val("");
+            $('#formAttrComboGrid').combogrid('setValue', '').combogrid('clear');
+            $("#formAttrComboGrid").combogrid('grid').datagrid("load", { queryStr: $("#TypeName").val() });
+        });
+    });
+    //添加一个字段到表单
+    function AddAttr() {
+       
+        var currentValue= $('#attrVal').val();
+        if (currentValue == "") {
+            $.messageBox5s(Lang.Tip, "请选择要添加的字段！");
+        }
+        var charNo = $("#AttrList tr").size()+1;//第几个字符
+        if (charNo > 26)
+        {
+            $.messageBox5s(Lang.Tip, "目前设计最高26个字段！");
+            return;
+        }
+        var b = false;
+        $("#AttrList input[type='hidden']").each(function (i) {//判断是否有重复的项目
+            if ($(this).val() == currentValue)
+            {
+                b = true;
+                return;
+            }
+        });
+        if (b)
+        {
+            $.messageBox5s(Lang.Tip, "已经有重复的项目了！");
+            return;
+        }
+        var grid = $("#formAttrComboGrid").combogrid("grid");//获取表格对象 
+        var row = grid.datagrid('getSelected');//获取行数据 
+        var currentChar = "Attr" + getChar(charNo);//获取当前的字母
+        var example = getExample(row.AttrType);
+        //添加到候选区
+        $("#AttrList").append("<tr id='tr" + currentChar + "'><td style='text-align:right'>" + row.Title + "：</td>" +
+            "<td>" + example + "<input id='" + currentChar + "' name='" + currentChar + "' type='hidden' value='" + currentValue + "' /></td><td><a href=\"javascript:deleteCurrentTR('tr" + currentChar + "');\">[删除]</a></td></tr>");
+        //设置combogrid为空
+        $('#formAttrComboGrid').combogrid('setValue', '');
+    }
+    function deleteCurrentTR(c)
+    { 
+        $.messager.confirm(index_lang_tip, '删除字段吗？', function (r) {
+            if (r) {
+                $("#" + c).remove();
+
+            }
+        });
+    }
+
+    function getExample(v)
+    {
+        switch (v)
+        {
+            case "文本": return "<input type='text' />"; break;
+            case "多行文本": return "<textarea></textarea>"; break;
+            case "数字": return "<input type='text' />"; break;
+            case "日期": return "<input type='text' />"; break;
+            case "附件": return "<input type=\'text\' maxlength=\'255\' class=\'txtInput normal left\'><a onclick=\'$(\'#FileUpload\').trigger(\'click\')\' class=\'files\'>浏览</a><input class=\'displaynone\' type=\'file\' id=\'FileUpload\' name=\'FileUpload\' onchange=\'Upload(\'SingleFile\', \'fujian\', \'FileUpload\');\'><span class=\'uploading\'>上传中</span>"; break;
+            case "下拉框": return "<select><option value ='下拉框设置'>下拉框设置</option></select>";
+            case "单选按钮": return "<input type='radio' value='' />单选按钮";
+            case "复选框": return "<input type='checkbox' value='' />复选框";
+            case "人员弹出框": return "<input readonly='readonly' type='text' style='width: 90px; display: inline; background: #dedede;'><a class='fa fa-plus-square color-gray fa-lg' id='selExc' href='javascript:void(0)'></a>";
+        }
+    }
+
+    function getChar(i)
+    {
+        switch (i)
+        {
+            case 1: return "A"; break;
+            case 2: return "B"; break;
+            case 3: return "C"; break;
+            case 4: return "D"; break;
+            case 5: return "E"; break;
+            case 6: return "F"; break;
+            case 7: return "G"; break;
+            case 8: return "H"; break;
+            case 9: return "I"; break;
+            case 10: return "J"; break;
+            case 11: return "K"; break;
+            case 12: return "L"; break;
+            case 13: return "M"; break;
+            case 14: return "N"; break;
+            case 15: return "O"; break;
+            case 16: return "P"; break;
+            case 17: return "Q"; break;
+            case 18: return "R"; break;
+            case 19: return "S"; break;
+            case 20: return "T"; break;
+            case 21: return "U"; break;
+            case 22: return "V"; break;
+            case 23: return "W"; break;
+            case 24: return "S"; break;
+            case 25: return "Y"; break;
+            case 26: return "Z"; break;
+            default: break;
+        }
+    }
+
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+
+
+
+@using (Html.BeginForm())
+{
+    <div id="accordion" class="easyui-accordion">
+        <div title="第一步：设计表单" style="overflow: auto; padding: 10px;">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.CreateTime)
+            <table class="formtable">
+                <tbody>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Name)：
+                      </th>
+                        <td>
+                            @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessageFor(model => model.Name)</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Remark)：
+                        </th>
+                        <td>
+                          @Html.TextAreaFor(model => model.Remark, new { @style = "width:280px;height:50px" })
+    @Html.ValidationMessageFor(model => model.Remark)</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.UsingDep)：
+                      </th>
+                        <td>
+                            @Html.EditorFor(model => model.UsingDep)
+    @Html.ValidationMessageFor(model => model.UsingDep)</td>
+                    </tr>
+                     <tr>
+                        <th>
+                            @Html.LabelFor(model => model.IsExternal)：
+                       </th>
+                        <td>@Html.RadioFor("IsExternal",  Model.IsExternal,"是","否") 选择是表示表单来自其他模块,无需继续填写第二步内容</td>
+                    </tr> 
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.ExternalURL)：
+                       </th>
+                       <td>
+                            @Html.EditorFor(model => model.ExternalURL)
+                            <br />
+                            当选择外部连接时填写,创建,修改,详细的绝对路径，用逗号隔开，格式： <br />/Areas/Flow/Views/External/Create.cshtml,<br />/Areas/Flow/Views/External/Edit.cshtml,<br />/Areas/Flow/Views/External/Details.cshtml</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.TypeId)：
+                        </th>
+                        <td>
+                            @Html.DropDownListFor(model => model.TypeId, ViewBag.FlowType as SelectList)
+    @Html.ValidationMessageFor(model => model.TypeId)</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.State)：
+                        </th>
+                        <td>
+                            @Html.CheckBoxFor(model => model.State, new { @checked = true })
+    @Html.ValidationMessageFor(model => model.State)</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="float: right" class="pic_204"></div>
+                        </td>
+                        <td colspan="2" class="gray">注：设计好表单和字段才能组成一个完整的表单,设计好表单后才能设计步骤</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div title="第二步：添加字段" style="overflow: auto;">
+            <table class="formtable bgb">
+                <tr>
+                    <td style="width:40px; text-align: right;">类别：
+                    </td>
+                    <td style="width: 110px;">
+                        @Html.DropDownListFor(model => model.TypeName, ViewBag.FlowTypeName as SelectList, new { @style = "width:100px;" })
+                    </td>
+                      <td style="width:40px; text-align: right;">字段：
+                    </td>
+                    <td style="width: 210px">
+                        <input id="attrVal" name="attrVal" type="hidden" />
+                        <select class="easyui-combogrid" style="width:200px" id="formAttrComboGrid" data-options="
+			                panelWidth: 470,
+			                idField: 'Id',
+			                textField: 'Title',
+                            rownumbers: true,//行号
+			                url: '@Url.Action("GetFormAttrList")?page=1&sort=Id&rows=1000&order=desc',
+                            page:1,
+			                  columns: [[
+                                                       { field: 'Id', title: 'ID', width: 80, hidden: true },
+                                                       { field: 'Title', title: '字段标题', width: 80, sortable: true },
+                                                       { field: 'Name', title: '英文名称', width: 80, sortable: true },
+                                                       { field: 'AttrType', title: '类型', width: 80, sortable: true },
+                                                       { field: 'CheckJS', title: '校验脚本', width:50, sortable: true },
+                                                        {field: 'CreateTime', title: '创建时间', width: 80, sortable: true }
+                                                    ]], 
+                            onClickRow: function (index, data) {
+                                var value =  $('#formAttrComboGrid').combogrid('getValue');
+                                $('#attrVal').val(value);
+
+                            },
+                            onLoadSuccess:function (data) {
+                                
+                            },
+			                fitColumns: true
+		                ">
+                        </select>
+                    </td>
+                    <td>
+                        <a href="javascript:AddAttr();" class="easyui-linkbutton" data-options="iconCls:'fa fa-plus'">添加</a>
+                    </td>
+                </tr>
+            </table>
+            
+            <table id="AttrList" class="formtable">
+                @Html.Raw(ViewBag.AttrList)
+            </table>
+        </div>
+    </div>
+}

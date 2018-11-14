@@ -1,0 +1,188 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@using Apps.Models.WC;
+@{
+    ViewBag.Title = "主页";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+    WC_OfficalAccountsModel account = (WC_OfficalAccountsModel)ViewBag.CurrentOfficalAcount;
+}
+<style>
+    .menutable {
+        border: 1px #ccc solid;
+        text-align: center;
+        width: 1000px;
+        line-height: 55px;
+    }
+
+        .menutable input[type="text"] {
+            width: 150px;
+        }
+
+        .menutable th {
+            border: 1px #ccc solid;
+            text-align: center;
+        }
+
+        .menutable td {
+            border: 1px #ccc solid;
+        }
+
+    .float-left {
+        float: right;
+    }
+    .menu-state {
+        line-height:40px;
+    }
+</style>
+<div class="mvctool">
+    @Html.ToolButton("btnGetMenu", "fa fa-pencil", "获取当前菜单", ref perm, "Edit", true)
+    @Html.ToolButton("submitMenu", "fa fa-pencil", "更新到服务器", ref perm, "Edit", true)
+    @Html.ToolButton("btnDeleteMenu", "fa fa-trash", "删除菜单", ref perm, "Delete", true)
+    <div class="rightdiv color-green">
+        当前操作公众号：<span id="CurrentOfficalAccount">@(account.OfficalName)</span>
+
+        @{if (string.IsNullOrEmpty(account.AppId) || string.IsNullOrEmpty(account.AppSecret) || string.IsNullOrEmpty(account.AccessToken))
+            {
+                <span class="color-red">当前公众号没有菜单功能</span>
+            }
+        }
+    </div>
+</div>
+    <form id="form_Menu" action="/WC/MenuSetting/CreateMenu" method="post">
+        <p class="displaynone">
+            当前Token:
+            <input id="tokenStr" name="token" class="control-input" style="width: 900px;" type="text" readonly="readonly" /><br />
+        </p>
+
+        <p class="menu-state color-green">
+            操作状态：<strong id="menuState">-</strong>
+        </p>
+        <table>
+            <tr>
+                <td>
+                    <table class="formtable menutable" style="width:650px;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>第一列</th>
+                                <th>第二列</th>
+                                <th>第三列</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < 6; i++)
+                        {
+                            var isRootMenu = i == 5;
+                        <tr id="@(isRootMenu ? "subMenuRow_" + i : "rootMenuRow")">
+                            <td>
+                                @(isRootMenu ? "一级菜单按钮" : ("二级菜单No." + (i + 1)))
+                            </td>
+                            @for (int j = 0; j < 3; j++)
+                                {
+                                    var namePrefix = isRootMenu ? string.Format("menu.button[{0}]", j) : string.Format("menu.button[{0}].sub_button[{1}]", j, i);
+                                    var idPrefix = isRootMenu ? string.Format("menu_button{0}", j) : string.Format("menu_button{0}_sub_button{1}", j, i);
+                                <td>
+                                    <input type="hidden" class="control-input" name="@(namePrefix).key" id="@(idPrefix)_key" />
+                                    <input type="hidden" class="control-input" name="@(namePrefix).type" id="@(idPrefix)_type" value="click" />
+                                    <input type="hidden" class="control-input" name="@(namePrefix).url" id="@(idPrefix)_url" />
+                                    <input type="text" class="control-input" name="@(namePrefix).name" id="@(idPrefix)_name" class="txtButton" data-i="@i" data-j="@j" @Html.Raw(isRootMenu ? string.Format(@"data-root=""{0}""", j) : "") />
+                                </td>
+                                }
+                        </tr>
+                        }
+                        </tbody>
+                    </table>
+                </td>
+
+                <td style="width:500px">
+                    <div id="buttonDetails">
+                        <table class="formtable">
+                            <tr>
+                                <th></th>
+                                <td>
+                                    按钮其他参数
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Name：</th>
+                                <td><input type="text" id="buttonDetails_name" class="control-input txtButton" disabled="disabled" /></td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Type：
+                                </th>
+                                <td>
+                                    <select id="buttonDetails_type" class="dllButtonDetails">
+                                        <option value="click" selected="selected">点击事件（传回服务器）</option>
+                                        <option value="view">访问网页（直接跳转）</option>
+                                        <option value="location_select">弹出地理位置选择器</option>
+                                        <option value="pic_photo_or_album">弹出拍照或者相册发图</option>
+                                        <option value="pic_sysphoto">弹出系统拍照发图</option>
+                                        <option value="pic_weixin">弹出微信相册发图器</option>
+                                        <option value="scancode_push">扫码推事件</option>
+                                        <option value="scancode_waitmsg">扫码推事件且弹出“消息接收中”提示框</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr id="buttonDetails_key_area">
+                                <th>
+                                    Key：
+                                </th>
+                                <td><input id="buttonDetails_key" class="control-input txtButtonDetails" type="text" /></td>
+                            </tr>
+                            <tr id="buttonDetails_url_area">
+                                <th>
+                                    Url：
+                                </th>
+                                <td>
+                                    <input id="buttonDetails_url" class="control-input txtButtonDetails" type="text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>
+                                    如果还有下级菜单请忽略Type和Key、Url。
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div id="addConditionalArea">
+            <p><h3>个性化菜单设置</h3></p>
+            <table>
+                <tr>
+                    <th>group_id</th>
+                    <td>
+                        <input type="text" name="MenuMatchRule.group_id" placeholder="用户分组id，可通过用户分组管理接口获取" class="control-input" />
+                    </td>
+                </tr>
+                <tr><th>sex</th><td><input type="text" name="MenuMatchRule.sex" placeholder="性别：男（1）女（2），不填则不做匹配" class="control-input" /></td></tr>
+                <tr><th>country</th><td><input type="text" name="MenuMatchRule.country" placeholder="国家信息，是用户在微信中设置的地区，具体请参考地区信息表" class="control-input" /></td></tr>
+                <tr><th>province</th><td><input type="text" name="MenuMatchRule.province" placeholder="省份信息，是用户在微信中设置的地区，具体请参考地区信息表" class="control-input" /></td></tr>
+                <tr><th>city</th><td><input type="text" name="MenuMatchRule.city" placeholder="城市信息，是用户在微信中设置的地区，具体请参考地区信息表" class="control-input" /></td></tr>
+                <tr><th>client_platform_type</th><td><input type="text" name="MenuMatchRule.client_platform_type" placeholder="客户端版本，当前只具体到系统型号：IOS(1), Android(2),Others(3)，不填则不做匹配" class="control-input" /></td></tr>
+            </table>
+            <p><i>提示：如果所有字段都留空，则使用普通自定义菜单，如果任何一个条件有值，则使用个性化菜单接口</i></p>
+        </div>
+        <div class="clear"></div>
+      
+    </form>
+<div id="reveiveJSON" class="displaynone">
+    <p>接收菜单JSON：</p>
+    <p><textarea id="txtReveiceJSON"></textarea></p>
+</div>
+
+<script src="@Url.Content("~/Scripts/WeChat/senparc.menu.js")"></script>
+<script>
+    var category = @(account.Category);
+    $(function () {
+        senparc.menu.init();
+
+    });
+</script>

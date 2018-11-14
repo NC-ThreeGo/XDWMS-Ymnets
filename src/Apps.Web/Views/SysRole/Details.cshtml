@@ -1,0 +1,48 @@
+﻿@model Apps.Models.Sys.SysRoleModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+}
+<table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Name)
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Name)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Description)
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Description)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CreateTime)
+            </th>
+            <td>
+                @Html.EditorFor(model => model.CreateTime)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CreatePerson)
+            </th>
+            <td>
+                @Html.EditorFor(model => model.CreatePerson)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.UserName)
+            </th>
+            <td>
+                @Html.TextAreaFor(model => model.UserName)
+            </td>
+        </tr>
+    </tbody>

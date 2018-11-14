@@ -1,0 +1,209 @@
+﻿@model Apps.Models.Flow.Flow_FormContentModel
+@using Apps.Common;
+@using Apps.Models.Flow;
+@using Apps.Web.Core;
+@using Apps.Models.Sys;
+@using Apps.Models.Enum;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script src="~/Scripts/jquery.jqprint-0.3.js"></script>
+<script language="javascript">
+    $(function(){
+        $("#btnPrint").click(function () {
+            $("#setFormLayout").jqprint();
+        });
+    });
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnPrint", "fa fa-print", "打印", false)
+</div>
+<script>
+    $(function () {
+        //执行框框替换，直接替换为内容
+        $("*[name$='A']:first").replaceWith("<span>@(Model.AttrA)</span><br>");
+        $("*[name$='B']:first").replaceWith("<span>@(Model.AttrB)</span><br>");
+        $("*[name$='C']:first").replaceWith("<span>@(Model.AttrC)</span><br>");
+        $("*[name$='D']:first").replaceWith("<span>@(Model.AttrD)</span><br>");
+        $("*[name$='E']:first").replaceWith("<span>@(Model.AttrE)</span><br>");
+        $("*[name$='F']:first").replaceWith("<span>@(Model.AttrF)</span><br>");
+        $("*[name$='G']:first").replaceWith("<span>@(Model.AttrG)</span><br>");
+        $("*[name$='H']:first").replaceWith("<span>@(Model.AttrH)</span><br>");
+        $("*[name$='I']:first").replaceWith("<span>@(Model.AttrI)</span><br>");
+        $("*[name$='J']:first").replaceWith("<span>@(Model.AttrJ)</span><br>");
+        $("*[name$='K']:first").replaceWith("<span>@(Model.AttrK)</span><br>");
+        $("*[name$='L']:first").replaceWith("<span>@(Model.AttrL)</span><br>");
+        $("*[name$='M']:first").replaceWith("<span>@(Model.AttrM)</span><br>");
+        $("*[name$='N']:first").replaceWith("<span>@(Model.AttrN)</span><br>");
+        $("*[name$='O']:first").replaceWith("<span>@(Model.AttrO)</span><br>");
+        $("*[name$='P']:first").replaceWith("<span>@(Model.AttrP)</span><br>");
+        $("*[name$='Q']:first").replaceWith("<span>@(Model.AttrQ)</span><br>");
+        $("*[name$='R']:first").replaceWith("<span>@(Model.AttrR)</span><br>");
+        $("*[name$='S']:first").replaceWith("<span>@(Model.AttrS)</span><br>");
+        $("*[name$='T']:first").replaceWith("<span>@(Model.AttrT)</span><br>");
+        $("*[name$='U']:first").replaceWith("<span>@(Model.AttrU)</span><br>");
+        $("*[name$='V']:first").replaceWith("<span>@(Model.AttrV)</span><br>");
+        $("*[name$='W']:first").replaceWith("<span>@(Model.AttrW)</span><br>");
+        $("*[name$='X']:first").replaceWith("<span>@(Model.AttrX)</span><br>");
+        $("*[name$='Y']:first").replaceWith("<span>@(Model.AttrY)</span><br>");
+        $("*[name$='Z']:first").replaceWith("<span>@(Model.AttrZ)</span><br>");
+        //隐藏无法替换的内容
+        $("#setFormLayout input[type='checkbox'],#setFormLayout input[type='radio']").hide();
+        //取得替换后key对应的value（用于人员）
+        $("*[name='SelLookUp']").hide();
+        $("span[name=SelLookUp]").each(function () {
+            var ts = $(this);
+            var ids = ts.prev().prev("span").html();
+            $.post("/SysUser/GetTrueNames", { Ids: ids }, function (data) {
+                ts.prev().prev("span").html(data)
+            }, "json");
+        });
+     
+
+        //设置高度来改变美观度
+        var layoutHeight = 0;
+        $("#setFormLayout .easyui-draggable").each(function (i) {
+            layoutHeight = layoutHeight + $(this).height();
+        });
+        $("#setFormLayout").css("min-height", layoutHeight);
+        $(".easyui-draggable").draggable({
+            disabled: true
+        });
+        $("#setFormLayout .files").hide();
+
+        $("#setFormLayout span").each(function () {
+            if ($(this).html().indexOf("/upload/") > -1)
+            {
+                $(this).html("&nbsp;<a class='fa fa-download' target='_Blank' href='" + $(this).html() + "'>&nbsp;附件下载&nbsp;</a>");
+            }
+        });
+    });
+</script>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.FormId)
+@Html.HiddenFor(model => model.UserId)
+<input id="CustomMember" name="CustomMember" type="hidden" value="">
+<input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+<div id="setFormLayout" class="easyui-panel" >
+    @Html.Raw(ViewBag.Html)
+</div>
+     <table class="formtable" style="width:500px;">
+    <tbody>
+             <tr>
+                <th>申请人：</th>
+                <td>@(Model.DepName+"-"+Model.PosName+"|"+Model.TrueName+"("+Model.UserName+")")</td>
+                <th>@Html.LabelFor(model => model.TimeOut)：</th>
+                <td>@(Convert.ToDateTime(Model.TimeOut).ToShortDateString())</td>
+                <th style='width:100px;'>紧急程度 :</th>
+                <td>@(Model.FormLevel==FlowFormLevelEnum.Ordinary.ToString()?"普通":Model.FormLevel==FlowFormLevelEnum.Major.ToString()?"重要":"紧急")</td>
+            </tr>
+
+            </tbody>
+</table>
+<hr />
+
+@if (ViewBag.StepCheckId!="")
+{
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th style='width:100px;'>
+                审核意见：
+            </th>
+            <td >
+               <textarea style="width:60%;height:80px;" id="CheckRemark" name="CheckRemark"></textarea>
+            </td>
+           
+        </tr>
+         <tr>
+            <th>审核结果：</th>
+            <td>
+                <a id="ICheck" href="#" class="easyui-linkbutton" data-options="iconCls:'fa fa-rotate-right'">通过</a>
+                &nbsp;&nbsp;&nbsp;<a id="IUnCheck" href="#" class="easyui-linkbutton" data-options="iconCls:'fa fa-rotate-left'">驳回</a>
+            </td>
+        </tr>
+        <tr style="display:none">
+            <th>
+                印章：
+               </th>
+            <td >
+                <input id="CheckTheSeal" name="CheckTheSeal" type="text" />
+            </td>
+         </tr>
+        @if (ViewBag.IsCustomMember)
+        { 
+        <tr>
+            <th>下一个审批人：</th>
+            <td>
+                <input id="CustomMemberList" name="CustomMemberList" readonly="readonly" type="text" style="width: 90px; display: inline; background: #dedede; ">
+                <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:void(0)"></a>
+                <script type="text/javascript">
+                    $(function () {
+                        $("#selExc").click(function () {
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/UserLookUp'></iframe>");
+                            $("#modalwindow").window({ title: '选择人员', width: 620, height: 388, iconCls: 'fa fa-plus' }).window('open');
+                        });
+                    });
+
+                    function SetSelResult(result, resultName) {
+                        $("#CustomMember").val(result);
+                        $("#CustomMemberList").val(resultName);
+                    }
+                    function GetSelResult() {
+                        var arrayObj = new Array()
+                        arrayObj[0] = $("#CustomMember").val();
+                        arrayObj[1] = $("#CustomMemberList").val();
+                        return arrayObj;
+                    }
+                    //ifram 返回
+                    function frameReturnByClose() {
+                        $("#modalwindow").window('close');
+                    }
+                </script>
+            </td>
+
+        </tr>
+        }
+       
+    </tbody>
+</table>
+  
+    <script>
+        $(function () {
+            $("#ICheck").click(function () {
+                ICheck(@((int)FlowStateEnum.Pass));
+            });
+            $("#IUnCheck").click(function () {
+                ICheck(@((int)FlowStateEnum.Reject));
+            });
+        });
+        function ICheck(flag)
+        {
+            if ($.trim($("#CheckRemark").val()) == "")
+            {
+                $.messageBox5s(Lang.Tip, "审批意见不能为空");
+                return false;
+            }
+            if ($("#CustomMemberList").val() != undefined && $.trim($("#CustomMember").val()) == "")
+            {
+                $.messageBox5s(Lang.Tip, "审核人不能为空！");
+                return false;
+            }
+            $.post("@Url.Action("Edit")", { "Remark": $("#CheckRemark").val(), "TheSeal": $("#CheckTheSeal").val(), "FormId": $("#FormId").val(), "Flag": flag, "ContentId": $("#Id").val(), "UserList": $("#CustomMember").val() },
+        function (data) {
+            alert(data.message); // John
+            window.location.reload();
+        }, "json");
+        }
+       
+    </script>
+    
+}  
+<table class="formtablenormal">
+    @Html.Raw(ViewBag.StepCheckMes)
+</table>

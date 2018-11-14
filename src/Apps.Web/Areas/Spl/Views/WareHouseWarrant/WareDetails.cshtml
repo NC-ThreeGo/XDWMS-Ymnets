@@ -1,0 +1,151 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Spl_WareDetails";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div class="mvctool">
+   <input id="txtQuery" placeholder="请输入关键字" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnSave", "fa fa-plus", Resource.Import,ref perm, "Create", true)
+</div>
+<table>
+    <tr>
+        <td style="vertical-align: top; width: 210px;padding-top:3px">
+            <div id="p" class="easyui-panel" title="存货分类" style="width:205px;padding:10px;">
+                @Html.Raw(ViewBag.GetWareCateogryTree)
+            </div>
+
+        </td>
+        <td style="width:3px;">&nbsp;</td>
+        <td  valign="top" >
+            <table id="List"></table>
+        </td>
+    </tr>
+</table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    function getSelected() {
+        var node = $('#StructTree').tree('getSelected');
+        if (node) {
+            //var s = node.text;
+            //if (node.attributes) {
+            //    s += "," + node.attributes.id;
+            //}
+            var id = node.attributes.id;
+            $("#List").datagrid("load", { category: id });
+        }
+    }
+    $(function () {
+        $('#List').datagrid({
+            url: '@(Url.Action("WareDetailsGetList"))?category=root',
+            width: SetGridWidthSub(220),
+            methord: 'post',
+            height: SetGridHeightSub(45),
+            nowrap: true,
+            fitColumns: false,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 50,
+            pageList: [50, 100],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: false,//单选模式
+            checkOnSelect: true,
+            selectOnCheck: true,
+            //rownumbers: true,//行号
+            onLoadSuccess: function (data) {
+           @foreach(var r in perm){if(r.Category==2){@Html.Raw("$(this).datagrid('hideColumn','"+r.KeyCode+"');");}}//动态根据权限隐藏列
+            },
+            frozenColumns: [[
+                { field: 'ck', checkbox: true },
+                { field: 'Id', title: '主键ID', width: 80, hidden: true },
+                //{ field: 'Code', title: '编号', width: 120, sortable: true, halign: 'center' },
+                { field: 'Name', title: '商品名称', width: 120, sortable: true, halign: 'center' },
+                { field: 'Brand', title: '品牌', width: 80, sortable: true, halign: 'center' },
+                 { field: 'Size', title: '型号', width: 150, sortable: true, halign: 'center' },
+                { field: 'WareCategoryId', title: '存货分类', width: 80, sortable: true, hidden: true, halign: 'center' },
+                { field: 'Unit', title: '单位', width: 80, sortable: true, halign: 'center' },
+                { field: 'WareCategoryName', title: '存货分类', width: 80, halign: 'center' },
+            ]],
+            columns: [[
+                                 { title: '基本信息', colspan: 6 },
+                                 { title: '其他信息', colspan: 11 },
+                                 { title: '多级价格', colspan: 5 },
+                                 { title: '图片', colspan: 5 }
+
+            ], [
+                { field: 'Lable', title: '存货标签', width: 80, sortable: true, halign: 'center' },
+                { field: 'BuyPrice', title: '参考进价', width: 80, sortable: true, halign: 'center', align: 'right', formatter: function (value) { return MoneyFormatter(value) } },
+                { field: 'SalePrice', title: '参考售价', width: 80, sortable: true, halign: 'center', align: 'right', formatter: function (value) { return MoneyFormatter(value) } },
+                { field: 'RetailPrice', title: '零售价', width: 80, sortable: true, halign: 'center', align: 'right', formatter: function (value) { return MoneyFormatter(value) } },
+                { field: 'Enable', title: '状态', width: 80, sortable: true, halign: 'center', formatter: function (value) { return EnableFormatter(value) } },
+                { field: 'Remark', title: '备注', width: 80, sortable: true, halign: 'center', formatter: function (value) { return "<span class='exceed'>" + value + "</span>" } },
+                { field: 'Vender', title: '供货商', width: 150, sortable: true, halign: 'center' },
+                { field: 'Brand', title: '品牌', width: 80, sortable: true, halign: 'center' },
+                { field: 'Color', title: '颜色', width: 80, sortable: true, halign: 'center' },
+                { field: 'Material', title: '材质', width: 80, sortable: true, halign: 'center' },
+                { field: 'Size', title: '尺码', width: 80, sortable: true, halign: 'center' },
+                { field: 'Weight', title: '重量', width: 80, sortable: true, halign: 'center' },
+                { field: 'ComeFrom', title: '产地', width: 80, sortable: true, halign: 'center' },
+                { field: 'UpperLimit', title: '最高库存', width: 80, sortable: true, halign: 'center' },
+                { field: 'LowerLimit', title: '最低库存', width: 80, sortable: true, halign: 'center' },
+                { field: 'PrimeCost', title: '参考成本', width: 80, sortable: true, halign: 'center' },
+                { field: 'CreateTime', title: '创建时间', width: 140, sortable: true, halign: 'center' },
+                { field: 'Price1', title: '一级价格', width: 80, sortable: true, halign: 'center', align: 'right', formatter: function (value) { return MoneyFormatter(value) } },
+                { field: 'Price2', title: '二级价格', width: 80, sortable: true, halign: 'center', align: 'right', formatter: function (value) { return MoneyFormatter(value) } },
+                { field: 'Price3', title: '三级价格', width: 80, sortable: true, halign: 'center', align: 'right', formatter: function (value) { return MoneyFormatter(value) } },
+                { field: 'Price4', title: '四级价格', width: 80, sortable: true, halign: 'center', align: 'right', formatter: function (value) { return MoneyFormatter(value) } },
+                { field: 'Price5', title: '五级价格', width: 80, sortable: true, halign: 'center', align: 'right', formatter: function (value) { return MoneyFormatter(value) } },
+                { field: 'Photo1', title: '照片1', width: 80, sortable: true, halign: 'center', formatter: function (value) { return ImgFormatter(value) } },
+                { field: 'Photo2', title: '照片2', width: 80, sortable: true, halign: 'center', formatter: function (value) { return ImgFormatter(value) } },
+                { field: 'Photo3', title: '照片3', width: 80, sortable: true, halign: 'center', formatter: function (value) { return ImgFormatter(value) } },
+                { field: 'Photo4', title: '照片4', width: 80, sortable: true, halign: 'center', formatter: function (value) { return ImgFormatter(value) } },
+                { field: 'Photo5', title: '照片5', width: 80, sortable: true, halign: 'center', formatter: function (value) { return ImgFormatter(value) } },
+
+
+            ]]
+        });
+    });
+ 
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: queryStr });
+
+        });
+        //取得所选择的行
+        $("#btnSave").click(function () {
+            var rows = $('#List').datagrid('getSelections');
+            if (rows.length > 0) {
+                //返回到上一层处理
+                window.parent.SetDetails(rows);
+                window.parent.frameReturnByClose();
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+    });
+</script>
+

@@ -1,0 +1,710 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accordion" xml:space="preserve">
+    <value>Accordion</value>
+  </data>
+  <data name="AssignRole" xml:space="preserve">
+    <value>Assign Role</value>
+    <comment>011</comment>
+  </data>
+  <data name="AssignUser" xml:space="preserve">
+    <value>Assign User</value>
+    <comment>012</comment>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check</value>
+    <comment>014</comment>
+  </data>
+  <data name="CheckFail" xml:space="preserve">
+    <value>Check Fail</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="CheckSucceed" xml:space="preserve">
+    <value>Check Succeed</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="ChinaCharExpression" xml:space="preserve">
+    <value>{0} must be  chinese characters</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="ComparePassword" xml:space="preserve">
+    <value>Confirm password does not match</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="ContainExpression" xml:space="preserve">
+    <value>{0} must contain {1}</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+    <comment>001</comment>
+  </data>
+  <data name="DateExpression" xml:space="preserve">
+    <value>{0} be the correct date format：2012-10-10</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>002</comment>
+  </data>
+  <data name="DeleteFail" xml:space="preserve">
+    <value>Delete Fail</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="DeleteSucceed" xml:space="preserve">
+    <value>Delete Succeed</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="Desktop" xml:space="preserve">
+    <value>Desktop</value>
+    <comment>003</comment>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+    <comment>004</comment>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Disable</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="DownTemplate" xml:space="preserve">
+    <value>Down Template</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+    <comment>005</comment>
+  </data>
+  <data name="EditFail" xml:space="preserve">
+    <value>Edit Fail</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="EditSucceed" xml:space="preserve">
+    <value>Edit Succeed</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="EmailExpression" xml:space="preserve">
+    <value>{0} must be correct Email address</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+    <comment>006</comment>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="ImportFial" xml:space="preserve">
+    <value>Import failed, The file does not exist</value>
+  </data>
+  <data name="InsertFail" xml:space="preserve">
+    <value>Insert Fail</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="InsertSucceed" xml:space="preserve">
+    <value>Insert Succeed</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="IntRangeExpression" xml:space="preserve">
+    <value>{0} must be in {1} and {2} between</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsCharExpression" xml:space="preserve">
+    <value>{0} only Number,letters,underline,the hyphen：abc_a-b</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsDecimalExpression" xml:space="preserve">
+    <value>{0} must be a decimal</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsIntegerExpression" xml:space="preserve">
+    <value>{0} must be a Integer</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsNegativeDecimalExpression" xml:space="preserve">
+    <value>{0} must be a negative  decimal</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsNegativeIntegerExpression" xml:space="preserve">
+    <value>{0} must be a negative  integer</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsNumberExpression" xml:space="preserve">
+    <value>{0} must be a number</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsPositiveDecimalExpression" xml:space="preserve">
+    <value>{0} must be a positive decimal</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsPositiveIntegerExpression" xml:space="preserve">
+    <value>{0} must be a positive  integer</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="MaxWordsExpression" xml:space="preserve">
+    <value>{0} the most contains {1} chinese characters and {2} characters</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="MinWordsExpression" xml:space="preserve">
+    <value>{0} at least {1} characters</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="NoAnyChanges" xml:space="preserve">
+    <value>No any changes</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="NoDataChange" xml:space="preserve">
+    <value>No data change</value>
+  </data>
+  <data name="NotContainExpression" xml:space="preserve">
+    <value>The {0} must not contain {1}</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="NotEqualExpression" xml:space="preserve">
+    <value>{0} can not be {1}</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="NotNullExpression" xml:space="preserve">
+    <value>{0} must fill out,and can not contain Spaces</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="PhoneExpression" xml:space="preserve">
+    <value>{0} must be correct phone number：0769-2222222</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="PlaseChooseToOperatingRecords" xml:space="preserve">
+    <value>Plase Choose To Operating Records</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="PrimaryRepeat" xml:space="preserve">
+    <value>Primary Repeat</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Query" xml:space="preserve">
+    <value>Query</value>
+    <comment>007</comment>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Reply" xml:space="preserve">
+    <value>Reply</value>
+    <comment>009</comment>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>Reset Password</value>
+    <comment>010</comment>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+    <comment>008</comment>
+  </data>
+  <data name="SaveFail" xml:space="preserve">
+    <value>Save Fail</value>
+  </data>
+  <data name="SaveSucceed" xml:space="preserve">
+    <value>Save Succeed</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="SetFail" xml:space="preserve">
+    <value>Set Fail</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="SetSucceed" xml:space="preserve">
+    <value>Set Succeed</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Sign Out</value>
+  </data>
+  <data name="SiteExpression" xml:space="preserve">
+    <value>{0} must be correct site address：http://www.google.com</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="SysAreas_CreateTime" xml:space="preserve">
+    <value>CreateTime</value>
+  </data>
+  <data name="SysAreas_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysAreas_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SysAreas_ParentId" xml:space="preserve">
+    <value>ParentId</value>
+  </data>
+  <data name="SysAreas_Sort" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="SysAreas_State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="SysException_CreateTime" xml:space="preserve">
+    <value>CreateTime</value>
+  </data>
+  <data name="SysException_Data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="SysException_HelpLink" xml:space="preserve">
+    <value>HelpLink</value>
+  </data>
+  <data name="SysException_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysException_Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="SysException_Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="SysException_StackTrace" xml:space="preserve">
+    <value>StackTrace</value>
+  </data>
+  <data name="SysException_TargetSite" xml:space="preserve">
+    <value>TargetSite</value>
+  </data>
+  <data name="SysLog_CreateTime" xml:space="preserve">
+    <value>CreateTime</value>
+  </data>
+  <data name="SysLog_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysLog_Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="SysLog_Module" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="SysLog_Operator" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="SysLog_Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="SysLog_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="SysModuleOperate_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysModuleOperate_IsValid" xml:space="preserve">
+    <value>IsValid</value>
+  </data>
+  <data name="SysModuleOperate_KeyCode" xml:space="preserve">
+    <value>KeyCode</value>
+  </data>
+  <data name="SysModuleOperate_ModuleId" xml:space="preserve">
+    <value>ModuleId</value>
+  </data>
+  <data name="SysModuleOperate_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SysModuleOperate_Sort" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="SysModule_CreatePerson" xml:space="preserve">
+    <value>CreatePerson</value>
+  </data>
+  <data name="SysModule_CreateTime" xml:space="preserve">
+    <value>CreateTime</value>
+  </data>
+  <data name="SysModule_EnglishName" xml:space="preserve">
+    <value>EnglishName</value>
+  </data>
+  <data name="SysModule_Iconic" xml:space="preserve">
+    <value>Iconic</value>
+  </data>
+  <data name="SysModule_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysModule_IsLast" xml:space="preserve">
+    <value>IsLast</value>
+  </data>
+  <data name="SysModule_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SysModule_ParentId" xml:space="preserve">
+    <value>ParentId</value>
+  </data>
+  <data name="SysModule_Remark" xml:space="preserve">
+    <value>Remark</value>
+  </data>
+  <data name="SysModule_Sort" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="SysModule_State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="SysModule_Url" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="SysModule_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="SysRightOperate_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysRightOperate_IsValid" xml:space="preserve">
+    <value>IsValid</value>
+  </data>
+  <data name="SysRightOperate_KeyCode" xml:space="preserve">
+    <value>KeyCode</value>
+  </data>
+  <data name="SysRightOperate_RightId" xml:space="preserve">
+    <value>RightId</value>
+  </data>
+  <data name="SysRight_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysRight_ModuleId" xml:space="preserve">
+    <value>ModuleId</value>
+  </data>
+  <data name="SysRight_Rightflag" xml:space="preserve">
+    <value>Rightflag</value>
+  </data>
+  <data name="SysRight_RoleId" xml:space="preserve">
+    <value>RoleId</value>
+  </data>
+  <data name="SysRoleSysUser_SysRoleId" xml:space="preserve">
+    <value>SysRoleId</value>
+  </data>
+  <data name="SysRoleSysUser_SysUserId" xml:space="preserve">
+    <value>SysUserId</value>
+  </data>
+  <data name="SysRole_CreatePerson" xml:space="preserve">
+    <value>Creater</value>
+  </data>
+  <data name="SysRole_CreateTime" xml:space="preserve">
+    <value>Create Time</value>
+  </data>
+  <data name="SysRole_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="SysRole_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysRole_Name" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="SysRole_UserName" xml:space="preserve">
+    <value>User List</value>
+  </data>
+  <data name="SysSample_Age" xml:space="preserve">
+    <value>Age</value>
+  </data>
+  <data name="SysSample_Bir" xml:space="preserve">
+    <value>Bir</value>
+  </data>
+  <data name="SysSample_CreateTime" xml:space="preserve">
+    <value>CreateTime</value>
+  </data>
+  <data name="SysSample_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="SysSample_Id1" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysSample_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SysSample_Name1" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SysSample_Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="SysSample_Photo" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="SysSettings_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysSettings_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SysSettings_Parameter" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="SysSettings_ReMark" xml:space="preserve">
+    <value>ReMark</value>
+  </data>
+  <data name="SysSettings_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="SysStruct_CreateTime" xml:space="preserve">
+    <value>Create Time</value>
+  </data>
+  <data name="SysStruct_Higher" xml:space="preserve">
+    <value>Higher</value>
+  </data>
+  <data name="SysStruct_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysStruct_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SysStruct_ParentId" xml:space="preserve">
+    <value>Parent Id</value>
+  </data>
+  <data name="SysStruct_Remark" xml:space="preserve">
+    <value>Remark</value>
+  </data>
+  <data name="SysStruct_Sort" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="SysStruct_State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="SysUser_Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="SysUser_City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="SysUser_CreatePerson" xml:space="preserve">
+    <value>CreatePerson</value>
+  </data>
+  <data name="SysUser_CreateTime" xml:space="preserve">
+    <value>CreateTime</value>
+  </data>
+  <data name="SysUser_EmailAddress" xml:space="preserve">
+    <value>EmailAddress</value>
+  </data>
+  <data name="SysUser_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysUser_MobileNumber" xml:space="preserve">
+    <value>MobileNumber</value>
+  </data>
+  <data name="SysUser_OtherContact" xml:space="preserve">
+    <value>OtherContact</value>
+  </data>
+  <data name="SysUser_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="SysUser_PhoneNumber" xml:space="preserve">
+    <value>PhoneNumber</value>
+  </data>
+  <data name="SysUser_Province" xml:space="preserve">
+    <value>Province</value>
+  </data>
+  <data name="SysUser_QQ" xml:space="preserve">
+    <value>QQ</value>
+  </data>
+  <data name="SysUser_RoleName" xml:space="preserve">
+    <value>Role List</value>
+  </data>
+  <data name="SysUser_State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="SysUser_TrueName" xml:space="preserve">
+    <value>TrueName</value>
+  </data>
+  <data name="SysUser_UserName" xml:space="preserve">
+    <value>UserName</value>
+  </data>
+  <data name="SysUser_Village" xml:space="preserve">
+    <value>Village</value>
+  </data>
+  <data name="Tip" xml:space="preserve">
+    <value>Tip</value>
+    <comment>013</comment>
+  </data>
+  <data name="TitleCreatePerson" xml:space="preserve">
+    <value>Creator</value>
+    <comment>055</comment>
+  </data>
+  <data name="TitleCreateTime" xml:space="preserve">
+    <value>Create Time</value>
+    <comment>052</comment>
+  </data>
+  <data name="TitleEnable" xml:space="preserve">
+    <value>Enable</value>
+    <comment>051</comment>
+  </data>
+  <data name="TitleID" xml:space="preserve">
+    <value>ID</value>
+    <comment>057</comment>
+  </data>
+  <data name="TitleName" xml:space="preserve">
+    <value>Name</value>
+    <comment>050</comment>
+  </data>
+  <data name="TitleRemark" xml:space="preserve">
+    <value>Remark</value>
+    <comment>056</comment>
+  </data>
+  <data name="TitleSort" xml:space="preserve">
+    <value>Sort</value>
+    <comment>053</comment>
+  </data>
+  <data name="TitleState" xml:space="preserve">
+    <value>State</value>
+    <comment>054</comment>
+  </data>
+  <data name="Tree" xml:space="preserve">
+    <value>Tree</value>
+  </data>
+  <data name="UnCheck" xml:space="preserve">
+    <value>UnCheck</value>
+    <comment>015</comment>
+  </data>
+  <data name="UnCheckFail" xml:space="preserve">
+    <value>UnCheck Fail</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="UnCheckSucceed" xml:space="preserve">
+    <value>UnCheck Succeed</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="UnSelect" xml:space="preserve">
+    <value>UnSelect</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="UpdateFail" xml:space="preserve">
+    <value>Update Fail</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="UpdateSucceed" xml:space="preserve">
+    <value>Update Succeed</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="Uploading" xml:space="preserve">
+    <value>Uploading...</value>
+  </data>
+  <data name="YouWantToDeleteTheSelectedRecords" xml:space="preserve">
+    <value>You want to delete The selected records</value>
+    <comment>Suggestion</comment>
+  </data>
+</root>

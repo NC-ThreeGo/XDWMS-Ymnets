@@ -1,0 +1,230 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "日程管理";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    string info = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    List<permModel> perm = null;
+}
+<link href="~/Scripts/fullcalendar/fullcalendar.css" rel="stylesheet" />
+<script src="~/Scripts/fullcalendar/moment.min.js"></script>
+<script src="~/Scripts/fullcalendar/fullcalendar.min.js"></script>
+<script src="~/Scripts/fullcalendar/zh-cn.js"></script>
+<div class="mvctool">
+    @Html.ToolButton("btnCreate", "fa fa-plus", "新增日程", true)
+</div>
+<div id="calendar" style="margin-top:10px;margin-left:5px"></div>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>       
+<script>
+    var editEvent = null;
+    $(function () {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay,listWeek'
+            },
+            weekNumbers: true,
+            weekNumbersWithinDays: true,
+            weekNumberCalculation: 'ISO',
+            editable: true,
+            navLinks: true, // can click day/week names to navigate views
+            defaultView:'month',
+            contentHeight:SetGridHeightSub(96),
+            selectable: true,
+            selectHelper: true,//在agenda视图下选择时会带上对应的时间
+            dragOpacity: 0.5, //Event被拖动时的不透明度
+            //选择日期触发
+            select: function (start, end) {
+                $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0''  src='@Url.Action("Create")?start=" + start.format() + "&end=" + end.format() + "'></iframe>");
+                $("#modalwindow").window({ title: Lang.Create, width: 500, height: 333, iconCls: 'fa fa-plus' }).window('open');
+            },
+            droppable: true, // this allows things to be dropped onto the calendar
+            drop: function () {
+                // is the "remove after drop" checkbox checked?
+            },
+            eventLimit: true, // allow "more" link when too many events
+            events: {
+                url: '/SysCalendarPlan/GetList',
+                error: function () {
+                    $.messageBox5s(Lang.Tip, "请求错误");
+                }
+            },//点击
+            eventClick: function (event, element) {
+
+                //等待修改
+                editEvent = event;
+                console.log(event);
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("Edit")?id=" + event.id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: 500, height: 333, iconCls: 'fa fa-pencil' }).window('open');
+            },//鼠标经过
+            eventMouseover: function (event) {
+                //do something here...
+                //console.log('鼠标经过 ...');
+                //console.log('eventMouseover被执行，选中Event的title属性值为：', event.title);
+                // ...
+            },//鼠标离开
+            eventMouseout: function (event) {
+                //do something here...
+                //console.log('eventMouseout被执行，选中Event的title属性值为：', event.title);
+                //console.log('鼠标离开 ...');
+                // ...
+            },//移动事件时候触发
+            eventDrop: function (event, dayDelta, revertFunc) {
+                ccc(event);
+                //有日期改变，才执行更新操作
+                if (dayDelta._days != 0) {
+                    var begin;
+                    var end;
+                    if(dayDelta._days>0)
+                    {
+                        begin = dateOperator(event.start._i, dayDelta._days, "+")
+                        end = dateOperator(event.end._i, dayDelta._days, "+")
+                    }else
+                    {
+                        begin = dateOperator(event.start._i, -dayDelta._days, "-")
+                        end = dateOperator(event.end._i, -dayDelta._days, "-")
+                    }
+               
+                    var para = { Id: event.id, Title: event.title, PlanContent: event.content, BeginDate: begin, EndDate: end, CreateTime: "2080-01-01", Url: event.url, Color: event.color, TextColor: event.TextColor, SysUserId: "", Editable: "false" }
+
+                    $.post("/SysCalendarPlan/Edit", para, function (data) {
+                         frameReturnByMes("保存成功");
+                    });
+                }
+             
+                ////有日期改变，才执行更新操作
+             
+                ////do something here...
+                //console.log('eventDrop --- start ---');
+                //console.log('eventDrop被执行，Event的title属性值为：', event.title);
+                //if (dayDelta._days != 0) {
+                //    console.log('eventDrop被执行，Event的start和end时间改变了：', dayDelta._days + '天！');
+                //} else if (dayDelta._milliseconds != 0) {
+                //    console.log('eventDrop被执行，Event的start和end时间改变了：', dayDelta._milliseconds / 1000 + '秒！');
+                //} else {
+                //    console.log('eventDrop被执行，Event的start和end时间没有改变！');
+                //}
+                ////revertFunc();
+                //console.log('eventDrop --- end ---');
+                // ...
+            },//通过鼠标按住Event的一侧进行拖拽触发eventResize的callback
+            eventResize: function (event, dayDelta, revertFunc) {
+                //do something here...
+                console.log(' --- start --- eventResize');
+                console.log('eventResize被执行，Event的title属性值为：', event.title);
+                if (dayDelta._days != 0) {
+                    console.log('eventResize被执行，Event的start和end时间改变了：', dayDelta._days + '天！');
+                } else if (dayDelta._milliseconds != 0) {
+                    console.log('eventResize被执行，Event的start和end时间改变了：', dayDelta._milliseconds / 1000 + '秒！');
+                } else {
+                    console.log('eventResize被执行，Event的start和end时间没有改变！');
+                }
+                //revertFunc();
+                console.log('--- end --- eventResize');
+                // ...
+            },
+            dayClick: function (date) {
+                //do something here...
+                console.log('dayClick触发的时间为：', date.format());
+            },
+            loading: function (bool) {
+                if (bool) {
+                    showLoading();
+                } else {
+                    hideLoading();
+                }
+            },
+            windowResize: function(view) {
+             
+            }
+        });
+
+
+
+        $("#btnCreate").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0''  src='@Url.Action("Create")'></iframe>");
+            $("#modalwindow").window({ title: Lang.Create, width: 500, height: 333, iconCls: 'fa fa-plus' }).window('open');
+        });
+
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='98%' scrolling='auto' frameborder='0' src='@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Details', width: 540, height: 333, iconCls: 'fa fa-list' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+    });
+
+    function Save(event) {
+        var para = { Id: event.id, Title: event.title, PlanContent: event.content, BeginDate: event.start, EndDate: event.end, CreateTime: "2080-01-01", Url: event.url, Color: event.color, TextColor: event.TextColor, SysUserId: "", Editable: "false" }
+        $.ajax({
+            url: "@Url.Action("Edit")",
+            type: "Post",
+            async: false,
+            data: para,
+            dataType: "json",
+            success: function (data) {
+                if (data.type == 1) {
+                    frameReturnByMes(data.message);
+                    frameReturnByUpdate(true, event.title, event.start, event.end, event.id, event.color, event.content);
+                }
+                else {
+                    window.parent.frameReturnByMes(data.message);
+                }
+            }
+        });
+    }
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    //添加成功，刷新日程
+    function frameReturnByReload(flag, title, start, end,color,id) {
+        if (flag) {
+            var eventData;
+            if (title) {
+                eventData = {
+                    id:id,
+                    title: title,
+                    start: start,
+                    end: end,
+                    color:color
+                };
+                $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+            }
+            $('#calendar').fullCalendar('unselect');
+        }
+    }
+
+    //更新
+    function frameReturnByUpdate(flag, title, start, end, id, color, content) {
+        if (flag) {
+
+            if (editEvent != null) {
+                if (title) {
+
+                    editEvent.title = title;
+                    editEvent.start = start;
+                    editEvent.end = end;
+                    editEvent.id = id;
+                    editEvent.color = color;
+                    editEvent.content = content;
+                    $('#calendar').fullCalendar('updateEvent', editEvent);
+                }
+            }
+            $('#calendar').fullCalendar('unselect');
+        }
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+
+
+</script>
+
+
+

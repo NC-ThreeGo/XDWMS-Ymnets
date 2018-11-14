@@ -1,0 +1,126 @@
+﻿@model Apps.Models.Spl.Spl_WareStockPileModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Spl;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(false);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+function frameReturnByClose() {
+$("#modalwindow").window('close');
+}
+function frameReturnByMes(mes) {
+$.messageBox5s(Lang.Tip, mes);
+}
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CreateTime)
+    @Html.HiddenFor(model => model.WarehouseId)
+    @Html.HiddenFor(model => model.WareDetailsId)
+    @Html.HiddenFor(model => model.FirstEnterDate)
+    @Html.HiddenFor(model => model.LastLeaveDate)
+    @Html.HiddenFor(model => model.Quantity)
+    @Html.HiddenFor(model => model.Price)
+     <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.WarehouseId)：
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.WarehouseName)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.WareDetailsId)：
+                </th>
+                <td >
+                    @Html.DisplayFor(model => model.WareDetailsName)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.FirstEnterDate)：
+                </th>
+                <td >
+                    @Html.DisplayFor(model => model.FirstEnterDate) 
+                </td>
+           
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.LastLeaveDate)：
+                </th>
+                <td >
+                  @Html.DisplayFor(model => model.LastLeaveDate) 
+                </td>
+           
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Quantity)：
+                </th>
+                <td >
+                    @Html.DisplayFor(model => model.Quantity)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    预警值：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.WaringQuantity)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Price)：
+                </th>
+                <td >
+                    @Html.DisplayFor(model => model.Price)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+

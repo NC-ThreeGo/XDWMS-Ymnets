@@ -1,0 +1,97 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "主页";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<script src="@Url.Content("~/Scripts/echarts.min.js")"></script>
+<script src="@Url.Content("~/Scripts/echarts.theme.shine.js")"></script>
+  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main"></div>
+
+
+<table id="List"></table>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList2")',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: $(window).height()/2-35,
+            fitColumns: true,
+            sortName: 'Number',
+            sortOrder: 'desc',
+            idField: 'Number',
+            pageSize: 5,
+            pageList: [5, 8, 11, 14, 17],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            remoteFilter:true,
+            //rownumbers: true,//行号
+            onLoadSuccess: function (data) {
+                var grid = $('#List');
+                var options = grid.datagrid('options');
+                var m_page = options.pageNumber;
+                var m_rows = options.pageSize;
+                var m_sort = options.sortName;
+                var m_order = options.sortOrder
+                $.post("@Url.Action("GetOptionByBarChart2")", { page: m_page, rows: m_rows, order: m_order, sort: m_sort }, function (option) {
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                });
+            },
+            columns: [[
+                { field: 'Color', title: '颜色', width: 80, sortable: true },
+                { field: 'Name', title: '产品', width: 80, sortable: true },
+                { field: 'Price', title: '产品价格', width: 80, sortable: true },
+                { field: 'Number', title: '销量', width: 80, sortable: true }
+          ]]
+        });
+      
+        //$('#List').datagrid('destroyFilter', 'Name');
+
+        // 基于准备好的dom，初始化echarts实例
+        $("#main").width($(window).width()-10).height($(window).height() / 2 - 10);
+        var myChart =  echarts.init(document.getElementById('main'),"shine");
+        //$("#main").width($(window).width()-50).height($(window).height() / 2 - 10);
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+    
+        $("#main canvas").width( SetGridWidthSub(10)).height($(window).height() / 2 - 10);
+
+        $(window).resize(function () {
+           
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(10),
+                height: $(window).height() / 2 - 15
+            });
+            setTimeout(function () {
+            $("#main canvas").width( SetGridWidthSub(10)).height($(window).height() / 2 - 10);
+            }, 500);
+          
+        });
+    });
+</script>
+
+

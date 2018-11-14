@@ -1,0 +1,62 @@
+﻿@model Apps.Models.Sys.SysSampleModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+}
+
+
+ <table class="formtable">
+        <tbody>
+		<tr>
+            <th>
+                Name：
+            </th>
+		   <td>
+				@Html.DisplayFor(model => model.Name)
+		   </td>
+		</tr>
+		<tr>
+            <th>
+                Age：
+            </th>
+		   <td>
+				@Html.DisplayFor(model => model.Age)
+		   </td>
+		</tr>
+		<tr>
+            <th>
+                Bir：
+            </th>
+		   <td>
+				@Html.DisplayFor(model => model.Bir)
+		   </td>
+		</tr>
+		<tr>
+            <th>
+                Photo：
+            </th>
+		   <td>
+               
+				@Html.DisplayFor(model => model.Photo)
+		   </td>
+		</tr>
+		<tr>
+            <th>
+                Note：
+            </th>
+		   <td>
+				@Html.DisplayFor(model => model.Note)
+		   </td>
+		</tr>
+		<tr>
+            <th>
+                CreateTime：
+            </th>
+		   <td>
+				@Html.DisplayFor(model => model.CreateTime)
+		   </td>
+		</tr>
+ </tbody>
+    </table>
+

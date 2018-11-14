@@ -1,0 +1,118 @@
+﻿@model Apps.Models.Sys.SysPositionModel
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        
+        $("#selExc").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/DepLookUp'></iframe>");
+            $("#modalwindow").window({ title: '选择部门', width: 320, height: 300, iconCls: 'fa fa-plus' }).window('open');
+        });
+        $("#btnSave").click(function () {
+            if ($("form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("Create")",
+                    type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+             return false;
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+
+    });
+   
+    function SetSelResult(result, resultName) {
+
+        $("#DepId").val(result);
+        $("#DepName").val(resultName);
+    }
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+</script>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Name)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Remark)：
+               </th>
+                <td>
+                    @Html.EditorFor(model => model.Remark)
+                @Html.ValidationMessageFor(model => model.Remark)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Sort)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Sort)
+                @Html.ValidationMessageFor(model => model.Sort)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Enable)：
+                 </th>
+                <td>
+                    @Html.SwitchButtonByEdit("Enable", true)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.MemberCount)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.MemberCount)
+                @Html.ValidationMessageFor(model => model.MemberCount)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.DepId)：
+                </th>
+                <td>
+                    @Html.HiddenFor(model => model.DepId)
+                    <input  id="DepName" name="DepName" type="text" style="width:100px;" disabled="disabled" value="">
+                    <a class="fa fa-plus" id="selExc" href="#"></a>
+                @Html.ValidationMessageFor(model => model.DepId)</td>
+            </tr>
+        </tbody>
+    </table>
+}

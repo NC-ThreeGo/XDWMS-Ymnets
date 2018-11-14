@@ -1,0 +1,68 @@
+﻿@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "设计布局";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+    @Html.ToolButton("btnReset", "fa fa-reply", "重置", false)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, true)
+</div>
+<div id="setFormLayout" class="easyui-panel">
+     @Html.Raw(ViewBag.Html)
+</div>
+<script>
+    $("#btnSave").click(function () {
+       
+            $.ajax({
+                url: "@Url.Action("SaveLayout")",
+                type: "Post",
+                data: { html: $("#setFormLayout").html(), formId: "@(ViewBag.FormId)" },
+                dataType: "json",
+                success: function (data) {
+                if (data.type == 1) {
+                    window.parent.frameReturnByMes(data.message);
+                    window.parent.frameReturnByReload(true);
+                    window.parent.frameReturnByClose()
+                }
+                else {
+                    window.parent.frameReturnByMes(data.message);
+                }
+            }
+        });
+    });
+    $("#btnReturn").click(function () {
+        window.parent.frameReturnByClose();
+    });
+    $("#btnReset").click(function () {
+        $('.easyui-draggable').removeAttr("style");
+    });
+    //不允许移动出边界
+    function onDrag(e) {
+        var d = e.data;
+        if (d.left < 0) { d.left = 0 }
+        if (d.top < 0) { d.top = 0 }
+        if (d.left + $(d.target).outerWidth() > $(d.parent).width()) {
+            d.left = $(d.parent).width() - $(d.target).outerWidth();
+        }
+        if (d.top + $(d.target).outerHeight() > $(d.parent).height()) {
+            d.top = $(d.parent).height() - $(d.target).outerHeight();
+        }
+    }
+
+    //resize
+    $('.easyui-draggable').draggable({ edge: 5 }).resizable();
+
+    $(function () {
+        var layoutHeight = 0;
+        $("#setFormLayout .easyui-draggable").each(function(i){
+            layoutHeight = layoutHeight+ $(this).height();
+        });
+        $("#setFormLayout").css("height",$(window).height()-100);
+    });
+</script>
+

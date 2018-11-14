@@ -1,0 +1,136 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    
+}
+
+<div class="mvctool">
+    <div style="float:left">
+        菜单类型切换： <select class="easyui-combobox" name="swicthType" id="swicthType" style="width:80px;height:26px;margin-right:10px; ">
+            <option value="menu">系统菜单</option>
+            <option value="api">Api接口</option>
+        </select>
+    </div>
+    <div style="float:left; line-height:26px;"> &nbsp;&nbsp;角色组查询：</div>
+    <input id="txtQuery" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, false)
+</div>
+
+<table style="width: 100%">
+    <tbody>
+        <tr>
+            <td style="width: 330px;  vertical-align: top">
+                <table id="roleList"></table>
+            </td>
+            <td style="width:3px;"></td>
+            <td style="vertical-align: top">
+                <table id="rightList">
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(function () {
+
+       
+
+        //变量定义
+        var curRoleId, curRoleName;
+        //用户表格
+        $('#roleList').datagrid({
+            url: '/SysRightGetRoleRight/GetRoleList',
+            width: 330,
+            title: '角色列表',
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: '@Resource.TitleID', width: 80, hidden: true },
+                { field: 'Name', title: '@Resource.TitleName', width: 80, sortable: true },
+                { field: 'Description', title: '@Resource.TitleRemark', width: 80, sortable: true }
+            ]],
+            onClickRow: function (index, data) {
+                curRoleId = data.Id;
+                curRoleName = data.TrueName;
+
+                $('#rightList').datagrid("load", { roleId: curRoleId, isApi: $("#swicthType").combobox("getValue") });
+            }
+        }).datagrid('getPager').pagination({ showPageList: true, showRefresh: false, displayMsg: '' });
+
+        //模块权限表格
+        $('#rightList').datagrid({
+            url: '/SysRightGetRoleRight/GetRoleRight',
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            rownumbers: true,//行号
+            columns: [[
+                { field: 'ModuleId', title: '@Resource.TitleID', width: 80, hidden: true },
+                { field: 'ModuleName', title: '模块名称', width: 80, sortable: true },
+                { field: 'KeyCode', title: '拥有操作码', width: 80, sortable: true }
+            ]]
+        });
+
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $('#roleList').datagrid({
+                url: '/SysRightGetRoleRight/GetRoleList?queryStr=' + encodeURI(queryStr)
+            }).datagrid('getPager').pagination({ showPageList: true, showRefresh: false, displayMsg: '' });
+            $('#rightList').datagrid('loadData', { total: 0, rows: [] });
+        });
+        $(window).resize(function () {
+            resizeLayout();
+        });
+        resizeLayout();
+
+        $('#swicthType').combobox({
+            editable: false,
+            onSelect: function (record) {
+
+                $('#rightList').datagrid("load", { roleId: curRoleId, isApi: $("#swicthType").combobox("getValue") });
+            }
+        });
+    });
+
+    function resizeLayout() {
+        setTimeout(function () {
+            $('#roleList').datagrid('resize', {
+
+            }).datagrid('resize', {
+                height: SetGridHeightSub(37)
+            });
+            $('#rightList').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: $(window).width() - 350,
+                height: SetGridHeightSub(37)
+            });
+        }, 100);
+    }
+
+</script>

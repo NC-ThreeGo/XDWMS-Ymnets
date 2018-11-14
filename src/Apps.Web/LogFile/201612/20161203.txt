@@ -1,0 +1,8 @@
+﻿Attaching an entity of type 'Apps.Models.SysUserConfig' failed because another entity of the same type already has the same primary key value. This can happen when using the 'Attach' method or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph have conflicting key values. This may be because some entities are new and have not yet received database-generated key values. In this case use the 'Add' method or the 'Added' entity state to track the graph and then set the state of non-new entities to 'Unchanged' or 'Modified' as appropriate.|   在 System.Data.Entity.Core.Objects.ObjectContext.VerifyRootForAdd(Boolean doAttach, String entitySetName, IEntityWrapper wrappedEntity, EntityEntry existingEntry, EntitySet& entitySet, Boolean& isNoOperation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.AttachTo(String entitySetName, Object entity)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.<>c__DisplayClassa.<Attach>b__9()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Attach(Object entity)
+   在 System.Data.Entity.DbSet`1.Attach(TEntity entity)
+   在 Apps.DAL.WebpartRepository.SaveHtml(String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.DAL\WebpartRepository.cs:行号 67
+   在 Apps.BLL.WebpartBLL.SaveHtml(ValidationErrors& errors, String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.BLL\WebpartBLL.cs:行号 46|Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.|2016-12-3 16:51:24

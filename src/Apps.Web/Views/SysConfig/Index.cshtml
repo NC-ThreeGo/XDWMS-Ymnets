@@ -1,0 +1,427 @@
+﻿@model Apps.Models.Sys.SysConfigModel
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+
+    List<permModel> perm = null;
+}
+<style>    .formtable th{height:45px;}
+</style>
+<script>
+    $(function () {
+       
+        //让radio选中
+        $("input[name='logstatus'][value='@Model.logstatus']").prop("checked", true);
+        $("input[name='exceptionstatus'][value='@Model.exceptionstatus']").prop("checked", true);
+        $("input[name='globalexceptionstatus'][value='@Model.globalexceptionstatus']").prop("checked", true);
+        $("input[name='issinglelogin'][value='@Model.issinglelogin']").prop("checked", true);
+        $("input[name='webstatus'][value='@Model.webstatus']").prop("checked", true);
+        $("input[name='watermarktype'][value='@Model.watermarktype']").prop("checked", true);
+        $("input[name='watermarkposition'][value='@Model.watermarkposition']").prop("checked", true);
+        $("input[name='webimstatus'][value='@Model.webimstatus']").prop("checked", true);
+        $("input[name='taskstatus'][value='@Model.taskstatus']").prop("checked", true);
+        $("#btnSave").click(function () {
+            if (!$("form").valid()) {
+                window.parent.messageBox10s('提示', $("#ErrMesList").html());
+                return;
+            }
+            $.ajax({
+                url: "/SysConfig/Edit",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        });
+        $("#attachsave").val('@Model.attachsave');
+        $("#watermarkfont").val('@Model.watermarkfont');
+    });
+</script>
+<div style="padding:4px 5px 0px 5px;">
+    <div class="mvctool">
+        @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Edit", true)
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div id="ErrMesList">
+            <div id="ErrMesListContent">
+                @Html.ValidationSummary(false)
+            </div>
+        </div>
+        	
+    <div class="easyui-tabs" id="tabs"  style="width: 100%; height: auto">
+        <div title="网站基本信息" style="padding:10px">
+            <table class="formtable">
+                <tbody>
+                    <tr>
+                        <th style="width:200px;">系统名称：</th>
+                        <td style="width:200px;">@Html.EditorFor(model => model.webname)</td>
+                        <td><span class="color-red">*</span></td>
+
+                    </tr>
+                    <tr>
+                        <th>公司名称：</th>
+                        <td>@Html.EditorFor(model => model.webcompany)</td>
+                        <td><span class="color-red">*</span></td>
+                    </tr>
+                    <tr>
+                        <th>网站域名：</th>
+                        <td>@Html.EditorFor(model => model.weburl)</td>
+                        <td><span class="color-red">*</span>以“http://”开头</td>
+                    </tr>
+                    <tr>
+                        <th>联系电话：</th>
+                        <td>@Html.EditorFor(model => model.webtel)</td>
+                    </tr>
+                    <tr>
+                        <th>管理员邮箱：</th>
+                        <td>@Html.EditorFor(model => model.webmail)</td>
+                    </tr>
+                    <tr>
+                        <th>网站备案号：</th>
+                        <td>@Html.EditorFor(model => model.webcrod)</td>
+                    </tr>
+                    <tr>
+                        <th>首页标题(SEO)：</th>
+                        <td>@Html.EditorFor(model => model.webtitle)</td>
+                        <td><span class="color-red">*</span>自定义的首页标题</td>
+                    </tr>
+                    <tr>
+                        <th>页面关健词(SEO)：</th>
+                        <td colspan="2">@Html.EditorFor(model => model.webkeyword)</td>
+                         
+                    </tr>
+                    <tr>
+                        <th>页面描述(SEO)：</th>
+                        <td colspan="2">@Html.TextAreaFor(model => model.webdescription, 1, 100, new { })</td>
+                    </tr>
+                    <tr>
+                        <th>网站版权信息：</th>
+                        <td colspan="2">@Html.TextAreaFor(model => model.webcopyright, 1, 100, new { })</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div title="功能权限配置" style="padding:10px">
+            <table class="formtable">
+              
+                <tbody>
+                    <tr>
+                        <th style="width:200px;">网站安装目录：</th>
+                        <td style="width:520px;">@Html.EditorFor(model => model.webpath)</td>
+                        <td><span class="color-red">*</span>根目录下，输入“/”；如：http://abc.com/web，输入“web/”</td>
+                    </tr>
+                    <tr>
+                        <th>网站管理目录：</th>
+                        <td>@Html.EditorFor(model => model.webmanagepath)</td>
+                        <td><span class="color-red">*</span>默认是admin，如已经更改，请输入目录名</td>
+                    </tr>
+                    <tr>
+                        <th>后台管理日志：</th>
+                        <td>
+                            <span id="logstatus">
+                                <input type="radio" value="0" name="logstatus" id="logstatus_0">
+                                <label for="logstatus_0">关闭</label>
+                                <input type="radio" value="1" name="logstatus" id="logstatus_1">
+                                <label for="logstatus_1">开启</label>
+                            </span>
+                            
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>后台异常管理：</th>
+                        <td>
+                            <span id="exceptionstatus"><input type="radio" value="0" name="exceptionstatus" id="exceptionstatus_0"><label for="exceptionstatus_0">关闭</label><input type="radio" value="1" name="exceptionstatus" id="exceptionstatus_1"><label for="exceptionstatus_1">开启</label></span>
+                            
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>是否使用全局异常处理：</th>
+                        <td>
+                            <span id="globalexceptionstatus"><input type="radio" value="0" name="globalexceptionstatus" id="globalexceptionstatus_0"><label for="globalexceptionstatus_0">关闭</label><input type="radio" value="1" name="globalexceptionstatus" id="globalexceptionstatus_1"><label for="globalexceptionstatus_1">开启</label></span>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>异常跳转的页面：</th>
+                        <td>@Html.EditorFor(model => model.globalexceptionurl)</td>
+                        <td><span class="color-red">*</span> 请确保存在视图</td>
+                    </tr>
+                    <tr>
+                        <th>启用单机登录：</th>
+                        <td>
+                            <span id="issinglelogin"><input type="radio" value="0" name="issinglelogin" id="issinglelogin_0"><label for="issinglelogin_0">关闭</label><input type="radio" value="1" name="issinglelogin" id="issinglelogin_1"><label for="issinglelogin_1">开启</label></span>
+                            
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>是否关闭网站：</th>
+                        <td>
+                            <span id="webstatus"><input type="radio" value="0" name="webstatus" id="webstatus_0"><label for="webstatus_0">关闭</label><input type="radio" value="1" name="webstatus" id="webstatus_1"><label for="webstatus_1">开启</label></span>
+                            
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>关闭原因描述：</th>
+                        <td>@Html.TextAreaFor(model => model.webclosereason, 2, 20, new { @style = "width:400px;" })</td><td>支持HTML格式</td>
+                    </tr>
+                    <tr>
+                        <th>网站统计代码：</th>
+                        <td>@Html.TextAreaFor(model => model.webcountcode, 2, 20, new { @style = "width:400px;" })</td><td>支持HTML格式</td>
+                    </tr>
+                    <tr>
+                        <th>是否关闭任务调度系统：</th>
+                        <td>
+                            <span id="taskstatus"><input type="radio" value="0" name="taskstatus" id="taskstatus_0"><label for="taskstatus_0">关闭</label><input type="radio" value="1" name="taskstatus" id="taskstatus_1"><label for="taskstatus_1">开启</label></span>
+                            
+                        </td><td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div title="即时消息系统" style="padding:10px">
+            <table class="formtable">
+                <tbody>
+                    <tr>
+                        <th style="width:200px;">是否关闭WebIM：</th>
+                        <td style="width:170px;">
+                            <span id="webimstatus"><input type="radio" value="0" name="webimstatus" id="webimstatus_0"><label for="webimstatus_0">关闭</label><input type="radio" value="1" name="webimstatus" id="webimstatus_1"><label for="webimstatus_1">开启</label></span>
+
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>刷新当前聊天窗口时间：</th>
+                        <td>@Html.EditorFor(model => model.refreshcurrentwin)</td>
+                        <td>毫秒<span class="color-red">*</span></td>
+                    </tr>
+                    <tr>
+                        <th>刷新最近联系人列表：</th>
+                        <td>@Html.EditorFor(model => model.refreshrecentcontact)</td>
+                        <td>毫秒<span class="color-red">*</span></td>
+                    </tr>
+                    <tr>
+                        <th>刷新是否有新短信息来：</th>
+                        <td>@Html.EditorFor(model => model.refreshnewmessage)</td>
+                        <td>毫秒<span class="color-red">*</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div title="邮件发送配置" style="padding:10px">
+            <table class="formtable">
+    
+                <tbody>
+                    <tr>
+                        <th style="width:200px;">STMP服务器：</th>
+                        <td style="width:200px;">@Html.EditorFor(model => model.emailstmp)</td>
+                        <td><span class="color-red">*</span>发送邮件的SMTP服务器地址</td>
+                    </tr>
+                    <tr>
+                        <th>SMTP端口：</th>
+                        <td>@Html.EditorFor(model => model.emailport)</td>
+                        <td><span class="color-red">*</span>SMTP服务器的端口</td>
+                    </tr>
+                    <tr>
+                        <th>发件人地址：</th>
+                        <td>@Html.EditorFor(model => model.emailfrom)</td>
+                        <td><span class="color-red">*</span></td>
+                    </tr>
+                    <tr>
+                        <th>邮箱账号：</th>
+                        <td>@Html.EditorFor(model => model.emailusername)</td>
+                        <td><span class="color-red">*</span></td>
+                    </tr>
+                    <tr>
+                        <th>邮箱密码：</th>
+                        <td>@Html.EditorFor(model => model.emailpassword)</td>
+                        <td><span class="color-red">*</span></td>
+                    </tr>
+                    <tr>
+                        <th>发件人昵称：</th>
+                        <td>@Html.EditorFor(model => model.emailnickname)</td>
+                        <td><span class="color-red">*</span>显示发件人的昵称</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div title="附件配置" style="padding:10px">
+            <table class="formtable">
+        
+                <tbody>
+                    <tr>
+                        <th style="width:200px;">附件上传目录：</th>
+                        <td style="width:200px;">@Html.EditorFor(model => model.attachpath)</td>
+                        <td><span class="color-red">*</span>上传图片或附件的目录，自动创建在网站根目录下</td>
+                    </tr>
+                    <tr>
+                        <th>附件上传类型：</th>
+                        <td>@Html.EditorFor(model => model.attachextension)</td>
+                        <td><span class="color-red">*</span>以英文的逗号分隔开，如：“jpg,gif,rar”</td>
+                    </tr>
+                    <tr>
+                        <th>附件保存方式：</th>
+                        <td>
+                            <select class="select2 valid" id="attachsave" name="attachsave">
+                                <option value="1">按年月日每天一个目录</option>
+                                <option value="2" selected="selected">按年月/日/存入不同目录</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>文件上传大小：</th>
+                        <td>@Html.EditorFor(model => model.attachfilesize)KB</td>
+                        <td><span class="color-red">*</span>超过设置的文件大小不予上传，0不限制</td>
+                    </tr>
+                    <tr>
+                        <th>图片上传大小：</th>
+                        <td>@Html.EditorFor(model => model.attachimgsize)KB</td>
+                        <td><span class="color-red">*</span>超过设置的图片大小不予上传，0不限制</td>
+                    </tr>
+                    <tr>
+                        <th>图片最大尺寸：</th>
+                        <td>
+                            @Html.EditorFor(model => model.attachimgmaxheight)×
+                            @Html.EditorFor(model => model.attachimgmaxwidth)px
+                        </td>
+                        <td>
+                            <span class="color-red">*</span>设置图片高和宽，超出自动裁剪，0为不受限制
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>生成缩略图大小：</th>
+                        <td>
+                            @Html.EditorFor(model => model.thumbnailheight)×
+                            @Html.EditorFor(model => model.thumbnailwidth)px
+                        </td>
+                        <td>
+                            <span class="color-red">*</span>图片生成缩略图高和宽，0为不生成
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>图片水印类型：</th>
+                        <td>
+                            <span id="watermarktype"><input type="radio" value="0" name="watermarktype" id="watermarktype_0"><label for="watermarktype_0">关闭水印 </label><input type="radio" value="1" name="watermarktype" id="watermarktype_1"><label for="watermarktype_1">文字水印 </label><input type="radio" value="2" name="watermarktype" id="watermarktype_2"><label for="watermarktype_2">图片水印 </label></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>图片水印位置：</th>
+                        <td>
+                            <span id="watermarkposition">
+                                <input type="radio" value="1" name="watermarkposition" id="watermarkposition_0">
+                                <label for="watermarkposition_0">左上 </label>
+                                <input type="radio" value="2" name="watermarkposition" id="watermarkposition_1">
+                                <label for="watermarkposition_1">中上 </label>
+                                <input type="radio" value="3" name="watermarkposition" id="watermarkposition_2">
+                                <label for="watermarkposition_2">右上 </label>
+                                <input type="radio" value="4" name="watermarkposition" id="watermarkposition_3">
+                                <label for="watermarkposition_3">左中 </label>
+                                <input type="radio" value="5" name="watermarkposition" id="watermarkposition_4">
+                                <label for="watermarkposition_4">居中 </label>
+                                <input type="radio" value="6" name="watermarkposition" id="watermarkposition_5">
+                                <label for="watermarkposition_5">右中 </label>
+                                <input type="radio" value="7" name="watermarkposition" id="watermarkposition_6">
+                                <label for="watermarkposition_6">左下 </label>
+                                <input type="radio" value="8" name="watermarkposition" id="watermarkposition_7">
+                                <label for="watermarkposition_7">中下 </label>
+                                <input type="radio" value="9" name="watermarkposition" id="watermarkposition_8">
+                                <label for="watermarkposition_8">右下 </label>
+                            </span>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>图片生成质量：</th>
+                        <td>@Html.EditorFor(model => model.watermarkimgquality)</td>
+                        <td><span class="color-red">*</span>只适用于加水印的jpeg格式图片.取值范围 0-100, 0质量最低, 100质量最高, 默认80</td>
+                    </tr>
+                    <tr>
+                        <th>图片水印文件：</th>
+                        <td>@Html.EditorFor(model => model.watermarkpic)</td>
+                        <td><span class="color-red">*</span>需存放在站点目录下，如图片不存在将使用文字水印</td>
+                    </tr>
+                    <tr>
+                        <th>水印透明度：</th>
+                        <td>@Html.EditorFor(model => model.watermarktransparency)</td>
+                        <td><span class="color-red">*</span>取值范围1--10 (10为不透明)</td>
+                    </tr>
+                    <tr>
+                        <th>水印文字：</th>
+                        <td>@Html.EditorFor(model => model.watermarktext)</td>
+                        <td><span class="color-red">*</span>文字水印的内容</td>
+                    </tr>
+                    <tr>
+                        <th>文字字体：</th>
+                        <td>
+                            <select class="select2" id="watermarkfont" name="watermarkfont">
+                                <option value="Arial">Arial</option>
+                                <option value="Arial Black">Arial Black</option>
+                                <option value="Batang">Batang</option>
+                                <option value="BatangChe">BatangChe</option>
+                                <option value="Comic Sans MS">Comic Sans MS</option>
+                                <option value="Courier New">Courier New</option>
+                                <option value="Dotum">Dotum</option>
+                                <option value="DotumChe">DotumChe</option>
+                                <option value="Estrangelo Edessa">Estrangelo Edessa</option>
+                                <option value="Franklin Gothic Medium">Franklin Gothic Medium</option>
+                                <option value="Gautami">Gautami</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Gulim">Gulim</option>
+                                <option value="GulimChe">GulimChe</option>
+                                <option value="Gungsuh">Gungsuh</option>
+                                <option value="GungsuhChe">GungsuhChe</option>
+                                <option value="Impact">Impact</option>
+                                <option value="Latha">Latha</option>
+                                <option value="Lucida Console">Lucida Console</option>
+                                <option value="Lucida Sans Unicode">Lucida Sans Unicode</option>
+                                <option value="Mangal">Mangal</option>
+                                <option value="Marlett">Marlett</option>
+                                <option value="Microsoft Sans Serif">Microsoft Sans Serif</option>
+                                <option value="MingLiU">MingLiU</option>
+                                <option value="MS Gothic">MS Gothic</option>
+                                <option value="MS Mincho">MS Mincho</option>
+                                <option value="MS PGothic">MS PGothic</option>
+                                <option value="MS PMincho">MS PMincho</option>
+                                <option value="MS UI Gothic">MS UI Gothic</option>
+                                <option value="MV Boli">MV Boli</option>
+                                <option value="Palatino Linotype">Palatino Linotype</option>
+                                <option value="PMingLiU">PMingLiU</option>
+                                <option value="Raavi">Raavi</option>
+                                <option value="Shruti">Shruti</option>
+                                <option value="Sylfaen">Sylfaen</option>
+                                <option value="Symbol">Symbol</option>
+                                <option value="Tahoma" selected="selected">Tahoma</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Trebuchet MS">Trebuchet MS</option>
+                                <option value="Tunga">Tunga</option>
+                                <option value="Verdana">Verdana</option>
+                                <option value="Webdings">Webdings</option>
+                                <option value="Wingdings">Wingdings</option>
+                                <option value="仿宋_GB2312">仿宋_GB2312</option>
+                                <option value="宋体">宋体</option>
+                                <option value="新宋体">新宋体</option>
+                                <option value="楷体_GB2312">楷体_GB2312</option>
+                                <option value="黑体">黑体</option>
+                            </select>
+                            @Html.EditorFor(model => model.watermarkfontsize)px
+                        </td>
+                        <td><span class="color-red">*</span>文字水印的字体和大小</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    }
+</div>

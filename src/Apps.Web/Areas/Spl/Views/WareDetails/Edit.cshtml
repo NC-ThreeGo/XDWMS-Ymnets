@@ -1,0 +1,326 @@
+﻿@model Apps.Models.Spl.Spl_WareDetailsModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Spl;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+
+
+@using (Html.BeginForm())
+{
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+     @Html.HiddenFor(model => model.Id)
+     @Html.HiddenFor(model => model.CreateTime)
+    <div class="easyui-tabs" id="tabs" style="width: 100%; height: auto">
+        <div title="基本信息" style="padding:10px">
+            <table class="formtable">
+                <tbody>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.WareCategoryId)：
+                        </th>
+                        <td>
+                            @Html.DropDownListFor(model => model.WareCategoryId, ViewBag.WareCategory as SelectList)
+                        </td>
+                        <th>
+                            @Html.LabelFor(model => model.BarCode)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.BarCode)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Name)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Name)
+                        </td>
+                        <th>
+                            @Html.LabelFor(model => model.Code)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Code)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Unit)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Unit)
+                        </td>
+                        <th>
+                            @Html.LabelFor(model => model.Lable)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Lable)
+                        </td>
+                    </tr>
+                  
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.BuyPrice)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.BuyPrice)
+                        </td>
+                        <th>
+                            @Html.LabelFor(model => model.SalePrice)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.SalePrice)
+                        </td>
+                    </tr>
+                 
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.RetailPrice)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.RetailPrice)
+                        </td>
+                        <th>
+                            @Html.LabelFor(model => model.Enable)：
+                        </th>
+                        <td>
+                            @Html.RadioFor("Enable", true,"是","否")
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Remark)：
+                        </th>
+                        <td colspan="3">
+                          @Html.TextAreaFor(model => model.Remark,new {@style="width:680px;height:43px;"})
+                        </td>
+                    </tr>
+                    <tr>
+                     
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div title="其他信息" style="padding:10px">
+            <table class="formtable">
+                <tbody>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Vender)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Vender)
+                        </td>
+                           <th>
+                            @Html.LabelFor(model => model.Brand)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Brand)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Color)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Color)
+                        </td>
+                         <th>
+                            @Html.LabelFor(model => model.Material)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Material)
+                        </td>
+                    </tr>
+                  
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Size)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Size)
+                        </td>
+                         <th>
+                            @Html.LabelFor(model => model.Weight)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Weight)
+                        </td>
+                    </tr>
+                  
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.ComeFrom)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.ComeFrom)
+                        </td>
+                          <th>
+                            @Html.LabelFor(model => model.UpperLimit)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.UpperLimit)
+                        </td>
+                    </tr>
+                  
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.LowerLimit)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.LowerLimit)
+                        </td>
+                         <th>
+                            @Html.LabelFor(model => model.PrimeCost)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.PrimeCost)
+                        </td>
+                    </tr>
+                  
+                </tbody>
+            </table>
+        </div>
+        <div title="多级价格" style="padding:10px">
+            <table class="formtable">
+                <tbody>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Price1)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Price1)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Price2)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Price2)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Price3)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Price3)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Price4)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Price4)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.Price5)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.Price5)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div title="图片信息" style="padding:10px">
+            <table class="formtable">
+                <tbody>
+                    <tr>
+          
+            <td>
+             @Html.HiddenFor(model => model.Photo1)
+             <img class="expic" src="@((Model.Photo1==null||Model.Photo1=="")?"/Content/Images/NotPic.jpg":Model.Photo1)" /><br />
+             <a href="javascript:$('#FileUpload1').trigger('click');" class="files">@Resource.Browse</a>
+             <input type="file" class="displaynone" id="FileUpload1" name="FileUpload1" onchange="Upload('SingleFile', 'Photo1', 'FileUpload1','1','1');" />
+             <span class="uploading">@Resource.Uploading</span>
+            </td>
+           
+            <td>
+             @Html.HiddenFor(model => model.Photo2)
+             <img class="expic" src="@((Model.Photo2==null||Model.Photo2=="")?"/Content/Images/NotPic.jpg":Model.Photo2)" /><br />
+             <a href="javascript:$('#FileUpload2').trigger('click');" class="files">@Resource.Browse</a>
+             <input type="file" class="displaynone" id="FileUpload2" name="FileUpload2" onchange="Upload('SingleFile', 'Photo2', 'FileUpload2','1','1');" />
+             <span class="uploading">@Resource.Uploading</span>
+            </td>
+       
+            <td>
+             @Html.HiddenFor(model => model.Photo3)
+             <img class="expic" src="@((Model.Photo3==null||Model.Photo3=="")?"/Content/Images/NotPic.jpg":Model.Photo3)" /><br />
+             <a href="javascript:$('#FileUpload3').trigger('click');" class="files">@Resource.Browse</a>
+             <input type="file" class="displaynone" id="FileUpload3" name="FileUpload3" onchange="Upload('SingleFile', 'Photo3', 'FileUpload3','1','1');" />
+             <span class="uploading">@Resource.Uploading</span>
+            </td>
+        
+            <td>
+             @Html.HiddenFor(model => model.Photo4)
+             <img class="expic" src="@((Model.Photo4==null||Model.Photo4=="")?"/Content/Images/NotPic.jpg":Model.Photo4)" /><br />
+             <a href="javascript:$('#FileUpload4').trigger('click');" class="files">@Resource.Browse</a>
+             <input type="file" class="displaynone" id="FileUpload4" name="FileUpload4" onchange="Upload('SingleFile', 'Photo4', 'FileUpload4','1','1');" />
+             <span class="uploading">@Resource.Uploading</span>
+            </td>
+        
+            <td>
+             @Html.HiddenFor(model => model.Photo5)
+             <img class="expic" src="@((Model.Photo5==null||Model.Photo5=="")?"/Content/Images/NotPic.jpg":Model.Photo5)" /><br />
+             <a href="javascript:$('#FileUpload5').trigger('click');" class="files">@Resource.Browse</a>
+             <input type="file" class="displaynone" id="FileUpload5" name="FileUpload5" onchange="Upload('SingleFile', 'Photo5', 'FileUpload5','1','1');" />
+             <span class="uploading">@Resource.Uploading</span>
+            </td>
+        </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+   
+
+}
+

@@ -1,0 +1,16 @@
+BizID  
+
+RPGRBCID 单项内容id
+
+RSPGRBCID  单项指标结果ID
+
+CheckID  考核人id
+
+CheckName  考核人姓名
+
+RSPGRBC01 考核人结果
+
+RSPGRBC02 考核人日期
+
+
+DispOrder 排序

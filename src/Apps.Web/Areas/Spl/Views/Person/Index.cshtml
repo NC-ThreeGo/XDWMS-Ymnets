@@ -1,0 +1,356 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "主页";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div id="dataListBefor" class="easyui-window" style="width:800px; height:400px;padding:5px;" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+    <div class="mvctool">
+        @Html.ToolButton("btnSaveBefor", "fa fa-save", Resource.Save,ref perm, "Create", true)
+    </div>
+    <table id="ListBefor"></table>
+</div>
+
+<div id="uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+    <form name="form1" method="post" id="form1">
+        <table>
+            <tr>
+                <th style="padding:20px;">Excel：</th>
+                <td style="padding:20px;">
+                    <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                    <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                    <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload');">
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="padding:20px;padding-top:0px">表模：</th>
+                <td style="padding:20px;padding-top:0px">
+                    <input type="radio" checked="checked" name="Category" value="0" />简单模型
+                    <input type="radio" name="Category" value="1" />制定模型
+                </td>
+            </tr>
+        </table>
+        <div class="endbtndiv">
+            <a id="btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+            <a id="btnSaveBefor" href="javascript:ImportDataBefor()" class="easyui-linkbutton btnsb" style="width:80px;">保存前编辑</a>
+            <a id="btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+        </div>
+    </form>
+</div>
+<div class="mvctool">
+   <input id="txtQuery" placeholder="请输入关键字" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+    @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details,ref perm, "Details", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+  
+    @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import,ref perm, "Import", true)
+    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export,ref perm, "Export", true)
+    @Html.ToolButton("btnExportHard", "fa fa-level-up", "定制导出", ref perm, "Export", true)
+    <a href="#" class="easyui-menubutton" style=" height:24px;" data-options="menu:'#mm2',iconCls:'fa fa-download'">模板下载</a>
+    <div id="mm2" style="width:100px;">
+        <div><a href="/Content/Templete/Person.xlsx">简单模板</a></div>
+        <div><a href="/Content/Templete/PersonBatch.xlsx">定制导出</a></div>
+    </div>
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onLoadSuccess: function (data) {
+            },//修改2018年1月19s
+            columns: [[
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
+                { field: 'Name', title: '姓名', width: 80, sortable: true },
+                { field: 'Sex', title: '性别', width: 80, sortable: true },
+                { field: 'Age', title: '年龄', width: 80, sortable: true },
+                { field: 'IDCard', title: '证件号', width: 80, sortable: true },
+                { field: 'Phone', title: '手机号码', width: 80, sortable: true },
+                { field: 'Email', title: 'Email', width: 80, sortable: true },
+                { field: 'Address', title: '详细地址', width: 80, sortable: true },
+                { field: 'CreateTime', title: '创建时间', width: 80, sortable: true },
+                { field: 'Region', title: '区域', width: 80, sortable: true },
+                { field: 'Category', title: '类别', width: 80, sortable: true }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("Create")'></iframe>");
+            $("#modalwindow").window({ title: Lang.Create, width: 700, height: 400, iconCls: 'icon-add' }).window('open');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: 700, height: 400, iconCls: 'icon-edit' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='98%' scrolling='auto' frameborder='0' src='@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Details', width: 700, height: 400, iconCls: 'icon-details' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: encodeURI(queryStr) });
+
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm(index_lang_tip, '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+                            if (data.type == 1)
+                                $("#List").datagrid('load');
+                            $.messageBox5s(Lang.Tip, data.message);
+                        }, "json");
+
+                    }
+                });
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+
+        $("#btnImport").click(function () {
+            $("#txtExcelPath").val("");
+            $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 194, iconCls: 'fa fa-level-down' }).window('open');
+        });
+        $("#btnExport").click(function () {
+            $.post("@Url.Action("CheckExportData")", function (data) {
+                if (data.type == 1) {
+                    window.location = "@Url.Action("Export")";
+                } else {
+                    $.messageBox5s(Lang.Tip, data.message);
+                }
+
+            }, "json");
+        });
+        $("#btnExportHard").click(function () {
+                    window.location = "@Url.Action("ExportHard")";
+        });
+    });
+    function ImportData()
+    {
+        showLoading();
+        var category = $("input[name='Category']:checked").val();
+        var url = "@Url.Action("Import")?filePath=" + $("#txtExcelPath").val()+"&flag="+category;
+        $.post(url, function (data) {
+            if (data.type == 1) {
+                $("#List").datagrid('load');
+                $('#uploadExcel').window('close');
+                $('#FileUpload').val('');
+            }
+            hideLoading();
+            $.messageBox5s('提示', data.message);
+
+        }, "json");
+    }
+    //---------------------------------导入前编辑---------------------------------
+    function ImportDataBefor()
+    {
+        showLoading();
+        var category = $("input[name='Category']:checked").val();
+        var url = "@Url.Action("ImportBefor")?filePath=" + $("#txtExcelPath").val()+"&flag="+category;
+
+        $('#ListBefor').datagrid({
+            url: url,
+            width: SetGridWidthSub(500),
+            methord: 'post',
+            height: SetGridHeightSub(336),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onClickCell: onClickCell,
+            onEndEdit: onEndEdit,
+            onLoadSuccess:function(data){  
+                $('#uploadExcel').window('close');
+                $('#FileUpload').val('');
+                hideLoading();
+            },
+            columns: [[
+                 { field: 'oper', title: '操作', width: 80,align:'center',formatter:function(value){
+                     return "<a class='fa fa-plus color-grayblack' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-grayblack' href='javascript:removeit()'><a>";
+                 } },
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
+                { field: 'Name', title: '姓名', width: 80, sortable: true,editor: { type: 'textbox', options: { required: true } }  },
+                { field: 'Sex', title: '性别', width: 80, sortable: true,editor: { type: 'textbox', options: { required: true } },formatter:function(value,row){
+                    return row.Sex;
+                },editor:{
+                    type:'combobox',
+                    options:{
+                        valueField:'Id',
+                        required: true,
+                        textField:'Name',
+                        editable:false ,
+                        data: [
+                            {Id:'男',Name:'男'},
+                            {Id:'女',Name:'女'}
+                        ]}}
+                },
+                { field: 'Age', title: '年龄', width: 80, sortable: true,editor: { type: 'textbox', options: { required: true } }  },
+                { field: 'IDCard', title: '证件号', width: 80, sortable: true,editor: { type: 'textbox', options: { required: true } }  },
+                { field: 'Phone', title: '手机号码', width: 80, sortable: true,editor: { type: 'textbox', options: { required: true } }  },
+                { field: 'Email', title: 'Email', width: 80, sortable: true,editor: { type: 'textbox', options: { required: true } }  },
+                { field: 'Address', title: '详细地址', width: 80, sortable: true,editor: { type: 'textbox', options: { required: true } }  },
+                { field: 'CreateTime', title: 'CreateTime', width: 80, sortable: true },
+                { field: 'Region', title: '区域', width: 80, sortable: true,editor: { type: 'textbox', options: { required: true } }  },
+                { field: 'Category', title: '类别', width: 80, sortable: true,editor: { type: 'textbox', options: { required: true } }  }
+            ]]
+        });
+        $("#dataListBefor").window({ title: '保存前编辑', width:( $(window).width()-488), height: ( $(window).height()-250), iconCls: 'fa fa-pencil' }).window('open');
+    }
+
+    //编辑的行
+    var editIndex = undefined;
+    function endEditing() {
+        if (editIndex == undefined){return true}
+        $('#ListBefor').datagrid('endEdit', editIndex);
+        editIndex = undefined;
+        return true;
+    }
+    function onClickCell(index, field){
+        if (editIndex != index) {
+            if (endEditing()) {
+                $('#ListBefor').datagrid('selectRow', index)
+                        .datagrid('beginEdit', index);
+                var ed = $('#ListBefor').datagrid('getEditor', { index: index, field: field });
+                if (ed) {
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                }
+                editIndex = index;
+            } else {
+                setTimeout(function () {
+                    $('#ListBefor').datagrid('selectRow', editIndex);
+                }, 0);
+            }
+        }
+    }
+    function onEndEdit(index, row){
+        var ed = $(this).datagrid('getEditor', {
+            index: index,
+            field: 'Sex'
+        });
+        row.Sex = $(ed.target).combobox('getText');
+
+    }
+    function append(){
+        var index = $('#ListBefor').datagrid('getRowIndex', $('#ListBefor').datagrid('getSelected'));
+        if (index == -1)
+            index = 0;
+        $("#ListBefor").datagrid("insertRow", {
+            index: index+1,
+            row: {oper: "<a class='fa fa-plus' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus' href='javascript:removeit()'>-<a>"}
+        });
+    }
+    function removeit(){
+        if (editIndex == undefined){return}
+        $('#ListBefor').datagrid('selectRow', editIndex);
+
+        $('#ListBefor').datagrid('cancelEdit', editIndex)
+           .datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+    }
+    function accept(){
+        endEditing();
+        var $dg = $('#ListBefor');
+        var rows = $dg.datagrid('getRows');
+           
+        if (rows.length) {
+            showLoading();
+            $.ajax({
+            url: "@Url.Action("SaveBefor")",
+            type: "Post",
+            data:{inserted:JSON.stringify(rows)},
+            dataType: "json",
+            success: function (data) {
+                if(data.type==1)
+                {
+                    hideLoading();
+                    $("#List").datagrid('load');
+                    $('#uploadExcel').window('close');
+                    $('#dataListBefor').window('close');
+                    $.messageBox5s('提示', "保存成功！");
+                }else
+                {
+                    $.messageBox5s('提示', "保存请检查数据的可行性！");
+                }
+            }
+            });
+        }else
+        {
+            $.messageBox5s('提示', "没有数据需要保存！");
+        }
+    }
+
+    function reject(){
+        $('#ListBefor').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+    function getChanges(){
+        var rows = $('#ListBefor').datagrid('getChanges');
+        alert(rows.length+' rows are changed!');
+    }
+
+    function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            if (arr[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $(function(){
+        $("#btnSaveBefor").click(function(){
+            accept();
+        });
+    });
+</script>

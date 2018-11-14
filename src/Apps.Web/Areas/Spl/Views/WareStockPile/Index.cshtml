@@ -1,0 +1,211 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Spl_WareStockPile";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+<form name = "form1" method="post" id="form1">
+    <table>
+        <tr>
+            <th style="padding:20px;"> Excel：</th>
+            <td style="padding:20px;">
+                <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                <a href = "javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
+                <span class="uploading">@Resource.Uploading</span>
+            </td>
+        </tr>
+    </table>
+    <div class="endbtndiv">
+        <a id = "btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+        <a id = "btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+    </div>
+</form>
+</div>
+<table style="width:100%">
+<tbody>
+    <tr>
+        <td style="width:330px;vertical-align: top">
+             <div class="mvctool">
+             </div>
+            <table id="ListParent"></table>
+        </td>        <td style="width:3px;"></td>
+        <td style="vertical-align:top">
+             <div class="mvctool">
+                 <input id="txtQuery" type="text" class="searchText" />
+                 @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+                 @Html.ToolButton("btnQueryList", "fa fa-search", "查看记录",ref perm, "Query", true)
+                 @Html.ToolButton("btnQueryListWareing", "fa fa-search", "查询预警货品", ref perm, "Query", true)
+                 @Html.ToolButton("btnSetWaringVal", "fa fa-pencil", "设置预警货品", ref perm, "Edit", true)
+             </div>
+            <table id="List"></table>
+        </td>
+    </tr>
+</tbody>
+</table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#ListParent').datagrid({
+            url: '@Url.Action("GetListParent")',
+            width:330,
+            methord: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onLoadSuccess: function(data) {            },
+            columns: [[
+                { field: 'Id', title: '主键ID', width: 80,hidden:true },
+                { field: 'Name', title: '仓库名称', width: 80,sortable:true },
+                { field: 'Code', title: '仓库编码', width: 80,sortable:true },
+            ]]
+         ,onClickRow: function(index, row) {
+             $('#List').datagrid("load", { ParentId: row.Id });
+}
+        }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
+         $(window).resize(function() {
+             //resizeLayout();//这个方法缺失
+
+         });
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")?parentId=0',
+            width:SetGridWidthSub(350),
+            methord: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: false,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onLoadSuccess: function(data) {
+            },
+            columns: [[
+                { field: 'Id', title: '主键', width: 80,hidden:true },
+                { field: 'WarehouseId', title: 'WarehouseId', width: 80, sortable: false, hidden: true },
+                 //{ field: 'WareDetailsCode', title: '编号', width: 80, sortable: false },
+                { field: 'WareDetailsId', title: '商品名称', width: 80, sortable: false, hidden: true },
+                { field: 'WareDetailsName', title: '商品名称', width: 280, sortable: false },
+                 { field: 'WareDetailsBrand', title: '品牌', width: 80, sortable: false },
+                 { field: 'Size', title: '品牌', width: 80, sortable: false },
+                { field: 'WareDetailsVender', title: '供货商', width: 80, sortable: false },
+                { field: 'WareDetailsCategory', title: '类别', width: 80, sortable: false },
+                { field: 'FirstEnterDate', title: '最后入库时间', width: 180,sortable:true },
+                { field: 'LastLeaveDate', title: '最后出库时间', width: 180,sortable:true },
+                { field: 'Quantity', title: '库存量', width: 80, sortable: true },
+                { field: 'WaringQuantity', title: '预警值', width: 80, sortable: true },
+                { field: 'WareDetailsUnit', title: '单位', width: 80, sortable: false },
+                { field: 'Price', title: '单价', width: 80,sortable:true },
+                { field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
+                { field: 'WarehouseName', title: '所属仓库', width: 80 }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+        {
+            $("#List").datagrid('load');
+        }
+        else
+        {
+            $("#List,#ListParent").datagrid('reload');
+        }
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnSetWaringVal").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='100%'  frameborder='0' src='/Spl/WareStockPile/Edit?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '设置预警值', width: 700, height: 455, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnQueryList").click(function () {
+            //var row1 = $('#ListParent').datagrid('getSelected');
+            var row = $('#List').datagrid('getSelected');
+            if(row !=null){
+                $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("Watch")?WareDetailsId="+row.WareDetailsId+"&WarehouseId="+row.WarehouseId+"'></iframe>");
+                $("#modalwindow").window({ title: "查看记录", width: 700, height: 400, iconCls: 'fa fa-plus' }).window('open');
+            } else {
+                $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords');
+            }
+           
+        });
+        $("#btnQueryListWareing").click(function () {
+            $("#List").datagrid("load", { queryStr: "querywaring" });
+        });
+        $("#btnQueryListWaring").click(function () {
+           // alert("预警");
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: queryStr});
+        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: queryStr});
+        });
+
+        $("#btnImport").click(function() {
+             $("#txtExcelPath").val("");
+             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 155, iconCls: 'fa fa-level-down' }).window('open');
+        });
+        $("#btnExport").click(function() {
+          $.post("@Url.Action("CheckExportData")", function(data) {
+                if (data.type == 1)
+                {
+                    window.location = "@Url.Action("Export")";
+                }
+                else
+                {
+                $.messageBox5s(Lang.Tip, data.message);
+                }
+            }, "json");
+        });
+       
+    });
+    function ImportData()
+    {
+        showLoading();
+        var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
+        $.post(url, function(data) {
+            if (data.type == 1)
+            {
+             $("#List").datagrid('load');
+             $('#uploadExcel').window('close');
+             $('#FileUpload').val('');
+            }
+            hideLoading();
+            $.messageBox5s('提示', data.message);
+        }, "json");
+    }
+</script>
+

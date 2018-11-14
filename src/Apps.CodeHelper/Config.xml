@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System.Config>
+  <appSettings>
+    <add key="DataBase" value="Integrated Security=false;Initial Catalog=AppsDB;Data Source=.;User ID=sa;Password=zhaoyun123!@#;Connect Timeout=30" />
+    <add key="Path" value="C:\\YmnetsCode\\" />
+  </appSettings>
+</System.Config>

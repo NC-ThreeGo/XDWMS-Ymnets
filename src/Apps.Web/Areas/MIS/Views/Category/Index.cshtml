@@ -1,0 +1,87 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+<div class="mvctool">
+
+    @Html.ToolButton("btnCreate", "fa fa-plus", "新增", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", "编辑", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", "删除", true)
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').treegrid({
+            url: '@Url.Action("GetList")',
+            width:  SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            treeField: 'Name',
+            idField: 'Id',
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: 'ID', width: 100 },
+                { field: 'Name', title: '名称', width: 80 },
+                { field: 'ParentId', title: '上级ID', width: 80 },
+                { field: 'Sort', title: '@Resource.TitleSort', width: 80 },
+                {
+                    field: 'Enable', title: '是否启用', width: 80, formatter: function (value) {
+                        if (value) {
+                            return "<span class='color-green fa fa-circle'></span>";
+                        } else {
+                            return "<span class='color-blue fa fa-circle'></span>";
+                        }
+                    }
+                },
+                { field: 'CreateTime', title: '创建时间', width: 80 }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").treegrid('reload');
+        else
+            $("#List").treegrid('load');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+
+        $("#btnCreate").click(function () {
+            var row = $('#List').treegrid('getSelected');
+            $.modalWindow(Lang.Create, '/MIS/Category/Create?id=' + (row != null ? row.Id : "0") + '&Ieguid=' + GetGuid(), 700, 550, 'fa fa-plus');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').treegrid('getSelected');
+            if (row != null) {
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 550, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').treegrid('getSelected');
+            if (row != null) {
+                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 500, 300, 'fa fa-list');
+            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
+        });
+
+        $("#btnDelete").click(function () {
+            dataDelete("@Url.Action("Delete")", "List");
+	    });
+    });
+</script>

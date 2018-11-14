@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "ReportControl";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        $("#R_rows").keyup(function () {
+            $("#R_rowsAsy").html($("#R_rows").val());
+        });
+        $("#R_All").click(function () {
+            if ($("#R_All").prop("checked")) {
+                $("#R_rows").attr("disabled", "disabled");
+                $("#R_page").attr("disabled", "disabled");
+            }
+            else {
+                $("#R_rows").removeAttr("disabled");
+                $("#R_page").removeAttr("disabled");
+            }
+        });
+        $("#R_Return").click(function () {
+            window.parent.frameReturnByClose();
+        });
+        $("#R_Export").click(function () {
+            $("#R_ErrorMes").html("");
+            if (!$("#R_All").prop("checked")) {
+                if (isNaN($("#R_rows").val())) {
+                    $("#R_ErrorMes").html("记录数必须是数字！");
+                    $("#R_rows").focus();
+                    return;
+                }
+                if (isNaN($("#R_page").val())) {
+                    $("#R_ErrorMes").html("页码必须是数字！");
+                    $("#R_page").focus();
+                    return;
+                }
+            }
+            //主窗体必须包含ExportData()方法
+            var r_rio = $("input:radio[name='R_type']:checked").val();
+            var r_rows = $("#R_rows").val();
+            var r_page = $("#R_page").val();
+            var r_sel = $("#R_queryStr").val();
+            var r_flag = $("#R_All").prop("checked");
+            //选择了导出全部
+            if (r_flag) {
+                r_rows = 0;
+                r_page = 0;
+            }
+            window.parent.ExportData(encodeURI("?type=" + r_rio + "&queryStr=" + r_sel + "&rows=" + r_rows + "&page=" + r_page + ""));
+
+        });
+
+    });
+</script>
+<table style="padding:5px;border-spacing:4px;">
+    <tr>
+    <td style=" text-align:right">导出类型：</td>
+            <td>
+            <input id="R_Radio1" name="R_type" checked="checked" value="PDF" type="radio" /><img alt="pdf" src="/Content/Images/icon/pdft.png" /> 
+            <input id="R_Radio2" name="R_type" value="Excel" type="radio" /><img alt="pdf" src="/Content/Images/icon/excelt.png" /> 
+            <input id="R_Radio3" name="R_type" value="Word" type="radio" /><img alt="pdf" src="/Content/Images/icon/wordt.png" /> 
+    </td></tr>
+    <tr>
+    <td style=" text-align:right">查询条件：</td>
+        <td>
+            <input id="R_queryStr" name="R_queryStr" type="text" />
+        </td>
+    </tr>
+    <tr>
+    <td style=" text-align:right">记录条数：</td>
+        <td>
+           <input style="width: 50px" value="1000" id="R_rows" name="R_rows" type="text" />
+           <input type="checkbox" id="R_All" />全部
+        </td>
+    </tr>
+    <tr>
+        <td style=" text-align:right">从第</td>
+        <td>
+            <input value="1" style="width: 20px" id="R_page" name="R_page" type="text" />
+            ×<span id="R_rowsAsy">1000</span>开始导出
+        </td>
+    </tr>
+    <tr>
+    <td>&nbsp;</td>
+        <td>
+            <a href="javascript:void(0)" class="easyui-linkbutton" id="R_Export" data-options="iconCls:'fa fa-external-link'">导出</a>
+          <a href="javascript:void(0)" class="easyui-linkbutton" id="R_Return" data-options="iconCls:'icon-return'">返回</a>
+          
+            <span id="R_ErrorMes" style="color:Red"></span>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,76 @@
+﻿@model Apps.Models.Sys.SysLogModel
+@using Apps.Common;
+@using Apps.Web.Core;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    
+    List<permModel> perm = null;
+}
+<script type="text/javascript">
+    $(function () {
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    <table class="form_table setinput355">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Operator)
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Operator)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Message)
+                </th>
+                <td>
+                    @Html.TextAreaFor(model => model.Message, new { @style="height:100px;"})
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Result)
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Result)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Type)
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Type)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Module)
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Module)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CreateTime)
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.CreateTime)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

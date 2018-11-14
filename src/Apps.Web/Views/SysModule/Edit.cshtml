@@ -1,0 +1,139 @@
+﻿@model Apps.Models.Sys.SysModuleModel
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+
+    $("#icon").click(function () {
+        //$("#selIcon").toggle();
+        window.parent.openIconList();
+    });
+    $("#selIcon li").click(function () {
+        $("#icon").attr("class", $(this).attr("class"));
+        $("#Iconic").val($(this).attr("class"));
+        $("#selIcon").hide();
+    });
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+            data: $("form").serialize(),
+            dataType: "json",
+            success: function (data) {
+                if (data.type == 1) {
+                    window.parent.frameReturnByMes(data.message);
+                    window.parent.frameReturnByReload(true);
+                    window.parent.frameReturnByClose()
+                }
+                else {
+                    window.parent.frameReturnByMes(data.message);
+                }
+            }
+        });
+    }
+          return false;
+});
+$("#btnReturn").click(function () {
+    window.parent.frameReturnByClose();
+});
+});
+
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             @Html.HiddenFor(model => model.CreateTime)
+             @Html.HiddenFor(model => model.CreatePerson)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Name)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.EnglishName)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.EnglishName)
+           @Html.ValidationMessageFor(model => model.EnglishName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ParentId)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.ParentId)
+            @Html.ValidationMessageFor(model => model.ParentId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Url)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Url)
+            @Html.ValidationMessageFor(model => model.Url)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Iconic)：
+            </th>
+            <td>
+                @Html.HiddenFor(model => model.Iconic)
+                <div id="icon" title="点我选取图标" style="cursor:pointer" class="@(Model.Iconic)"></div>
+                 
+           @Html.ValidationMessageFor(model => model.Iconic)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Sort)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Sort)
+           @Html.ValidationMessageFor(model => model.Sort)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Remark)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Remark)
+            @Html.ValidationMessageFor(model => model.Remark)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Enable)：
+            </th>
+            <td>
+            @Html.RadioFor("Enable", Model.Enable,"是","否")
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.IsLast)：
+            </th>
+            <td>
+                @Html.RadioFor("IsLast", Model.IsLast, "是", "否")</td>
+        </tr>
+       
+    </tbody>
+</table>
+}

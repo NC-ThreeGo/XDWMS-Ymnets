@@ -1,0 +1,39 @@
+﻿@using Apps.Locale;
+<div class="panel-header" style="margin-bottom: 5px;clear:both  ">
+当前版本号：<span id="CurrentVerCode">@ViewBag.vercode</span>&nbsp; 
+<select class="easyui-combogrid" style="width:200px" id="selVer" data-options="
+			panelWidth: 500,
+			idField: 'VerCode',
+			textField: 'Name',
+			url: '/Def/TestJobs/GetList?page=1&sort=CrtDt&rows=1000&order=desc',
+            page:1,
+			columns: [[
+                { field: 'VerCode', title: '版本号', width: 80, sortable: true },
+                { field: 'Name', title: '@Resource.TitleName', width: 110, sortable: true },
+                { field: 'Result', title: '测试结果', width: 80, sortable: true },
+                { field: 'Description', title: '@Resource.TitleRemark', width: 80, sortable: true,hidden:true },
+                { field: 'Creator', title: '@Resource.TitleCreatePerson', width: 80, sortable: true },
+                { field: 'CrtDt', title: '创建日期', width: 120, sortable: true },
+                { field: 'CloseState', title: '关闭状态', width: 80, sortable: true,hidden:true },
+                { field: 'Closer', title: '关闭人', width: 80, sortable: true,hidden:true },
+                { field: 'CloseDt', title: '关闭日期', width: 80, sortable: true,hidden:true },
+                { field: 'Def', title: '默认任务', width: 80, sortable: true,hidden:true },
+                { field: 'CheckFlag', title: '锁定状态', width: 80, sortable: true ,hidden:true}
+            ]], 
+            onClickRow: function (index, data) {
+
+                var v =  $('#selVer').combogrid('getValue');
+                $('#List').datagrid('load', { vercode:v });
+                $('#vercode').val(v);
+                 $('#CurrentVerCode').html(v);
+            },
+            onLoadSuccess:function (data) {
+                $('#selVer').combogrid('setValue','@ViewBag.vercode');
+            },
+			fitColumns: true
+		">
+    </select>
+
+    <input type="hidden" value="@ViewBag.testflag" id="testflag" />
+     <input type="hidden" value="@ViewBag.vercode" id="vercode" />
+    </div>

@@ -1,0 +1,34 @@
+﻿@using Apps.Locale
+@model Apps.Models.Sys.AccountModel
+@{
+    Layout = null;
+}
+
+
+<ul class="dropdown-menu">
+    <!-- User image -->
+    <li class="user-header">
+        <img src="@Model.Photo" class="img-circle" alt="User Image">
+        <p>
+            Alexander Pierce - Web Developer
+            <small>Member since Nov. 2012</small>
+        </p>
+    </li>
+    <!-- Menu Body -->
+    @*<li class="user-body">
+        <div class="col-xs-4 text-center">
+            <a href="#">Followers</a>
+        </div>
+        <div class="col-xs-4 text-center">
+            <a href="#">Sales</a>
+        </div>
+        <div class="col-xs-4 text-center">
+            <a href="#">Friends</a>
+        </div>
+    </li>*@
+    <!-- Menu Footer-->
+    <li class="endbtndiv" style="margin-top:5px;">
+        <a href="javascript:Profile();" class="easyui-linkbutton btns" style="float:left; margin-left:10px;">@Resource.Profile</a>
+        <a href="javascript:SignOut();" class="easyui-linkbutton btnc" style="width:80px;">@Resource.SignOut</a>
+    </li>
+</ul>

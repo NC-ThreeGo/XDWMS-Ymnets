@@ -1,0 +1,14 @@
+﻿<!--自动GRID 从第一次加载与重置窗体大小时候发生的事件:分部视图，当只有一个Grid时且ID为List-->
+<script type="text/javascript">
+    $(function () {
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+              
+            }).datagrid('resize', {
+                width:  SetGridWidthSub(10),
+                height: SetGridHeightSub(37)
+            });
+        });
+        
+    });
+</script>

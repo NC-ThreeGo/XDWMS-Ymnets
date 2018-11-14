@@ -1,0 +1,288 @@
+﻿@model Apps.Models.Flow.Flow_StepModel
+@using Apps.Common;
+@using Apps.Models.Flow;
+@using Apps.Web.Core;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@using Apps.Models.Enum;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+    Flow_FormModel formModel = (Flow_FormModel)ViewBag.Form;
+}
+
+<script type="text/javascript">
+    $(function () {
+        $(".fa-trash").click(function () {
+            if ($(this).next("a").attr("class") == "accordion-collapse accordion-expand") {
+                $(this).next("a").trigger("click");
+            }
+        });
+        $("#FlowRule").change(function () {
+            $("#Execution").val("");
+            $("#ExecutionName").val("");
+            if ($("#FlowRule").val() == "@((int)FlowRuleEnum.Lead)" || $("#FlowRule").val() == "@((int)FlowRuleEnum.Customer)") {
+                $("#ruleExecution").hide();
+            } else if ($("#FlowRule").val() == "@((int)FlowRuleEnum.Position)") {
+                $("#selExc").html("审批职位");
+                $("#ruleExecution").show();
+            }
+            else if ($("#FlowRule").val() == "@((int)FlowRuleEnum.Department)") {
+                $("#selExc").html("审批部门");
+                $("#ruleExecution").show();
+            } else if ($("#FlowRule").val() == "@((int)FlowRuleEnum.Person)") {
+                $("#selExc").html("审批人员");
+                $("#ruleExecution").show();
+            }
+        });
+        $("#selExc").click(function () {
+            var html = $("#selExc").html()
+            if (html == "审批人员") {
+                $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/UserLookUp'></iframe>");
+                $("#modalwindow").window({ title: '选择人员', width: 620, height: 388, iconCls: 'fa fa-plus' }).window('open');
+            } else if (html == "审批职位") {
+                $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/PosMulLookUp'></iframe>");
+                $("#modalwindow").window({ title: '选择职位', width: 620, height: 388, iconCls: 'fa fa-plus' }).window('open');
+            } else if (html == "审批部门") {
+                $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/DepMulLookUp'></iframe>");
+                $("#modalwindow").window({ title: '选择部门', width: 320, height: 300, iconCls: 'fa fa-plus' }).window('open');
+            }
+        });
+    });
+
+    var idx = @(formModel.stepList.Count());
+    function Create() {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("EditStep")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    var stepId = data.value;
+                    var currentIDX = idx + 1;
+                    $('#stepList').accordion('add', {
+                        title: '第 ' + (idx + 1) + ' 步',
+                        iconCls: 'pic_244',
+                        content: '<table class="formtablenormal"><tr><th style="width:100px;" >'+'@Html.LabelFor(model => model.Name)'+'：</th><td>'+$("#Name").val()+'</td></tr><tr><th >'+'@Html.LabelFor(model => model.Remark)'+'：</th><td>'+$("#Remark").val()+'</td></tr></table>',
+                        tools: [{
+                            iconCls: 'fa fa-trash',
+                            handler: function (i) {
+                                DeleteStep(stepId);
+                            }
+                        }]
+                    });
+                    idx++;
+                    $("#Sort").val(idx);
+                    $(".fa-trash").click(function () {
+                        if ($(this).next("a").attr("class") == "accordion-collapse accordion-expand") {
+                            $(this).next("a").trigger("click");
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function DeleteStep(stepId)
+    {
+        $.messager.confirm(index_lang_tip, '你要删除当前步骤及条件吗？', function (r) {
+            if (r) {
+                $.post("@Url.Action("DeleteStep")?id=" + stepId, function (data) {//从数据库删除
+                    if (data.type == 1)
+                    {
+                        var pp = $('#stepList').accordion('getSelected');
+                        if (pp) {
+                            var index = $('#stepList').accordion('getPanelIndex', pp)
+
+                            $('#stepList').accordion('remove', index);
+                            idx--;
+                            //删除后需要重新设置标题
+                            $("#stepList .panel .panel-title").each(function (i) {
+                                $(this).html('第 ' + (i + 1) + ' 步');
+                            })
+                        }
+                        $.messageBox5s(Lang.Tip, data.message);
+                    }
+                }, "json");
+
+            }
+        });
+    }
+
+    function SetSelResult(result,resultName)
+    {
+
+        $("#Execution").val(result);
+        $("#ExecutionName").val(resultName);
+    }
+    function GetSelResult()
+    {
+        var arrayObj = new Array()
+        arrayObj[0]= $("#Execution").val();
+        arrayObj[1]= $("#ExecutionName").val();
+        return arrayObj;
+    }
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+</script>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+
+
+<table style="height: 407px;width:100%">
+    <tr>
+        <td style="width: 480px; border-right: 1px #ccc solid; vertical-align: top">
+            @using (Html.BeginForm())
+            {
+            @Html.HiddenFor(model => model.FormId)
+            @Html.HiddenFor(model => model.Sort)
+    <table class="formtable" >
+        <tbody>
+            <tr>
+                <th>
+                    <label>表单名称：</label>
+                </th>
+                <td colspan="2">
+                    @Html.DisplayFor(model => formModel.Name)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Name)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Remark)：
+                </th>
+                <td colspan="2">
+                    @Html.TextAreaFor(model => model.Remark, new { @style = "width:330px;height:50px" })
+                </td>
+
+            </tr>
+
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.FlowRule)：
+                </th>
+                <td>
+                    <select id="FlowRule" name="FlowRule">
+                        <option value="@((int)FlowRuleEnum.Customer)">自行指定人</option>
+                        <option value="@((int)FlowRuleEnum.Lead)">按上级</option>
+                        <option value="@((int)FlowRuleEnum.Position)">按职位</option>
+                        <option value="@((int)FlowRuleEnum.Department)">按部门</option>
+                        <option value="@((int)FlowRuleEnum.Person)">按人员</option>
+                    </select>
+                    @Html.ValidationMessageFor(model => model.FlowRule)
+                </td>
+            </tr>
+            <tr id="ruleExecution" style="display: none">
+                <th>
+                    @Html.LabelFor(model => model.Execution)：
+                </th>
+                <td colspan="2">
+                    @Html.HiddenFor(model => model.Execution)
+                    <input id="ExecutionName" disabled="disabled" type="text" style="width: 200px" />
+                    <a class="fa fa-plus" id="selExc" href="#"></a>
+                    @Html.ValidationMessageFor(model => model.Execution)
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.IsAllCheck)：
+                </th>
+                <td colspan="2">
+                    @Html.CheckBoxFor(model => model.IsAllCheck, new { @checked = "checked" })
+                    <span class="gray">启用后，当步骤下所有人需要都通过表单才算通过</span>
+                </td>
+
+            </tr>
+
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CompulsoryOver)：
+                </th>
+                <td colspan="2">
+                    @Html.CheckBoxFor(model => model.CompulsoryOver)
+                    <span class="gray">审核人是否可以强制完成整个流程</span>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.IsEditAttr)：
+                </th>
+                <td colspan="2">
+                    @Html.CheckBoxFor(model => model.IsEditAttr)
+                    <span class="gray">审核者是否可以编辑发起者的申请</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="endbtndiv">
+                        <a id="btnSave" href="javascript:Create()" class="easyui-linkbutton btns">添加</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+            }
+
+        </td>
+        <td style="width: 412px;" valign="top">
+            <div id="stepList" class="easyui-accordion" data-options="animate:false,fit:true" style="border: 0px;">
+                @for (int i = 0; i < formModel.stepList.Count(); i++)
+{
+    <div title="第 @(i + 1) 步" data-options="
+                tools:[{
+                iconCls:'fa fa-trash',
+                handler:function(){
+                 DeleteStep('@(formModel.stepList[i].Id)');
+                }
+         }]">
+            <table class="formtablenormal">
+                <tr>
+                    <th style="width:120px">步骤名称：</th>
+                    <td>@formModel.stepList[i].Name</td>
+                </tr>
+                <tr>
+                    <th>步骤说明：</th>
+                    <td>@formModel.stepList[i].Remark</td>
+                </tr>
+                <tr>
+                    <th>步骤规则：</th>
+                    <td>@formModel.stepList[i].FlowRule</td>
+                </tr>
+                <tr>
+                    <th>步骤审核者：</th>
+                    <td>@formModel.stepList[i].Execution</td>
+                </tr>
+                <tr>
+                    <th>启用会签：</th>
+                    <td>@(formModel.stepList[i].IsAllCheck ? "是" : "否")</td>
+                </tr>
+                <tr>
+                    <th>强制完成：</th>
+                    <td>@(formModel.stepList[i].CompulsoryOver ? "是" : "否")</td>
+                </tr>
+                <tr>
+                    <th>编辑附件：</th>
+                    <td>@(formModel.stepList[i].IsEditAttr ? "是" : "否")</td>
+                </tr>
+            </table>
+
+    </div>
+}
+
+            </div>
+        </td>
+    </tr>
+</table>
+

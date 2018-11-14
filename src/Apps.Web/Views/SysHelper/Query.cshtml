@@ -1,0 +1,649 @@
+﻿@using System.Globalization;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "全能查询";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+
+@{
+    //权限设置
+    List<permModel> perm = (List<permModel>)ViewBag.perm;
+   
+    if (perm == null)
+    {
+        perm = new List<permModel>();
+    }
+    
+}
+<style type="text/css">
+<!--
+#tabs #tabs-1 {
+	height: 220px;
+}
+
+#tabs #tabs-2 {
+	height: 220px;
+}
+#tabs {
+	width: 420px;
+}
+
+
+#tabs-2div {
+	height: 230px;
+	width: 400px;
+	overflow: auto;
+}
+#tab2_table input
+{
+    width:80px;
+    }
+   
+.searchtb-tit,.searchtb-content{ background:#a5cbe7}
+.searchtb-tit tr th{ background:url("/Content/themes/blue/images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #DFEFFC}
+.searchtb-content tr td{ background:#fff}
+.searchtb-content input[type="text"],.searchtb-content input[type="password"],.searchtb-content select{ border:0}
+
+-->
+    </style>
+
+ <div id="tt" class="easyui-tabs" style="width: 450px; height: 280px;">
+                    <div title="简单查询" style="padding: 20px; ">
+                       <div class="fl">
+            <div class="pb10">
+                选择字段:
+            </div>
+            <div>
+                <select name="fieldList" id="fieldList" size="10" style="width: 125px; height: 188px;">
+                    <option value="1">xxx</option>
+                    <option value="2">xxx</option>
+                    <option value="3">xxx</option>
+                </select>
+            </div>
+        </div>
+        <div class="fr">
+            <div class="pb10">
+                查询字段:<label id="queryField"></label></div>
+            <div class="pb5">
+                <label>
+                    查询值1:</label><input name="queryText1" id="queryText1" type="text" value="" size="16" /></div>
+            <div class="pb5" id="queryText2Box">
+                <label>
+                    查询值2:</label><input name="queryText2" id="queryText2" type="text" value="" size="16" /></div>
+            <form action="" method="get">
+            <fieldset style="width: 200px; margin-left: 0; padding: 10px">
+                <legend style="width: 60px">查询类型</legend>
+                <table id="tab1_sqltype">
+                    <tr>
+                        <td>
+                            <input id="like" type="radio" name="radio" checked="checked" />
+                        </td>
+                        <td>
+                            like
+                        </td>
+                        <td>
+                            模糊查询
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="eq" type="radio" name="radio" />
+                        </td>
+                        <td>
+                            =
+                        </td>
+                        <td>
+                            等于
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="gt" type="radio" name="radio" />
+                        </td>
+                        <td>
+                            >=
+                        </td>
+                        <td>
+                            大于且等于
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="lt" type="radio" name="radio" />
+                        </td>
+                        <td>
+                            <=
+                        </td>
+                        <td>
+                            少于且等于
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="bt" type="radio" name="radio" />
+                        </td>
+                        <td>
+                            between
+                        </td>
+                        <td>
+                            范围查询
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+            </form>
+        </div>
+                    </div>
+                    <div title="组合查询" style="overflow: auto; padding: 20px;">
+                     <div id="tabs-2div">
+            <div class="ui-state-default ui-jqgrid-hdiv" style="width: 390px; border: 0; background: none">
+                <div class="ui-jqgrid-hbox">
+                    <table class="searchtb-tit" cellpadding="0" cellspacing="1" border="0">
+                        <tr visible="false">
+                            <th scope="col" class="style2" style="width: 80px;">
+                                字段
+                            </th>
+                            <th scope="col" class="style3" style="width: 68px;">
+                                类别
+                            </th>
+                            <th scope="col" class="style2" style="width: 80px;">
+                                查询值1
+                            </th>
+                            <th scope="col" class="style2" style="width: 80px;">
+                                查询值2
+                            </th>
+                            <th scope="col" class="style2" style="width: 60px;">
+                                组合
+                            </th>
+                            <th style="width: 16px">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <div style="overflow: scroll; height: 200px;">
+                                    <table id="tab2_table" class="searchtb-content" cellspacing="1" cellpadding="0" border="0">
+                                        <tr>
+                                            <td width="80px">
+                                                <input type="text" value="" id="fieldname1" name="fieldname1" class="fieldname" size="10" />
+                                                <input class="fieldcode" id="fieldcode1" type="hidden" />
+                                                <input class="t2datatype" id="t2datatype1" type="hidden" />
+                                                <input class="t2connectcode" id="t2connectcode1" type="hidden" />
+                                                <input class="t2inflag" id="t2inflag1" type="hidden" />
+                                                <input class="t2insql" id="t2insql1" type="hidden" />
+                                            </td>
+                                            <td width="68px">
+                                                <select name="querytype1" id="querytype1" class="querytype" style="width: 55px; height: 100%;">
+                                                    <option value="like">like</option>
+                                                    <option value="=">=</option>
+                                                    <option value="&rsaquo;=">>=</option>
+                                                    <option value="&lsaquo;="><=</option>
+                                                    <option value="between">between</option>
+                                                </select>
+                                            </td>
+                                            <td width="80px">
+                                                <input style="width: 80px" class="vala" name="vala1" id="vala1" type="text" value=""
+                                                    size="5" />
+                                            </td>
+                                            <td width="80px">
+                                                <input style="width: 80px" class="valb" name="valb1" id="valb1" type="text" value=""
+                                                    size="5" />
+                                            </td>
+                                            <td width="60px">
+                                                <select class="logic" name="logic1" id="logic1" style="width: 55px; height: 100%;">
+                                                    <option value="and" selected="selected">而且</option>
+                                                    <option value="or">或者</option>
+                                                    <option value="no">×</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+                    </div>
+                </div>
+
+
+<div class="txt-r pr10">
+        <a id="btnOk" class="but-search" href="javascript:void(0)"><span class="butsbg-second">
+            <span class="buts-icon">查询</span> </span></a><a id="btnCancel" class="but-return"
+                href="javascript:void(0)"><span class="butsbg-second"><span class="buts-icon">取消</span>
+                </span></a>
+    </div>
+<script type="text/javascript">
+    //调试模式
+    var DEBUG = false;
+    var flist = window.parent.InitQueryAll();
+
+    /*编码格式
+    代码code:splno,
+    名称name:样品单号,
+    数据类型datatype:t,d,n,//t:文本,d:日期,n:数值
+    默认连接符connectcode:like,=,>=,<=,between,
+    是否使用in语句inflag:1/0,
+    in语句insql=select customerid from ba_customer where customerid +name like '参数%' 
+            
+    例：
+    flist = new Array(
+    "splno,样品单号,t,like,0,0,",
+    'stylePno,型体号,t,like,0,0',
+    'customerId,客户编号,t,between,1,select customerid from ba_customer where customerid +name like ',
+    'RequestDate,交期,d,like,0,0',
+    );
+    */
+    //全局变量
+    var curCode, curName, curDataType, curConnectCode, curInFlag, curInSql;
+
+    function validateSQL(sql) {
+        if (sql.search(/delete/i) >= 0) {
+            alert("含有非法字符DELETE!");
+            return false;
+        }
+        if (sql.search(/update/i) >= 0) {
+            alert("含有非法字符UPDATE!");
+            return false;
+        }
+
+        if (sql.search(/insert/i) >= 0) {
+            alert("含有非法字符INSERT!");
+            return false;
+        }
+        return true;
+
+    };
+    $(function () {
+        $('#tabs').tabs();
+        //初始化tab-1
+        function initTab1() {
+            $("#fieldList").html("");
+            var opt = "";
+
+            for (i = 0; i < flist.length; i++) {
+                var rowVal = flist[i].split(',');
+                //生成列表
+                if (i == 0) {
+                    curCode = rowVal[0];
+                    curName = rowVal[1];
+                    curDataType = rowVal[2];
+                    curConnectCode = rowVal[3];
+                    curInFlag = rowVal[4];
+                    curInSql = rowVal[5];
+                    opt = opt + "<option selected='selected' InSql='" + curInSql + "' InFlag='" + curInFlag + "' ConnectCode='" + curConnectCode + "' datatype='" + curDataType + "' value='" + curCode + "'>" + curName + "</option>";
+                    //设置连接符默认值
+                    $("#" + curConnectCode + "").prop("checked", true)
+                    $("#queryField").html(curName);
+                } else {
+                    var Code = rowVal[0];
+                    var Name = rowVal[1];
+                    var DataType = rowVal[2];
+                    var ConnectCode = rowVal[3];
+                    var InFlag = rowVal[4];
+                    var InSql = rowVal[5];
+                    opt = opt + "<option InSql='" + InSql + "' InFlag='" + InFlag + "' ConnectCode='" + ConnectCode + "' datatype='" + DataType + "' value='" + Code + "'>" + Name + "</option>";
+
+                }
+
+                //alert(rowVal[0] + '--' + rowVal[1]);
+            }
+            $("#fieldList").html(opt);
+        };
+        //初始化tab-2
+        function initTab2() {
+            var rowhtml = "";
+
+            for (i = 0; i < flist.length; i++) {
+
+                //生成列表
+                $("#tab2_table tr:eq(0)").clone().appendTo($("#tab2_table"));
+            }
+            $("#tab2_table tr:eq(0)").remove();
+
+            for (i = 0; i < flist.length; i++) {
+                var rowVal = flist[i].split(',');
+                $(".fieldcode:eq(" + i + ")").val(rowVal[0]);
+                $(".fieldname:eq(" + i + ")").val(rowVal[1]);
+                $(".t2datatype:eq(" + i + ")").val(rowVal[2]);
+                $(".t2connectcode:eq(" + i + ")").val(rowVal[3]);
+                $(".t2inflag:eq(" + i + ")").val(rowVal[4]);
+                $(".t2insql:eq(" + i + ")").val(rowVal[5]);
+
+                $(".fieldcode:eq(" + i + ")").attr("id", "fieldcode" + i);
+                $(".fieldname:eq(" + i + ")").attr("id", "fieldname" + i);
+                $(".t2datatype:eq(" + i + ")").attr("id", "t2datatype" + i);
+                $(".t2connectcode:eq(" + i + ")").attr("id", "t2connectcode" + i);
+                $(".t2inflag:eq(" + i + ")").attr("id", "t2inflag" + i);
+                $(".t2insql:eq(" + i + ")").attr("id", "t2insql" + i);
+
+                $(".querytype:eq(" + i + ")").attr("id", "querytype" + i);
+                $(".vala:eq(" + i + ")").attr("id", "vala" + i);
+                $(".valb:eq(" + i + ")").attr("id", "valb" + i);
+                $(".logic:eq(" + i + ")").attr("id", "logic" + i);
+            }
+        };
+        //初始化
+        function initPage() {
+            initTab1();
+            initTab2();
+            $("#queryText2Box").hide();
+            $("#queryText1").focus();
+
+        };
+        initPage();
+        //返回列表
+        $("#btnCancel").click(function () {
+            window.parent.ReturnCloseDialog();
+        });
+        $("#fieldList").click(function (e) {
+
+            curCode = $(e.target).val();
+            curName = $("#fieldList option[value='" + curCode + "']").text();
+            curDataType = $("#fieldList option[value='" + curCode + "']").attr("datatype");
+            curConnectCode = $("#fieldList option[value='" + curCode + "']").attr("ConnectCode"); ;
+            curInFlag = $("#fieldList option[value='" + curCode + "']").attr("InFlag"); ;
+            curInSql = $("#fieldList option[value='" + curCode + "']").attr("InSql"); ;
+
+            $("#queryField").html(curName);
+            //设置连接符默认值
+            $("#" + curConnectCode + "").prop("checked", true);
+            if (curConnectCode == "bt") {
+                $("#queryText2Box").show();
+            } else {
+                $("#queryText2Box").hide();
+            }
+        });
+        //显示查询值2
+        $("#bt").click(function () {
+            $("#queryText2Box").show();
+        });
+        $("input[type='radio']").not("#bt").click(function () {
+            $("#queryText2Box").hide();
+        });
+
+        //tab_1
+        function queryTab1() {
+            var $radio = $("input[type='radio']");
+            var queryText1 = $("#queryText1").val();
+            var queryText2 = $("#queryText2").val();
+
+            if (curCode == null || curCode == "undefined") {
+                alert("请选择查询字段");
+                return;
+            }
+
+            if (curDataType == "n") {
+                if (isNaN(Number(queryText1))) {
+                    alert("查询值1非数字");
+                    return;
+
+                }
+            }
+            if (curDataType == "d") {
+                if (isDate(queryText1) == false) {
+                    alert("查询值1非日期");
+                    return;
+
+                }
+            }
+            var checked = "";
+            var oparm = "";
+            var sqlWhere = "";
+            //alert(curDataType);
+            for (i = 0; i < 5; i++) {
+                checked = $radio[i].checked;
+                oparm = $radio[i].id;
+
+                if (checked) {
+                    if (oparm == "like") {
+                        if (curInFlag == 0) {
+                            sqlWhere = curCode + " like '%" + queryText1 + "%'";
+                        } else {
+                            //带模糊in查询
+                            sqlWhere = curCode + " in (" + curInSql + "'%" + queryText1 + "%')";
+                        }
+                    } else {
+                        //非like查询模式检查
+                        if (queryText1 == null || queryText1 == "undefined" || queryText1 == "") {
+                            alert("查询值1不能为空");
+                            return;
+                        }
+
+                    }
+                    if (oparm == "eq") {
+
+                        if (curDataType == "t" || curDataType == "d") {
+                            sqlWhere = curCode + " = '" + queryText1 + "'";
+                        } else {
+                            sqlWhere = curCode + " = " + queryText1;
+                        }
+                    }
+                    if (oparm == "gt") {
+
+                        if (curDataType == "t" || curDataType == "d") {
+                            sqlWhere = curCode + " >= '" + queryText1 + "'";
+                        } else {
+                            sqlWhere = curCode + " >= " + queryText1;
+                        }
+                    }
+                    if (oparm == "lt") {
+
+                        if (curDataType == "t" || curDataType == "d") {
+                            sqlWhere = curCode + " <= '" + queryText1 + "'";
+                        } else {
+                            sqlWhere = curCode + " <= " + queryText1;
+                        }
+                    }
+                    if (oparm == "bt") {
+                        if (queryText2 == null || queryText2 == "undefined" || queryText2 == "") {
+                            alert("查询值2不能为空");
+                            return;
+                        }
+                        if (curDataType == "t") {
+                            sqlWhere = curCode + " BETWEEN '" + queryText1 + "' and '" + queryText2 + "'";
+                            break;
+                        }
+                        if (curDataType == "n") {
+                            //alert(curDataType);
+                            if (isNaN(Number(queryText1))) {
+                                alert("查询值1非数字");
+                                return;
+
+                            }
+                            if (isNaN(Number(queryText2))) {
+                                alert("查询值2非数字");
+                                return;
+
+                            }
+                            sqlWhere = curCode + " BETWEEN " + queryText1 + " and " + queryText2;
+                            break;
+                        }
+                        if (curDataType == "d") {
+                            if (isDate(queryText1) == false) {
+                                alert("查询值1非日期");
+                                return;
+
+                            }
+                            if (isDate(queryText2) == false) {
+                                alert("查询值2非日期");
+                                return;
+
+                            }
+                            sqlWhere = curCode + " BETWEEN '" + queryText1 + "' and '" + queryText2 + "'";
+                            break;
+                        }
+                    }
+                }
+            }
+            //检查sql中是否有非法字符
+            if (validateSQL(sqlWhere) == false) {
+                return;
+            }
+            if (DEBUG == true) {
+                alert(sqlWhere);
+            }
+            {
+                window.parent.ReturnQueryAll(sqlWhere);
+            }
+
+        };
+
+        //tab_2
+        function queryTab2() {
+            var rowcount = $(".fieldcode").length;
+            var sqlWhere = "";
+
+            var fieldcode, fieldname, t2datatype, t2connectcode, t2inflag, t2insql, querytype, vala, valb, logic;
+            var sql1 = "", sql2 = "";
+            for (i = 0; i < rowcount; i++) {
+
+                fieldcode = $(".fieldcode:eq(" + i + ")").val();
+                fieldname = $(".fieldname:eq(" + i + ")").val();
+                t2datatype = $(".t2datatype:eq(" + i + ")").val();
+                t2connectcode = $(".t2connectcode:eq(" + i + ")").val();
+                t2inflag = $(".t2inflag:eq(" + i + ")").val();
+                t2insql = $(".t2insql:eq(" + i + ")").val();
+
+                querytype = $(".querytype:eq(" + i + ")").val();
+                vala = $(".vala:eq(" + i + ")").val();
+                valb = $(".valb:eq(" + i + ")").val();
+                logic = $(".logic:eq(" + i + ")").val();
+                //非查询条件
+                if (logic == "no") {
+                    continue;
+                }
+                if (querytype == "between") {
+                    if (vala == "" || vala == null || vala == "undefined") {
+                        alert(fieldname + "查询值1不能为空");
+                        return;
+                    }
+                    if (valb == "" || valb == null || valb == "undefined") {
+                        alert(fieldname + "查询值2不能为空");
+                        return;
+                    }
+                    if (t2datatype == "n") {
+                        if (isNaN(Number(vala))) {
+                            alert(fieldname + "查询值1非数字");
+                            return;
+
+                        }
+                        if (isNaN(Number(valb))) {
+                            alert(fieldname + "查询值2非数字");
+                            return;
+
+                        }
+                        sql1 = fieldcode + " " + querytype + " " + vala + " and " + valb + "  " + logic + " ";
+                        sqlWhere = sqlWhere + sql1;
+                        continue;
+                    }
+                    if (t2datatype == "t") {
+                        sql1 = fieldcode + " " + querytype + " '" + vala + "' and '" + valb + "'  " + logic + " ";
+                        sqlWhere = sqlWhere + sql1;
+                        continue;
+                    }
+                    if (t2datatype == "d") {
+                        if (isDate(vala) == false) {
+                            alert("查询值1非日期");
+                            return;
+
+                        }
+                        if (isDate(valb) == false) {
+                            alert("查询值2非日期");
+                            return;
+
+                        }
+                        sql1 = fieldcode + " " + querytype + " '" + vala + "' and '" + valb + "'  " + logic + " ";
+                        sqlWhere = sqlWhere + sql1;
+                        continue;
+                    }
+
+                }
+                //非like
+                if (querytype != "like") {
+                    if (vala == "" || vala == null || vala == "undefined") {
+                        alert(fieldname + "查询值1不能为空");
+                        return;
+                    }
+                    if (t2datatype == "n") {
+                        if (isNaN(Number(vala))) {
+                            alert(fieldname + "查询值1非数字");
+                            return;
+
+                        }
+                        sql1 = fieldcode + " " + querytype + " " + vala + "  " + logic + " ";
+                        sqlWhere = sqlWhere + sql1;
+                        continue;
+                    }
+                    if (t2datatype == "t") {
+                        sql1 = fieldcode + " " + querytype + " '" + vala + "'  " + logic + " ";
+                        sqlWhere = sqlWhere + sql1;
+                        continue;
+                    }
+                    if (t2datatype == "d") {
+                        if (isDate(vala) == false) {
+                            alert("查询值1非日期");
+                            return;
+
+                        }
+                        sql1 = fieldcode + " " + querytype + " '" + vala + "'  " + logic + " ";
+                        sqlWhere = sqlWhere + sql1;
+                        continue;
+                    }
+
+                } else {
+                    if (t2inflag == 0) {
+                        sql1 = fieldcode + " " + querytype + " '%" + vala + "%'  " + logic + " ";
+                        sqlWhere = sqlWhere + sql1;
+                        continue;
+                    } else {
+                        sql1 = fieldcode + " in (" + t2insql + " '%" + vala + "%')  " + logic + " ";
+                        sqlWhere = sqlWhere + sql1;
+                        continue;
+                    }
+                }
+
+
+
+            }
+
+            if (sqlWhere == null || sqlWhere.length < 1) {
+                alert("没有设置查询条件");
+                return;
+            }
+
+            //去掉参数后3位
+            var sql = sqlWhere.substring(0, sqlWhere.length - 4);
+            //$("#sqlText").text(sql);
+
+            //检查sql中是否有非法字符
+            if (validateSQL(sql) == false) {
+                return;
+            }
+            if (DEBUG == true) {
+                alert(sql);
+            } else {
+                window.parent.ReturnQueryAll(sqlWhere);
+            }
+        }
+        //查询
+        $("#btnOk").click(function () {
+            var selected = $(".tabs-selected .tabs-inner .tabs-title").text();
+
+            if (selected == "简单查询") {
+                //执行简单查询
+                queryTab1();
+            } else {
+                //执行组合查询
+                queryTab2();
+
+            }
+        });
+        //取消
+        $("#cancel").click(function () {
+
+        });
+    });
+</script>

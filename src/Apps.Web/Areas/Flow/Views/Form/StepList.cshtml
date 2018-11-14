@@ -1,0 +1,61 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+
+<table id="List"></table>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetStepList")?id=@(ViewBag.FormId)',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height:  SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'asc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'StepNo', title: '步骤', width: 80, sortable: false },
+                { field: 'Id', title: '', width: 80, hidden: true, sortable: false },
+                { field: 'Name', title: '步骤名称', width: 80, sortable: false },
+                { field: 'Remark', title: '步骤说明', width: 280, sortable: false },
+                { field: 'Sort', title: '@Resource.TitleSort', width: 80, sortable: false, hidden: true },
+                { field: 'FormId', title: '所属表单', width: 80, sortable: false, hidden: true },
+                { field: 'FlowRule', title: '流转规则', width: 80, sortable: false },
+                { field: 'Action', title: '操作分支', align: 'center', width: 80, sortable: false }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    function SetRule(stepId)
+    {
+        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/Flow/Form/StepRuleList?stepId=" + stepId + "&formId=@(ViewBag.FormId)'></iframe>");
+        $("#modalwindow").window({ title: '设置分支', width: 620, height: 300, iconCls: 'fa fa-plus' }).window('open');
+    }
+</script>

@@ -1,0 +1,152 @@
+﻿@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+
+    List<permModel> perm = null;
+}
+<div class="mvctool">
+    <select class="searchDrop" id="selCheck">
+        <option value="1">全部</option>
+        <option value="2">审核</option>
+        <option value="3">未审核</option>
+    </select>
+   <input id="txtQuery" placeholder="请输入关键字" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+    @Html.ToolButton("btnCheck", "fa  fa-check", Resource.Check,ref perm, "Check", true)
+    @Html.ToolButton("btnUnCheck", "fa  fa-ban", Resource.UnCheck,ref perm, "UnCheck", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'Sort',
+            sortOrder: 'asc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: 'ID', width: 80, hidden: true },
+                { field: 'ChannelId', title: '频道', width: 80, sortable: true, hidden: true },
+                { field: 'CategoryId', title: '栏目', width: 80, sortable: false, hidden: true },
+                { field: 'CategoryName', title: '栏目', width: 80, sortable: true },
+                { field: 'Title', title: '标题', width: 180, sortable: false },
+                { field: 'ImgUrl', title: '图片', width: 80, sortable: false, align: 'center', formatter: function (value) { if (value != null) { return "<img src='" + value + "' style='width:80px;height:60px' />"; } return ""; } },
+                { field: 'Sort', title: '@Resource.TitleSort', width: 40, sortable: true },
+                { field: 'Click', title: '点击率', width: 40, align: "right", sortable: true },
+                {
+                   field: 'CheckFlag', title: '是否审核', width: 50, align: "center", sortable: true, formatter: function (value) { return CheckFormatter(value) }
+                },
+                { field: 'Checker', title: '审核人', width: 80, sortable: true, hidden: true },
+                { field: 'CheckerName', title: '审核人', width: 80, sortable: true },
+                { field: 'CheckDateTime', title: '审核时间', width: 80, sortable: true },
+                { field: 'Creater', title: '创建人', width: 80, sortable: true, hidden: true },
+                { field: 'CreaterName', title: '创建人', width: 80, sortable: true },
+                { field: 'CreateTime', title: '创建时间', width: 80, sortable: true },
+                { field: 'CustomLink', title: '', width: 80, sortable: true,hidden:true },
+                {
+                    field: 'IsType', title: '文章类型', width: 80, sortable: true, formatter: function (value) {
+                        if (value == 1) {
+                            return "幻灯片";
+                        } else if (value == 2) {
+                            return "首页栏目";
+                        } else {
+                            return "普通文章";
+                        }
+                    }
+                }
+            ]]
+        }).datagrid({
+            rowStyler: function (index, row) {
+                if (row.CheckFlag == 1) {
+                   // return 'color:blue;';
+                }
+            }
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            $.modalWindow(Lang.Create, '/MIS/ManageArticle/Create', 700, 600, 'fa fa-plus');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 600, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
+        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: encodeURI(queryStr), checkFlag: $("#selCheck").val() });
+        });
+        $("#btnDelete").click(function () {
+            dataDelete("@Url.Action("Delete")", "List");
+	    });
+        $("#btnCheck").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.ajax({
+                    url: "/MIS/ManageArticle/Check",
+                    type: "Post",
+                    data: { Id: row.Id },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1)
+                            $("#List").datagrid('reload');
+                        $.messageBox5s(Lang.Tip, data.message);
+                    }
+                });
+            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
+        });
+        $("#btnUnCheck").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.ajax({
+                    url: "/MIS/ManageArticle/UnCheck",
+                    type: "Post",
+                    data: { Id: row.Id },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1)
+                            $("#List").datagrid('reload');
+                        $.messageBox5s(Lang.Tip, data.message);
+                    }
+                });
+            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
+        });
+
+    });
+</script>

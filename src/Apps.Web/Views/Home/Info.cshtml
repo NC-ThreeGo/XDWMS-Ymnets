@@ -1,0 +1,341 @@
+﻿@model Apps.Models.Sys.SysUserEditModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+<style>
+    .formtable th {
+    height:40px;}
+</style>
+<script type="text/javascript">
+    $(function () {
+        $("#Edit").click(function () {
+            $("#modalwindow").window({ title: '@Resource.Edit', width: 330, height: 200, iconCls: 'fa fa-pencil'});
+            $("#modalwindow").window('open');
+        });
+        $("#btnSave").click(function () {
+            $("#EditMes").html("");
+            if ($.trim($("#Password1").val()).length < 5) {
+                $("#EditMes").html("旧密码不匹配!");
+                $("#Password1").focus();
+                return;
+            }
+            if ($.trim($("#Password2").val()).length < 5) {
+                $("#EditMes").html("新密码不匹配!最少5位,不能有空格");
+                $("#Password2").focus();
+                return;
+            }
+            if ($.trim($("#Password2").val()) != $.trim($("#Password3").val())) {
+                $("#EditMes").html("两次密码不一致");
+                $("#Password3").focus();
+                return;
+            }
+            $.post("/Home/EditPwd", { oldPwd: $("#Password1").val(), newPwd: $("#Password2").val() }, function (data) {
+                if (data.type == 1) {
+                    $.messageBox5s('@Resource.Tip',data.message);
+                    $("#modalwindow").window('close');
+                }
+                else {
+                     $.messageBox5s('@Resource.Tip', data.message + '！');
+                }
+            },"json");
+        });
+    });
+</script>
+<div id="modalwindow" class="easyui-window" data-options="closed:true,modal:true">
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,true)
+</div>
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <td>旧密码：</td><td><input id="Password1" type="password" /></td>
+                </tr>
+                <tr>
+                <td>新密码：</td><td><input id="Password2" type="password" /></td>
+                </tr>
+                <tr>
+                <td>确认密码：</td><td><input id="Password3" type="password" /></td>
+                </tr>
+                 <tr>
+                <td></td><td colspan="3" id="EditMes" style="color:red"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="width:620px;padding:30px;border-right:dashed 1px #ccc;">
+
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <td colspan="6">
+                    <div class="custom-panel">
+                        <label class="fa fa-user-circle-o fa-lg custom-panel-icon"></label>
+                        <span class="custom-panel-title">账户信息</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.UserName)：
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.UserName)
+                </td>
+                <th style="width:150px;">
+                    @Html.LabelFor(model => model.Password)：
+                </th>
+                <td>
+                    ******** <a id="Edit" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'fa fa-key'">修改密码</a>
+                </td>
+                <th>
+                    &nbsp;
+                </th>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.DepId)：
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.DepName)
+                </td>
+                <th>
+
+                    @Html.LabelFor(model => model.PosId)：
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.PosName)
+                </td>
+                <th>
+                    &nbsp;
+                </th>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <th>角色权限：</th>
+                <td >
+                    @Html.DisplayFor(model => model.RoleName)
+                </td>
+                <th>
+                    @Html.LabelFor(model => model.JobState)：
+                </th>
+                <td>
+                    @Html.DisplayFor(model => model.JobState)
+                </td>
+                <th>
+                    &nbsp;
+                </th>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="formtable">
+        <tr>
+            <td colspan="5">
+                <div class="custom-panel">
+                    <label class="fa fa-user-o fa-lg custom-panel-icon"></label>
+                    <span class="custom-panel-title">基本信息</span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.TrueName)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.TrueName)
+            </td>
+            <th>
+                @Html.LabelFor(model => model.Sex)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Sex)
+            </td>
+            <td rowspan="5" style=" border-left:dashed 1px #ccc; text-align:center">
+                <img id="PhotoFB" style="cursor:pointer; width:140px; height:140px; border:1px #ccc solid;" src="@(Model.Photo == "" || Model.Photo == null ? "/Content/Images/NotPic.jpg" : Model.Photo)" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Birthday)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Birthday)
+            </td>
+            <th>
+                @Html.LabelFor(model => model.JoinDate)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.JoinDate)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Nationality)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Nationality)
+            </td>
+            <th>
+                @Html.LabelFor(model => model.Native)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Native)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Marital)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Marital)
+            </td>
+            <th>
+                @Html.LabelFor(model => model.Political)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Political)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Degree)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Degree)
+            </td>
+            <th>
+                @Html.LabelFor(model => model.Professional)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Professional)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.School)：
+            </th>
+            <td colspan="1">
+                @Html.DisplayFor(model => model.School)
+        </td>
+            <th>
+                @Html.LabelFor(model => model.Card)：
+            </th>
+        <td colspan="2">
+            @Html.DisplayFor(model => model.Card)
+        </td>
+    </tr>
+</table>
+
+<table class="formtable">
+    <tbody>
+        <tr>
+            <td colspan="6">
+                <div class="custom-panel">
+                    <label class="fa fa-volume-control-phone fa-lg custom-panel-icon"></label>
+                    <span class="custom-panel-title">联系方式</span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.MobileNumber)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.MobileNumber)
+            </td>
+            <th>
+                @Html.LabelFor(model => model.PhoneNumber)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </td>
+            <th>
+                @Html.LabelFor(model => model.QQ)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.QQ)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.EmailAddress)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.EmailAddress)
+            </td>
+            <th>
+                @Html.LabelFor(model => model.OtherContact)：
+            </th>
+            <td colspan="3">
+                @Html.DisplayFor(model => model.OtherContact)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Province)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.ProvinceName)
+            </td>
+            <th>
+                @Html.LabelFor(model => model.City)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.CityName)
+            </td>
+            <th>
+                @Html.LabelFor(model => model.Village)：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.VillageName)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Address)：
+            </th>
+            <td colspan="5">
+                @Html.DisplayFor(model => model.Address)
+            </td>
+
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Expertise)：
+            </th>
+            <td colspan="5">
+                @Html.DisplayFor(model => model.Expertise)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attach)：
+            </th>
+            <td colspan="5">
+                @Html.DisplayFor(model => model.Attach)
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>

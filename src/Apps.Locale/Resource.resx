@@ -1,0 +1,794 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accordion" xml:space="preserve">
+    <value>手风琴</value>
+  </data>
+  <data name="AssignRole" xml:space="preserve">
+    <value>分配角色</value>
+    <comment>011</comment>
+  </data>
+  <data name="AssignUser" xml:space="preserve">
+    <value>分配用户</value>
+    <comment>012</comment>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>审核</value>
+    <comment>014</comment>
+  </data>
+  <data name="CheckFail" xml:space="preserve">
+    <value>审核失败</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="CheckSucceed" xml:space="preserve">
+    <value>审核成功</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="ChinaCharExpression" xml:space="preserve">
+    <value>{0}只能填写汉字</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>清空</value>
+  </data>
+  <data name="ComparePassword" xml:space="preserve">
+    <value>两次密码不一致</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="ContainExpression" xml:space="preserve">
+    <value>{0}必须包含字符串：{1}</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>创建</value>
+    <comment>001</comment>
+  </data>
+  <data name="DateExpression" xml:space="preserve">
+    <value>{0}必须是日期格式：2012-10-10</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+    <comment>002</comment>
+  </data>
+  <data name="DeleteFail" xml:space="preserve">
+    <value>删除失败</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="DeleteSucceed" xml:space="preserve">
+    <value>删除成功</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="Desktop" xml:space="preserve">
+    <value>我的桌面</value>
+    <comment>003</comment>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>详细</value>
+    <comment>004</comment>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>不可用</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="DownTemplate" xml:space="preserve">
+    <value>模版下载</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>修改</value>
+    <comment>005</comment>
+  </data>
+  <data name="EditFail" xml:space="preserve">
+    <value>修改失败</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="EditSucceed" xml:space="preserve">
+    <value>修改成功</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="EmailExpression" xml:space="preserve">
+    <value>{0}必须是邮箱地址</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>导出</value>
+    <comment>006</comment>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>导入</value>
+  </data>
+  <data name="ImportFail" xml:space="preserve">
+    <value>导入失败,文件不存在</value>
+  </data>
+  <data name="InsertFail" xml:space="preserve">
+    <value>创建失败</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="InsertSucceed" xml:space="preserve">
+    <value>创建成功</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="IntRangeExpression" xml:space="preserve">
+    <value>{0}必须在{1}和{2}之间</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsCharExpression" xml:space="preserve">
+    <value>{0}由字母,数字,划线,划线组成</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsDecimalExpression" xml:space="preserve">
+    <value>{0}必须是一个浮点数</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsIntegerExpression" xml:space="preserve">
+    <value>{0}必须是一个整数</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsNegativeDecimalExpression" xml:space="preserve">
+    <value>{0}必须是一个浮负点数</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsNegativeIntegerExpression" xml:space="preserve">
+    <value>{0}必须是一个负整数</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsNumberExpression" xml:space="preserve">
+    <value>{0}必须是一个数字</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsPositiveDecimalExpression" xml:space="preserve">
+    <value>{0}必须是一个浮正点数</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="IsPositiveIntegerExpression" xml:space="preserve">
+    <value>{0}必须是一个正整数</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="MaxWordsExpression" xml:space="preserve">
+    <value>{0}最多{1}个汉字,{2}个字符</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="MinWordsExpression" xml:space="preserve">
+    <value>{0}最少{1}个字符</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="NoAnyChanges" xml:space="preserve">
+    <value>没有任何数据改变</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="NoDataChange" xml:space="preserve">
+    <value>数据没有改变</value>
+  </data>
+  <data name="NotContainExpression" xml:space="preserve">
+    <value>{0}必须不能包含字符串：{1}</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="NotEqualExpression" xml:space="preserve">
+    <value>{0}不能等同于{1}</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="NotNullExpression" xml:space="preserve">
+    <value>{0}必须填写</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="PhoneExpression" xml:space="preserve">
+    <value>{0}不是正确的电话号码,如：0769-2222222</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="PlaseChooseToOperatingRecords" xml:space="preserve">
+    <value>请选择要操作的记录</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="PrimaryRepeat" xml:space="preserve">
+    <value>主键重复</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>简介</value>
+  </data>
+  <data name="Query" xml:space="preserve">
+    <value>查询</value>
+    <comment>007</comment>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Reply" xml:space="preserve">
+    <value>返回</value>
+    <comment>009</comment>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>重设密码</value>
+    <comment>010</comment>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>保存</value>
+    <comment>008</comment>
+  </data>
+  <data name="SaveFail" xml:space="preserve">
+    <value>保存失败</value>
+  </data>
+  <data name="SaveSucceed" xml:space="preserve">
+    <value>保存成功</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>选择</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="SetFail" xml:space="preserve">
+    <value>设置失败</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="SetSucceed" xml:space="preserve">
+    <value>设置成功</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="SiteExpression" xml:space="preserve">
+    <value>{0}必须是网址,如：http://www.abc.com</value>
+    <comment>数据注解验证</comment>
+  </data>
+  <data name="SysAreas_CreateTime" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="SysAreas_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysAreas_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="SysAreas_ParentId" xml:space="preserve">
+    <value>上级所属</value>
+  </data>
+  <data name="SysAreas_Sort" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="SysAreas_State" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="SysException_CreateTime" xml:space="preserve">
+    <value>发生时间</value>
+  </data>
+  <data name="SysException_Data" xml:space="preserve">
+    <value>数据</value>
+  </data>
+  <data name="SysException_HelpLink" xml:space="preserve">
+    <value>帮助链接</value>
+  </data>
+  <data name="SysException_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysException_Message" xml:space="preserve">
+    <value>异常信息</value>
+  </data>
+  <data name="SysException_Source" xml:space="preserve">
+    <value>来源</value>
+  </data>
+  <data name="SysException_StackTrace" xml:space="preserve">
+    <value>堆栈</value>
+  </data>
+  <data name="SysException_TargetSite" xml:space="preserve">
+    <value>目标</value>
+  </data>
+  <data name="SysLog_CreateTime" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="SysLog_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysLog_Message" xml:space="preserve">
+    <value>操作信息</value>
+  </data>
+  <data name="SysLog_Module" xml:space="preserve">
+    <value>模块</value>
+  </data>
+  <data name="SysLog_Operator" xml:space="preserve">
+    <value>操作者</value>
+  </data>
+  <data name="SysLog_Result" xml:space="preserve">
+    <value>结果</value>
+  </data>
+  <data name="SysLog_Type" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="SysModuleOperate_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysModuleOperate_IsValid" xml:space="preserve">
+    <value>是否验证</value>
+  </data>
+  <data name="SysModuleOperate_KeyCode" xml:space="preserve">
+    <value>操作码</value>
+  </data>
+  <data name="SysModuleOperate_ModuleId" xml:space="preserve">
+    <value>模块名称</value>
+  </data>
+  <data name="SysModuleOperate_Name" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="SysModuleOperate_Sort" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="SysModule_CreatePerson" xml:space="preserve">
+    <value>创建人</value>
+  </data>
+  <data name="SysModule_CreateTime" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="SysModule_EnglishName" xml:space="preserve">
+    <value>英文名称</value>
+  </data>
+  <data name="SysModule_Iconic" xml:space="preserve">
+    <value>图标</value>
+  </data>
+  <data name="SysModule_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysModule_IsLast" xml:space="preserve">
+    <value>是否最后一项</value>
+  </data>
+  <data name="SysModule_Name" xml:space="preserve">
+    <value>模块名称</value>
+  </data>
+  <data name="SysModule_ParentId" xml:space="preserve">
+    <value>上级模块</value>
+  </data>
+  <data name="SysModule_Remark" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="SysModule_Sort" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="SysModule_State" xml:space="preserve">
+    <value>是否可用</value>
+  </data>
+  <data name="SysModule_Url" xml:space="preserve">
+    <value>超链接</value>
+  </data>
+  <data name="SysModule_Version" xml:space="preserve">
+    <value>版本号</value>
+  </data>
+  <data name="SysRightOperate_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysRightOperate_IsValid" xml:space="preserve">
+    <value>是否验证</value>
+  </data>
+  <data name="SysRightOperate_KeyCode" xml:space="preserve">
+    <value>操作码</value>
+  </data>
+  <data name="SysRightOperate_RightId" xml:space="preserve">
+    <value>权限Id</value>
+  </data>
+  <data name="SysRight_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysRight_ModuleId" xml:space="preserve">
+    <value>模块Id</value>
+  </data>
+  <data name="SysRight_Rightflag" xml:space="preserve">
+    <value>是否有权限</value>
+  </data>
+  <data name="SysRight_RoleId" xml:space="preserve">
+    <value>角色Id</value>
+  </data>
+  <data name="SysRoleSysUser_SysRoleId" xml:space="preserve">
+    <value>角色</value>
+  </data>
+  <data name="SysRoleSysUser_SysUserId" xml:space="preserve">
+    <value>用户</value>
+  </data>
+  <data name="SysRole_CreatePerson" xml:space="preserve">
+    <value>创建人</value>
+  </data>
+  <data name="SysRole_CreateTime" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="SysRole_Description" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="SysRole_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysRole_Name" xml:space="preserve">
+    <value>角色名称</value>
+  </data>
+  <data name="SysRole_UserName" xml:space="preserve">
+    <value>用户列表</value>
+  </data>
+  <data name="SysSample_Age" xml:space="preserve">
+    <value>年龄</value>
+  </data>
+  <data name="SysSample_Bir" xml:space="preserve">
+    <value>生日</value>
+  </data>
+  <data name="SysSample_CreateTime" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="SysSample_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="SysSample_Id1" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysSample_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="SysSample_Name1" xml:space="preserve">
+    <value>姓名</value>
+  </data>
+  <data name="SysSample_Note" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="SysSample_Photo" xml:space="preserve">
+    <value>照片</value>
+  </data>
+  <data name="SysSettings_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysSettings_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="SysSettings_Parameter" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="SysSettings_ReMark" xml:space="preserve">
+    <value>说明</value>
+  </data>
+  <data name="SysSettings_Type" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="SysStruct_CreateTime" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="SysStruct_Higher" xml:space="preserve">
+    <value>上级管理</value>
+  </data>
+  <data name="SysStruct_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysStruct_Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="SysStruct_ParentId" xml:space="preserve">
+    <value>上级所属</value>
+  </data>
+  <data name="SysStruct_Remark" xml:space="preserve">
+    <value>说名</value>
+  </data>
+  <data name="SysStruct_Sort" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="SysStruct_State" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="SysUser_Address" xml:space="preserve">
+    <value>详细地址</value>
+  </data>
+  <data name="SysUser_Attach" xml:space="preserve">
+    <value>附件</value>
+  </data>
+  <data name="SysUser_Birthday" xml:space="preserve">
+    <value>生日</value>
+  </data>
+  <data name="SysUser_Card" xml:space="preserve">
+    <value>有效证件</value>
+  </data>
+  <data name="SysUser_City" xml:space="preserve">
+    <value>城市</value>
+  </data>
+  <data name="SysUser_CreatePerson" xml:space="preserve">
+    <value>创建人</value>
+  </data>
+  <data name="SysUser_CreateTime" xml:space="preserve">
+    <value>创建时间</value>
+  </data>
+  <data name="SysUser_Degree" xml:space="preserve">
+    <value>学历</value>
+  </data>
+  <data name="SysUser_DepId" xml:space="preserve">
+    <value>部门</value>
+  </data>
+  <data name="SysUser_EmailAddress" xml:space="preserve">
+    <value>邮件地址</value>
+  </data>
+  <data name="SysUser_Expertise" xml:space="preserve">
+    <value>个人简介</value>
+  </data>
+  <data name="SysUser_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SysUser_JobState" xml:space="preserve">
+    <value>职位状态</value>
+  </data>
+  <data name="SysUser_JoinDate" xml:space="preserve">
+    <value>入职日期</value>
+  </data>
+  <data name="SysUser_Marital" xml:space="preserve">
+    <value>婚姻状况</value>
+  </data>
+  <data name="SysUser_MobileNumber" xml:space="preserve">
+    <value>手机</value>
+  </data>
+  <data name="SysUser_Nationality" xml:space="preserve">
+    <value>民族</value>
+  </data>
+  <data name="SysUser_Native" xml:space="preserve">
+    <value>籍贯</value>
+  </data>
+  <data name="SysUser_OtherContact" xml:space="preserve">
+    <value>其他联系方式</value>
+  </data>
+  <data name="SysUser_Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="SysUser_PhoneNumber" xml:space="preserve">
+    <value>电话</value>
+  </data>
+  <data name="SysUser_Photo" xml:space="preserve">
+    <value>照片</value>
+  </data>
+  <data name="SysUser_Political" xml:space="preserve">
+    <value>党派</value>
+  </data>
+  <data name="SysUser_PosId" xml:space="preserve">
+    <value>职位</value>
+  </data>
+  <data name="SysUser_Professional" xml:space="preserve">
+    <value>专业</value>
+  </data>
+  <data name="SysUser_Province" xml:space="preserve">
+    <value>省份</value>
+  </data>
+  <data name="SysUser_QQ" xml:space="preserve">
+    <value>QQ</value>
+  </data>
+  <data name="SysUser_RoleName" xml:space="preserve">
+    <value>角色列表</value>
+  </data>
+  <data name="SysUser_School" xml:space="preserve">
+    <value>就读学校</value>
+  </data>
+  <data name="SysUser_Sex" xml:space="preserve">
+    <value>性别</value>
+  </data>
+  <data name="SysUser_State" xml:space="preserve">
+    <value>账号状态</value>
+  </data>
+  <data name="SysUser_TrueName" xml:space="preserve">
+    <value>真实姓名</value>
+  </data>
+  <data name="SysUser_UserName" xml:space="preserve">
+    <value>用户名</value>
+  </data>
+  <data name="SysUser_Village" xml:space="preserve">
+    <value>区域</value>
+  </data>
+  <data name="Tip" xml:space="preserve">
+    <value>提示</value>
+    <comment>013</comment>
+  </data>
+  <data name="TitleCategory" xml:space="preserve">
+    <value>类别</value>
+  </data>
+  <data name="TitleCreateBy" xml:space="preserve">
+    <value>创建人</value>
+  </data>
+  <data name="TitleCreatePerson" xml:space="preserve">
+    <value>创建人</value>
+    <comment>055</comment>
+  </data>
+  <data name="TitleCreateTime" xml:space="preserve">
+    <value>创建时间</value>
+    <comment>052</comment>
+  </data>
+  <data name="TitleEnable" xml:space="preserve">
+    <value>启用</value>
+    <comment>051</comment>
+  </data>
+  <data name="TitleID" xml:space="preserve">
+    <value>ID</value>
+    <comment>057</comment>
+  </data>
+  <data name="TitleIsDefault" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="TitleModifyBy" xml:space="preserve">
+    <value>修改人</value>
+  </data>
+  <data name="TitleModifyTime" xml:space="preserve">
+    <value>修改时间</value>
+  </data>
+  <data name="TitleName" xml:space="preserve">
+    <value>名称</value>
+    <comment>050</comment>
+  </data>
+  <data name="TitleRemark" xml:space="preserve">
+    <value>说明</value>
+    <comment>056</comment>
+  </data>
+  <data name="TitleSort" xml:space="preserve">
+    <value>排序</value>
+    <comment>053</comment>
+  </data>
+  <data name="TitleState" xml:space="preserve">
+    <value>状态</value>
+    <comment>054</comment>
+  </data>
+  <data name="Tree" xml:space="preserve">
+    <value>树形</value>
+  </data>
+  <data name="UnCheck" xml:space="preserve">
+    <value>反审核</value>
+    <comment>015</comment>
+  </data>
+  <data name="UnCheckFail" xml:space="preserve">
+    <value>反审核失败</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="UnCheckSucceed" xml:space="preserve">
+    <value>反审核成功</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="UnSelect" xml:space="preserve">
+    <value>反选</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="UpdateFail" xml:space="preserve">
+    <value>更新失败</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="UpdateSucceed" xml:space="preserve">
+    <value>更新成功</value>
+    <comment>Suggestion</comment>
+  </data>
+  <data name="Uploading" xml:space="preserve">
+    <value>上传中...</value>
+  </data>
+  <data name="WC_OfficalAccounts_AccessToken" xml:space="preserve">
+    <value>验证Token</value>
+  </data>
+  <data name="WC_OfficalAccounts_ApiUrl" xml:space="preserve">
+    <value>资源服务器URL</value>
+  </data>
+  <data name="WC_OfficalAccounts_OfficalCode" xml:space="preserve">
+    <value>公众号</value>
+  </data>
+  <data name="WC_OfficalAccounts_OfficalName" xml:space="preserve">
+    <value>公众号名称</value>
+  </data>
+  <data name="WC_OfficalAccounts_OfficalPhoto" xml:space="preserve">
+    <value>公众号头像</value>
+  </data>
+  <data name="WC_OfficalAccounts_Token" xml:space="preserve">
+    <value>自定义Token</value>
+  </data>
+  <data name="YouWantToDeleteTheSelectedRecords" xml:space="preserve">
+    <value>你要删除所选择的记录吗？</value>
+    <comment>Suggestion</comment>
+  </data>
+</root>

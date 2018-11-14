@@ -1,0 +1,73 @@
+﻿@model Apps.Models.MIS.MIS_WebIM_CommonTalkModel
+@using Apps.Common;
+@using Apps.Models.MIS;
+@using Apps.Web.Core;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             @Html.HiddenFor(model => model.CreateTime)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Talk)：
+            </td>
+          <td>
+                @Html.EditorFor(model => model.Talk)
+            @Html.ValidationMessageFor(model => model.Talk)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.State)：
+            </td>
+         <td>
+                     <select id="State" name="State">
+                        <option value="true">启用</option>
+                         <option value="false">禁用</option>
+                    </select>
+                @Html.ValidationMessageFor(model => model.State)</td>
+        </tr>
+     
+    </tbody>
+</table>
+}

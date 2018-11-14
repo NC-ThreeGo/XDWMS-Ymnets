@@ -1,0 +1,206 @@
+﻿@model Apps.Models.MIS.MIS_ArticleModel
+@using Apps.Common;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script src="~/Scripts/editor/ueditor.config.js"></script>
+<script src="~/Scripts/editor/ueditor.all.min.js"></script>
+
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+<script type="text/javascript">
+    function setCategory() {
+        $.post("/MIS/Category/GetListByParentId", { id: $("#CategoryName").val() }, function (data) {
+            if (data == "") {
+                $("#CategoryId").html("<option>--没有数据--</option>");
+            }
+            else {
+                $("#CategoryId").html(data);
+            }
+        }, "json");
+    }
+
+    $(function () {
+        var ue = UE.getEditor('BodyContent', {
+            toolbars: [[
+                    'fullscreen', 'source',
+                    'bold', 'italic', 'underline', 'forecolor', 'insertorderedlist',
+                   'fontfamily', 'fontsize',
+                    'justifyleft', 'justifycenter',
+                    'link', 'unlink',
+                    'simpleupload', 'snapscreen'
+
+
+            ]],
+            allowDivTransToP: false,
+            serverUrl: "/Core/controller.ashx"
+        });
+        //启动任务
+        $("#btnSchdeuler").click(function () {
+            $.modalWindow(Lang.Create, '/JOBS/Jobs/scheduler', 500, 455, 'fa fa-plus');
+        });
+
+        setCategory();
+        //加载编辑器
+
+        $("#CategoryName").change(function () {
+            setCategory();
+        });
+
+        $("#btnSave").click(function () {
+            if (!$("form").valid()) {
+                window.parent.messageBox10s('提示', $("#ErrMesList").html());
+                return;
+            }
+            $.ajax({
+                url: "/ManageArticle/Create",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+
+    //任务型文章
+    function JobsCreate(model) {
+        $("#Task").val(model);
+        if ($("#Task").val() == "") {
+            $("#IsPlan").prop("checked", false);
+        }
+        else {
+            $("#IsPlan").prop("checked", true);
+        }
+        frameReturnByClose();
+    }
+
+    //ifram 返回
+    function frameReturnByClose() {
+        if ($("#Task").val() == "") {
+            $("#IsPlan").prop("checked", false);
+        }
+        else {
+            $("#IsPlan").prop("checked", true);
+        }
+        $("#modalwindow").window('close');
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+</script>
+
+@using (Html.BeginForm())
+{
+
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+
+    <table class="formtablenormal">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CategoryId)：
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.CategoryName, ViewBag.Category as SelectList)
+                    <select id="CategoryId" name="CategoryId"></select>
+                </td>
+                <td rowspan="7" valign="top">
+                    @Html.HiddenFor(model => model.ImgUrl)
+                    <img class="expic" src="/Content/Images/NotPic.jpg" /><br />
+                   <a onclick="$('#FileUpload').trigger('click')" class="files">@Resource.Browse</a>
+                    <input type="file" class="displaynone" id="FileUpload" name="FileUpload" onchange="Upload('SingleFile', 'ImgUrl', 'FileUpload', '1', '1');" />
+                    <span class="uploading">@Resource.Uploading</span>
+
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Title)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Title)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Sort)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Sort)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Click)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Click)
+                </td>
+            </tr>
+            @*<tr>
+                <th>
+                    @Html.LabelFor(model => model.CustomLink)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.CustomLink)
+                </td>
+            </tr>*@
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.IsType)：
+                </th>
+                <td>
+                    <select id="IsType" name="IsType">
+                        <option value="0">普通</option>
+                        <option value="1">幻灯片</option>
+                        <option value="2">首页栏目</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="padding:10px;">
+                @Html.TextAreaFor(model => model.BodyContent, new { style = "width:675px;height:180px;" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    设置任务：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Task)
+                    <span>
+                        <input disabled="disabled" type="checkbox" id="IsPlan"  /><span>任务</span>
+                        <a id="btnSchdeuler" class="but-noicon" href="#"><span class="color-green">设置计划任务</span></a>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+}

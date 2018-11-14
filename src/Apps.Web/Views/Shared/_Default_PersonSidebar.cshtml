@@ -1,0 +1,24 @@
+﻿<div class="sidebar">
+                    <div class="gadget">
+                        <h2>我的知途</h2>
+                        <div class="clr"></div>
+                        <ul class="sb_menu">
+                            <li><a href="/Person">我的工作台</a></li>
+                            <li><a href="/Person/Info">个人信息</a></li>
+                            <li><a href="/FreeTime">空余时间设置</a></li>
+                            <li><a href="/Wish">我的心愿</a></li>
+                            <li><a href="/Wish/Create">发布心愿</a></li>
+                            <li><a href="/History">历史工作记录</a></li>
+                            <li><a href="/Team">我的团队</a></li>
+                            <li><a href="/Person/SetPassword">密码修改</a></li>
+                        </ul>
+                    </div>
+                </div>
+<script>
+    $(function () {
+        var host = window.location.host+"";
+        var loc = window.location+"";
+        var attr = loc.replace(host,"").replace("http://","");
+        $("a[href='"+attr+"']").parent().addClass("libg");
+    })
+</script>

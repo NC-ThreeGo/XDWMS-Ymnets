@@ -1,0 +1,178 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@using Apps.Models.Enum
+@{
+    ViewBag.Title = "主页";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+   
+}
+<div class="mvctool">
+    <input id="txtQuery" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+    @Html.ToolButton("btnSetDefault", "fa fa-pencil", "设置为默认", ref perm, "Edit", true)
+    @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details, ref perm, "Details", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+    @Html.ToolButton("btnGetToken", "fa fa-pencil", "更新所有Token", ref perm, "Edit", false)
+    <div  class="rightdiv color-green">当前操作公众号：<span id="CurrentOfficalAccount">@ViewBag.CurrentOfficalAcount</span></div>
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width:SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: 'Id', width: 80 },
+                 { field: 'OfficalId', title: '原始ID', width: 80,sortable:true },
+                { field: 'OfficalName', title: '名称', width: 80,sortable:true },
+                { field: 'OfficalCode', title: '公众号', width: 80,sortable:true },
+                { field: 'OfficalPhoto', title: '头像', width: 100,sortable:true, align:'center', formatter: function (value) { return "<img style='max-width:80px;max-height:80px; padding:5px;' src='"+value+"'/>" } },
+                { field: 'ApiUrl', title: '资源服务器', width: 80,sortable:true },
+                { field: 'OfficalKey', title: '密钥', width: 80,sortable:true },
+                { field: 'Token', title: '自定义Token', width: 80,sortable:true },
+                { field: 'AppId', title: 'AppId', width: 80,sortable:true },
+                { field: 'AppSecret', title: 'AppSecret', width: 80,sortable:true },
+                { field: 'AccessToken', title: '访问Token', width: 80,sortable:true },
+                { field: 'Remark', title: '说明', width: 80,sortable:true },
+                { field: 'Enable', title: '启用', width: 40, align:'center', sortable: true, formatter: function (value) { return EnableFormatter(value) } },
+                { field: 'IsDefault', title: '默认', width: 40,align:'center', sortable: true, formatter: function (value) { return EnableFormatter(value) } },
+                { field: 'Category', title: '类别', width: 80,sortable:true, formatter: function (value) { return GetWeChatSubscriber(value) } },
+                { field: 'CreateTime', title: '创建时间', width: 80, sortable: true, hidden: true },
+                { field: 'CreateBy', title: '创建人', width: 80, sortable: true, hidden: true },
+                { field: 'ModifyTime', title: '修改时间', width: 80, sortable: true, hidden: true },
+                { field: 'ModifyBy', title: '修改人', width: 80, sortable: true, hidden: true }
+
+            ]]
+        });
+    });
+    function GetWeChatSubscriber(n)
+    {
+        switch(n)
+        {
+            case @((int)WeChatSubscriberEnum.PersonalSubscriber):
+                return '个人订阅号';
+                break;
+            case @((int)WeChatSubscriberEnum.MediaSubscriber):
+                return '政府媒体订阅号';
+                break;
+            case @((int)WeChatSubscriberEnum.EnterpriseSubscriber):
+                return '企业号';
+                break;
+            case @((int)WeChatSubscriberEnum.TestSubscriber):
+                return '开发测试号';
+                break;
+            default:
+                return "未知类型";
+        }
+    }
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("Create")'></iframe>");
+            $("#modalwindow").window({ title: '@Resource.Create', width: 700, height: 650, iconCls: 'fa fa-plus' }).window('open');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: 700, height: 650, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='98%' scrolling='auto' frameborder='0' src='@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Details', width: 700, height: 400, iconCls: 'fa fa-list' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+	        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: encodeURI(queryStr) });
+
+        });
+        $("#btnGetToken").click(function () {
+         
+                $.messager.confirm('@Resource.Tip', '你确定要更新所有Token吗？', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("GetToken")", function (data) {
+                            if (data.type == 1)
+                                $("#List").datagrid('load');
+                            $.messageBox5s('@Resource.Tip', data.message);
+                        }, "json");
+
+                    }
+                });
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+	                    if (r) {
+	                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+	                            if (data.type == 1)
+	                                $("#List").datagrid('load');
+	                            $.messageBox5s('@Resource.Tip', data.message);
+	                        }, "json");
+
+	                    }
+	                });
+	            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnSetDefault").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm('@Resource.Tip', '设置当前公众号为默认操作公众号？', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("SetDefault")?id=" + row.Id, function (data) {
+                            if (data.type == 1)
+                            {
+                                $.messager.confirm('@Resource.Tip', data.message, function (r) {
+                                    window.location = window.location;
+                                });
+                            }
+                               
+                        }, "json");
+
+                    }
+                });
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+    });
+</script>

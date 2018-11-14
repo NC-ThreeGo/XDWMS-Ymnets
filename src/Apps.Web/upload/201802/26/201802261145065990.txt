@@ -1,0 +1,93 @@
+wx82398fe6c1bd461f
+166537f81b4c09602937e5f6c4b8ea33
+小程序以下
+wx7ed399a59761f20a
+236e674df6ffbc4c5b931f03297a612d
+
+rxtazs@163.com	  http://bbbbba.gotoip4.com
+19961616a
+
+            "oDKZexFxZA6BLn-zEPIKfwP8mPc4", 
+            "oDKZexOtq7FD_tJdsqAUlDDSk8as", 
+            "oDKZexEDcrXMGQO2FV4rlbpwyfyg", 
+            "oDKZexLwGaKIzxYXKf0EG59cT8Qc", 
+            "oDKZexOmNXpAQaVN4HliQ17yuHSM", 
+            "oDKZexAmSoCRJo-QHi8Vxh1SJERo", 
+            "oDKZexMeg76FZuSMT2cc2j8rI6mU", 
+            "oDKZexHJRf_e3uNweWs32w7cAfVo"
+
+http://mp.weixin.qq.com/bizmall/mallshelf?id=&t=mall/list&biz=MzI5NDUzNzIyOA==&shelf_id=2&showwxpaytitle=1#wechat_redirect
+
+
+//获取access_token
+https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx82398fe6c1bd461f&secret=166537f81b4c09602937e5f6c4b8ea33   
+//获取用户列表
+  
+//配菜单
+{
+    "button": [
+        {
+            "name": "挂号", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "看病", 
+                    "url": "http://wushanghong.cn/WorkTime.aspx"
+                }, 
+                {
+                    "name": "选医生", 
+                    "type": "view", 
+                    "url": "http://wushanghong.cn/DocList.aspx"
+                }, 
+                {
+                    "name": "挂号记录", 
+                    "type": "view", 
+                    "url": "http://wushanghong.cn/AppointmentRecord.aspx"
+                }
+            ]
+        }, 
+        {
+            "name": "抓药", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "抓中药", 
+                    "url": "http://wushanghong.cn/GrapDrug.aspx"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "抓药记录", 
+                    "url": "http://wushanghong.cn/OrderRecord.aspx"
+                }, 
+                {
+                    "type": "view", 
+                    "name": "同安产品", 
+                    "url": "http://mp.weixin.qq.com/bizmall/mallshelf?id=&t=mall/list&biz=MzI5NDUzNzIyOA==&shelf_id=2&showwxpaytitle=1#wechat_redirect"
+                }
+            ]
+        }, 
+        {
+            "name": "扩展功能", 
+            "sub_button": [
+                {
+                    "type": "view", 
+                    "name": "获取用户", 
+                    "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx82398fe6c1bd461f&redirect_uri=http%3a%2f%2fwushanghong.cn%2Fweixin%2Fuser%2FGetUserInfo.aspx&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect"
+                }
+            ]
+        }
+    ]
+}
+
+//获取用户
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx82398fe6c1bd461f&redirect_uri=http%3A%2F%2Fbbbbba.gotoip55.com%2Fweixin%2Fuser%2FGetUserInfo.aspx&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect
+
+--专家坐诊
+select CONVERT(varchar(100), d_date, 23) as  d_date, [dbo].[GetDocInfo](d_date) as am, [dbo].[GetDocInfo](d_date) as pm
+
+ from t_ls_pb	
+ 
+ where CONVERT(varchar(100),d_date, 23)>CONVERT(varchar(100), GETDATE(), 23) and   CONVERT(varchar(100),d_date, 23)<=CONVERT(varchar(100), DATEADD(day,7,GETDATE()), 23)  group by d_date
+
+https://mpkf.weixin.qq.com/cgi-bin/kfindex?token=1408326808
+     

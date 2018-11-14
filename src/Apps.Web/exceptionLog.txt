@@ -1,0 +1,99 @@
+Attaching an entity of type 'Apps.Models.SysUserConfig' failed because another entity of the same type already has the same primary key value. This can happen when using the 'Attach' method or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph have conflicting key values. This may be because some entities are new and have not yet received database-generated key values. In this case use the 'Add' method or the 'Added' entity state to track the graph and then set the state of non-new entities to 'Unchanged' or 'Modified' as appropriate.|   在 System.Data.Entity.Core.Objects.ObjectContext.VerifyRootForAdd(Boolean doAttach, String entitySetName, IEntityWrapper wrappedEntity, EntityEntry existingEntry, EntitySet& entitySet, Boolean& isNoOperation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.AttachTo(String entitySetName, Object entity)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.<>c__DisplayClassa.<Attach>b__9()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Attach(Object entity)
+   在 System.Data.Entity.DbSet`1.Attach(TEntity entity)
+   在 Apps.DAL.WebpartRepository.SaveHtml(String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.DAL\WebpartRepository.cs:行号 67
+   在 Apps.BLL.WebpartBLL.SaveHtml(ValidationErrors& errors, String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.BLL\WebpartBLL.cs:行号 46|Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.|2016-10-31 10:30:58
+Attaching an entity of type 'Apps.Models.SysUserConfig' failed because another entity of the same type already has the same primary key value. This can happen when using the 'Attach' method or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph have conflicting key values. This may be because some entities are new and have not yet received database-generated key values. In this case use the 'Add' method or the 'Added' entity state to track the graph and then set the state of non-new entities to 'Unchanged' or 'Modified' as appropriate.|   在 System.Data.Entity.Core.Objects.ObjectContext.VerifyRootForAdd(Boolean doAttach, String entitySetName, IEntityWrapper wrappedEntity, EntityEntry existingEntry, EntitySet& entitySet, Boolean& isNoOperation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.AttachTo(String entitySetName, Object entity)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.<>c__DisplayClassa.<Attach>b__9()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Attach(Object entity)
+   在 System.Data.Entity.DbSet`1.Attach(TEntity entity)
+   在 Apps.DAL.WebpartRepository.SaveHtml(String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.DAL\WebpartRepository.cs:行号 67
+   在 Apps.BLL.WebpartBLL.SaveHtml(ValidationErrors& errors, String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.BLL\WebpartBLL.cs:行号 46|Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.|2016-10-31 10:31:06
+Attaching an entity of type 'Apps.Models.SysUserConfig' failed because another entity of the same type already has the same primary key value. This can happen when using the 'Attach' method or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph have conflicting key values. This may be because some entities are new and have not yet received database-generated key values. In this case use the 'Add' method or the 'Added' entity state to track the graph and then set the state of non-new entities to 'Unchanged' or 'Modified' as appropriate.|   在 System.Data.Entity.Core.Objects.ObjectContext.VerifyRootForAdd(Boolean doAttach, String entitySetName, IEntityWrapper wrappedEntity, EntityEntry existingEntry, EntitySet& entitySet, Boolean& isNoOperation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.AttachTo(String entitySetName, Object entity)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.<>c__DisplayClassa.<Attach>b__9()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Attach(Object entity)
+   在 System.Data.Entity.DbSet`1.Attach(TEntity entity)
+   在 Apps.DAL.WebpartRepository.SaveHtml(String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.DAL\WebpartRepository.cs:行号 67
+   在 Apps.BLL.WebpartBLL.SaveHtml(ValidationErrors& errors, String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.BLL\WebpartBLL.cs:行号 46|Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.|2016-10-31 10:32:03
+Attaching an entity of type 'Apps.Models.SysUserConfig' failed because another entity of the same type already has the same primary key value. This can happen when using the 'Attach' method or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph have conflicting key values. This may be because some entities are new and have not yet received database-generated key values. In this case use the 'Add' method or the 'Added' entity state to track the graph and then set the state of non-new entities to 'Unchanged' or 'Modified' as appropriate.|   在 System.Data.Entity.Core.Objects.ObjectContext.VerifyRootForAdd(Boolean doAttach, String entitySetName, IEntityWrapper wrappedEntity, EntityEntry existingEntry, EntitySet& entitySet, Boolean& isNoOperation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.AttachTo(String entitySetName, Object entity)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.<>c__DisplayClassa.<Attach>b__9()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Attach(Object entity)
+   在 System.Data.Entity.DbSet`1.Attach(TEntity entity)
+   在 Apps.DAL.WebpartRepository.SaveHtml(String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.DAL\WebpartRepository.cs:行号 67
+   在 Apps.BLL.WebpartBLL.SaveHtml(ValidationErrors& errors, String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.BLL\WebpartBLL.cs:行号 46|Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.|2016-10-31 10:33:16
+Attaching an entity of type 'Apps.Models.SysUserConfig' failed because another entity of the same type already has the same primary key value. This can happen when using the 'Attach' method or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph have conflicting key values. This may be because some entities are new and have not yet received database-generated key values. In this case use the 'Add' method or the 'Added' entity state to track the graph and then set the state of non-new entities to 'Unchanged' or 'Modified' as appropriate.|   在 System.Data.Entity.Core.Objects.ObjectContext.VerifyRootForAdd(Boolean doAttach, String entitySetName, IEntityWrapper wrappedEntity, EntityEntry existingEntry, EntitySet& entitySet, Boolean& isNoOperation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.AttachTo(String entitySetName, Object entity)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.<>c__DisplayClassa.<Attach>b__9()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Attach(Object entity)
+   在 System.Data.Entity.DbSet`1.Attach(TEntity entity)
+   在 Apps.DAL.WebpartRepository.SaveHtml(String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.DAL\WebpartRepository.cs:行号 67
+   在 Apps.BLL.WebpartBLL.SaveHtml(ValidationErrors& errors, String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.BLL\WebpartBLL.cs:行号 46|Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.|2016-10-31 10:39:02
+Attaching an entity of type 'Apps.Models.SysUserConfig' failed because another entity of the same type already has the same primary key value. This can happen when using the 'Attach' method or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph have conflicting key values. This may be because some entities are new and have not yet received database-generated key values. In this case use the 'Add' method or the 'Added' entity state to track the graph and then set the state of non-new entities to 'Unchanged' or 'Modified' as appropriate.|   在 System.Data.Entity.Core.Objects.ObjectContext.VerifyRootForAdd(Boolean doAttach, String entitySetName, IEntityWrapper wrappedEntity, EntityEntry existingEntry, EntitySet& entitySet, Boolean& isNoOperation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.AttachTo(String entitySetName, Object entity)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.<>c__DisplayClassa.<Attach>b__9()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Attach(Object entity)
+   在 System.Data.Entity.DbSet`1.Attach(TEntity entity)
+   在 Apps.DAL.WebpartRepository.SaveHtml(String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.DAL\WebpartRepository.cs:行号 67
+   在 Apps.BLL.WebpartBLL.SaveHtml(ValidationErrors& errors, String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.BLL\WebpartBLL.cs:行号 46|Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.|2016-10-31 10:39:45
+Attaching an entity of type 'Apps.Models.SysUserConfig' failed because another entity of the same type already has the same primary key value. This can happen when using the 'Attach' method or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph have conflicting key values. This may be because some entities are new and have not yet received database-generated key values. In this case use the 'Add' method or the 'Added' entity state to track the graph and then set the state of non-new entities to 'Unchanged' or 'Modified' as appropriate.|   在 System.Data.Entity.Core.Objects.ObjectContext.VerifyRootForAdd(Boolean doAttach, String entitySetName, IEntityWrapper wrappedEntity, EntityEntry existingEntry, EntitySet& entitySet, Boolean& isNoOperation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.AttachTo(String entitySetName, Object entity)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.<>c__DisplayClassa.<Attach>b__9()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Attach(Object entity)
+   在 System.Data.Entity.DbSet`1.Attach(TEntity entity)
+   在 Apps.DAL.WebpartRepository.SaveHtml(String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.DAL\WebpartRepository.cs:行号 67
+   在 Apps.BLL.WebpartBLL.SaveHtml(ValidationErrors& errors, String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.BLL\WebpartBLL.cs:行号 46|Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.|2016-10-31 10:40:18
+Attaching an entity of type 'Apps.Models.SysUserConfig' failed because another entity of the same type already has the same primary key value. This can happen when using the 'Attach' method or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph have conflicting key values. This may be because some entities are new and have not yet received database-generated key values. In this case use the 'Add' method or the 'Added' entity state to track the graph and then set the state of non-new entities to 'Unchanged' or 'Modified' as appropriate.|   在 System.Data.Entity.Core.Objects.ObjectContext.VerifyRootForAdd(Boolean doAttach, String entitySetName, IEntityWrapper wrappedEntity, EntityEntry existingEntry, EntitySet& entitySet, Boolean& isNoOperation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.AttachTo(String entitySetName, Object entity)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.<>c__DisplayClassa.<Attach>b__9()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Attach(Object entity)
+   在 System.Data.Entity.DbSet`1.Attach(TEntity entity)
+   在 Apps.DAL.WebpartRepository.SaveHtml(String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.DAL\WebpartRepository.cs:行号 67
+   在 Apps.BLL.WebpartBLL.SaveHtml(ValidationErrors& errors, String userId, String html) 位置 D:\ymnets.AdminSystem\trunk\Apps.BLL\WebpartBLL.cs:行号 46|Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.|2016-10-31 10:40:36
+TransactionScope 嵌套不正确。|   在 System.Transactions.TransactionScope.Dispose()
+   在 Apps.WC.BLL.Virtual_WC_UserBLL.Delete(ValidationErrors& errors, String[] deleteCollection) 位置 D:\ymnets.AdminSystem\trunk\Apps.WC.BLL\AutoGenerated\Virtual_WC_UserBLL.cs:行号 176|The underlying provider failed on Open.|2016-11-2 9:52:36
+The underlying provider failed on Open.|   在 System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+   在 System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   在 System.Data.Entity.Core.Objects.ObjectContext.<>c__DisplayClass47`1.<ExecuteFunction>b__45()
+   在 System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteFunction[TElement](String functionName, ExecutionOptions executionOptions, ObjectParameter[] parameters)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteFunction[TElement](String functionName, MergeOption mergeOption, ObjectParameter[] parameters)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteFunction[TElement](String functionName, ObjectParameter[] parameters)
+   在 Apps.Models.DBContainer.P_MIS_GetSenderByReceiver(String receiver) 位置 D:\ymnets.AdminSystem\trunk\Apps.Models\DB.Context.cs:行号 623
+   在 Apps.MIS.DAL.MIS_WebIM_MessageRepository.GetSenderByReceiver(String receiver) 位置 D:\ymnets.AdminSystem\trunk\Apps.MIS.DAL\MIS_WebIM_MessageRepository.cs:行号 160
+   在 Apps.MIS.BLL.MIS_WebIM_MessageBLL.GetSenderByReceiver(String receiver) 位置 D:\ymnets.AdminSystem\trunk\Apps.MIS.BLL\MIS_WebIM_MessageBLL.cs:行号 524|The underlying provider failed on Open.|2016-11-2 9:52:40
+The underlying provider failed on Open.|   在 System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+   在 System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   在 System.Data.Entity.Core.Objects.ObjectContext.<>c__DisplayClass47`1.<ExecuteFunction>b__45()
+   在 System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteFunction[TElement](String functionName, ExecutionOptions executionOptions, ObjectParameter[] parameters)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteFunction[TElement](String functionName, MergeOption mergeOption, ObjectParameter[] parameters)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteFunction[TElement](String functionName, ObjectParameter[] parameters)
+   在 Apps.Models.DBContainer.P_MIS_GetSenderByReceiver(String receiver) 位置 D:\ymnets.AdminSystem\trunk\Apps.Models\DB.Context.cs:行号 623
+   在 Apps.MIS.DAL.MIS_WebIM_MessageRepository.GetSenderByReceiver(String receiver) 位置 D:\ymnets.AdminSystem\trunk\Apps.MIS.DAL\MIS_WebIM_MessageRepository.cs:行号 160
+   在 Apps.MIS.BLL.MIS_WebIM_MessageBLL.GetSenderByReceiver(String receiver) 位置 D:\ymnets.AdminSystem\trunk\Apps.MIS.BLL\MIS_WebIM_MessageBLL.cs:行号 524|The underlying provider failed on Open.|2016-11-2 9:52:42
+The underlying provider failed on Open.|   在 System.Data.Entity.Core.EntityClient.EntityConnection.Open()
+   在 System.Data.Entity.Core.Objects.ObjectContext.EnsureConnection(Boolean shouldMonitorTransactions)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteInTransaction[T](Func`1 func, IDbExecutionStrategy executionStrategy, Boolean startLocalTransaction, Boolean releaseConnectionOnSuccess)
+   在 System.Data.Entity.Core.Objects.ObjectContext.<>c__DisplayClass47`1.<ExecuteFunction>b__45()
+   在 System.Data.Entity.SqlServer.DefaultSqlExecutionStrategy.Execute[TResult](Func`1 operation)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteFunction[TElement](String functionName, ExecutionOptions executionOptions, ObjectParameter[] parameters)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteFunction[TElement](String functionName, MergeOption mergeOption, ObjectParameter[] parameters)
+   在 System.Data.Entity.Core.Objects.ObjectContext.ExecuteFunction[TElement](String functionName, ObjectParameter[] parameters)
+   在 Apps.Models.DBContainer.P_MIS_GetSenderByReceiver(String receiver) 位置 D:\ymnets.AdminSystem\trunk\Apps.Models\DB.Context.cs:行号 623
+   在 Apps.MIS.DAL.MIS_WebIM_MessageRepository.GetSenderByReceiver(String receiver) 位置 D:\ymnets.AdminSystem\trunk\Apps.MIS.DAL\MIS_WebIM_MessageRepository.cs:行号 160
+   在 Apps.MIS.BLL.MIS_WebIM_MessageBLL.GetSenderByReceiver(String receiver) 位置 D:\ymnets.AdminSystem\trunk\Apps.MIS.BLL\MIS_WebIM_MessageBLL.cs:行号 524|The underlying provider failed on Open.|2016-11-2 9:52:43

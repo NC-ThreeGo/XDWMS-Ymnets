@@ -1,0 +1,235 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+
+@using System.Globalization;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@using Apps.Common;
+@using Apps.Web.Core;
+@{
+   
+    //权限设置
+    List<permModel> perm = (List<permModel>)ViewBag.perm;
+
+    if (perm == null)
+    {
+        perm = new List<permModel>();
+    }
+   
+}
+<div class="mvctool">
+<input id="txtQuery" type="text" class="searchText" /> 
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+    @Html.ToolButton("btnCreateAssembly", "fa fa-plus", "创建程序自执行任务", ref perm, "Create", true)
+    @Html.ToolButton("btnClear", "fa fa-trash", "清除离线任务",ref perm, "Delete", true)
+</div>
+
+<table style="width:100%">
+    <tr>
+        <td><table id="taskJobsList">
+</table></td>
+        <td><table id="taskJobsLogList">
+</table></td>
+    </tr>
+</table>
+
+
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+
+<script type="text/javascript">
+  
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#taskJobsList").datagrid('load');
+        else
+            $("#taskJobsList").datagrid('reload');
+    }
+    //删除
+    function Delete(sno) {
+        $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+            if (r) {
+                $.ajax({
+                    url: "/JOBS/Jobs/Delete",
+                    type: "Post",
+                    data: { sno: sno },
+                    dataType: "json",
+                    success: function (data) {
+                        //刷新
+                        $("#taskJobsList").datagrid('load');
+                        $.messageBox5s('@Resource.Tip',data.message);
+                    }
+                });
+            }
+        });
+       
+    }
+    //删除日志
+    function DeleteLog(sno) {
+        $.ajax({
+            url: "/JOBS/Jobs/DeleteLog",
+            type: "Post",
+            data: { sno: sno },
+            dataType: "json",
+            success: function (data) {
+                //刷新
+                $("#taskJobsList").datagrid('load');
+                $.messageBox5s('@Resource.Tip', data.message);
+            }
+        });
+    }
+    //挂起
+    function Pause(sno) {
+        $.ajax({
+            url: "/JOBS/Jobs/Pause",
+            type: "Post",
+            data: { sno: sno },
+            dataType: "json",
+            success: function (data) {
+                //刷新
+                $("#taskJobsList").datagrid('load');
+               $.messageBox5s('@Resource.Tip',data.message);
+            }
+        });
+    }
+    //恢复
+    function Resume(sno) {
+        $.ajax({
+            url: "/JOBS/Jobs/Resume",
+            type: "Post",
+            data: { sno: sno },
+            dataType: "json",
+            success: function (data) {
+                //刷新
+                $("#taskJobsList").datagrid('load');
+                $.messageBox5s('@Resource.Tip', data.message);
+            }
+        });
+    }
+
+    $(function () {
+        //新增
+        $("#btnCreate").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%'  frameborder='0'' src='/JOBS/Jobs/CustomProcedureJob'></iframe>");
+            $("#modalwindow").window({ title: '@Resource.Create', width: 650, height: 550, iconCls: 'fa fa-plus' }).window('open');
+        });
+        //新增
+        $("#btnCreateAssembly").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%'  frameborder='0'' src='/JOBS/Jobs/CustomAssemblyJob'></iframe>");
+            $("#modalwindow").window({ title: '@Resource.Create', width: 650, height: 520, iconCls: 'fa fa-plus' }).window('open');
+        });
+        //清空未被跟踪的任务
+        $("#btnClear").click(function () {
+            $.ajax({
+                url: "/JOBS/Jobs/ClearUnTrackTask",
+                type: "Post",
+                //data: { sno: sno },
+                dataType: "json",
+                success: function (data) {
+                    $.messageBox5s('@Resource.Tip', data.message);
+
+                }
+            });
+            return;
+        });
+
+        //查询
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            //如果查询条件为空默认查询全部
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            //提交查询
+            jQuery("#taskJobsList").jqGrid('setGridParam', { url: '/JOBS/Jobs/GetList?querystr=' + encodeURI(queryStr), page: 1 }).trigger("reloadGrid");
+        });
+
+        $('#taskJobsList').datagrid({
+            url: '/JOBS/Jobs/GetList',
+            width: SetGridWidthSub(318),
+            methord: 'post',
+            height:  SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'crtDt',
+            sortOrder: 'desc',
+            idField: 'sno',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            rownumbers: true,//行号
+            fitColumns:false,
+            columns: [[
+                { field: 'sno', title: '任务序号', width: 120, hidden: true },
+                { field: 'action', title: '操作', width: 100, align: 'center' },
+                { field: 'taskName', title: '任务名称', width: 80, align: 'right', hidden: true },
+                { field: 'id', title: '任务ID', width: 250, hidden: true },
+                { field: 'taskTitle', title: '任务标题', width: 320, align: 'left' },
+                { field: 'taskCmd', title: '执行指令', width: 300, align: 'left' },
+                { field: 'crtDt', title: '@Resource.TitleCreateTime', width: 125, align: 'center' },
+                { field: 'State', title: '状态', width: 60, align: 'center', hidden: true },
+                { field: 'stateTitle', title: '状态', width: 60, align: 'center' },
+                { field: 'procName', title: '用户过程/SQL/程序集', width: 260, align: 'center' },
+                { field: 'procParams', title: '过程参数', width: 160, align: 'center' },
+                { field: 'creator', title: '@Resource.TitleCreatePerson', width: 80, align: 'center' }
+            ]],
+            onClickRow: function (index, data) {
+                var row = $('#taskJobsList').datagrid('getSelected');
+                if (row != null) {
+                    $('#taskJobsLogList').datagrid({ url: '/JOBS/Jobs/GetTaskJobsLogList?querystr=' + encodeURI(row.sno) }).datagrid('getPager').pagination({ showPageList: false, showRefresh: true, displayMsg: '' });
+                }
+            }
+        });
+
+
+        $('#taskJobsLogList').datagrid({
+            url: '/JOBS/Jobs/GetTaskJobsLogList',
+            width: 300,
+            methord: 'post',
+            height:  SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'executeDt',
+            sortOrder: 'desc',
+            idField: 'itemId',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            rownumbers: false,//行号
+            columns: [[
+                { field: 'itemId', title: '日志序号', width: 80, hidden: true },
+                { field: 'sno', title: '任务序号', width: 120, hidden: true },
+                { field: 'taskName', title: '任务名称', width: 80, align: 'right', hidden: true },
+                { field: 'id', title: '任务ID', width: 80, align: 'right', hidden: true },
+                { field: 'executeDt', title: '执行时间', width: 150 },
+                { field: 'executeStep', title: '执行步骤', width: 60, align: 'center', hidden: true },
+                { field: 'result', title: '结果', width: 60, align: 'center' }
+            ]]
+        }).datagrid('getPager').pagination({ showPageList: false, showRefresh: true, displayMsg: '' });
+      
+        $(window).resize(function () {
+            $('#taskJobsLogList').datagrid('resize', {
+                width: 300,
+                height: SetGridHeightSub(37)
+            });
+            $('#taskJobsList').datagrid('resize', {
+                width: SetGridWidthSub(318),
+                height: SetGridHeightSub(37)
+            }).datagrid('resize', {
+                width: SetGridWidthSub(318),
+            });
+            
+        });
+    });
+</script>

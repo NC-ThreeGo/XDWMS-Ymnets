@@ -1,0 +1,156 @@
+﻿@model Apps.Models.Flow.Flow_FormContentModel
+@using Apps.Common;
+@using Apps.Models.Flow;
+@using Apps.Web.Core;
+@using Apps.Models.Sys;
+@using Apps.Models.Enum;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+
+    $.fn.serializeObject = function () {
+        var ss =  this.serializeArray();
+        var aa = { his: [], val: [], kg: [] };
+        $.each(ss,function(o){
+            if(aa.his.indexOf(this.name)>=0){
+                var _obj = aa.val[aa.kg[this.name]];
+                _obj.value = _obj.value+','+this.value;
+            }else{
+                aa.his.push(this.name);
+                aa.kg[this.name] = o;
+                aa.val.push({name:this.name,value: this.value});
+            }
+        })
+        return jQuery.param(aa.val);
+    };
+
+    $(function () {
+        $("#btnSave").click(function () {
+            if ($("#Title").val() == "") {
+                $.messageBox5s("提示", "表单标题必须填写！");
+                return false;
+            }
+            if (CheckForm()) {
+
+                //需要提交审批人
+                if($("#CustomMember").length > 0 )
+                {
+                    if($("#CustomMember").val()=="")
+                    {
+                        $.messageBox5s("提示", "审批人必须选择！");
+                        return false;
+                    }
+                }
+
+                $.ajax({
+                    url: "@Url.Action("Create")",
+                    type: "Post",
+                    data: $("form").serializeObject(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1) {
+                            window.parent.frameReturnByMes("表单创建成功！");
+                            window.parent.frameReturnByClose()
+                        }
+                        else {
+                            window.parent.frameReturnByMes(data.message);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+        $("#btnReturn").click(function () {
+                $.messager.confirm(index_lang_tip, '没有保存的数据将会丢失，你确定要返回吗？', function (r) {
+                    if (r) {
+                        window.parent.frameReturnByClose();
+                    }
+                });
+        });
+
+        //设置高度来改变美观度
+        var layoutHeight = 0;
+        $("#setFormLayout .easyui-draggable").each(function(i){
+            layoutHeight = layoutHeight+ $(this).height();
+        });
+        $("#setFormLayout").css("min-height",layoutHeight);
+        $('#setFormLayout .easyui-draggable').draggable("disable");
+
+
+    });
+</script>
+
+    <div class="mvctool bgb">
+        @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Create", true)
+        @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.FormId)
+        @Html.HiddenFor(model => model.UserId)
+        <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+        <input id="TimeOut" type="hidden" name="TimeOut" value="2111-1-1" />
+        <input id="Title" type="hidden" name="Title" value="User Post" />
+        <div id="setFormLayout" class="easyui-panel">
+            @Html.Raw(ViewBag.Html)
+        </div>
+        <table class="formtable">
+            <tbody>
+                <tr>
+                    <th style='width:100px; text-align:right;'>紧急程度 :</th>
+                    <td>
+                        <select name="FormLevel" id="FormLevel">
+                            <option value="@((int)FlowFormLevelEnum.Ordinary)">普通</option>
+                            <option value="@((int)FlowFormLevelEnum.Major)">重要</option>
+                            <option value="@((int)FlowFormLevelEnum.Urgent)">紧急</option>
+                        </select>
+                    </td>
+                </tr>
+                @if (ViewBag.Checker == null)
+                {
+                    <tr>
+                        <th>
+                            审核人：
+                        </th>
+                        <td>
+                            @Html.HiddenFor(model => model.CustomMember)
+                            <input id="CustomMemberList" name="CustomMemberList" readonly="readonly" type="text" style="width: 90px; display: inline; background: #dedede; ">
+                            <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:void(0)"></a>
+                            <script type="text/javascript">
+                                $(function () {
+                                    $("#selExc").click(function () {
+                                        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/UserLookUp?key=CustomMember&val=CustomMemberList'></iframe>");
+                                        $("#modalwindow").window({ title: '选择人员', width: 620, height: 388, iconCls: 'fa fa-plus' }).window('open');
+                                    });
+                                });
+
+                                function SetSelResult(result, resultName,key,val) {
+                                    $("#"+key).val(result);
+                                    $("#"+val).val(resultName);
+                                }
+                                function GetSelResult(key,val) {
+                                    var arrayObj = new Array()
+                                    arrayObj[0] = $("#"+key).val();
+                                    arrayObj[1] = $("#"+val).val();
+                                    return arrayObj;
+                                }
+                                //ifram 返回
+                                function frameReturnByClose() {
+                                    $("#modalwindow").window('close');
+                                }
+                            </script>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+    }
+

@@ -1,0 +1,51 @@
+﻿<#@ template language="C#" debug="false" hostspecific="true"#>
+<#@ include file="../../Apps.Models/Common.ttinclude"#><#@ 
+ output extension=".cs"#>
+ <#
+
+const string inputFile = @"../../Apps.Models/DB.edmx";
+var textTransform = DynamicTextTransformation.Create(this);
+var code = new CodeGenerationTools(this);
+var ef = new MetadataTools(this);
+var typeMapper = new TypeMapper(code, ef, textTransform.Errors);
+var	fileManager = EntityFrameworkTemplateFileManager.Create(this);
+var itemCollection = new EdmMetadataLoader(textTransform.Host, textTransform.Errors).CreateEdmItemCollection(inputFile);
+var codeStringGenerator = new CodeStringGenerator(code, typeMapper, ef);
+
+if (!typeMapper.VerifyCaseInsensitiveTypeUniqueness(typeMapper.GetAllGlobalItems(itemCollection), inputFile))
+{
+    return string.Empty;
+}
+
+WriteHeader(codeStringGenerator, fileManager);
+
+foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection))
+{
+            fileManager.StartNewFile("Virtual_"+entity.Name + "Model.cs");
+#>
+using Apps.Models;
+using System;
+namespace Apps.Models<#=entity.Name.IndexOf("_")>0?"."+entity.Name.Substring(0,entity.Name.IndexOf("_")):".Sys" #>
+{
+	public class Virtual_<#=entity.Name #>Model
+	{
+		<#
+    var simpleProperties = typeMapper.GetSimpleProperties(entity);
+    if (simpleProperties.Any())
+    {
+        foreach(var edmProperty in simpleProperties)
+        {
+		#>
+	<#=codeStringGenerator.Property(edmProperty).ToString().Insert(codeStringGenerator.Property(edmProperty).ToString().IndexOf(" ")," virtual")#>
+		<#
+   }
+}
+#>
+}
+<#
+            EndNamespace(code);
+}
+
+fileManager.Process();
+
+#>

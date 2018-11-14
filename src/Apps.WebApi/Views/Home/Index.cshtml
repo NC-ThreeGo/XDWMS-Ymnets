@@ -1,0 +1,88 @@
+﻿
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<form action="#" method="post" style="padding:100px;">
+    <div class="form-group">
+        <div class="col-xs-12  ">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                <input type="text" id="username" name="username" class="form-control" placeholder="用户名">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-12  ">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                <input type="text" id="password" name="password" class="form-control" placeholder="密码">
+            </div>
+        </div>
+    </div>
+    <div class="form-group form-actions">
+        <div class="col-xs-4 col-xs-offset-4 ">
+            <button type="button" id="Login" class="btn btn-sm btn-info"><span class="glyphicon glyphicon-off"></span> 登录</button>
+        </div>
+    </div>
+
+</form>
+Token:<div id="myToken"></div>
+<input type="button" id="getData" value="获取API Get/{id}的值" />
+
+<input type="button" id="postData" value="提交值" />
+利用Token后获得的值：<div id="myVal"></div>
+<script>
+    $(function () {
+        $("#Login").click(function () {
+            $.ajax({
+                type: "get",
+                url: "/api/Account/Login",
+                data: { userName: $("#username").val(), password: $("#password").val() },
+                success: function (data, status) {
+                        if (data.type==0) {
+                            alert("登录失败");
+                            return;
+                        }
+                        alert("登录成功:Token" + data.message);
+                        $("#myToken").html(data.message);
+                },
+                error: function (e) {
+                    alert("登录失败!");
+                },
+                complete: function () {
+
+                }
+            });
+        });
+        $("#getData").click(function () {
+            $.ajax({
+                type: "get",
+                url: "/api/Values/Get/5?Token=" + $("#myToken").html(),
+                success: function (data, status) {
+                    alert(data);
+                },
+                error: function (e) {
+                    alert("失败!");
+                },
+                complete: function () {
+
+                }
+            });
+        });
+        $("#postData").click(function () {
+            $.ajax({
+                type: "post",
+                url: "/api/Values/Post?Token=" + $("#myToken").html(),
+                data:{value:"123"},
+                success: function (data, status) {
+                    alert(data);
+                },
+                error: function (e) {
+                    alert(e);
+                },
+                complete: function () {
+
+                }
+            });
+        });
+    });
+</script>

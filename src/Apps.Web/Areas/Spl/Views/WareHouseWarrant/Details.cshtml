@@ -1,0 +1,147 @@
+﻿@model Apps.Models.Spl.Spl_WarehouseWarrantModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+
+</head>
+<body>
+    <div>
+        <h4>Spl_WarehouseWarrant</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.InTime)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.InTime)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Handler)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Handler)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Remark)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Remark)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.PriceTotal)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.PriceTotal)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.State)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.State)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CheckTime)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CheckTime)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreateTime)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreateTime)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatePerson)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.CreatePerson)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifyTime)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ModifyTime)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifyPerson)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ModifyPerson)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Confirmation)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Confirmation)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.ContractNumber)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.ContractNumber)
+            </dd>
+    
+            @*<dt>
+                @Html.DisplayNameFor(model => model.Spl_InOutCategory.Name)
+            </dt>*@
+    
+            @*<dd>
+                @Html.DisplayFor(model => model.Spl_InOutCategory.Name)
+            </dd>*@
+    
+            @*<dt>
+                @Html.DisplayNameFor(model => model.Spl_Warehouse.Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Spl_Warehouse.Name)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.SysUser.UserName)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.SysUser.UserName)
+            </dd>*@
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

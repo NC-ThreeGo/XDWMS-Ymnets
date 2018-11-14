@@ -1,0 +1,247 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Spl_WareCheckTotal";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+<form name = "form1" method="post" id="form1">
+    <table>
+        <tr>
+            <th style="padding:20px;"> Excel：</th>
+            <td style="padding:20px;">
+                <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                <a href = "javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
+                <span class="uploading">@Resource.Uploading</span>
+            </td>
+        </tr>
+    </table>
+    <div class="endbtndiv">
+        <a id = "btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+        <a id = "btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+    </div>
+</form>
+</div>
+<table style="width:100%">
+<tbody>
+    <tr>
+        <td style="width:330px;vertical-align: top">
+             <div class="mvctool">
+             </div>
+            <table id="ListParent"></table>
+        </td>        <td style="width:5px;"></td>
+        <td style="vertical-align:top">
+             <div class="mvctool">
+                 <input id="txtQuery" type="text" class="searchText" />
+                 @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+                 @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+                 @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+                 @Html.ToolButton("btnCheck", "fa  fa-check", Resource.Check, ref perm, "Check", true)
+             </div>
+            <table id="List"></table>
+        </td>
+    </tr>
+</tbody>
+</table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#ListParent').datagrid({
+            url: '@Url.Action("GetListParent")',
+            width:300,
+            methord: 'post',
+            height: SetGridHeightSub(39),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onLoadSuccess: function(data) {            },
+            columns: [[
+                { field: 'Id', title: '主键ID', width: 80,hidden:true },
+                { field: 'Name', title: '仓库名称', width: 80, sortable: false },
+                { field: 'Code', title: '仓库编码', width: 80,sortable:true },
+                { field: 'IsDefault', title: '是否默认', width: 40, sortable: false, align: 'center', formatter: function (value) { return EnableFormatter(value) }, hidden: true },
+                { field: 'ContactPerson', title: '负责人', width: 80, sortable: false, hidden: true },
+                { field: 'ContactPhone', title: '联系电话', width: 80, sortable: false, hidden: true },
+                { field: 'Address', title: '地址', width: 80, sortable: false, hidden: true },
+                { field: 'Remark', title: '备注', width: 80, sortable: false, hidden: true },
+                { field: 'Enable', title: '状态', width: 40, sortable: false, align: 'center', formatter: function (value) { return EnableFormatter(value) }, hidden: true },
+                { field: 'CreateTime', title: '创建时间', width: 80,sortable:true,hidden:true  },
+            ]]
+         ,onClickRow: function(index, row) {
+             $('#List').datagrid("load", { ParentId: row.Id });
+}
+        }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
+ 
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")?parentId=0',
+            width:SetGridWidthSub(315),
+            methord: 'post',
+            height: SetGridHeightSub(39),
+            fitColumns: false,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onLoadSuccess: function(data) {                
+            },
+            columns: [[
+                { field: 'Id', title: '单号', width: 80, hidden: true },
+                  //{ field: 'WareDetailsCode', title: '编号', width: 80, sortable: true },
+                { field: 'WareDetailsId', title: '商品名称', width: 100, sortable: false, hidden: true },
+                { field: 'WareDetailsName', title: '商品名称', width: 100, sortable: false },
+                { field: 'WareDetailsBrand', title: '品牌', width: 80, sortable: false },
+                  { field: 'Size', title: '型号', width: 80, sortable: false },
+                { field: 'WareDetailsVender', title: '供货商', width: 80, sortable: false },
+              
+                { field: 'WareDetailsCategory', title: '类别', width: 80, sortable: false },
+               //{ field: 'WarehouseId', title: '所属仓库', width: 80, sortable: true, hidden: false },
+                { field: 'WarehouseName', title: '所属仓库', width: 100, sortable: false },
+                { field: 'Remark', title: '盘点说明', width: 100, sortable: false },
+                { field: 'DiffQuantity', title: '实际总数', width: 80,sortable:true },
+                { field: 'Quantity', title: '原有总数', width: 80, sortable: true },
+                 { field: 'WareDetailsUnit', title: '单位', width: 80, sortable: false },
+
+                { field: 'Price', title: '单价', width: 80,sortable:true },
+                { field: 'State', title: '审核状态', width: 80, sortable: false, formatter: function (value) { return CheckFormatter(value == 1) } },
+                { field: 'Creater', title: '创建人', width: 80, sortable: false },
+                { field: 'Checker', title: '审核人', width: 80, sortable: false },
+                { field: 'CheckTime', title: '审核时间', width: 80,sortable:true },
+                { field: 'Confirmation', title: '是否确认', width:120, sortable: false, align: 'center', formatter: function (value) {  return CustomFormatter(value, "已确认", "未确认") } },
+                { field: 'CreateTime', title: '创建时间', width: 120,sortable:true }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+        {
+            $("#List").datagrid('load');
+        }
+        else
+        {
+            $("#List,#ListParent").datagrid('reload');
+        }
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("Create")'></iframe>");
+            $("#modalwindow").window({ title: Lang.Create, width: SetGridWidthSub(106), height: SetGridHeightSub(100), iconCls: 'fa fa-plus' }).window('open');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row.Confirmation = true) {
+                $.messager.confirm(index_lang_tip, "该单据已经被确认不能被修改")
+            }
+            else if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: SetGridWidthSub(106), height: SetGridHeightSub(100), iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='98%' scrolling='auto' frameborder='0' src='@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Details', width: 700, height: 400, iconCls: 'fa fa-list' }).window('open');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+	        });
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: queryStr });
+
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row.Confirmation = true) {
+                $.messager.confirm(index_lang_tip,"该单据已经被确认不能被删除")
+            }
+         else   if (row != null) {
+                $.messager.confirm(index_lang_tip, '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                    if (r) {                      
+                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+                            //if (data.State == true) {
+                            //    $.messageBox5s(Lang.Tip, data.message);
+                            //}
+	                            if (data.type == 1)
+	                                $("#List").datagrid('load');
+	                            $.messageBox5s(Lang.Tip, data.message);
+	                        }, "json");
+	                    }
+	                });
+	            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+	        });
+        $("#btnImport").click(function() {
+             $("#txtExcelPath").val("");
+             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 155, iconCls: 'fa fa-level-down' }).window('open');
+        });
+        $("#btnExport").click(function() {
+          $.post("@Url.Action("CheckExportData")", function(data) {
+                if (data.type == 1)
+                {
+                    window.location = "@Url.Action("Export")";
+                }
+                else
+                {
+                $.messageBox5s(Lang.Tip, data.message);
+                }
+            }, "json");
+        });
+        $("#btnCheck").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.ajax({
+                    url: "/Spl/WareCheckTotal/Check",
+                    type: "Post",
+                    data: { Id: row.Id },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1)
+                            $("#List").datagrid('reload');
+                        $.messageBox5s('@Resource.Tip', data.message);
+                    }
+                });
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+    });
+    function ImportData()
+    {
+        showLoading();
+        var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
+        $.post(url, function(data) {
+            if (data.type == 1)
+            {
+             $("#List").datagrid('load');
+             $('#uploadExcel').window('close');
+             $('#FileUpload').val('');
+            }
+            hideLoading();
+            $.messageBox5s('提示', data.message);
+        }, "json");
+    }
+</script>

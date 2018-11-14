@@ -1,0 +1,395 @@
+﻿@model Apps.Models.Sys.SysUserModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+
+
+    List<permModel> perm = null;
+}
+<script type="text/javascript">
+    function SetPosTree(depId, refFlag) {
+        $('#posTree').combotree({
+            url: '/SysPosition/GetPosListByComTree?depId=' + depId
+                 , onSelect: function (node) {
+                     $("#PosId").val(node.id);
+                 }, onLoadSuccess: function (node, data) { //加载成功选择第一行
+
+                 }
+        });
+    }
+    $(function () {
+        //分类combotree
+        $('#structTree').combotree({
+            url: '/SysStruct/GetListByComTree?id=root'
+            , onSelect: function (node) {
+                $("#DepId").val(node.id);
+                $("#PosId").val("");
+                $('#posTree').combotree('setValue', "");
+                SetPosTree(node.id)
+            }, onLoadSuccess: function (node, data) { //加载成功选择第一行
+
+                SetPosTree($("#DepId").val(), true);
+            }
+        });
+
+        $("#Province").prepend("<option value='' selected='selected'>--未选择--</option>");
+
+        $("#Province").change(function () {
+            if ($("#Province").val() != "") {
+                $.post("/SysAreas/GetListByParentId", { id: $("#Province").val() }, function (data) {
+                    if (data == "") {
+                        $("#City").html("<option>--没有数据--</option>");
+                        $("#Village").html("<option>--没有数据--</option>");
+                    }
+                    else {
+                        $("#City").html(data);
+
+                        $("#City").trigger("change");
+
+                    }
+
+                }, "json");
+            } else {
+                $("#City").html("<option>--未选择--</option>");
+                $("#Village").html("<option>--未选择--</option>");
+            }
+        });
+        $("#City").change(function () {
+            if ($("#City").val() != "") {
+                $.post("/SysAreas/GetListByParentId", { id: $("#City").val() }, function (data) {
+                    if (data == "") {
+                        $("#Village").html("<option>--没有数据--</option>");
+                    }
+                    else {
+                        $("#Village").html(data);
+
+                    }
+                }, "json");
+            }
+        });
+        $("#DepId").trigger("change");
+        $("#Province").trigger("change");
+
+        $("#btnSave").click(function () {
+            if (!$("#EditForm").valid()) {
+                $.messageBox10s('提示', $("#ErrMesList").html());
+                return;
+            }
+            if ($("#EditForm").valid()) {
+
+                $.ajax({
+                    url: "/SysUser/Create",
+                    type: "Post",
+                    data: $("#EditForm").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        $.messageBox5s(Lang.Tip, data.message);
+
+                    }
+                });
+            }
+            return false;
+        });
+        $("#selExc").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/UserLookUp'></iframe>");
+            $("#modalwindow").window({ title: '选择人员', width: 620, height: 388, iconCls: 'fa fa-plus' }).window('open');
+        });
+        $("#JoinDate").datebox("setValue", myformatter('@Model.JoinDate'));
+    });
+
+    function SetSelResult(result, resultName) {
+
+        $("#Lead").val(result);
+        $("#LeadName").val(resultName);
+    }
+    function GetSelResult() {
+        var arrayObj = new Array()
+        arrayObj[0] = $("#Lead").val();
+        arrayObj[1] = $("#LeadName").val();
+        return arrayObj;
+    }
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+</script>
+<div class="mvctool">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+</div>
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div style="width:98%; margin:0 auto;">
+    @using (Html.BeginForm("Edit", "SysUser", null, FormMethod.Post, new { Id = "EditForm" }))
+    {
+        <div id="ErrMesList">
+            <div id="ErrMesListContent">
+                @Html.ValidationSummary(false)
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.Id)
+        <div class="easyui-panel" title="账号信息" style="width:100%;height:180px;">
+            <table class="formtable">
+                <tbody>
+                  
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.UserName)：
+                        </th>
+                        <td>
+                            @Html.EditorFor(model => model.UserName)
+                        </td>
+                        <th>
+                            @Html.LabelFor(model => model.Password)：
+                        </th>
+                        <td>@Html.EditorFor(model => model.Password)</td>
+                        <th></th>
+                        <td></td>
+                    </tr>
+                    <tr>
+
+                        <th>
+                            启用帐户：
+                        </th>
+                        <td>
+                           @Html.SwitchDropdown("State", true,"","")
+                             
+                        </td>
+
+                        <th>
+                            @Html.LabelFor(model => model.JobState)：
+
+                        </th>
+                        <td>
+                           @Html.SwitchDropdown("JobState", true,"","")
+                        </td>
+                        <th>
+
+                        </th>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            @Html.LabelFor(model => model.DepId)：
+                        </th>
+                        <td>
+                             <div style="width:0;height:0;overflow:hidden">@Html.EditorFor(model => model.DepId)</div>
+                            <input class="easyui-combotree" id="structTree"  style="width:150px;height:28px;">
+                        </td>
+                        <th>
+
+                            @Html.LabelFor(model => model.PosId)：
+                        </th>
+                        <td>
+                            <div style="width:0;height:0;overflow:hidden">@Html.EditorFor(model => model.PosId)</div>
+                            <input class="easyui-combotree" id="posTree" style="width: 150px; height: 28px;">
+                        </td>
+                        <th>
+                            @Html.LabelFor(model => model.Lead)：
+                        </th>
+                        <td>
+                            @Html.HiddenFor(model => model.Lead)
+                            <input id="LeadName" name="LeadName" readonly="readonly" type="text" style="width: 90px; display: inline; background: #dedede; ">
+                            <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:void(0)"></a>
+                        </td>
+                    </tr>
+
+                   
+                </tbody>
+            </table>
+        </div>
+    <div class="hr"></div>
+    <div class="easyui-panel" title="基本资料" style="width: 100%; height: 340px;">
+        <table class="formtable">
+            
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.TrueName)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.TrueName)
+                </td>
+                <th>
+                    @Html.LabelFor(model => model.Sex)：
+                </th>
+                <td>
+                    <input name="Sex" checked="checked" value="男" type="radio" />男
+                    <input name="Sex" type="radio" value="女" />女
+                </td>
+                <td rowspan="6" style=" border-left:dashed 1px #ccc; padding-left:30px">
+                    @Html.HiddenFor(model => model.Photo)
+                    <img class="expic" src="/Content/Images/NotPic.jpg" /><br />
+                    <a href="javascript:$('#FileUpload').trigger('click');" class="files">@Resource.Browse</a>
+                    <input type="file" class="displaynone" id="FileUpload" name="FileUpload" onchange="Upload('SingleFile', 'Photo', 'FileUpload','1','1');" />
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Birthday)：
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.Birthday, new {  @onClick = "WdatePicker()",@class= "Wdate", Value = String.Format("{0:yyyy-MM-dd}", Model.Birthday), @style = "width:105px" })
+                </td>
+                <th>
+                    @Html.LabelFor(model => model.JoinDate)：
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.JoinDate, new {  @onClick = "WdatePicker()",@class= "Wdate", Value = String.Format("{0:yyyy-MM-dd}", Model.JoinDate), @style = "width:105px" })
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Nationality)：
+                </th>
+                <td style="width: 100px;">
+                    @Html.EditorFor(model => model.Nationality)
+                </td>
+                <th>
+                    @Html.LabelFor(model => model.Native)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Native)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Marital)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Marital)
+                </td>
+                <th>
+                    @Html.LabelFor(model => model.Political)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Political)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Degree)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Degree)
+                </td>
+                <th>
+                    @Html.LabelFor(model => model.Professional)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Professional)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.School)：
+                </th>
+                <td colspan="1">
+                    @Html.EditorFor(model => model.School)
+                </td>
+                <th>
+                    @Html.LabelFor(model => model.Card)：
+                </th>
+                <td colspan="2">
+                    @Html.TextBoxFor(model => model.Card, new { style = "width:250px;" })
+                </td>
+            </tr>
+        </table>
+    </div>
+          <div class="hr"></div>
+    <div class="easyui-panel" title="联系方式" style="width:100%;height:350px;">
+        <table class="formtable">
+            <tbody>
+
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.MobileNumber)：
+                    </th>
+                    <td>
+                        @Html.EditorFor(model => model.MobileNumber)
+                    </td>
+                    <th>
+                        @Html.LabelFor(model => model.PhoneNumber)：
+                    </th>
+                    <td>
+                        @Html.EditorFor(model => model.PhoneNumber)
+                    </td>
+                    <th>
+                        @Html.LabelFor(model => model.QQ)：
+                    </th>
+                    <td>
+                        @Html.EditorFor(model => model.QQ)
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.EmailAddress)：
+                    </th>
+                    <td>
+                        @Html.EditorFor(model => model.EmailAddress)
+                    </td>
+                    <th>
+                        @Html.LabelFor(model => model.OtherContact)：
+                    </th>
+                    <td colspan="3">
+                        @Html.TextBoxFor(model => model.OtherContact, new { style = "width:250px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.Province)：
+                    </th>
+                    <td>
+                        @Html.DropDownListFor(model => model.Province, ViewBag.Areas as SelectList)
+                    </td>
+                    <th>
+                        @Html.LabelFor(model => model.City)：
+                    </th>
+                    <td>
+                        <select id="City" name="City">
+                            <option>--未选择--</option>
+                        </select>
+                    </td>
+                    <th>
+                        @Html.LabelFor(model => model.Village)：
+                    </th>
+                    <td>
+                        <select id="Village" name="Village">
+                            <option>--未选择--</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.Address)：
+                    </th>
+                    <td colspan="5">
+                        @Html.TextBoxFor(model => model.Address, new { style = "width:250px;" })
+                    </td>
+
+                </tr>
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.Expertise)：
+                    </th>
+                    <td colspan="5">
+                        @Html.TextAreaFor(model => model.Expertise, new { style = "width:350px;height:50px;" })
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.Attach)：
+                    </th>
+                    <td colspan="5">
+                        @Html.TextBoxFor(model => model.Attach, new { style = "width:250px;" })
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    }
+</div>

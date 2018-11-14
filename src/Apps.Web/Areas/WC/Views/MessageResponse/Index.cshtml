@@ -1,0 +1,1585 @@
+﻿@using Apps.Web.Core;
+@using Apps.Models.Enum;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "主页";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<style>
+    .formtable td {
+        vertical-align: top;
+        padding: 10px;
+    }
+
+    .formtable th {
+        text-align: left;
+        padding: 10px;
+        height: 30px;
+    }
+
+    .formtablenormal {
+        width: 500px;
+    }
+
+        .formtablenormal th {
+            border: 0px;
+            text-align: right;
+        }
+
+        .formtablenormal td {
+            border: 0px;
+            vertical-align: middle;
+        }
+</style>
+<script>
+    //1文本2图文3语音
+    var Category = {
+        Text: 1,
+        Image: 2,
+        Voice: 3,
+        Equal: 4,
+        Contain: 5
+    };
+    //
+    var RequestRule = {
+        Default: 0,
+        Subscriber: 1,
+        Text: 2,
+        Image: 3,
+        Voice: 4,
+        Video: 5,
+        Link: 6,
+        Location: 7
+    };
+
+    function initDefault() {
+        $('#swText0').switchbutton({
+            onChange: function(checked) {
+                if (checked) {
+                    $('#swImage0').switchbutton("uncheck");
+                    $('#swVoice0').switchbutton("uncheck");
+                    $("#div01").show();
+                    $("#div02,#div03").hide();
+                    $("#Category").val(Category.Text);
+                }
+            }
+        });
+        $('#swImage0').switchbutton({
+            onChange: function(checked) {
+                if (checked) {
+                    $('#swVoice0').switchbutton("uncheck");
+                    $('#swText0').switchbutton("uncheck");
+                    $("#div02").show();
+                    $("#div01,#div03").hide();
+                    $("#Category").val(Category.Image);
+                    $("#List0").datagrid("resize");
+                }
+            }
+        });
+        $('#swVoice0').switchbutton({
+            onChange: function(checked) {
+                if (checked) {
+                    $('#swImage0').switchbutton("uncheck");
+                    $('#swText0').switchbutton("uncheck");
+                    $("#div03").show();
+                    $("#div01,#div02").hide();
+                    $("#Category").val(Category.Voice);
+                }
+            }
+        });
+        //文本
+        $.post('@Url.Action("GetList")', {
+            page: 1,
+            rows: 1,
+            category: Category.Text,
+            messageRule: RequestRule.Default
+        },
+        function(data) {
+            var rows = data.rows;
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].Category == Category.Text) {
+                    $("#Text0").val(rows[i].TextContent);
+                    if (rows[i].IsDefault) {
+                        $('#swText0').switchbutton("check");
+                        $('#swImage0').switchbutton("uncheck");
+                        $('#swVoice0').switchbutton("uncheck");
+                    }
+                }
+            }
+        });
+        //语音
+        $.post('@Url.Action("GetList")', {
+            page: 1,
+            rows: 1,
+            category: Category.Voice,
+            messageRule: RequestRule.Default
+        },
+       function (data) {
+           var rows = data.rows;
+           for (var i = 0; i < rows.length; i++) {
+               if (rows[i].Category == Category.Voice) {
+                   $("#VoiceTitle0").val(rows[i].TextContent);
+                   $("#VoiceContent0").val(rows[i].Remark);
+                   $("#VoiceUrl0").val(rows[i].MeidaUrl);
+                   if (rows[i].IsDefault) {
+                       $('#swVoice0').switchbutton("check");
+                       $('#swText0').switchbutton("uncheck");
+                       $('#swImage0').switchbutton("uncheck");
+                   }
+               }
+           }
+       });
+
+        $('#List0').datagrid({
+            url: '@Url.Action("GetList")?messageRule=' + RequestRule.Default + '&category=' + Category.Image,
+            width: SetGridWidthSub(40),
+            methord: 'post',
+            height: SetGridHeightSub(175),
+            fitColumns: true,
+            sortName: 'Sort',
+            sortOrder: 'asc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true,
+            //奇偶行是否区分
+            singleSelect: true,
+            onLoadSuccess: function (data) {
+                if (data.rows.length > 0)
+                {
+                    if (data.rows[0].IsDefault) {
+                        $('#swImage0').switchbutton("check");
+                        $('#swText0').switchbutton("uncheck");
+                        $('#swVoice0').switchbutton("uncheck");
+                        $("#Category").val(Category.Image);
+                    }
+                }
+            },
+            //单选模式
+            //rownumbers: true,//行号
+            columns: [[{
+                field: 'Id',
+                title: 'Id',
+                width: 80,
+                hidden: true
+            },
+            {
+                field: 'TextContent',
+                title: '标题',
+                width: 80,
+                sortable: true
+            },
+            {
+                field: 'ImgTextUrl',
+                title: '图片',
+                width: 50,
+                sortable: true,
+                align: 'center', formatter: function (value) { return "<img width='80' height='80' src='" + value + "'/>" }
+            },
+            {
+                field: 'ImgTextLink',
+                title: '超链接',
+                width: 80,
+                sortable: true
+            },
+            {
+                field: 'ImgTextContext',
+                title: '回复内容',
+                width: 180,
+                sortable: true
+            },
+
+            ]]
+        });
+
+        $("#btnCreate02").unbind().click(function () {
+            $("#modalwindow0").window({
+                title: '@Resource.Create',
+                width: 700,
+                height: 500,
+                iconCls: 'fa fa-plus'
+            }).window('open');
+        });
+
+        $("#btnEdit02").unbind().click(function () {
+            var row = $('#List0').datagrid('getSelected');
+            if (row != null) {
+
+                $("#MessageRule").val(RequestRule.Default);
+                $("#TextContent").val($("#ImageTitle0").val());
+                $("#ImgTextUrl").val($("#ImageUrl0").val());
+                $("#ImgTextContext").val($("#ImageContent0").val());
+                $("#ImgTextLink").val($("#ImageLink0").val());
+                $("#Sort").val($("#Sort0").val());
+
+                $("#Id").val(row.Id);
+                $("#ImageTitle0").val(row.TextContent);
+                $("#ImageUrl0").val(row.ImgTextUrl);
+                $("#ImageContent0").val(row.ImgTextContext);
+                $("#ImageLink0").val(row.ImgTextLink);
+                $("#Sort0").val(row.Sort);
+                $("#form02 img").attr("src", row.ImgTextUrl);
+
+                $("#modalwindow0").window({
+                    title: '@Resource.Edit',
+                    width: 700,
+                    height: 500,
+                    iconCls: 'fa fa-pencil'
+                }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+
+        $("#btnSava01").unbind().click(function() {
+            //默认回复
+            $("#MessageRule").val(RequestRule.Default);
+            if ($.trim($("#Text0").val())=="")
+            {
+                $.messager.alert('@Resource.Tip', '内容必须填写！', 'warning');
+                return;
+            }
+            $("#TextContent").val($.trim($("#Text0").val()));
+            if ($("#form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("PostData")",
+                    type: "Post",
+                    data: $("#form").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        }
+        });
+
+
+
+
+        $("#btnSava02").unbind().click(function () {
+            if ($.trim($("#ImageTitle0").val()) == "") {
+                $.messager.alert('@Resource.Tip', '标题必须填写！', 'warning');
+                return;
+            }
+            if ($.trim($("#ImageUrl0").val()) == "") {
+                $.messager.alert('@Resource.Tip', '图片必须上传！', 'warning');
+                return;
+            }
+            if ($.trim($("#Sort0").val()) == "") {
+                $.messager.alert('@Resource.Tip', '排序必须填写！', 'warning');
+                return;
+            }
+            //图文回复
+            $("#MessageRule").val(RequestRule.Default);
+            $("#TextContent").val($("#ImageTitle0").val());
+            $("#ImgTextUrl").val($("#ImageUrl0").val());
+            $("#ImgTextContext").val($("#ImageContent0").val());
+            $("#ImgTextLink").val($("#ImageLink0").val());
+            $("#Sort").val($("#Sort0").val());
+           
+
+            if ($("#form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("PostData")",
+                    type: "Post",
+                data: $("#form").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    if (data.type == 1) {
+                        $("#Id").val("");
+                        $("#List0").datagrid('reload');
+                        $("#modalwindow0").window('close');
+                        $("#ImageTitle0").val("");
+                        $("#form02 img").attr("src", "/Content/Images/NotPic.jpg");
+                        $("#ImageContent0").val("");
+                        $("#ImageLink0").val("");
+                        $("#Sort0").val(0);
+                        $('#FileUpload02').val('');
+                    }
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        }
+        });
+        $("#btnSava03").unbind().click(function() {
+            //默认回复
+            $("#MessageRule").val(RequestRule.Default);
+            if ($.trim($("#Text0").val())=="")
+            {
+                if ($.trim($("#VoiceTitle0").val()) == "") {
+                    $.messager.alert('@Resource.Tip', '标题必须填写！', 'warning');
+                    return;
+                }
+                if ($.trim($("#VoiceUrl0").val()) == "") {
+                    $.messager.alert('@Resource.Tip', '必须上传语音！', 'warning');
+                    return;
+                }
+                $("#TextContent").val($("#VoiceTitle0").val());
+                $("#MeidaUrl").val($("#VoiceUrl0").val());
+                $("#Remark").val($("#VoiceContent0").val());
+            }
+
+            if ($("#form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("PostData")",
+                    type: "Post",
+                data: $("#form").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        }
+        });
+    }
+
+    function initSubscriber() {
+         $('#swText1').switchbutton({
+            onChange: function(checked) {
+                if (checked) {
+                    $('#swImage1').switchbutton("uncheck");
+                    $('#swVoice1').switchbutton("uncheck");
+                    $("#div11").show();
+                    $("#div12,#div13").hide();
+                    $("#Category").val(Category.Text);
+                }
+            }
+        });
+        $('#swImage1').switchbutton({
+            onChange: function(checked) {
+                if (checked) {
+                    $('#swVoice1').switchbutton("uncheck");
+                    $('#swText1').switchbutton("uncheck");
+                    $("#div12").show();
+                    $("#div11,#div13").hide();
+                    $("#Category").val(Category.Image);
+                    $("#List1").datagrid("resize");
+                }
+            }
+        });
+        $('#swVoice1').switchbutton({
+            onChange: function(checked) {
+                if (checked) {
+                    $('#swImage1').switchbutton("uncheck");
+                    $('#swText1').switchbutton("uncheck");
+                    $("#div13").show();
+                    $("#div11,#div12").hide();
+                    $("#Category").val(Category.Voice);
+                }
+            }
+        });
+        //文本
+        $.post('@Url.Action("GetList")', {
+            page: 1,
+            rows: 1,
+            category: Category.Text,
+            messageRule: RequestRule.Subscriber
+        },
+        function(data) {
+            var rows = data.rows;
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].Category == Category.Text) {
+                    $("#Text1").val(rows[i].TextContent);
+                    if (rows[i].IsDefault) {
+                        $('#swText1').switchbutton("check");
+                        $('#swImage1').switchbutton("uncheck");
+                        $('#swVoice1').switchbutton("uncheck");
+                    }
+                }
+            }
+        });
+        //语音
+        $.post('@Url.Action("GetList")', {
+            page: 1,
+            rows: 1,
+            category: Category.Voice,
+            messageRule: RequestRule.Subscriber
+        },
+       function (data) {
+           var rows = data.rows;
+           for (var i = 0; i < rows.length; i++) {
+               if (rows[i].Category == Category.Voice) {
+                   $("#VoiceTitle1").val(rows[i].TextContent);
+                   $("#VoiceContent1").val(rows[i].Remark);
+                   if (rows[i].IsDefault) {
+                       $('#swVoice1').switchbutton("check");
+                       $('#swText1').switchbutton("uncheck");
+                       $('#swImage1').switchbutton("uncheck");
+                   }
+               }
+           }
+       });
+
+        $('#List1').datagrid({
+            url: '@Url.Action("GetList")?messageRule=' + RequestRule.Subscriber + '&category=' + Category.Image,
+            width: SetGridWidthSub(40),
+            methord: 'post',
+            height: SetGridHeightSub(175),
+            fitColumns: true,
+            sortName: 'Sort',
+            sortOrder: 'asc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true,
+            //奇偶行是否区分
+            singleSelect: true,
+            onLoadSuccess: function (data) {
+                if (data.rows.length > 0)
+                {
+                    if (data.rows[0].IsDefault) {
+                        $('#swImage1').switchbutton("check");
+                        $('#swText1').switchbutton("uncheck");
+                        $('#swVoice1').switchbutton("uncheck");
+                    }
+                }
+            },
+            //单选模式
+            //rownumbers: true,//行号
+            columns: [[{
+                field: 'Id',
+                title: 'Id',
+                width: 80,
+                hidden: true
+            },
+            {
+                field: 'TextContent',
+                title: '标题',
+                width: 80,
+                sortable: true
+            },
+            {
+                field: 'ImgTextUrl',
+                title: '图片',
+                width: 50,
+                sortable: true,
+                align: 'center', formatter: function (value) { return "<img width='80' height='80' src='" + value + "'/>" }
+            },
+            {
+                field: 'ImgTextLink',
+                title: '超链接',
+                width: 80,
+                sortable: true
+            },
+            {
+                field: 'ImgTextContext',
+                title: '回复内容',
+                width: 180,
+                sortable: true
+            },
+
+            ]]
+        });
+
+        $("#btnCreate12").unbind().click(function () {
+            $("#modalwindow1").window({
+                title: '@Resource.Create',
+                width: 700,
+                height: 500,
+                iconCls: 'fa fa-plus'
+            }).window('open');
+        });
+        $("#btnEdit12").unbind().click(function () {
+            var row = $('#List1').datagrid('getSelected');
+            if (row != null) {
+
+                $("#MessageRule").val(RequestRule.Subscriber);
+                $("#TextContent").val(row.TextContent);
+                $("#ImgTextUrl").val(row.ImgTextUrl);
+                $("#ImgTextContext").val(row.ImgTextContext);
+                $("#ImgTextLink").val(row.ImgTextLink);
+                $("#Sort").val(row.Sort);
+
+                $("#Id").val(row.Id);
+                $("#ImageTitle1").val(row.TextContent);
+                $("#ImageUrl1").val(row.ImgTextUrl);
+                $("#ImageContent1").val(row.ImgTextContext);
+                $("#ImageLink1").val(row.ImgTextLink);
+                $("#Sort1").val(row.Sort);
+                $("#form12 img").attr("src", row.ImgTextUrl);
+
+                $("#modalwindow1").window({
+                    title: '@Resource.Edit',
+                    width: 700,
+                    height: 500,
+                    iconCls: 'fa fa-pencil'
+                }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+
+        $("#btnSava11").unbind().click(function() {
+            //默认回复
+            $("#MessageRule").val(RequestRule.Subscriber);
+            if ($.trim($("#Text1").val())=="")
+            {
+                $.messager.alert('@Resource.Tip', '内容必须填写！', 'warning');
+                return;
+            }
+            $("#TextContent").val($.trim($("#Text1").val()));
+            if ($("#form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("PostData")",
+                    type: "Post",
+                    data: $("#form").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        }
+        });
+
+        $("#btnSava12").unbind().click(function () {
+            if ($.trim($("#ImageTitle1").val()) == "") {
+                $.messager.alert('@Resource.Tip', '标题必须填写！', 'warning');
+                return;
+            }
+            if ($.trim($("#ImageUrl1").val()) == "") {
+                $.messager.alert('@Resource.Tip', '图片必须上传！', 'warning');
+                return;
+            }
+            if ($.trim($("#Sort1").val()) == "") {
+                $.messager.alert('@Resource.Tip', '排序必须填写！', 'warning');
+                return;
+            }
+            //图文回复
+            $("#MessageRule").val(RequestRule.Subscriber);
+            $("#TextContent").val($("#ImageTitle1").val());
+            $("#ImgTextUrl").val($("#ImageUrl1").val());
+            $("#ImgTextContext").val($("#ImageContent1").val());
+            $("#ImgTextLink").val($("#ImageLink1").val());
+            $("#Sort").val($("#Sort1").val());
+           
+            if ($("#form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("PostData")",
+                    type: "Post",
+                data: $("#form").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    if (data.type == 1) {
+                        $("#Id").val("");
+                        $("#List1").datagrid('reload');
+                        $("#modalwindow1").window('close');
+                        $("#ImageTitle1").val("");
+                        $("#form12 img").attr("src", "/Content/Images/NotPic.jpg");
+                        $("#ImageContent1").val("");
+                        $("#ImageLink1").val("");
+                        $("#Sort1").val(0);
+                        $('#FileUpload12').val('');
+                    }
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        }
+        });
+        $("#btnSava13").unbind().click(function() {
+            //默认回复
+            $("#MessageRule").val(RequestRule.Subscriber);
+            if ($.trim($("#Text1").val())=="")
+            {
+                if ($.trim($("#VoiceTitle1").val()) == "") {
+                    $.messager.alert('@Resource.Tip', '标题必须填写！', 'warning');
+                    return;
+                }
+                if ($.trim($("#VoiceUrl1").val()) == "") {
+                    $.messager.alert('@Resource.Tip', '必须上传语音！', 'warning');
+                    return;
+                }
+                $("#TextContent").val($("#VoiceTitle1").val());
+                $("#MeidaUrl").val($("#VoiceUrl1").val());
+                $("#Remark").val($("#VoiceContent1").val());
+            }
+
+            if ($("#form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("PostData")",
+                    type: "Post",
+                data: $("#form").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        }
+        });
+    }
+
+    function initText() {
+        $("#Category").val(Category.Equal);
+        $('#List2').datagrid({
+            url: '@Url.Action("GetList")?messageRule=' + RequestRule.Text,
+            width: SetGridWidthSub(40),
+            methord: 'post',
+            height: SetGridHeightSub(100),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true,
+            //奇偶行是否区分
+            singleSelect: true,
+            //单选模式
+            //rownumbers: true,//行号
+            columns: [[{
+                field: 'Id',
+                title: 'Id',
+                width: 80,
+                hidden: true
+            },
+            {
+                field: 'Category',
+                title: 'Category',
+                width: 80,
+                sortable: true,
+                hidden: true
+            },
+            {
+                field: 'MatchKey',
+                title: '关键字',
+                width: 80,
+                sortable: true,
+                formatter: function (value,row,index){
+                    if (row.Category == Category.Equal) {
+                        return "(完全匹配)" + value
+                    } else {
+                        return "(模糊匹配)" + value
+                    }
+                }
+            },
+            {
+                field: 'TextContent',
+                title: '回复内容',
+                width: 80,
+                sortable: true
+            },
+
+            ]]
+        });
+
+        $('#swMessageRule2').switchbutton({
+            onChange: function(checked) {
+                if (checked) {
+                    $("#Category").val(Category.Equal);
+                } else {
+                    $("#Category").val(Category.Contain);
+                }
+            }
+        });
+        $("#btnCreate2").unbind().click(function () {
+            $("#modalwindow2").window({
+                title: '@Resource.Create',
+                width: 700,
+                height: 400,
+                iconCls: 'fa fa-plus'
+            }).window('open');
+        });
+
+        $("#btnEdit2").unbind().click(function () {
+            var row = $('#List2').datagrid('getSelected');
+            if (row != null) {
+                $("#Id").val(row.Id);
+                $("#MessageRule").val(RequestRule.Text);
+                $("#MatchKey").val(row.MatchKey);
+                $("#TextContent").val(row.TextContent);
+
+                $("#TextMatchKey2").val(row.MatchKey);
+                $("#Text2").val(row.TextContent);
+                if (row.Category == Category.Equal) {
+                    $('#swMessageRule2').switchbutton("check");
+                    $("#Category").val(Category.Equal);
+                } else {
+                    $('#swMessageRule2').switchbutton("uncheck");
+                    $("#Category").val(Category.Contain);
+                }
+
+                $("#modalwindow2").window({
+                    title: '@Resource.Edit',
+                    width: 700,
+                    height: 400,
+                    iconCls: 'fa fa-pencil'
+                }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+
+        $("#btnDelete2").unbind().click(function () {
+            var row = $('#List2').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+                            if (data.type == 1)
+                                $("#List2").datagrid('load');
+                            $.messageBox5s('@Resource.Tip', data.message);
+                        }, "json");
+
+                    }
+                });
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnSava2").unbind().click(function () {
+            if ($.trim($("#TextMatchKey2").val()) == "") {
+                $.messager.alert('@Resource.Tip', '关键字必须填写！', 'warning');
+                return;
+            }
+            if ($.trim($("#Text2").val()) == "") {
+                $.messager.alert('@Resource.Tip', '内容必须填写！', 'warning');
+                return;
+            }
+            //文本回复
+            $("#MessageRule").val(RequestRule.Text);
+            $("#MatchKey").val($.trim($("#TextMatchKey2").val()));
+            $("#TextContent").val($("#Text2").val());
+            if ($("#form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("PostData")",
+                    type: "Post",
+                data: $("#form").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    if (data.type == 1) {
+                        $("#Id").val("");
+                        $("#List2").datagrid('reload');
+                        $("#modalwindow2").window('close');
+                        $("#TextMatchKey2").val("");
+                        $("#Text2").val("");
+                    }
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        }
+        });
+    }
+
+
+    function initImage() {
+        $("#Category").val(Category.Equal);
+        $('#List31').datagrid({
+            url: '@Url.Action("GetListProperty")?messageRule=' + RequestRule.Image,
+            width: 300,
+            methord: 'post',
+            height: SetGridHeightSub(100),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true,
+            //奇偶行是否区分
+            singleSelect: true,
+            onClickRow: function (index,data) {
+                var row = $('#List31').datagrid('getSelected');
+                if (row != null)
+                {
+                    $('#List3').datagrid({url:'@Url.Action("GetList")?messageRule='+RequestRule.Image+'&category='+row.Category+'&matchKey='+row.MatchKey});
+                }
+            },
+            //单选模式
+            //rownumbers: true,//行号
+            columns: [[{
+                field: 'Id',
+                title: 'Id',
+                width: 80,
+                hidden: true
+            },
+            {
+                field: 'Category',
+                title: 'Category',
+                width: 80,
+                sortable: true,
+                hidden: true
+            },
+            {
+                field: 'MatchKey',
+                title: '关键字',
+                width: 130,
+                sortable: true,
+                formatter: function (value, row, index) {
+                    if (row.Category == Category.Equal) {
+                        return "(完全匹配)" + value
+                    } else {
+                        return "(模糊匹配)" + value
+                    }
+                }
+            },
+            {
+                field: 'CreateTime',
+                title: '创建时间',
+                width: 80,
+                sortable: true
+            },
+
+            ]]
+        }).datagrid('getPager').pagination({ showPageList: true, showRefresh: false, displayMsg: '' });
+
+
+        $('#List3').datagrid({
+            url:'@Url.Action("GetList")?messageRule='+RequestRule.Image+'&category=x&matchKey=x',
+            width: SetGridWidthSub(340),
+            methord: 'post',
+            height: SetGridHeightSub(100),
+            fitColumns: true,
+            sortName: 'Sort',
+            sortOrder: 'asc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true,
+            //奇偶行是否区分
+            singleSelect: true,
+            //单选模式
+            //rownumbers: true,//行号
+            columns: [[{
+                field: 'Id',
+                title: 'Id',
+                width: 80,
+                hidden: true
+            },
+            {
+                field: 'Category',
+                title: 'Category',
+                width: 80,
+                sortable: true,
+                hidden: true
+            },
+            {
+                field: 'TextContent',
+                title: '标题',
+                width: 80,
+                sortable: true
+            },
+            {
+                field: 'MatchKey',
+                title: '关键字',
+                width: 80,
+                sortable: true,
+                formatter: function (value,row,index){
+                    if (row.Category == Category.Equal) {
+                        return "(完全匹配)" + value
+                    } else {
+                        return "(模糊匹配)" + value
+                    }
+                }
+            },
+            {
+                field: 'ImgTextUrl',
+                title: '图片',
+                width: 50,
+                sortable: true,
+                align: 'center', formatter: function (value) { return "<img width='80' height='80' src='" + value + "'/>" }
+            },
+            {
+                field: 'ImgTextLink',
+                title: '超链接',
+                width: 80,
+                sortable: true
+            },
+            {
+                field: 'ImgTextContext',
+                title: '回复内容',
+                width: 180,
+                sortable: true
+            },
+            {
+                field: 'Sort',
+                title: '排序',
+                width: 50,
+                sortable: true
+            },
+            ]]
+        });
+
+        $('#swMessageRule3').switchbutton({
+            onChange: function(checked) {
+                if (checked) {
+                    $("#Category").val(Category.Equal);
+                } else {
+                    $("#Category").val(Category.Contain);
+                }
+            }
+        });
+        $("#btnCreate3").unbind().click(function () {
+            $("#modalwindow3").window({
+                title: '@Resource.Create',
+                width: 700,
+                height: 550,
+                iconCls: 'fa fa-plus'
+            }).window('open');
+        });
+
+        $("#btnEdit3").unbind().click(function () {
+            var row = $('#List3').datagrid('getSelected');
+            if (row != null) {
+
+                $("#MessageRule").val(RequestRule.Image);
+                $("#TextContent").val(row.TextContent);
+                $("#ImgTextUrl").val(row.ImgTextUrl);
+                $("#ImgTextContext").val(row.ImgTextContext);
+                $("#ImgTextLink").val(row.ImgTextLink);
+                $("#MatchKey").val(row.MatchKey);
+                $("#Sort").val(row.Sort);
+                if (row.Category == Category.Equal) {
+                    $('#swMessageRule3').switchbutton("check");
+                    $("#Category").val(Category.Equal);
+                } else {
+                    $('#swMessageRule3').switchbutton("uncheck");
+                    $("#Category").val(Category.Contain);
+                }
+                $("#Id").val(row.Id);
+                $("#TextMatchKey3").val(row.MatchKey);
+                $("#ImageTitle3").val(row.TextContent);
+                $("#ImageUrl3").val(row.ImgTextUrl);
+                $("#ImageContent3").val(row.ImgTextContext);
+                $("#ImageLink3").val(row.ImgTextLink);
+                $("#Sort3").val(row.Sort);
+                $("#form3 img").attr("src", row.ImgTextUrl);
+                $("#modalwindow3").window({
+                    title: '@Resource.Edit',
+                    width: 700,
+                    height: 550,
+                    iconCls: 'fa fa-pencil'
+                }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+
+        $("#btnDelete3").unbind().click(function () {
+            var row = $('#List3').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+                            if (data.type == 1)
+                                $("#List3").datagrid('load');
+                            $.messageBox5s('@Resource.Tip', data.message);
+                        }, "json");
+
+                    }
+                });
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnSava3").unbind().click(function () {
+            if ($.trim($("#ImageTitle3").val()) == "") {
+                $.messager.alert('@Resource.Tip', '标题必须填写！', 'warning');
+                return;
+            }
+            if ($.trim($("#TextMatchKey3").val()) == "") {
+                $.messager.alert('@Resource.Tip', '关键字必须填写！', 'warning');
+                return;
+            }
+            if ($.trim($("#ImageUrl3").val()) == "") {
+                $.messager.alert('@Resource.Tip', '图片必须上传！', 'warning');
+                return;
+            }
+            //图文回复
+            $("#MessageRule").val(RequestRule.Image);
+            $("#MatchKey").val($.trim($("#TextMatchKey3").val()));
+            $("#TextContent").val($("#ImageTitle3").val());
+            $("#ImgTextUrl").val($("#ImageUrl3").val());
+            $("#ImgTextContext").val($("#ImageContent3").val());
+            $("#ImgTextLink").val($("#ImageLink3").val());
+            $("#Sort").val($("#Sort3").val());
+            if ($("#form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("PostData")",
+                    type: "Post",
+                data: $("#form").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    if (data.type == 1) {
+                        $("#Id").val("");
+                        $("#List3").datagrid('reload');
+                        $("#List31").datagrid('reload');
+                        $("#modalwindow3").window('close');
+                        $("#ImageTitle3").val("");
+                        $("#form3 img").attr("src", "/Content/Images/NotPic.jpg");
+                        $("#ImageContent3").val("");
+                        $("#ImageLink3").val("");
+                        $("#Sort3").val(0);
+                        $('#FileUpload3').val('');
+                        $("#TextMatchKey3").val('');
+                    }
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        }
+        });
+    }
+
+    function initVoice() {
+        $("#Category").val(Category.Equal);
+        $('#List4').datagrid({
+            url: '@Url.Action("GetList")?messageRule=' + RequestRule.Voice,
+            width: SetGridWidthSub(40),
+            methord: 'post',
+            height: SetGridHeightSub(100),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true,
+            //奇偶行是否区分
+            singleSelect: true,
+            //单选模式
+            //rownumbers: true,//行号
+            columns: [[{
+                field: 'Id',
+                title: 'Id',
+                width: 80,
+                hidden: true
+            },
+            {
+                field: 'Category',
+                title: 'Category',
+                width: 80,
+                sortable: true,
+                hidden: true
+            },
+            {
+                field: 'TextContent',
+                title: '标题',
+                width: 80,
+                sortable: true
+            },
+            {
+                field: 'MatchKey',
+                title: '关键字',
+                width: 80,
+                sortable: true,
+                formatter: function (value,row,index){
+                    if (row.Category == Category.Equal) {
+                        return "(完全匹配)" + value
+                    } else {
+                        return "(模糊匹配)" + value
+                    }
+                }
+            },
+            {
+                field: 'MeidaUrl',
+                title: '语音',
+                width: 80,
+                sortable: true,
+                align: 'center', formatter: function (value) { return "<img width='80' height='80' src='" + value + "'/>" }
+            },
+            {
+                field: 'ImgTextLink',
+                title: '超链接',
+                width: 80,
+                sortable: true
+            },
+            {
+                field: 'ImgTextContext',
+                title: '回复内容',
+                width: 80,
+                sortable: true
+            },
+
+            ]]
+        });
+
+        $('#swMessageRule4').switchbutton({
+            onChange: function(checked) {
+                if (checked) {
+                    $("#Category").val(Category.Equal);
+                } else {
+                    $("#Category").val(Category.Contain);
+                }
+            }
+        });
+        $("#btnCreate4").unbind().click(function() {
+            $("#modalwindow4").window({
+                title: '@Resource.Create',
+                width: 700,
+                height: 500,
+                iconCls: 'fa fa-plus'
+            }).window('open');
+        });
+
+        $("#btnEdit3").unbind().click(function () {
+            var row = $('#List3').datagrid('getSelected');
+            if (row != null) {
+
+                $("#MessageRule").val(RequestRule.Voice);
+                $("#MatchKey").val(row.MatchKey);
+                $("#TextContent").val(row.TextContent);
+                $("#MeidaUrl").val(row.MeidaUrl);
+                $("#Remark").val(row.Remark);
+
+               
+                if (row.Category == Category.Equal) {
+                    $('#swMessageRule4').switchbutton("check");
+                    $("#Category").val(Category.Equal);
+                } else {
+                    $('#swMessageRule4').switchbutton("uncheck");
+                    $("#Category").val(Category.Contain);
+                }
+                $("#Id").val(row.Id);
+                $("#TextMatchKey4").val(row.MatchKey);
+                $("#VoiceTitle4").val(row.TextContent);
+                $("#VoiceUrl4").val(row.MeidaUrl);
+                $("#VoiceContent4").val(row.Remark);
+                $("#FileUpload4").val("");
+                $("#form3 img").attr("src", row.MeidaUrl);
+
+
+                $("#modalwindow3").window({
+                    title: '@Resource.Edit',
+                    width: 700,
+                    height: 500,
+                    iconCls: 'fa fa-pencil'
+                }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+
+        $("#btnDelete4").unbind().click(function () {
+            var row = $('#List4').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                    if (r) {
+                        $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+                            if (data.type == 1)
+                                $("#List4").datagrid('load');
+                            $.messageBox5s('@Resource.Tip', data.message);
+                        }, "json");
+
+                    }
+                });
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnSava4").unbind().click(function () {
+            if ($.trim($("#VoiceTitle4").val()) == "") {
+                $.messager.alert('@Resource.Tip', '标题必须填写！', 'warning');
+                return;
+            }
+            if ($.trim($("#TextMatchKey4").val()) == "") {
+                $.messager.alert('@Resource.Tip', '关键字必须填写！', 'warning');
+                return;
+            }
+            if ($.trim($("#VoiceUrl4").val()) == "") {
+                $.messager.alert('@Resource.Tip', '必须上传语音！', 'warning');
+                return;
+            }
+            //图文回复
+            $("#MessageRule").val(RequestRule.Voice);
+            $("#MatchKey").val($("#TextMatchKey4").val());
+            $("#TextContent").val($("#VoiceTitle4").val());
+            $("#MeidaUrl").val($("#VoiceUrl4").val());
+            $("#Remark").val($("#VoiceContent4").val());
+            if ($("#form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("PostData")",
+                    type: "Post",
+                data: $("#form").serialize(),
+                dataType: "json",
+                success: function(data) {
+                    if (data.type == 1) {
+                        $("#Id").val("");
+                        $("#List4").datagrid('reload');
+                        $("#modalwindow4").window('close');
+                        $("#TextMatchKey4").val("");
+                        $("#VoiceTitle4").val("");
+                        $("#VoiceUrl4").val("");
+                        $("#VoiceContent4").val("");
+                        $("#FileUpload4").val("");
+                        $("#form3 img").attr("src", "/Content/Images/NotPic.jpg");
+                    }
+                    $.messageBox5s('@Resource.Tip', data.message);
+                }
+            });
+        }
+        });
+    }
+    $(function() {
+        $('#tt').tabs({
+            justified: true,
+            width: '100%',
+            height: $(window).height() - 20
+        });
+        $('#tt').tabs({
+            onSelect: function(title, index) {
+                switch (index) {
+                    case RequestRule.Default:
+                        initDefault();
+                        break;
+                    case RequestRule.Subscriber:
+                        initSubscriber();
+                        break;
+                    case RequestRule.Text:
+                        initText();
+                        break;
+                    case RequestRule.Image:
+                        initImage();
+                        break;
+                    case RequestRule.Voice:
+                        initVoice();
+                        break;
+                }
+            }
+        });
+        //初始化第一个标签
+        initDefault();
+
+        //自动宽高
+        $(window).resize(function() {
+            $('#tt').tabs({
+                height:$(window).height() - 20
+            });
+            //$('#List2').datagrid('resize', {
+            //    width: SetGridWidthSub(40),
+            //    height: SetGridHeightSub(100)
+            //});
+
+        });
+    });
+    $(function () {
+        $('input.textbox').validatebox().bind('blur', function () {
+            $(this).validatebox('enableValidation').validatebox('validate');
+        });
+    })
+</script>
+<form id="form" method="post">
+    <input type="hidden" id="Id" name="Id" />
+    <input type="hidden" id="MessageRule" name="MessageRule" />
+    <input type="hidden" id="Category" name="Category" />
+    <input type="hidden" id="MatchKey" name="MatchKey" />
+    <input type="hidden" id="TextContent" name="TextContent" />
+    <input type="hidden" id="ImgTextContext" name="ImgTextContext" />
+    <input type="hidden" id="ImgTextUrl" name="ImgTextUrl" />
+    <input type="hidden" id="ImgTextLink" name="ImgTextLink" />
+    <input type="hidden" id="MeidaUrl" name="MeidaUrl" />
+    <input type="hidden" id="MeidaLink" name="MeidaLink" />
+    <input type="hidden" id="Remark" name="Remark" />
+    <input type="hidden" id="Sort" name="Sort" value="0" />
+    <input type="hidden" id="CreateTime" name="CreateTime" />
+    <input type="hidden" id="CreateBy" name="CreateBy" />
+    <input type="hidden" id="ModifyTime" name="ModifyTime" />
+    <input type="hidden" id="ModifyBy" name="ModifyBy" />
+</form>
+    <div style="padding:10px;">
+        <div id="tt" class="easyui-tabs">
+            <div title="默认回复"> 
+                <table class="formtable" style="height:45px; line-height:45px; width:100%; border-bottom:1px solid #e7eaec">
+                    <tr>
+                        <td style="width:100px;">
+                            文本: @Html.SwitchButtonByEdit("swText0", false)
+                        </td>
+                        <td style="width:100px;">
+                            图文: @Html.SwitchButtonByEdit("swImage0", false)
+                        </td>
+                        <td style="width:100px;">
+                            语音: @Html.SwitchButtonByEdit("swVoice0", false)
+                        </td>
+                        <td></td>
+                        <td style="width:300px;">
+                                <div class="color-green">当前操作公众号：<span id="CurrentOfficalAccount">@ViewBag.CurrentOfficalAcount</span></div>
+                        </td>
+                    </tr>
+                </table>
+                <div id="div01" class="displaynone">
+                    <div class="mvctool bgb">
+                        @Html.ToolButton("btnSava01", "fa fa-plus", "提交保存", ref perm, "Edit", false)
+                    </div>
+                    <textarea id="Text0" style="width: 300px;height: 330px; margin:20px;"></textarea>
+                    </div>
+                <div id="div02" class="displaynone">
+                    <div class="mvctool bgb">
+                        @Html.ToolButton("btnCreate02", "fa fa-search", "添加回复", ref perm, "Edit", false)
+                    </div>
+                    <div id="modalwindow0" class="easyui-window" style="width:600px; height:550px;" data-options="modal:true,closed: true,minimizable:false,shadow:false">
+                        <div class="mvctool bgb">
+                            @Html.ToolButton("btnSava02", "fa fa-search", "提交保存", ref perm, "Edit", false)
+                        </div>
+                        <table class="formtablenormal">
+                            <tr><th>标题: </th><td><input type="text" id="ImageTitle0" class="textbox" data-options="required:true" /></td></tr>
+                            <tr>
+                                <th>图片: </th>
+                                <td>
+                                    <form id="form02" method="post">
+                                        <input type="hidden" name="ImageUrl0" id="ImageUrl0" />
+                                        <img class="expic" src="/Content/Images/NotPic.jpg" />
+                                        <br />
+                                        <a onclick="$('#FileUpload02').trigger('click')" class="files">@Resource.Browse</a>
+                                        <input type="file" id="FileUpload02" class="displaynone" name="FileUpload02" onchange="Upload('SingleFile', 'ImageUrl0', 'FileUpload02', '1', '1', '#form02');" />
+                                        <span class="uploading">@Resource.Uploading</span>
+                                    </form>
+                            </tr>
+                            <tr><th>内容: </th><td><textarea id="ImageContent0" style="width: 300px; height: 100px;"></textarea></td></tr>
+                            <tr><th>链接: </th><td><input type="text" id="ImageLink0" /></td></tr>
+                            <tr><th>排序: </th><td><input type="number" id="Sort0" value="0" /></td></tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:10px;">
+                        <table id="List0"></table>
+                    </div>   
+                </div>
+                            
+                <div id="div03" class="displaynone">
+                    <div class="mvctool bgb">
+                        @Html.ToolButton("btnSava03", "fa fa-plus", "提交保存", ref perm, "Edit", false)
+                    </div>
+                                <table class="formtablenormal" style="margin:20px;">
+                                    <tr><th>标题: </th><td><input type="text" id="VoiceTitle0" /></td></tr>
+                                    <tr><th>语音: </th><td>
+                                                         <form id="form03" method="post">
+                                                             <input type="text" name="VoiceUrl0" class="left" id="VoiceUrl0" />
+                                                             <a  onclick="$('#FileUpload03').trigger('click')"  class="files">@Resource.Browse</a>
+                                                             <input type="file" accept="audio/mpeg" id="FileUpload03" class="displaynone" name="FileUpload03" onchange="Upload('SingleFile', 'VoiceUrl0', 'FileUpload03', '', '', '#form03');" />
+                                                             <span class="uploading">@Resource.Uploading</span>
+                                                         </form>
+                                        </td></tr>
+                                    <tr><th>描述: </th><td><textarea id="VoiceContent0" style="width:335px; height:300px;"></textarea></td></tr>
+                                </table>
+                 </div>       
+            </div>
+            <div title="关注时回复" >
+                <table class="formtable" style="height:45px; line-height:45px; width:100%; border-bottom:1px solid #e7eaec">
+                    <tr>
+                        <td style="width:100px;">
+                            文本: @Html.SwitchButtonByEdit("swText1", false)
+                        </td>
+                        <td style="width:100px;">
+                            图文: @Html.SwitchButtonByEdit("swImage1", false)
+                        </td>
+                        <td style="width:100px;">
+                            语音: @Html.SwitchButtonByEdit("swVoice1", false)
+                        </td>
+                        <td></td>
+                        <td style="width:300px;">
+                            <div class="color-green">当前操作公众号：<span id="CurrentOfficalAccount">@ViewBag.CurrentOfficalAcount</span></div>
+                        </td>
+                    </tr>
+                </table>
+                <div id="div11" class="displaynone">
+                    <div class="mvctool bgb">
+                        @Html.ToolButton("btnSava11", "fa fa-plus", "提交保存", ref perm, "Edit", false)
+                    </div>
+                    <textarea id="Text1" style="width: 300px;height: 330px; margin:20px;"></textarea>
+                </div>
+                <div id="div12" class="displaynone">
+                    <div class="mvctool bgb">
+                        @Html.ToolButton("btnCreate12", "fa fa-search", "添加回复", ref perm, "Edit", false)
+                        @Html.ToolButton("btnEdit12", "fa fa-search", "编辑", ref perm, "Edit", true)
+                        @Html.ToolButton("btnDelete12", "fa fa-search", "删除", ref perm, "Delete", false)
+                    </div>
+                    <div id="modalwindow1" class="easyui-window" style="width:600px; height:550px;" data-options="modal:true,closed: true,minimizable:false,shadow:false">
+                        <div class="mvctool bgb">
+                            @Html.ToolButton("btnSava12", "fa fa-search", "提交保存", ref perm, "Edit", false)
+                            
+                        </div>
+                        <table class="formtablenormal">
+                            <tr><th>标题: </th><td><input type="text" id="ImageTitle1" class="textbox" data-options="required:true" /></td></tr>
+                            <tr>
+                                <th>图片: </th>
+                                <td>
+                                    <form id="form12" method="post">
+                                        <input type="hidden" name="ImageUrl1" id="ImageUrl1" />
+                                        <img class="expic" src="/Content/Images/NotPic.jpg" />
+                                        <br />
+                                        <a  onclick="$('#FileUpload12').trigger('click')" class="files">@Resource.Browse</a>
+                                        <input type="file" id="FileUpload12" class="displaynone" name="FileUpload12" onchange="Upload('SingleFile', 'ImageUrl1', 'FileUpload12', '1', '1', '#form12');" />
+                                        <span class="uploading">@Resource.Uploading</span>
+                                    </form>
+                            </tr>
+                            <tr><th>内容: </th><td><textarea id="ImageContent1" style="width: 300px; height: 100px;"></textarea></td></tr>
+                            <tr><th>链接: </th><td><input type="text" id="ImageLink1" /></td></tr>
+                            <tr><th>排序: </th><td><input type="number" id="Sort1" value="0" /></td></tr>
+                        </table>
+
+                    </div>
+                    <div style="padding:10px;">
+                        <table id="List1"></table>
+                    </div>
+                </div>
+
+                <div id="div13" class="displaynone">
+                    <div class="mvctool bgb">
+                        @Html.ToolButton("btnSava13", "fa fa-plus", "提交保存", ref perm, "Edit", false)
+                    </div>
+                    <table class="formtablenormal" style="margin:20px;">
+                        <tr><th>标题: </th><td><input type="text" id="VoiceTitle1" /></td></tr>
+                        <tr>
+                            <th>语音: </th>
+                            <td>
+                                <form id="form13" method="post">
+                                    <input type="text" name="VoiceUrl1" class="left" id="VoiceUrl0" />
+                                    <a onclick="$('#FileUpload13').trigger('click')"  class="files">@Resource.Browse</a>
+                                    <input type="file" accept="audio/mpeg" id="FileUpload13" class="displaynone" name="FileUpload13" onchange="Upload('SingleFile', 'VoiceUrl1', 'FileUpload13', '', '', '#form13');" />
+                                    <span class="uploading">@Resource.Uploading</span>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr><th>描述: </th><td><textarea id="VoiceContent1" style="width:335px; height:300px;"></textarea></td></tr>
+                    </table>
+                </div>  
+            </div>
+
+            <div title="文本回复" style="padding:10px">
+                <div class="mvctool ">
+                    @Html.ToolButton("btnCreate2", "fa fa-search", "添加回复", ref perm, "Edit", true)
+                    @Html.ToolButton("btnEdit2", "fa fa-search", "编辑", ref perm, "Edit", true)
+                    @Html.ToolButton("btnDelete2", "fa fa-search", "删除", ref perm, "Delete", false)
+                    <div class="rightdiv color-green">
+                        当前操作公众号: <span id="CurrentOfficalAccount">@ViewBag.CurrentOfficalAcount</span>
+                    </div>
+                </div>
+                <div id="modalwindow2"
+                        class="easyui-window"
+                        style="width:600px; height:500px;" data-options="modal:true,closed: true,minimizable:false,shadow:false">
+                    <div class="mvctool bgb">
+                        @Html.ToolButton("btnSava2", "fa fa-search", "提交保存", ref perm, "Edit", false)
+                        <div class="rightdiv color-green">
+                            当前操作公众号: <span id="CurrentOfficalAccount">@ViewBag.CurrentOfficalAcount</span>
+                        </div>
+                    </div>
+                    <table class="formtablenormal">
+                        <tr>
+                            <th>关键字: </th>
+                            <td>
+                                <input type="text" id="TextMatchKey2" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>规则: </th>
+                            <td>
+                                @Html.SwitchButtonByEdit("swMessageRule2", true, "模糊匹配(关键字包含内容) ", "完全匹配(内容与关键字完全匹配)", "280")
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>内容: </th>
+                            <td>
+                                <textarea id="Text2" style="width: 280px;height:200px"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <table id="List2"></table>
+               
+            </div>
+
+            <div title="图片回复" style="padding:10px">
+                <div class="mvctool">
+                    @Html.ToolButton("btnCreate3", "fa fa-search", "添加回复", ref perm, "Edit", true)
+                    @Html.ToolButton("btnEdit3", "fa fa-search", "编辑", ref perm, "Edit", true)
+                    @Html.ToolButton("btnDelete3", "fa fa-search", "删除", ref perm, "Delete", false)
+                    <div class="rightdiv color-green">
+                        当前操作公众号: <span id="CurrentOfficalAccount">@ViewBag.CurrentOfficalAcount</span>
+                    </div>
+                </div>
+                <div id="modalwindow3" class="easyui-window" style="width:600px; height:550px;" data-options="modal:true,closed: true,minimizable:false,shadow:false">
+                    <div class="mvctool bgb">
+                        @Html.ToolButton("btnSava3", "fa fa-search", "提交保存", ref perm, "Edit", false)
+                        <div class="rightdiv color-green">
+                            当前操作公众号: <span id="CurrentOfficalAccount">@ViewBag.CurrentOfficalAcount</span>
+                        </div>
+                    </div>
+                    <table class="formtablenormal">
+                        <tr><th>标题: </th><td><input type="text" id="ImageTitle3" /></td></tr>
+                        <tr>
+                            <th>关键字: </th>
+                            <td>
+                                <input type="text" id="TextMatchKey3" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>规则: </th>
+                            <td>
+                                @Html.SwitchButtonByEdit("swMessageRule3", true, "模糊匹配(关键字包含内容) ", "完全匹配(内容与关键字完全匹配)", "280")
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>图片: </th>
+                            <td>
+                                <form id="form3" method="post">
+                                    <input type="hidden" name="ImageUrl3" id="ImageUrl3" />
+                                    <img class="expic" src="/Content/Images/NotPic.jpg" />
+                                    <br />
+                                    <a onclick="$('#FileUpload3').trigger('click')"  class="files">@Resource.Browse</a>
+                                    <input type="file" id="FileUpload3" class="displaynone" name="FileUpload3" onchange="Upload('SingleFile', 'ImageUrl3', 'FileUpload3', '1', '1', '#form3');" />
+                                    <span class="uploading">@Resource.Uploading</span>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr><th>内容: </th><td><textarea id="ImageContent3" style="width: 300px; height: 80px;"></textarea></td></tr>
+                        <tr><th>链接: </th><td><input type="text" id="ImageLink3" /></td></tr>
+                        <tr><th>排序: </th><td><input type="number" id="Sort3" value="0" /></td></tr>
+                    </table>
+                  
+                </div>
+                <table><tr><td><table id="List31"></table></td><td>&nbsp;</td><td><table id="List3"></table></td></tr></table>
+               
+            </div>
+
+            <div title="语音回复" style="padding:10px">
+                <div class="mvctool ">
+                    @Html.ToolButton("btnCreate4", "fa fa-search", "添加回复", ref perm, "Edit", false)
+                    @Html.ToolButton("btnEdit4", "fa fa-search", "编辑", ref perm, "Edit", true)
+                    @Html.ToolButton("btnDelete4", "fa fa-search", "删除", ref perm, "Delete", false)
+                    <div class="rightdiv color-green">
+                        当前操作公众号: <span id="CurrentOfficalAccount">@ViewBag.CurrentOfficalAcount</span>
+                    </div>
+                </div>
+                <div id="modalwindow4"
+                     class="easyui-window"
+                     style="width:600px; height:500px;" data-options="modal:true,closed: true,minimizable:false,shadow:false">
+                    <div class="mvctool bgb">
+                        @Html.ToolButton("btnSava4", "fa fa-search", "提交保存", ref perm, "Edit", false)
+                        <div class="rightdiv color-green">
+                            当前操作公众号: <span id="CurrentOfficalAccount">@ViewBag.CurrentOfficalAcount</span>
+                        </div>
+                    </div>
+                    <table class="formtablenormal">
+                        <tr><th>标题: </th><td><input type="text" id="VoiceTitle4" /></td></tr>
+                        <tr>
+                            <th>关键字: </th>
+                            <td>
+                                <input type="text" id="TextMatchKey4" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>规则: </th>
+                            <td>
+                                @Html.SwitchButtonByEdit("swMessageRule4", true, "模糊匹配(关键字包含内容) ", "完全匹配(内容与关键字完全匹配)", "280")
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>语音: </th>
+                            <td>
+                                <form id="form4" method="post">
+                                    <input type="text" class="left" name="VoiceUrl4" id="VoiceUrl4" />
+                                    <a href="javascript:$('#FileUpload4').trigger('click');" class="files">@Resource.Browse</a>
+                                    <input type="file" id="FileUpload4" accept="audio/mpeg" class="displaynone" name="FileUpload4" onchange="Upload('SingleFile', 'VoiceUrl4', 'FileUpload4', '', '', '#form4');" />
+                                    <span class="uploading">@Resource.Uploading</span>
+                                </form>
+                               
+                            </td>
+                        </tr>
+                        <tr><th>描述: </th><td><textarea id="VoiceContent4" style="width: 300px; height: 100px;"></textarea></td></tr>
+                       
+                    </table>
+
+                </div>
+                <table id="List4"></table>
+            </div>
+            @*<div title="视频回复"
+                 style="padding:10px">
+            </div>*@
+            @*<div title="链接回复"
+                 styIe="padding:10px">
+            </div>
+            <div title="LBS位置回复"
+                 style="padding:10px">
+            </div>*@
+        </div>
+    </div>

@@ -1,0 +1,196 @@
+﻿@model Apps.Models.WC.WC_OfficalAccountsModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WC;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@using Apps.Models.Enum
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+    $("#Category").val(@Model.Category);
+});
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CreateBy)
+    @Html.HiddenFor(model => model.CreateTime)
+    @Html.HiddenFor(model => model.ModifyBy)
+    @Html.HiddenFor(model => model.ModifyTime)
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficalId)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OfficalId)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OfficalId)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficalName)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OfficalName)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OfficalName)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficalCode)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OfficalCode)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OfficalCode)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficalPhoto)：
+                </th>
+                <td>
+                    @Html.HiddenFor(model => model.OfficalPhoto)
+                    <img class="expic" src="@((Model.OfficalPhoto == null || Model.OfficalPhoto == "") ? "/Content/Images/NotPic.jpg" : Model.OfficalPhoto)" /><br />
+                    <a href="javascript:$('#FileUpload').trigger('click');" class="files">@Resource.Browse</a>
+                    <input type="file" id="FileUpload" name="FileUpload" class="displaynone"  onchange="Upload('SingleFile', 'OfficalPhoto', 'FileUpload','1','1');" />
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OfficalPhoto)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficalKey)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OfficalKey)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OfficalKey)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ApiUrl)：
+                </th>
+                <td>
+                   @Html.HiddenFor(model => model.ApiUrl)
+                   @Model.ApiUrl
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ApiUrl)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Token)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Token)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Token)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AppId)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.AppId)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.AppId)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AppSecret)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.AppSecret)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.AppSecret)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AccessToken)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.AccessToken)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.AccessToken)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Remark)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Remark)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Enable)：
+                </th>
+                <td>
+                    @Html.SwitchButtonByEdit("Enable", Model.Enable)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Enable)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.IsDefault)：
+                </th>
+                <td>
+                   @Html.SwitchDropdown("IsDefault", Model.IsDefault,"是","否")
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.IsDefault)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Category)：
+                </th>
+                <td>
+                    <select id="Category" name="Category">
+                        <option value="@((int)WeChatSubscriberEnum.PersonalSubscriber)">个人订阅号</option>
+                        <option value="@((int)WeChatSubscriberEnum.MediaSubscriber)">政府媒体订阅号</option>
+                        <option value="@((int)WeChatSubscriberEnum.EnterpriseSubscriber)">企业号</option>
+                        <option value="@((int)WeChatSubscriberEnum.TestSubscriber)">开发测试号</option>
+                    </select>
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Category)</td>
+            </tr>
+
+        </tbody>
+    </table>
+}

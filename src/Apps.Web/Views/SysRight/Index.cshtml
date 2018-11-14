@@ -1,0 +1,333 @@
+﻿@using Apps.Common;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "角色授权设置";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<Apps.Models.Sys.permModel> perm = null;
+}
+<div class="mvctool">
+  
+        菜单类型切换： <select class="easyui-combobox" name="swicthType" id="swicthType" style="width:80px;height:26px;margin-right:10px; ">
+            <option value="menu">系统菜单</option>
+            <option value="api">API接口</option>
+        </select>
+
+    @Html.ToolButton("btnSave", "fa fa-save", "保存操作和字段权限",ref perm, "Save", false)
+</div>
+
+<table style="width: 100%">
+    <tbody>
+        <tr>
+            <td style="vertical-align: top">
+                <!--获取角色组-->
+                <table id="roleList"></table>
+            </td>
+            <td style="width:3px;"></td>
+            <td style="width: 300px; vertical-align: top">
+                <!--获取模块-->
+                <table id="moduleList"></table>
+            </td>
+            <td style="width:3px;"></td>
+            <td id="right1" style="vertical-align: top;width:200px;">
+                <!--获取操作码-->
+                <table id="operateList"></table>
+            </td>
+            <td style="width:3px;"></td>
+            <td  id="right2"  style="vertical-align: top;width:200px;">
+                <!--获取字段权限-->
+                <table id="dataList"></table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+
+
+
+
+    $('#swicthType').combobox({
+        editable: false,
+        onSelect: function (record) {
+            if (record.value == "api") {
+                $('#moduleList').treegrid({ "url": '@Url.Action("GetModelList")?id=ApiInterfaceAuth' });
+
+            } else {
+                $('#moduleList').treegrid({ "url": '@Url.Action("GetModelList")?id=0' });
+
+            }
+
+        }
+    });
+
+    $(function () {
+        var curModuleId, curRoleId, curModuleName, curRoleName, curSystemId, curSystemName;//选择的模块ID,选中的角色ID，选中的模块名称，角色名称
+        curRoleName = "?";
+        curModuleName = "?";
+        $('#roleList').datagrid({
+            url: '@Url.Action("GetRoleList")',
+            width:  SetGridWidthSub(915),
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            showPageList: false,
+            showRefresh: false,
+            displayMsg: '',
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            rownumbers: true,//行号
+            title: '角色列表',
+            onLoadSuccess: function (data) {
+                $('#operateList').datagrid('loadData', { total: 0, rows: [] });
+            },
+            columns: [[
+                { field: 'Id', title: '', width: 80, hidden: true },
+                { field: 'Name', title: '角色组', width: 80, sortable: true },
+                { field: 'Description', title: '@Resource.TitleRemark', width: 80, sortable: true },
+                { field: 'CreateTime', title: '@Resource.TitleCreateTime', width: 80, sortable: true },
+                { field: 'CreatePerson', title: '', width: 80, sortable: true, hidden: true }
+            ]],
+            onClickRow: function (index, data) {
+                var row = $('#roleList').datagrid('getSelected');
+                if (row != null) {
+                    curRoleName = row.Name;
+                    curRoleId = row.Id;
+                    $('#operateList').datagrid({ url: "/SysRight/GetRightByRoleAndModule?roleId=" + curRoleId + "&moduleId=" + curModuleId + "" });
+                    $('#operateList').datagrid({ 'title': "角色组: " + curRoleName + " >> 模块：" + curModuleName });
+
+                    $('#dataList').datagrid({ url: "/SysRight/GetRightDataByRoleAndModule?roleId=" + curRoleId + "&moduleId=" + curModuleId + "" });
+                    $('#dataList').datagrid({ 'title': "角色组: " + curRoleName + " >> 模块：" + curModuleName });
+                }
+            }
+        }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
+        $('#moduleList').treegrid({
+            url: '@Url.Action("GetModelList")',
+            width: 300,
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            treeField: 'Name',
+            idField: 'Id',
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            title: '模块列表',
+            columns: [[
+                { field: 'Id', title: '唯一标识', width: 120, hidden: true },
+                { field: 'Name', title: '@Resource.TitleName', width: 220, sortable: false },
+                { field: 'EnglishName', title: '英文名称', width: 80, sortable: false, hidden: true },
+                { field: 'ParentId', title: '上级Id', width: 80, sortable: false, hidden: true },
+                { field: 'Url', title: '链接地址', width: 80, sortable: false, hidden: true },
+                { field: 'Iconic', title: '图标', width: 80, sortable: false, hidden: true },
+                { field: 'Sort', title: '排序号', width: 80, sortable: false, hidden: true },
+                { field: 'Remark', title: '@Resource.TitleRemark', width: 80, sortable: false, hidden: true },
+                {
+                    field: 'Enable', title: '@Resource.TitleEnable', width: 60, align: 'center', formatter: function (value) {
+                        if (value) {
+                            return "<span class='color-green fa fa-circle'></span>";
+                        } else {
+                            return "<span class='color-blue fa fa-circle'></span>";
+                        }
+                    }, hidden: true
+                },
+                { field: 'CreatePerson', title: '@Resource.TitleCreatePerson', width: 80, sortable: true, hidden: true },
+                { field: 'CreateTime', title: '@Resource.TitleCreateTime', width: 120, sortable: true, hidden: true },
+                {
+                    field: 'IsLast', title: '是否最后一项', align: 'center', width: 100, formatter: function (value) {
+                        if (value) {
+                            return "是";
+                        } else {
+                            return "否";
+                        }
+                    }, hidden: true
+                },
+            ]],
+            onClickRow: function (index, data) {
+                var row = $('#moduleList').treegrid('getSelected');
+                if (row != null) {
+                    curModuleName = row.Name;
+                    curModuleId = row.Id;
+                    if (curRoleId == null && row.IsLast) {
+                        $.messageBox5s('@Resource.Tip', "请再选择一个角色！");
+                        return;
+                    }
+                    $('#operateList').datagrid({ url: "/SysRight/GetRightByRoleAndModule?roleId=" + curRoleId + "&moduleId=" + curModuleId + "" });
+                    $('#operateList').datagrid({ 'title': "角色组: " + curRoleName + " >> 模块：" + (row.IsLast ? curModuleName : "[请再选择最后菜单项]") });
+
+                    $('#dataList').datagrid({ url: "/SysRight/GetRightDataByRoleAndModule?roleId=" + curRoleId + "&moduleId=" + curModuleId + "" });
+                    $('#dataList').datagrid({ 'title': "角色组: " + curRoleName + " >> 模块：" + (row.IsLast ? curModuleName : "[请再选择最后菜单项]") });
+
+                }
+
+            }
+        });
+        $('#operateList').datagrid({
+            url: '@Url.Action("GetRightByRoleAndModule")',
+            width: 300,
+            methord: 'post',
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            title: '授权操作',
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Ids', title: 'Ids', width: 70, hidden: true },
+                { field: 'Name', title: '@Resource.TitleName', width: 70, sortable: true },
+                { field: 'KeyCode', title: '操作码', width: 60, sortable: true },
+                {
+                    field: 'IsValid', title: "<a href='#' title='@Resource.Select' class=\"fa  fa-check-square-o color-green\"  onclick=\"SelAll1();\"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='#' title='@Resource.UnSelect' class=\"fa  fa-square-o color-gray\" onclick=\"UnSelAll1();\"  ></a>", align: 'center', width: 60, formatter: function (value) {
+                        if (value) {
+                            return "<input type='checkbox' checked='checked' value=" + value + " />";
+                        } else {
+                            return "<input type='checkbox' value=" + value + " />";
+                        }
+                    },
+                },
+                  { field: 'RightId', title: '模块ID', width: 80, sortable: true, hidden: true }
+            ]]
+        });
+        $('#dataList').datagrid({
+            url: '@Url.Action("GetRightDataByRoleAndModule")',
+            width: 300,
+            methord: 'post',
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            title: '字段禁用授权操作',
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Ids', title: 'Ids', width: 70, hidden: true },
+                { field: 'Name', title: '字段描述', width: 70, sortable: true },
+                { field: 'KeyCode', title: '字段', width: 60, sortable: true },
+                {
+                    field: 'IsValid', title: "<a href='#' title='@Resource.Select' class=\"fa  fa-check-square-o color-green\"  onclick=\"SelAll2();\"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='#' title='@Resource.UnSelect' class=\"fa  fa-square-o color-gray\" onclick=\"UnSelAll2();\"  ></a>", align: 'center', width: 60, formatter: function (value) {
+                        if (value) {
+                            return "<input type='checkbox' checked='checked' value=" + value + " />";
+                        } else {
+                            return "<input type='checkbox' value=" + value + " />";
+                        }
+                    },
+                },
+                  { field: 'RightId', title: '模块ID', width: 80, sortable: true, hidden: true }
+            ]]
+        });
+        $("#btnSave").click(function () {
+            var updateRows = 0;
+            var rows = $("#operateList").datagrid("getRows"); //这段代码是获取当前页的所有行。
+
+            var updateDataRows = 0;
+            var dataRows = $("#dataList").datagrid("getRows");
+
+            //处理操作码
+            for (var i = 0; i < rows.length; i++) {
+                var setFlag = $("#right1 td[field='IsValid'] input").eq(i).prop("checked");
+                var ids = rows[i].Ids;
+                var rightId = rows[i].RightId;
+                var keyCode = rows[i].KeyCode;
+                var isValid = rows[i].IsValid;
+                if (isValid != setFlag)//判断是否有作修改
+                {
+                    $.ajax({
+                        url: '@Url.Action("UpdateRight")',
+                        async: false, // 注意此处需要同步，因为返回完数据后，下面才能让结果的第一条selected
+                        type: "POST",
+                        data: { "Id": ids, "RightId": rightId, "KeyCode": keyCode, "IsValid": setFlag },
+                        dataType: "json",
+                        success: function (fields) {
+
+                        }
+                    });
+                    updateRows++;
+                }
+            }
+            //处理字段
+            for (var i = 0; i < dataRows.length; i++) {
+                var setFlag = $("#right2 td[field='IsValid'] input").eq(i).prop("checked");
+                var ids = dataRows[i].Ids;
+                var rightId = dataRows[i].RightId;
+                var keyCode = dataRows[i].KeyCode;
+                var isValid = dataRows[i].IsValid;
+                if (isValid != setFlag)//判断是否有作修改
+                {
+                    $.ajax({
+                        url: '@Url.Action("UpdateDataRight")',
+                        async: false, // 注意此处需要同步，因为返回完数据后，下面才能让结果的第一条selected
+                        type: "POST",
+                        data: { "Id": ids, "RightId": rightId, "KeyCode": keyCode, "IsValid": setFlag },
+                        dataType: "json",
+                        success: function (fields) {
+
+                        }
+                    });
+                    updateRows++;
+                }
+            }
+            
+            if (updateRows > 0 || updateDataRows > 0)
+            {
+                $.messageBox5s('@Resource.Tip', '保存成功！');
+                if (updateRows > 0) {
+                    $("#operateList").datagrid("reload");
+                }
+                if (updateDataRows > 0)
+                {
+                    $("#dataList").datagrid("reload");
+                }
+            } else {
+                $.messageBox5s('@Resource.Tip', '@Resource.NoAnyChanges！');
+            }
+
+        });
+        $(window).resize(function () {
+            resizeLayout();
+        });
+        resizeLayout();
+    });
+
+    function resizeLayout() {
+        setTimeout(function () {
+            $('#operateList,#dataList').datagrid('resize', {
+                height: SetGridHeightSub(37)
+            });
+            $('#roleList').datagrid('resize', {
+                height: SetGridHeightSub(37),
+                width: SetGridWidthSub(915),
+            });
+        }, 100);
+    }
+
+    function SelAll1() {
+        $("#right1 td[field='IsValid'] input").prop("checked", true);
+        $("#btnSave").trigger("click");
+        return;
+    }
+    function UnSelAll1() {
+        $("#right1 td[field='IsValid'] input").prop("checked", false);
+        $("#btnSave").trigger("click");
+        return;
+    }
+    function SelAll2() {
+        $("#right2 td[field='IsValid'] input").prop("checked", true);
+        $("#btnSave").trigger("click");
+        return;
+    }
+    function UnSelAll2() {
+        $("#right2 td[field='IsValid'] input").prop("checked", false);
+        $("#btnSave").trigger("click");
+        return;
+    }
+</script>
+

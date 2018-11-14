@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>小马知途 www.zshixi.com</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="/Content/web/style.css" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Scripts/jquery.min.js")" type="text/javascript"></script>
+     @Scripts.Render("~/bundles/common")
+     @Scripts.Render("~/bundles/jqueryfrom")
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="/Scripts/JBox/jBox/jquery.jBox-2.3.min.js"></script>
+    <link href="/Scripts/JBox/jBox/Skins2/green/jbox.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            //设置nav
+            $.post("/Person/GetLoginUserId", function (data) {
+                if (data.type == 1) {
+                    $("#H1,#H4").show()
+                } else {
+                    $("#H2,#H3").show()
+                }
+               
+            });
+            //安全退出
+            $("#safeOut").click(function () {
+                if (confirm("确定要退出系统？"))
+                {
+                    $.post("/Person/Logout", function (data) {
+                        if (data.type == 1) {
+                            window.location = "/";
+                        }
+                    });
+                }
+            });
+       
+        });
+    </script>
+</head>
+<body>
+    <div class="main">
+        <div class="header">
+            <div class="header_resize">
+                <div class="menu_nav">
+                    <ul>
+                        <li style="display:none" id="H1"><a href="#" id="safeOut"><span>安全退出</span></a></li>
+                        <li style="display:none" id="H2"><a href="/Reg"><span>用户注册</span></a></li>
+                        <li style="display:none" id="H3"><a href="/Login"><span>用户登录</span></a></li>
+                        <li style="display:none" id="H4"><a href="/Person"><span>个人中心</span></a></li>
+                        <li id="H5" class="active"><a href="/"><span>首页</span></a></li>
+                    </ul>
+                </div>
+                <div class="clr"></div>
+                <div class="logo">
+                    <h1><a href="/">小马<span>知途</span></a><small>www.zshixi.com</small></h1>
+                </div>
+                <div class="search" style="display:none">
+                  
+                        <span>
+                            <input name="q" type="text" class="keywords" id="textfield" maxlength="50" value="Search..." />
+                            <input name="b" type="image" src="/images/web/search.gif" class="button" />
+                        </span>
+               
+                </div>
+                <!--/search -->
+
+                <div class="clr"></div>
+                <div class="header_img">
+                    <img src="/images/web/main_img.jpg" alt="image" width="970" height="223" />
+                    <div class="clr"></div>
+                </div>
+               
+            </div>
+        </div>
+        <div class="clr"></div>
+        <div class="content">
+            @RenderBody()
+            
+        </div>
+        <div class="fbg">
+            <div class="fbg_resize">
+                <div class="col c1">
+                    <h2><span>Image Gallery</span></h2>
+                    <a href="#">
+                        <img src="/images/web/gallery_1.jpg" width="58" height="58" alt="pix" /></a> <a href="#">
+                            <img src="/images/web/gallery_2.jpg" width="58" height="58" alt="pix" /></a> <a href="#">
+                                <img src="/images/web/gallery_3.jpg" width="58" height="58" alt="pix" /></a> <a href="#">
+                                    <img src="/images/web/gallery_4.jpg" width="58" height="58" alt="pix" /></a> <a href="#">
+                                        <img src="/images/web/gallery_5.jpg" width="58" height="58" alt="pix" /></a> <a href="#">
+                                            <img src="/images/web/gallery_6.jpg" width="58" height="58" alt="pix" /></a>
+                </div>
+                <div class="col c2">
+                    <h2><span>Lorem Ipsum</span></h2>
+                    <p>
+                        Lorem ipsum dolor<br />
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum. Cras id urna. <a href="#">Morbi tincidunt, orci ac convallis aliquam</a>, lectus turpis varius lorem, eu posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum odio, ac blandit ante orci ut diam.
+                    </p>
+                </div>
+                <div class="col c3">
+                    <h2><span>Contact</span></h2>
+                    <p>
+                        Nullam quam lorem, tristique non vestibulum nec, consectetur in risus. Aliquam a quam vel leo gravida gravida eu porttitor dui. Nulla pharetra, mauris vitae interdum dignissim, justo nunc suscipit ipsum. <a href="#">mail@example.com</a><br />
+                        <a href="#">+1 (123) 444-5677</a>
+                    </p>
+                </div>
+                <div class="clr"></div>
+            </div>
+            <div class="footer">
+                <p class="lr">&copy; Copyright <a href="http://www.zshixi.com/" title="小马知途">小马知途.</p>
+                <p class="lf">Layout by [i] <a href="http://www.zshixi.com/" title="小马知途">小马知途</p>
+                <div class="clr"></div>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>

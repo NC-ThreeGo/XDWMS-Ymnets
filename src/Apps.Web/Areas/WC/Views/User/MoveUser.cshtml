@@ -1,0 +1,67 @@
+﻿@model List<Apps.Models.WC.WC_GroupModel>
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "移动分组";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSave").click(function () {
+            if ($("form").valid()) {
+                $.ajax({
+                    url: "@Url.Action(ViewBag.EditUrl)",
+                    type: "Post",
+                    data: { "userids": "@ViewBag.UserIds", "groupid": $("#GroupId").val() },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1) {
+                            window.parent.frameReturnByMes(data.message);
+                            window.parent.frameReturnByReload(true);
+                            window.parent.frameReturnByClose()
+                        }
+                        else {
+                            window.parent.frameReturnByMes(data.message);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                   分组名称
+                </th>
+                <td>
+                   <select id="GroupId" name="GroupId" >
+                       @foreach (var item in Model)
+                       {
+                        <option value="@item.Id">@item.Name</option>
+                       }                  
+
+                   </select>
+                </td>
+            </tr>
+           
+
+        </tbody>
+    </table>
+}

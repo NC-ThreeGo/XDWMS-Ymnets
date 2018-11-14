@@ -1,0 +1,100 @@
+﻿@*<script type="text/javascript">
+    $(function () {
+        $("#UpLoadAjax").attr("href", "/SysHelper/UpLoadImg?id=1&Iedate=" + GetGuid() + "");
+        $("#PhotoCopy").click(function () {
+            $("#UpLoadAjax").trigger("click");
+            $("#UpLoadDialog").html("<div class='panel-loading'>@Resource.Loading...</div>");
+            $('#UpLoadDialog').dialog({ title: '@Resource.UpLoad', width: 580, height: 230, iconCls: 'fa fa-plus', resizable: false }); $('#UpLoadDialog').dialog('open');
+        });
+    });
+    function UpLoadImgSucceed(imgPath, dif) {
+        if (dif == "1") {
+            $("#Photo").attr("src", imgPath);
+            $("#Photo").val(imgPath);
+        }
+    }
+</script>
+<a style="display:none" id="UpLoadAjax" href="" data-ajax-update="#UpLoadDialog" data-ajax-mode="replace" data-ajax-method="GET" data-ajax="true">Upload</a>
+<div id="UpLoadDialog"></div>*@
+
+@using Apps.Common;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "上传";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    
+}
+
+<script src="/Scripts/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
+<link href="/Scripts/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+    $(function () {
+        $('#file_upload').uploadify({
+            'buttonText': '请选择图片',
+            'queueID': 'queueID',
+            'swf': '/Scripts/uploadify/uploadify.swf',
+            'uploader': '/SysHelper/Upload',
+            //是否调试模式
+            'debug': false,
+            //是否自动上传
+            'auto': false,
+            //在浏览窗口底部的文件类型下拉菜单中显示的文本
+            'fileTypeDesc': '文件类型：',
+            //允许的文件后缀
+            'fileTypeExts': '*.jpg;*.jpge;*.gif;*.png',
+            //上传文件大小限制
+            'fileSizeLimit': '3MB',
+            //上传数量
+            'queueSizeLimit': 1,
+            //返回一个错误，选择文件的时候触发 
+            //浏览按钮的背景图片路径 
+            //'buttonImage': 'upbutton.gif', 
+            //检测FLASH失败调用 
+            'onFallback': function () {
+                $("#NoFlash").html("没有安装flash插件。");
+                return;
+            },
+            //上传到服务器，服务器返回相应信息到data里 
+            'onUploadSuccess': function (file, data, response) {
+                var obj = jQuery.parseJSON(data);
+                $("#FileMes").html("文件名:" + obj.FileName + "<br> 保存名:" + obj.SaveName);
+                //
+                window.parent.UpLoadImgSucceed(obj.FilePath, '@ViewBag.Dif'); //调用主框架的方法
+                $("#ExImg").attr("src", obj.FilePath);
+               
+
+            }
+        });
+    });
+
+    $(function () {
+        $("#NowUpload").click(function () {
+            $('#file_upload').uploadify('upload');
+        });
+        $("#Cancel").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    })
+</script>
+
+
+<table>
+    <tr>
+        <td style="width: 380px; height: 190px;">
+            <div style="width:120px; margin:0 auto;"><input type="file" id="file_upload" name="file_upload" /></div>
+            <div style="text-align: center; margin-top: 2px;" id="NoFlash">
+                
+                <a id="NowUpload" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">确定</a>
+                <a id="Cancel" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-return'">返回</a>
+                <div id="queueID"></div>
+            </div>
+            <div id="FileMes" style="padding: 5px; line-height: 18px;">
+            </div>
+        </td>
+        <td>
+            <div style="padding: 1px; border: 1px #ccc solid; width: 141px; height: 141px">
+                <img id="ExImg" width="140px" height="140px" src="/Content/Images/NotPic.jpg" />
+            </div>
+        </td>
+    </tr>
+</table>

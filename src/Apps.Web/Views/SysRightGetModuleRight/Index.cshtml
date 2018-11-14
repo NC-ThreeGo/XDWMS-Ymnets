@@ -1,0 +1,194 @@
+﻿@using Apps.Common;
+@using Apps.Web.Core;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "模块权限查询";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<Apps.Models.Sys.permModel> perm = null;
+}
+<div class="mvctool">
+        菜单类型切换： <select class="easyui-combobox" name="swicthType" id="swicthType" style="width:80px;height:26px;margin-right:10px; ">
+            <option value="menu">系统菜单</option>
+            <option value="api">Api接口</option>
+        </select>
+    @Html.ToolButton("btnReload", "fa fa-refresh", Resource.Refresh, true)
+</div>
+<table style="width: 100%">
+    <tr>
+        <td style="width: 200px;  vertical-align: top">
+            <table id="moduleList"></table>
+        </td>
+        <td style="width:3px;"></td>
+        <td style="width: 130px;vertical-align: top">
+            <table id="operateList"></table>
+        </td>
+        <td style="width:3px;"></td>
+        <td style=" vertical-align: top">
+            <table id="userRightList">
+            </table>
+        </td>
+        <td style="width:3px;"></td>
+        <td style="vertical-align: top">
+            <table id="roleRightList">
+            </table>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(function () {
+      
+        //刷新
+        $("#btnReload").click(function () {
+            window.location = window.location;
+        });
+        //变量定义
+        var curModuleId, curRoleId, curModuleName, curRoleName, curSystemId, curSystemName;
+        $('#moduleList').treegrid({
+            url: '@Url.Action("GetModelList")',
+            width: 200,
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            treeField: 'Name',
+            idField: 'Id',
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            title: '模块列表',
+            columns: [[
+                { field: 'Id', title: '唯一标识', width: 120, hidden: true },
+                { field: 'Name', title: '@Resource.TitleName', width: 220, sortable: true },
+                { field: 'EnglishName', title: '英文名称', width: 80, sortable: true, hidden: true },
+                { field: 'ParentId', title: '上级Id', width: 80, sortable: true, hidden: true },
+                { field: 'Url', title: '链接地址', width: 80, sortable: true, hidden: true },
+                { field: 'Iconic', title: '图标', width: 80, sortable: true, hidden: true },
+                { field: 'Sort', title: '排序号', width: 80, sortable: true, hidden: true },
+                { field: 'Remark', title: '@Resource.TitleRemark', width: 80, sortable: true, hidden: true },
+                {
+                    field: 'Enable', title: '@Resource.TitleEnable', width: 60, align: 'center', formatter: function (value) {
+                        if (value) {
+                            return "<span class='color-green fa fa-circle'></span>";
+                        } else {
+                            return "<span class='color-blue fa fa-circle'></span>";
+                        }
+                    }, hidden: true
+                },
+                { field: 'CreatePerson', title: '@Resource.TitleCreatePerson', width: 80, sortable: true, hidden: true },
+                { field: 'CreateTime', title: '@Resource.TitleCreateTime', width: 120, sortable: true, hidden: true },
+                {
+                    field: 'IsLast', title: '是否最后一项', align: 'center', width: 100, formatter: function (value) {
+                        if (value) {
+                            return "是";
+                        } else {
+                            return "否";
+                        }
+                    }, hidden: true
+                },
+            ]],
+            onClickRow: function (index, data) {
+                var row = $('#moduleList').treegrid('getSelected');
+                if (row != null) {
+                    curModuleName = row.Name;
+                    curModuleId = row.Id;
+                    $('#operateList').datagrid({ url: "/SysRightGetModuleRight/GetModuleOperate?moduleId=" + curModuleId + "" });
+                    $('#userRightList').datagrid({ url: "/SysRightGetModuleRight/GetModuleUserRight?moduleId=" + curModuleId + "" }).datagrid('getPager').pagination({ showPageList: true, showRefresh: false, displayMsg: '' });
+                    $('#roleRightList').datagrid({ url: "/SysRightGetModuleRight/GetModuleRoleRight?moduleId=" + curModuleId + "" }).datagrid('getPager').pagination({ showPageList: true, showRefresh: false, displayMsg: '' });
+                }
+
+            }
+        });
+        $('#operateList').datagrid({
+            url: '@Url.Action("GetModuleOperate")',
+            width: 130,
+            methord: 'post',
+            height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            title: '授权操作',
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Ids', title: 'Ids', width: 80, hidden: true },
+                { field: 'Name', title: '@Resource.TitleName', width: 80, sortable: true },
+                { field: 'KeyCode', title: '操作码', width: 80, sortable: true, hidden: true }
+            ]]
+        });
+
+        //已分配用户表格
+        jQuery("#userRightList").datagrid({
+            url: '/SysRightGetModuleRight/GetModuleUserRight',
+            width: 300,
+            methord: 'post',
+            //height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            title: '用户权限列表',
+            columns: [[
+                { field: 'Ids', title: 'Ids', width: 80, hidden: true },
+                { field: 'UserName', title: '用户', width: 20 },
+                { field: 'RightList', title: '权限列表', width: 80, align: 'right' },
+            ]]
+        }).datagrid('getPager').pagination({ showPageList: true, showRefresh: false, displayMsg: '' });
+        //已分配角色表格
+        jQuery("#roleRightList").datagrid({
+            url: '/SysRightGetModuleRight/GetModuleRoleRight',
+            width: 300,
+            methord: 'post',
+            //height: SetGridHeightSub(37),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            title: '角色权限列表',
+            columns: [[
+                { field: 'Ids', title: 'Ids', width: 80, hidden: true },
+                { field: 'RoleName', title: '用户', width: 20 },
+                { field: 'RightList', title: '权限列表', width: 80, align: 'right' },
+            ]]
+        }).datagrid('getPager').pagination({ showPageList: true, showRefresh: false, displayMsg: '' });
+        $(window).resize(function () {
+            resizeLayout();
+        });
+        resizeLayout();
+
+        $('#swicthType').combobox({
+            editable: false,
+            onSelect: function (record) {
+                if (record.value == "api") {
+                    $('#moduleList').treegrid({ "url": '@Url.Action("GetModelList")?id=ApiInterfaceAuth' });
+                } else {
+                    $('#moduleList').treegrid({ "url": '@Url.Action("GetModelList")?id=0' });
+                }
+
+            }
+        });
+    });
+    function resizeLayout()
+    {
+        setTimeout(function () {
+            $('#roleRightList,#userRightList').datagrid('resize', { }).datagrid('resize', {
+                height: SetGridHeightSub(37),
+                width: SetGridWidthSub(360) / 2,
+            });
+            $('#moduleList,#operateList').datagrid('resize', {
+                height: SetGridHeightSub(37)
+            });
+        }, 100);
+    }
+
+</script>

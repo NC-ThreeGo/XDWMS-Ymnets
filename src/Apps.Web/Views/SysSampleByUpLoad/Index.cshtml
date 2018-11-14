@@ -1,0 +1,61 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "样例程序";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+
+    List<permModel> perm = null;
+}
+
+<script type='text/javascript' src="/scripts/swfupload/swfupload.js"></script>
+<script type='text/javascript' src="/scripts/swfupload/swfupload.queue.js"></script>
+<script type="text/javascript" src="/scripts/swfupload/swfupload.handlers.js"></script>
+<script>
+ //初始化上传控件
+    $(function () {
+        InitSWFUpload("/Core/upload_ajax.ashx", "Filedata", "11111111KB", "/scripts/swfupload/swfupload.swf", 1, 1);
+    });
+</script>
+<form name="form1" method="post" id="form1">
+    <table style="margin:20px;">
+        <tr>
+            <th>单个文件：</th>
+            <td style="padding:20px;">
+                <input name="txtImgUrl" type="text" maxlength="255" id="txtImgUrl" class="txtInput normal left">
+                <a class="files">
+                    @Resource.Browse
+                <input type="file" id="FileUpload" name="FileUpload" onchange="Upload('AttachFile', 'txtImgUrl', 'FileUpload');">
+            </a>
+            <span class="uploading">@Resource.Uploading</span>
+        </td>
+        </tr>
+        <tr>
+            <th>多个文件：</th>
+         <td style="padding:20px;">
+                <input type="text" class="txtInput normal left">
+                <div class="upload_btn">
+                    <span id="upload"></span>
+                </div>
+                <label>可以上传多张图片。</label>
+                <div class="clear"></div>
+                <!--封面隐藏值.开始-->
+                <!--
+                    <input type="hidden" name="focus_photo" id="focus_photo" value=""/>
+                    -->
+                <input type="hidden" name="focus_photo" id="focus_photo">
+                <!--封面隐藏值.结束-->
+                <!--上传提示.开始-->
+                <div id="show"></div>
+                <!--上传提示.结束-->
+                <!--图片列表.开始-->
+                <div id="show_list">
+                    <ul>
+                    </ul>
+                </div>
+                <!--图片列表.结束-->
+            </td>
+        </tr>
+    </table>
+</form>

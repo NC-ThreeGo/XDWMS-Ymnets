@@ -1,0 +1,215 @@
+﻿@model Apps.Models.Spl.Spl_WareCheckTotalModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Spl;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+        $("#btnSave").click(function () {
+            if ($("form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("Create")",
+                    type: "Post",
+                    data: $("form").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1) {
+                            window.parent.frameReturnByMes(data.message);
+                            window.parent.frameReturnByReload(true);
+                            window.parent.frameReturnByClose()
+                        }
+                        else {
+                            window.parent.frameReturnByMes(data.message);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+        $("#btnReturn").click(function () {
+             window.parent.frameReturnByClose();
+        });
+
+        $("#WarehouseId").change(function(){
+            SetQuantity();
+        });
+    });
+    //触发原始库存逻辑
+    function SetQuantity()
+    {
+        $.ajax({
+            url: "@Url.Action("GetQuantity")",
+            type: "Post",
+            data:{warehouseid:$("#WarehouseId").val(),waredetailsid:$("#WareDetailsId").val()},
+            dataType: "json",
+            success: function (data) {
+                if(data.Id==null)
+                {
+                    $.show_alert(Lang.Tip, '注意：此商品在这个仓库还未进行过出入库操作，此单据一旦审核通过是初始化库存');
+                    $("#Quantity").val(0);
+                    $("#Price").val(0);
+              
+                }else
+                {
+                    $("#Quantity").val(data.Quantity);
+                    $("#Price").val(data.Price);
+                }
+
+        }
+    });
+    }
+    function GetSelResult() {
+        var arrayObj = new Array()
+        arrayObj[0] = $("#Checker").val();
+        arrayObj[1] = $("#CustomMemberList").val();
+        return arrayObj;
+    }
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.State,new { @value=0})
+@Html.HiddenFor(model => model.Checker)
+@Html.HiddenFor(model => model.CheckTime)
+<input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                单号：
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.Id)
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.WarehouseId)：
+            </th>
+            <td>
+                 @Html.DropDownListFor(model => model.WarehouseId, ViewBag.Warehouse as SelectList)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.WarehouseId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.WareDetailsId)：
+            </th>
+              <td>
+               <div style="height:0;width:0;overflow:hidden">
+               @Html.EditorFor(model => model.WareDetailsId)</div>
+               <input id="DetailsList" name="DetailsList" readonly="readonly" type="text" style="width: 90px; display: inline; background: #dedede; ">
+               <a class="fa fa-plus-square color-gray fa-lg"  href="javascript:showSelPro()"></a>
+               <script type="text/javascript">
+                   function showSelPro()
+                   {
+                       $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='WareDetails'></iframe>");
+                       $("#modalwindow").window({ title: '选择商品', width: SetGridWidthSub(50), height: SetGridHeightSub(45), iconCls: 'fa fa-plus' }).window('open');
+                   }   
+                   function SetProDetails(rows) {
+                       $("#WareDetailsId").val(rows[0].Id);
+                       $("#DetailsList").val(rows[0].Name);
+                       SetQuantity();
+                       
+                   }
+               </script>
+                    </td>
+            <td>@Html.ValidationMessageFor(model => model.WareDetailsId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Remark)：
+            </th>
+            <td>
+               @Html.TextAreaFor(model => model.Remark, new { @style = "width:300px;height:40px;" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.DiffQuantity)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.DiffQuantity)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.DiffQuantity)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Quantity)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Quantity, new { disabled = "" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Quantity)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Price)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Price)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Price)</td>
+        </tr>
+      
+       
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Checker)：
+            </th>
+            <td>
+                <div style="height:0;width:0;overflow:hidden">
+                    @Html.EditorFor(model => model.Checker)
+                </div>
+                <input id="CustomMemberList" name="CustomMemberList" readonly="readonly" type="text" style="width: 90px; display: inline; background: #dedede; ">
+                <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelUser()"></a>
+                <script type="text/javascript">
+                            function showSelUser()
+                            {
+                                $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/SysHelper/UserSingleLookUp'></iframe>");
+                                $("#modalwindow").window({ title: '选择人员', width:720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                            }
+
+                            function SetSelResult(result, resultName) {
+                                $("#Checker").val(result);
+                                $("#CustomMemberList").val(resultName);
+                            }
+
+                </script>
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Checker)</td>
+        </tr>
+
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Confirmation)：
+            </th>
+            <td>
+                  @Html.RadioFor("Confirmation", true,"已确认","未确认")
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Confirmation)</td>
+        </tr>
+    </tbody>
+</table>
+}

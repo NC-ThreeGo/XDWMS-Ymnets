@@ -1,0 +1,96 @@
+﻿@model Apps.Models.Sys.SysCalendarPlanModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+
+<script src="~/Scripts/iColorPicker.js"></script>
+<script type="text/javascript">
+
+
+$(function () {
+    $("#btnSave").click(function () {
+     
+        //设置颜色值
+        $("#Color").val($("#Title").attr("data"));
+        $("#Id").val("Init");
+        $("#SysUserId").val("Init");
+        $("#Url").val("");
+        $("#TextColor").val("Init");
+        $.ajax({
+            url: "@Url.Action("Create")",
+            type: "Post",
+            data: $("form").serialize(),
+            dataType: "json",
+            success: function (data) {
+                if (data.type == 1) {
+                    window.parent.frameReturnByMes(data.message);
+                    window.parent.frameReturnByReload(true, $("#Title").val(), $("#BeginDate").val(), $("#EndDate").val(),$("#Color").val(),data.value);
+                    window.parent.frameReturnByClose()
+                }
+                else {
+                    window.parent.frameReturnByMes(data.message);
+                }
+            }
+        });
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.SysUserId)
+    @Html.HiddenFor(model => model.Url)
+    @Html.HiddenFor(model => model.TextColor)
+    @Html.HiddenFor(model => model.Color)
+    <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    标题：
+                </th>
+                <td>
+                    <input id="Title" name="Title" type="text" data="#3a87ad" class="iColorPicker" style="width:250px" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;锁定：@Html.SwitchDropdown("Editable", true,"","")
+                </td>
+        </tr>
+        <tr>
+            <th>
+                内容：
+            </th>
+            <td >
+                @Html.TextAreaFor(model => model.PlanContent,new { @style="height:130px;width:400px"})
+            </td>
+        </tr>
+        <tr>
+            <th>
+                开始时间：
+            </th>
+            <td >
+                @Html.TextBoxFor(model => model.BeginDate, new { @onClick = "WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})", @style = "width:155px" })
+                &nbsp;&nbsp;&nbsp;&nbsp;结束时间：
+                @Html.TextBoxFor(model => model.EndDate, new { @onClick = "WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})", @style = "width:155px" })
+            <td>
+              
+        </td>
+    </tr>
+
+</tbody>
+</table>
+}

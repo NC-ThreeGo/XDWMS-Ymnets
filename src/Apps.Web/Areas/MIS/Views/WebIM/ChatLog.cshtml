@@ -1,0 +1,88 @@
+﻿@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+<div class="mvctool">
+    @Html.ToolButton("btnDelete", "fa fa-trash", "删除", true)
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetChatLogList")',
+            width: SetGridWidthSub(5),
+            methord: 'post',
+            height: SetGridHeightSub(40),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            //rownumbers: true,//行号
+            columns: [[
+                {field:'ck',checkbox:true},
+                { field: 'Id', title: '', width: 80, hidden: true },
+                { field: 'Message', title: '内容', width: 80, sortable: true },
+                { field: 'Sender', title: '发送人', width: 80, sortable: true },
+                { field: 'receiver', title: '接收人', width: 80, sortable: true },
+                { field: 'SendDt', title: '发送时间', width: 80, sortable: true },
+                { field: 'receiverTitle', title: '接收人', width: 80, sortable: true }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnDelete").click(function () {
+            var ids = [];
+	        var rows = $('#List').datagrid('getSelections');
+	        for(var i=0; i<rows.length; i++){
+		        ids.push(rows[i].Id);
+	        }
+            if (ids.length >0) {
+                $.messager.confirm(index_lang_tip, Lang.YouWantToDeleteTheSelectedRecords, function (r) {
+                    if (r) {
+                        $.post("@Url.Action("Delete")?ids=" + ids, function (data) {
+	                            if (data.type == 1)
+	                                $("#List").datagrid('load');
+	                            $.messageBox5s(Lang.Tip, data.message);
+	                        }, "json");
+
+	                    }
+                });
+                } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
+        });
+    });
+    $(function () {
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+                width:  SetGridWidthSub(10),
+                height: SetGridHeightSub(37)
+            }).datagrid('resize', {
+                width:  SetGridWidthSub(10),
+                height: SetGridHeightSub(37)
+            });
+        });
+
+    });
+</script>

@@ -1,0 +1,93 @@
+﻿@model Apps.Models.Flow.Flow_FormContentModel
+@using Apps.Common;
+@using Apps.Models.Flow;
+@using Apps.Web.Core;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@using Apps.Models.Enum;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    string html =ViewBag.Html.ToString();
+    List<permModel> perm = null;
+}
+
+
+<script src="~/Scripts/jquery.jqprint-0.3.js"></script>
+<script language="javascript">
+    $(function(){
+        $("#btnPrint").click(function () {
+            $("#setFormLayout").jqprint();
+        });
+    });
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnPrint", "fa fa-print", "打印", false)
+</div>
+<script>
+        $(function () {
+           
+            //隐藏无法替换的内容
+            $("#setFormLayout input[type='checkbox'],#setFormLayout input[type='radio']").hide();
+            //取得替换后key对应的value（用于人员）
+            $("*[name='SelLookUp']").hide();
+            $("span[name=SelLookUp]").each(function () {
+                var ts = $(this);
+                var ids = ts.prev().prev("span").html();
+                $.post("/SysUser/GetTrueNames", { Ids: ids }, function (data) {
+                    ts.prev().prev("span").html(data)
+                }, "json");
+            });
+
+            //设置高度来改变美观度
+            var layoutHeight = 0;
+            $("#setFormLayout .easyui-draggable").each(function (i) {
+                layoutHeight = layoutHeight + $(this).height();
+            });
+            $("#setFormLayout").css("min-height", layoutHeight);
+            $(".easyui-draggable").draggable({
+                disabled: true
+            });
+            $("#setFormLayout .files").hide();
+
+            $("#setFormLayout span").each(function () {
+                if ($(this).html().indexOf("/upload/") > -1)
+                {
+                    $(this).html("&nbsp;<a class='fa fa-download' target='_Blank' href='" + $(this).html() + "'>&nbsp;附件下载&nbsp;</a>");
+                }
+            });
+        });
+</script>
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.FormId)
+@Html.HiddenFor(model => model.UserId)
+@Html.HiddenFor(model => model.Title)
+<input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+ <div id="setFormLayout" class="easyui-panel">
+      
+            @if (Model.ExternalURL.Contains("External"))
+            {
+                //来自外部，所有情况都需要枚举，每加一个，这里加一句，必须的,与后台代码相互对应
+                @Html.Partial(html,Model.externalModel);
+            }
+            else
+            {
+     
+            } 
+  </div>
+ <table class="formtable" style="width:500px;">
+    <tbody>
+        <tr>
+            <th>申请人：</th>
+            <td>@(Model.DepName+"-"+Model.PosName+"|"+Model.TrueName+"("+Model.UserName+")")</td>
+            <th>@Html.LabelFor(model => model.TimeOut)：</th>
+            <td>@(Convert.ToDateTime(Model.TimeOut).ToShortDateString())</td>
+            <th style='width:100px;'>紧急程度 :</th>
+            <td>@(Model.FormLevel==FlowFormLevelEnum.Ordinary.ToString()?"普通":Model.FormLevel==FlowFormLevelEnum.Major.ToString()?"重要":"紧急")</td>
+        </tr>
+    </tbody>
+</table>
+<hr />
+<table class="formtablenormal">
+    @Html.Raw(ViewBag.StepCheckMes)
+</table>

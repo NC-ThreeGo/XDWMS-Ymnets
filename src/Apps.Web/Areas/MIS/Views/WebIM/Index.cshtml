@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+}
+
+
+<style>
+    body {
+        font: 12px/1.33 "微软雅黑",Verdana,"宋体",Helvetica,sans-serif;
+    }
+    .tree-file {
+        background: url('');
+        vertical-align: middle;
+        overflow: auto;
+    }
+</style>
+<script src="~/Scripts/editor/ueditor.config.js"></script>
+<script src="~/Scripts/editor/ueditor.all.min.js"></script>
+<script src="~/Scripts/WebIM.js" type="text/javascript"></script>
+<script type="text/javascript">
+    //定时刷新聊天内容时间
+    var refresh_chatcontentTime =@(ViewBag.MIS0002);
+    //刷新最近联系人
+    var refresh_recentContactTime = @(ViewBag.MIS0003);
+    //定时刷新是否有新消息
+    var refresh_newMessageTime = @(ViewBag.MIS0004);
+</script>
+
+<div>
+<div id="ChatLogdialog"  class="easyui-dialog" data-options="closed:true,modal:false" style="overflow:hidden">
+    <iframe width="600px" scrolling="no" height="397px" frameborder="0"  id="iChatLog"></iframe>
+</div>
+        <div class="webim-lfbox" style="height: 500px;">
+            <div class="webim-info" style="height:271px">
+                <div class="webim-info-tit bgcolor">
+                    <h2>
+                        消息窗口</h2>
+                    <ul id="CurrentMemberWin" class="webim-info-tit-name"></ul>
+                </div>
+                <div class="webim-info-contentbox" >
+                    <div  class="webim-info-content" id="MessagesBox" style="height:225px; overflow:auto;">
+                       欢迎登陆WebIM系统！您现在可以建立一个对话模式了.
+                   </div>
+                </div>
+            </div>
+            <div class="webim-send">
+                <div class="webim-send-about bgcolor" style=" position:relative">
+                    <p class="fl">
+                        <a id="CommonTalk" class="a-default" href="javascript:void(0)">[常用语]
+                            
+                        </a> 
+                       @* <a href="javascript:void(0)">
+                            <input name="" type="checkbox" value="" />延迟发送</a>*@</p>
+                    <p class="fr">
+                        <a id="ClearWindow" class="a-default" href="javascript:void(0)">[清屏]</a> <a id="ChatLog" class="a-default" href="javascript:void(0)">[查看聊天记录]</a></p>
+
+                        <ul id="CommonTalkList" style=" display:none; position:absolute; left:10px; top:20px; background-color:#fff; border:1px #ccc solid; padding:10px;"></ul>
+                </div>
+                <div style="height:170px;z-index:998">
+                    <script id="content" type="text/plain" style="width: 545px; height: 128px; ">
+                    </script>
+                </div>
+                <div class="webim-send-butbox" style="z-index:999">
+                    <span class="inter">
+                        <a id="ClearWaitList" class="a-default" href="javascript:void(0)">[清空]</a> 发送给：
+                        <span class="inter-ps" id="WaitMemberList"></span>
+                    </span>
+                        <a style="float:right;" id="SendMessage" href="javascript:void()" class="easyui-linkbutton btns">Send</a>
+                </div>
+            </div>
+        </div>
+        <div class="webim-rtbox bgcolor" style="height: 500px;">
+            <div class="webim-person icon-female">
+                <strong>@ViewBag.UserName</strong>@*<a href="javascript:void(0)">[个人资料]</a>*@</div>
+            <ul class="webim-list-tab">
+                <li id="MemberList" class="current"><a class="a-default" href="javascript:void(0)">人员列表</a></li>
+                <li id="LatestList"><a class="a-default" href="javascript:void(0)">最近联系人</a></li>
+            </ul>
+            <div id="MemberListDiv" class="webim-org">
+                <div class="webim-org-search">
+                    <input name="" id="SelTxt" type="text" />
+               </div>
+                <div style="height: 400px; overflow: auto">
+                     <ul id="SelMemberList" style=" display:none;   position:absolute; right:66px; top:79px; width:90px; background-color:#fff; border:1px #ccc solid; padding:5px;">
+                       
+                     </ul>
+                    <div id="MemberListTree" class="easyui-tree">
+                        <div class="panel-loading">
+                            Loading...</div>
+                    </div>
+                </div>
+            
+           
+        </div>
+         <div id="LatertDiv" style="display:none" class="webim-latest">
+                
+            </div>
+    </div>
+@*    <div class="window-mask" style="z-index:9919; background:#333; text-align:center; padding-top:200px"><img src="/Content/Images/loading.gif" /></div>*@
+    </div>
+
+    
