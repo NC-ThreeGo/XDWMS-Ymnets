@@ -21,7 +21,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Base
 {
-    [TableAttribute(DbName = "JooWMS", Name = "Sequence", PrimaryKeyName = "ID", IsInternal = false)]
+    [TableAttribute(DbName = "XDWMS", Name = "Sequence", PrimaryKeyName = "ID", IsInternal = false)]
 	public partial class SequenceEntity:BaseEntity
 	{
 		public SequenceEntity()

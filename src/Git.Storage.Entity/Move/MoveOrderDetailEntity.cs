@@ -20,7 +20,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Move
 {
-	[TableAttribute(DbName = "JooWMS", Name = "MoveOrderDetail", PrimaryKeyName = "ID", IsInternal = false)]
+	[TableAttribute(DbName = "XDWMS", Name = "MoveOrderDetail", PrimaryKeyName = "ID", IsInternal = false)]
     public partial class MoveOrderDetailEntity : BaseEntity
     {
         public MoveOrderDetailEntity()

@@ -21,7 +21,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.InStorage
 {
-    [TableAttribute(DbName = "JooWMS", Name = "Proc_InStorageReport", IsInternal = false, MapType = MapType.Proc)]
+    [TableAttribute(DbName = "XDWMS", Name = "Proc_InStorageReport", IsInternal = false, MapType = MapType.Proc)]
     public partial class Proc_InStorageReportEntity : BaseEntity
     {
         public Proc_InStorageReportEntity()

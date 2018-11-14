@@ -9,7 +9,7 @@ namespace Git.Storage.Entity.Store
 {
 
 
-    [TableAttribute(DbName = "JooWMS", Name = "Proc_ProductReport", IsInternal = false, MapType = MapType.Proc)]
+    [TableAttribute(DbName = "XDWMS", Name = "Proc_ProductReport", IsInternal = false, MapType = MapType.Proc)]
     public partial class Proc_ProductReportEntity:BaseEntity
 	{
 		public Proc_ProductReportEntity()

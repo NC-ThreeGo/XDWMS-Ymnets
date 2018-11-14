@@ -1,18 +1,11 @@
 ﻿using Git.Framework.Controller;
-using Git.Storage.Entity.Base;
-using Git.Storage.Web.Lib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using Git.Framework.DataTypes.ExtensionMethods;
-using Git.Framework.DataTypes;
-using Git.Framework.ORM;
-using Git.Storage.Provider.Base;
-using Git.Storage.Web.Lib.Filter;
-using System.Net.Http;
 using Git.Framework.Resource;
+using Git.Storage.Entity.Base;
+using Git.Storage.Provider.Base;
+using Git.Storage.Web.Lib;
+using Git.Storage.Web.Lib.Filter;
+using System.Web.Mvc;
 
 namespace Git.Storage.Web.Controllers
 {

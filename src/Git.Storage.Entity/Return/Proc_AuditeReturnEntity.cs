@@ -20,7 +20,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Return
 {
-	[TableAttribute(DbName = "JooWMS", Name = "Proc_AuditeReturn",  IsInternal = false,MapType=MapType.Proc)]
+	[TableAttribute(DbName = "XDWMS", Name = "Proc_AuditeReturn",  IsInternal = false,MapType=MapType.Proc)]
 	public partial class Proc_AuditeReturnEntity:BaseEntity
 	{
 		public Proc_AuditeReturnEntity()

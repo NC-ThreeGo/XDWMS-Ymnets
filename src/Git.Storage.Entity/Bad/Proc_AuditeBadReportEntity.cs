@@ -8,7 +8,7 @@ using System.Text;
 namespace Git.Storage.Entity.Bad
 {
 
-    [TableAttribute(DbName = "JooWMS", Name = "Proc_AuditeBadReport", IsInternal = false, MapType = MapType.Proc)]
+    [TableAttribute(DbName = "XDWMS", Name = "Proc_AuditeBadReport", IsInternal = false, MapType = MapType.Proc)]
     public partial class Proc_AuditeBadReportEntity : BaseEntity
     {
         public Proc_AuditeBadReportEntity()

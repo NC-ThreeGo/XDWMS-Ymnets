@@ -20,7 +20,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Store
 {
-    [TableAttribute(DbName = "JooWMS", Name = "Location", PrimaryKeyName = "ID", IsInternal = false)]
+    [TableAttribute(DbName = "XDWMS", Name = "Location", PrimaryKeyName = "ID", IsInternal = false)]
     public partial class LocationEntity : BaseEntity
     {
         public LocationEntity()

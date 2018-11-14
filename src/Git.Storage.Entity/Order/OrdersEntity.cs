@@ -21,7 +21,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Order
 {
-    [TableAttribute(DbName = "JooWMS", Name = "Orders", PrimaryKeyName = "ID", IsInternal = false)]
+    [TableAttribute(DbName = "XDWMS", Name = "Orders", PrimaryKeyName = "ID", IsInternal = false)]
     public partial class OrdersEntity : BaseEntity
     {
         public OrdersEntity()

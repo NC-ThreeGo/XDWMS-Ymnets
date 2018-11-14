@@ -21,7 +21,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Return
 {
-    [TableAttribute(DbName = "JooWMS", Name = "Proc_ReturnTOP10Num", IsInternal = false, MapType = MapType.Proc)]
+    [TableAttribute(DbName = "XDWMS", Name = "Proc_ReturnTOP10Num", IsInternal = false, MapType = MapType.Proc)]
     public partial class Proc_ReturnTOP10NumEntity : BaseEntity
     {
         public Proc_ReturnTOP10NumEntity()

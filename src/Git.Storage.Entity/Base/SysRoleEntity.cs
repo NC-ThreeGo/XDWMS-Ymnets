@@ -20,7 +20,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Base
 {
-	[TableAttribute(DbName = "JooWMS", Name = "SysRole", PrimaryKeyName = "ID", IsInternal = false)]
+	[TableAttribute(DbName = "XDWMS", Name = "SysRole", PrimaryKeyName = "ID", IsInternal = false)]
 	public partial class SysRoleEntity:BaseEntity
 	{
 		public SysRoleEntity()

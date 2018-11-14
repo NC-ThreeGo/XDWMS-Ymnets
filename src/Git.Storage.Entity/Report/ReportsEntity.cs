@@ -21,7 +21,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Report
 {
-	[TableAttribute(DbName = "JooWMS", Name = "Reports", PrimaryKeyName = "ID", IsInternal = false)]
+	[TableAttribute(DbName = "XDWMS", Name = "Reports", PrimaryKeyName = "ID", IsInternal = false)]
 	public partial class ReportsEntity:BaseEntity
 	{
 		public ReportsEntity()

@@ -20,7 +20,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Return
 {
-    [TableAttribute(DbName = "JooWMS", Name = "ReturnDetail", PrimaryKeyName = "ID", IsInternal = false)]
+    [TableAttribute(DbName = "XDWMS", Name = "ReturnDetail", PrimaryKeyName = "ID", IsInternal = false)]
     public partial class ReturnDetailEntity : BaseEntity
     {
         public ReturnDetailEntity()

@@ -58,11 +58,11 @@ namespace Git.Storage.DataAccess.Report
             DataSet ds = null;
             if (entity.DsType == (int)EDataSourceType.SQL)
             {
-                command = DataCommandManager.CreateCustomDataCommand("JooWMS", CommandType.Text, entity.DataSource);
+                command = DataCommandManager.CreateCustomDataCommand("XDWMS", CommandType.Text, entity.DataSource);
             }
             else
             {
-                command = DataCommandManager.CreateCustomDataCommand("JooWMS", CommandType.StoredProcedure, entity.DataSource);
+                command = DataCommandManager.CreateCustomDataCommand("XDWMS", CommandType.StoredProcedure, entity.DataSource);
             }
             if (list != null)
             {

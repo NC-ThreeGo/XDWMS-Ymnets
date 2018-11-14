@@ -1,16 +1,8 @@
-﻿using Git.Framework.Email;
-using Git.Framework.Resource;
+﻿using Git.Framework.Resource;
 using Git.Storage.Common;
 using Git.Storage.Common.EnumJson;
 using Git.Storage.Provider.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
 using System.Web.Mvc;
-using System.Web.Optimization;
 using System.Web.Routing;
 
 namespace Git.Storage.Web

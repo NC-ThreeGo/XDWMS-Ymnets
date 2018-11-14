@@ -21,7 +21,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Base
 {
-	[TableAttribute(DbName = "JooWMS", Name = "MeasureRel", PrimaryKeyName = "ID", IsInternal = false)]
+	[TableAttribute(DbName = "XDWMS", Name = "MeasureRel", PrimaryKeyName = "ID", IsInternal = false)]
 	public partial class MeasureRelEntity:BaseEntity
 	{
 		public MeasureRelEntity()

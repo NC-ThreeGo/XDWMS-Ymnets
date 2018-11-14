@@ -20,7 +20,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Check
 {
-	[TableAttribute(DbName = "JooWMS", Name = "CloneTemp", PrimaryKeyName = "CloneID", IsInternal = false)]
+	[TableAttribute(DbName = "XDWMS", Name = "CloneTemp", PrimaryKeyName = "CloneID", IsInternal = false)]
     public partial class CloneTempEntity : BaseEntity
     {
         public CloneTempEntity()

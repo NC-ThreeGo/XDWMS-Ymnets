@@ -23,7 +23,7 @@ namespace Git.Storage.Entity.Procedure
     /// <summary>
     /// 该存储过程主要用于管理流水号问题
     /// </summary>
-	[TableAttribute(DbName = "JooWMS", Name = "Proc_SwiftNum",  IsInternal = false,MapType=MapType.Proc)]
+	[TableAttribute(DbName = "XDWMS", Name = "Proc_SwiftNum",  IsInternal = false,MapType=MapType.Proc)]
 	public partial class Proc_SwiftNumEntity:BaseEntity
 	{
 		public Proc_SwiftNumEntity()

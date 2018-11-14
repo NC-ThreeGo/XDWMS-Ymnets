@@ -20,7 +20,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.OutStorage
 {
-	[TableAttribute(DbName = "JooWMS", Name = "Proc_AuditeOutStorage",  IsInternal = false,MapType=MapType.Proc)]
+	[TableAttribute(DbName = "XDWMS", Name = "Proc_AuditeOutStorage",  IsInternal = false,MapType=MapType.Proc)]
 	public partial class Proc_AuditeOutStorageEntity:BaseEntity
 	{
 		public Proc_AuditeOutStorageEntity()

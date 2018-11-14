@@ -38,7 +38,7 @@ namespace Git.Storage.DataAccess.Base
         public DataTable GetTables()
         {
             string sql = "select * from sysobjects where xtype='U'";
-            DataCommand command = DataCommandManager.CreateCustomDataCommand("JooWMS", CommandType.Text, sql);
+            DataCommand command = DataCommandManager.CreateCustomDataCommand("XDWMS", CommandType.Text, sql);
             DataSet ds = command.ExecuteDataSet();
             if (ds != null && ds.Tables.Count > 0)
             {

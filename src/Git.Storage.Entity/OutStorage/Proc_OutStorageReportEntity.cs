@@ -21,7 +21,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.OutStorage
 {
-	[TableAttribute(DbName = "JooWMS", Name = "Proc_OutStorageReport",  IsInternal = false,MapType=MapType.Proc)]
+	[TableAttribute(DbName = "XDWMS", Name = "Proc_OutStorageReport",  IsInternal = false,MapType=MapType.Proc)]
     public partial class Proc_OutStorageReportEntity : BaseEntity
     {
         public Proc_OutStorageReportEntity()

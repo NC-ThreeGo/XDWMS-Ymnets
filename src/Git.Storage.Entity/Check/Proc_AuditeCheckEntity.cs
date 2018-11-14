@@ -20,7 +20,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Check
 {
-	[TableAttribute(DbName = "JooWMS", Name = "Proc_AuditeCheck",  IsInternal = false,MapType=MapType.Proc)]
+	[TableAttribute(DbName = "XDWMS", Name = "Proc_AuditeCheck",  IsInternal = false,MapType=MapType.Proc)]
 	public partial class Proc_AuditeCheckEntity:BaseEntity
 	{
 		public Proc_AuditeCheckEntity()

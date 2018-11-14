@@ -21,7 +21,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Move
 {
-	[TableAttribute(DbName = "JooWMS", Name = "Proc_AuditeMove",  IsInternal = false,MapType=MapType.Proc)]
+	[TableAttribute(DbName = "XDWMS", Name = "Proc_AuditeMove",  IsInternal = false,MapType=MapType.Proc)]
 	public partial class Proc_AuditeMoveEntity:BaseEntity
 	{
 		public Proc_AuditeMoveEntity()

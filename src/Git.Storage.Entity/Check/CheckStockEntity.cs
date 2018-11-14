@@ -20,7 +20,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Check
 {
-	[TableAttribute(DbName = "JooWMS", Name = "CheckStock", PrimaryKeyName = "ID", IsInternal = false)]
+	[TableAttribute(DbName = "XDWMS", Name = "CheckStock", PrimaryKeyName = "ID", IsInternal = false)]
     public partial class CheckStockEntity : BaseEntity
     {
         public CheckStockEntity()

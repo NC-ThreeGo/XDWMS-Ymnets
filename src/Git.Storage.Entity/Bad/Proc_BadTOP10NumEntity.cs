@@ -21,7 +21,7 @@ using Git.Framework.ORM;
 
 namespace Git.Storage.Entity.Bad
 {
-    [TableAttribute(DbName = "JooWMS", Name = "Proc_BadTOP10Num", IsInternal = false, MapType = MapType.Proc)]
+    [TableAttribute(DbName = "XDWMS", Name = "Proc_BadTOP10Num", IsInternal = false, MapType = MapType.Proc)]
     public partial class Proc_BadTOP10NumEntity : BaseEntity
     {
         public Proc_BadTOP10NumEntity()
