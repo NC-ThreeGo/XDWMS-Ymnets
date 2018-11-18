@@ -62,3 +62,71 @@ CREATE TABLE [dbo].[SysTNum](
 
 GO
 
+
+
+USE [XDWMS]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_Sys_SwiftNum]    Script Date: 2018/11/18 16:20:17 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE OR ALTER PROCEDURE [dbo].[P_Sys_SwiftNum](@Day varchar(20),@TabName varchar(20),@Num int OUTPUT)
+AS
+BEGIN
+	--开始事务
+	BEGIN TRANSACTION
+		
+	--使用错误计数器
+	DECLARE @ERRORSUM INT
+	SET @ERRORSUM=0
+
+	DECLARE @COUNT INT
+	--判断是否是每日流水号
+	IF(@Day='' OR @Day IS NULL)
+	BEGIN
+		--非每日流水号情况
+		SET @COUNT=(SELECT COUNT(*) FROM [dbo].[TNum] WHERE TabName=@TabName)
+		SET @ERRORSUM=@ERRORSUM+@@ERROR
+		IF(@COUNT=0)
+		BEGIN
+			INSERT INTO [dbo].[TNum]([Num],[MinNum],[MaxNum],[Day],[TabName])VALUES(1,1,99999,@Day,@TabName)
+			SET @ERRORSUM=@ERRORSUM+@@ERROR
+		END
+		SELECT TOP 1 @Num=[Num] FROM [dbo].[TNum] WHERE [TabName]=@TabName
+		UPDATE [dbo].[TNum]  SET [Num]=[Num]+1 WHERE [TabName]=@TabName
+		SET @ERRORSUM=@ERRORSUM+@@ERROR
+	END
+	ELSE
+	BEGIN
+		--每日流水号情况
+		SET @COUNT=(SELECT COUNT(*) FROM [dbo].[TNum] WHERE TabName=@TabName AND [Day]=@Day)
+		SET @ERRORSUM=@ERRORSUM+@@ERROR
+		IF(@COUNT=0)
+		BEGIN
+			INSERT INTO [dbo].[TNum]([Num],[MinNum],[MaxNum],[Day],[TabName])VALUES(1,1,99999,@Day,@TabName)
+			SET @ERRORSUM=@ERRORSUM+@@ERROR
+		END
+		SELECT TOP 1 @Num=[Num] FROM [dbo].[TNum] WHERE TabName=@TabName AND [Day]=@Day
+		UPDATE [dbo].[TNum]  SET [Num]=[Num]+1 WHERE TabName=@TabName AND [Day]=@Day
+		SET @ERRORSUM=@ERRORSUM+@@ERROR
+	END
+
+	IF @ERRORSUM<>0
+	BEGIN
+		--回滚事务
+		ROLLBACK TRANSACTION
+	END
+	ELSE
+	BEGIN
+		--提交事务
+		COMMIT TRANSACTION
+	END
+END
+
+
+GO
+
