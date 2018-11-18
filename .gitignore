@@ -23,7 +23,7 @@ bld/
 [Ll]og/
 
 # web.config
-Apps.Web/web.config
+Apps.Web/[Ww]eb.config
 
 # Visual Studio 2015 cache/options directory
 .vs/
