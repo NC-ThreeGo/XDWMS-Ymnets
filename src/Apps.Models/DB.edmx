@@ -1024,6 +1024,29 @@
           <Property Name="Subscribe" Type="int" Nullable="false" />
           <Property Name="OfficalAccountId" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“XDWMS.dbo.WMS_Part”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="WMS_Part">
+          <Key>
+            <PropertyRef Name="part_id" />
+            <PropertyRef Name="part_code" />
+            <PropertyRef Name="part_name" />
+          </Key>
+          <Property Name="part_id" Type="int" Nullable="false" />
+          <Property Name="part_code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="part_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="part_type" Type="nvarchar" MaxLength="50" />
+          <Property Name="customer_code" Type="nvarchar" MaxLength="50" />
+          <Property Name="logistics_code" Type="nvarchar" MaxLength="50" />
+          <Property Name="other_code" Type="nvarchar" MaxLength="50" />
+          <Property Name="pcs" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="storeman" Type="nvarchar" MaxLength="10" />
+          <Property Name="status" Type="nvarchar" MaxLength="10" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="10" />
+          <Property Name="creation_date" Type="datetime" />
+          <Property Name="updated_by" Type="nvarchar" MaxLength="10" />
+          <Property Name="update_date" Type="datetime" />
+        </EntityType>
         <Association Name="FK_Flow_Form_Flow_Type">
           <End Role="Flow_Type" Type="Self.Flow_Type" Multiplicity="1" />
           <End Role="Flow_Form" Type="Self.Flow_Form" Multiplicity="*" />
@@ -2224,6 +2247,24 @@
     [SysUserConfig].[UserId] AS [UserId]
     FROM [dbo].[SysUserConfig] AS [SysUserConfig]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="WMS_Part" EntityType="Self.WMS_Part" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [WMS_Part].[part_id] AS [part_id], 
+    [WMS_Part].[part_code] AS [part_code], 
+    [WMS_Part].[part_name] AS [part_name], 
+    [WMS_Part].[part_type] AS [part_type], 
+    [WMS_Part].[customer_code] AS [customer_code], 
+    [WMS_Part].[logistics_code] AS [logistics_code], 
+    [WMS_Part].[other_code] AS [other_code], 
+    [WMS_Part].[pcs] AS [pcs], 
+    [WMS_Part].[storeman] AS [storeman], 
+    [WMS_Part].[status] AS [status], 
+    [WMS_Part].[created_by] AS [created_by], 
+    [WMS_Part].[creation_date] AS [creation_date], 
+    [WMS_Part].[updated_by] AS [updated_by], 
+    [WMS_Part].[update_date] AS [update_date]
+    FROM [dbo].[WMS_Part] AS [WMS_Part]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Flow_Form_Flow_Type" Association="Self.FK_Flow_Form_Flow_Type">
             <End Role="Flow_Type" EntitySet="Flow_Type" />
             <End Role="Flow_Form" EntitySet="Flow_Form" />
@@ -3061,6 +3102,7 @@
             <Parameter Name="TabName" Mode="In" Type="String" />
             <Parameter Name="Num" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="WMS_Part" EntityType="DB.WMS_Part" />
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5356,6 +5398,27 @@
           <Property Name="Day" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="TabName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="WMS_Part">
+          <Key>
+            <PropertyRef Name="part_id" />
+            <PropertyRef Name="part_code" />
+            <PropertyRef Name="part_name" />
+          </Key>
+          <Property Name="part_id" Type="Int32" Nullable="false" />
+          <Property Name="part_code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="part_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="part_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="customer_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="logistics_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="other_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="pcs" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="storeman" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="created_by" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="creation_date" Type="DateTime" Precision="3" />
+          <Property Name="updated_by" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="update_date" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6716,6 +6779,26 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="P_Sys_SwiftNum" FunctionName="DB.Store.P_Sys_SwiftNum" />
+          <EntitySetMapping Name="WMS_Part">
+            <EntityTypeMapping TypeName="DB.WMS_Part">
+              <MappingFragment StoreEntitySet="WMS_Part">
+                <ScalarProperty Name="update_date" ColumnName="update_date" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="storeman" ColumnName="storeman" />
+                <ScalarProperty Name="pcs" ColumnName="pcs" />
+                <ScalarProperty Name="other_code" ColumnName="other_code" />
+                <ScalarProperty Name="logistics_code" ColumnName="logistics_code" />
+                <ScalarProperty Name="customer_code" ColumnName="customer_code" />
+                <ScalarProperty Name="part_type" ColumnName="part_type" />
+                <ScalarProperty Name="part_name" ColumnName="part_name" />
+                <ScalarProperty Name="part_code" ColumnName="part_code" />
+                <ScalarProperty Name="part_id" ColumnName="part_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

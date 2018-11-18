@@ -144,6 +144,7 @@
         <AssociationConnector Association="DB.SysRoleSpl_Warehouse" />
         <EntityTypeShape EntityType="DB.SysSequence" Width="1.5" PointX="0.75" PointY="17.75" />
         <EntityTypeShape EntityType="DB.SysTNum" Width="1.5" PointX="17.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DB.WMS_Part" Width="1.5" PointX="17.375" PointY="7.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
