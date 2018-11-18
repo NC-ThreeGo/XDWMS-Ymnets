@@ -93,6 +93,8 @@ namespace Apps.Models
         public virtual DbSet<Spl_WarehouseWarrantOUT> Spl_WarehouseWarrantOUT { get; set; }
         public virtual DbSet<Spl_WareStockPile> Spl_WareStockPile { get; set; }
         public virtual DbSet<Spl_WareUnitConvert> Spl_WareUnitConvert { get; set; }
+        public virtual DbSet<SysSequence> SysSequence { get; set; }
+        public virtual DbSet<SysTNum> SysTNum { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {
@@ -644,6 +646,19 @@ namespace Apps.Models
                 new ObjectParameter("WarehouseWarrantId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_Spl_UpdateWareStockPileOut", warehouseWarrantIdParameter);
+        }
+    
+        public virtual int P_Sys_SwiftNum(string day, string tabName, ObjectParameter num)
+        {
+            var dayParameter = day != null ?
+                new ObjectParameter("Day", day) :
+                new ObjectParameter("Day", typeof(string));
+    
+            var tabNameParameter = tabName != null ?
+                new ObjectParameter("TabName", tabName) :
+                new ObjectParameter("TabName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_Sys_SwiftNum", dayParameter, tabNameParameter, num);
         }
     }
 }

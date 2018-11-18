@@ -142,6 +142,8 @@
         <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantDetailsOUT_Spl_WarehouseWarrantOUT" />
         <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantOUT_SysUser" />
         <AssociationConnector Association="DB.SysRoleSpl_Warehouse" />
+        <EntityTypeShape EntityType="DB.SysSequence" Width="1.5" PointX="0.75" PointY="17.75" />
+        <EntityTypeShape EntityType="DB.SysTNum" Width="1.5" PointX="17.75" PointY="4.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

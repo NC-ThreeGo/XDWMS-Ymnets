@@ -14,7 +14,7 @@ var	fileManager = EntityFrameworkTemplateFileManager.Create(this);
 var itemCollection = new EdmMetadataLoader(textTransform.Host, textTransform.Errors).CreateEdmItemCollection(inputFile);
 var codeStringGenerator = new CodeStringGenerator(code, typeMapper, ef);
 bool isCreater = false;
-string appPath = Path.Combine(Host.ResolveAssemblyReference("$(SolutionDir)"),"Apps.Models", "App.config");  
+string appPath = Path.Combine(Host.ResolveAssemblyReference("$(SolutionDir)"),"src/Apps.Models", "App.config");  
 var configMap = new ExeConfigurationFileMap { ExeConfigFilename = appPath };  
 System.Configuration.Configuration econfig = System.Configuration.ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);  
 ConnectionStringsSection connSection = (ConnectionStringsSection) econfig.GetSection("connectionStrings");  

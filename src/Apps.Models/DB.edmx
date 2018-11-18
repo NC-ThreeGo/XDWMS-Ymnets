@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DB.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DB.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Flow_External">
           <Key>
             <PropertyRef Name="Id" />
@@ -816,6 +816,30 @@
           <Property Name="Note" Type="nvarchar(max)" />
           <Property Name="CreateTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="SysSequence">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="SN" Type="varchar" MaxLength="50" />
+          <Property Name="TabName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstType" Type="int" Nullable="false" />
+          <Property Name="FirstRule" Type="nvarchar" MaxLength="100" />
+          <Property Name="FirstLength" Type="int" />
+          <Property Name="SecondType" Type="int" />
+          <Property Name="SecondRule" Type="nvarchar" MaxLength="100" />
+          <Property Name="SecondLength" Type="int" />
+          <Property Name="ThirdType" Type="int" />
+          <Property Name="ThirdRule" Type="nvarchar" MaxLength="100" />
+          <Property Name="ThirdLength" Type="int" />
+          <Property Name="FourType" Type="int" />
+          <Property Name="FourRule" Type="nvarchar" MaxLength="100" />
+          <Property Name="FourLength" Type="int" />
+          <Property Name="JoinChar" Type="varchar" MaxLength="10" />
+          <Property Name="Sample" Type="nvarchar" MaxLength="100" />
+          <Property Name="CurrentValue" Type="nvarchar" MaxLength="100" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="SysSettings">
           <Key>
             <PropertyRef Name="Id" />
@@ -838,6 +862,17 @@
           <Property Name="Enable" Type="bit" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysTNum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Num" Type="int" Nullable="false" />
+          <Property Name="MinNum" Type="int" Nullable="false" />
+          <Property Name="MaxNum" Type="int" Nullable="false" />
+          <Property Name="Day" Type="varchar" MaxLength="20" />
+          <Property Name="TabName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="SysUser">
           <Key>
@@ -883,7 +918,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“AppsDB_Spl.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -1510,7 +1545,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Spl_WarehouseWarrantDetails_Spl_WarehouseWarrant">
-          <End Role="Spl_WarehouseWarrant" Type="Self.Spl_WarehouseWarrant" Multiplicity="1" />
+          <End Role="Spl_WarehouseWarrant" Type="Self.Spl_WarehouseWarrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Spl_WarehouseWarrantDetails" Type="Self.Spl_WarehouseWarrantDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Spl_WarehouseWarrant">
@@ -1548,7 +1585,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Spl_WarehouseWarrantDetailsOUT_Spl_WarehouseWarrantOUT">
-          <End Role="Spl_WarehouseWarrantOUT" Type="Self.Spl_WarehouseWarrantOUT" Multiplicity="1" />
+          <End Role="Spl_WarehouseWarrantOUT" Type="Self.Spl_WarehouseWarrantOUT" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Spl_WarehouseWarrantDetailsOUT" Type="Self.Spl_WarehouseWarrantDetailsOUT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Spl_WarehouseWarrantOUT">
@@ -2086,6 +2125,11 @@
           <Parameter Name="DepId" Type="varchar" Mode="In" />
         </Function>
         <Function Name="P_Sys_InsertSysRight" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="P_Sys_SwiftNum" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Day" Type="varchar" Mode="In" />
+          <Parameter Name="TabName" Type="varchar" Mode="In" />
+          <Parameter Name="Num" Type="int" Mode="InOut" />
+        </Function>
         <Function Name="P_Sys_UpdateSysRightRightFlag" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="moduleId" Type="varchar" Mode="In" />
           <Parameter Name="roleId" Type="varchar" Mode="In" />
@@ -2160,8 +2204,10 @@
           <EntitySet Name="SysRoleSpl_Warehouse" EntityType="Self.SysRoleSpl_Warehouse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysRoleSysUser" EntityType="Self.SysRoleSysUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysSample" EntityType="Self.SysSample" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysSequence" EntityType="Self.SysSequence" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysSettings" EntityType="Self.SysSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysStruct" EntityType="Self.SysStruct" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysTNum" EntityType="Self.SysTNum" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysUser" EntityType="Self.SysUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WC_Group" EntityType="Self.WC_Group" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WC_MessageResponse" EntityType="Self.WC_MessageResponse" Schema="dbo" store:Type="Tables" />
@@ -3008,6 +3054,13 @@
             <End Role="Spl_Warehouse" EntitySet="Spl_Warehouse" />
             <End Role="SysRole" EntitySet="SysRole" />
           </AssociationSet>
+          <EntitySet Name="SysSequence" EntityType="DB.SysSequence" />
+          <EntitySet Name="SysTNum" EntityType="DB.SysTNum" />
+          <FunctionImport Name="P_Sys_SwiftNum">
+            <Parameter Name="Day" Mode="In" Type="String" />
+            <Parameter Name="TabName" Mode="In" Type="String" />
+            <Parameter Name="Num" Mode="InOut" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5268,6 +5321,41 @@
           <End Type="DB.Spl_Warehouse" Role="Spl_Warehouse" Multiplicity="*" />
           <End Type="DB.SysRole" Role="SysRole" Multiplicity="*" />
         </Association>
+        <EntityType Name="SysSequence">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="SN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TabName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FirstType" Type="Int32" Nullable="false" />
+          <Property Name="FirstRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FirstLength" Type="Int32" />
+          <Property Name="SecondType" Type="Int32" />
+          <Property Name="SecondRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SecondLength" Type="Int32" />
+          <Property Name="ThirdType" Type="Int32" />
+          <Property Name="ThirdRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ThirdLength" Type="Int32" />
+          <Property Name="FourType" Type="Int32" />
+          <Property Name="FourRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FourLength" Type="Int32" />
+          <Property Name="JoinChar" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Sample" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentValue" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SysTNum">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Num" Type="Int32" Nullable="false" />
+          <Property Name="MinNum" Type="Int32" Nullable="false" />
+          <Property Name="MaxNum" Type="Int32" Nullable="false" />
+          <Property Name="Day" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TabName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6590,6 +6678,44 @@
               <ScalarProperty Name="Id" ColumnName="Spl_WarehouseId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="SysSequence">
+            <EntityTypeMapping TypeName="DB.SysSequence">
+              <MappingFragment StoreEntitySet="SysSequence">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CurrentValue" ColumnName="CurrentValue" />
+                <ScalarProperty Name="Sample" ColumnName="Sample" />
+                <ScalarProperty Name="JoinChar" ColumnName="JoinChar" />
+                <ScalarProperty Name="FourLength" ColumnName="FourLength" />
+                <ScalarProperty Name="FourRule" ColumnName="FourRule" />
+                <ScalarProperty Name="FourType" ColumnName="FourType" />
+                <ScalarProperty Name="ThirdLength" ColumnName="ThirdLength" />
+                <ScalarProperty Name="ThirdRule" ColumnName="ThirdRule" />
+                <ScalarProperty Name="ThirdType" ColumnName="ThirdType" />
+                <ScalarProperty Name="SecondLength" ColumnName="SecondLength" />
+                <ScalarProperty Name="SecondRule" ColumnName="SecondRule" />
+                <ScalarProperty Name="SecondType" ColumnName="SecondType" />
+                <ScalarProperty Name="FirstLength" ColumnName="FirstLength" />
+                <ScalarProperty Name="FirstRule" ColumnName="FirstRule" />
+                <ScalarProperty Name="FirstType" ColumnName="FirstType" />
+                <ScalarProperty Name="TabName" ColumnName="TabName" />
+                <ScalarProperty Name="SN" ColumnName="SN" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysTNum">
+            <EntityTypeMapping TypeName="DB.SysTNum">
+              <MappingFragment StoreEntitySet="SysTNum">
+                <ScalarProperty Name="TabName" ColumnName="TabName" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="MaxNum" ColumnName="MaxNum" />
+                <ScalarProperty Name="MinNum" ColumnName="MinNum" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="P_Sys_SwiftNum" FunctionName="DB.Store.P_Sys_SwiftNum" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
