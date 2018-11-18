@@ -20,7 +20,7 @@ namespace Apps.Models.WMS
 	public class Virtual_WMS_PartModel
 	{
 		[Display(Name = "物料ID")]
-		public virtual int part_id { get; set; }
+		public virtual int id { get; set; }
 		[Display(Name = "物料编码")]
 		public virtual string part_code { get; set; }
 		[Display(Name = "物料名称")]

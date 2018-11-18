@@ -1024,15 +1024,11 @@
           <Property Name="Subscribe" Type="int" Nullable="false" />
           <Property Name="OfficalAccountId" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS.dbo.WMS_Part”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="WMS_Part">
           <Key>
-            <PropertyRef Name="part_id" />
-            <PropertyRef Name="part_code" />
-            <PropertyRef Name="part_name" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="part_id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
           <Property Name="part_code" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="part_name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="part_type" Type="nvarchar" MaxLength="50" />
@@ -2237,6 +2233,7 @@
           <EntitySet Name="WC_OfficalAccounts" EntityType="Self.WC_OfficalAccounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WC_ResponseLog" EntityType="Self.WC_ResponseLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WC_User" EntityType="Self.WC_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_Part" EntityType="Self.WMS_Part" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysUserConfig" EntityType="Self.SysUserConfig" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [SysUserConfig].[Id] AS [Id], 
@@ -2246,24 +2243,6 @@
     [SysUserConfig].[State] AS [State], 
     [SysUserConfig].[UserId] AS [UserId]
     FROM [dbo].[SysUserConfig] AS [SysUserConfig]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="WMS_Part" EntityType="Self.WMS_Part" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [WMS_Part].[part_id] AS [part_id], 
-    [WMS_Part].[part_code] AS [part_code], 
-    [WMS_Part].[part_name] AS [part_name], 
-    [WMS_Part].[part_type] AS [part_type], 
-    [WMS_Part].[customer_code] AS [customer_code], 
-    [WMS_Part].[logistics_code] AS [logistics_code], 
-    [WMS_Part].[other_code] AS [other_code], 
-    [WMS_Part].[pcs] AS [pcs], 
-    [WMS_Part].[storeman] AS [storeman], 
-    [WMS_Part].[status] AS [status], 
-    [WMS_Part].[created_by] AS [created_by], 
-    [WMS_Part].[creation_date] AS [creation_date], 
-    [WMS_Part].[updated_by] AS [updated_by], 
-    [WMS_Part].[update_date] AS [update_date]
-    FROM [dbo].[WMS_Part] AS [WMS_Part]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Flow_Form_Flow_Type" Association="Self.FK_Flow_Form_Flow_Type">
             <End Role="Flow_Type" EntitySet="Flow_Type" />
@@ -5400,11 +5379,9 @@
         </EntityType>
         <EntityType Name="WMS_Part">
           <Key>
-            <PropertyRef Name="part_id" />
-            <PropertyRef Name="part_code" />
-            <PropertyRef Name="part_name" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="part_id" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="part_code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="part_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="part_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -6795,7 +6772,7 @@
                 <ScalarProperty Name="part_type" ColumnName="part_type" />
                 <ScalarProperty Name="part_name" ColumnName="part_name" />
                 <ScalarProperty Name="part_code" ColumnName="part_code" />
-                <ScalarProperty Name="part_id" ColumnName="part_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

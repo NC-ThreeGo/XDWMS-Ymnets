@@ -47,20 +47,20 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public JsonResult Create(WMS_PartModel model)
         {
-            model.part_id = 0;
+            //model.id = 0;
             model.creation_date = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {
 
                 if (m_BLL.Create(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "part_id" + model.part_id + ",part_code" + model.part_code, "成功", "创建", "WMS_Part");
+                    LogHandler.WriteServiceLog(GetUserId(), "id" + model.id + ",part_code" + model.part_code, "成功", "创建", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "part_id" + model.part_id + ",part_code" + model.part_code + "," + ErrorCol, "失败", "创建", "WMS_Part");
+                    LogHandler.WriteServiceLog(GetUserId(), "id" + model.id + ",part_code" + model.part_code + "," + ErrorCol, "失败", "创建", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
                 }
             }
@@ -88,13 +88,13 @@ namespace Apps.Web.Areas.WMS.Controllers
 
                 if (m_BLL.Edit(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "part_id" + model.part_id + ",part_code" + model.part_code, "成功", "修改", "WMS_Part");
+                    LogHandler.WriteServiceLog(GetUserId(), "id" + model.id + ",part_code" + model.part_code, "成功", "修改", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "part_id" + model.part_id + ",part_code" + model.part_code + "," + ErrorCol, "失败", "修改", "WMS_Part");
+                    LogHandler.WriteServiceLog(GetUserId(), "id" + model.id + ",part_code" + model.part_code + "," + ErrorCol, "失败", "修改", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
                 }
             }
@@ -183,7 +183,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             foreach (var item in list)
             {
                 var jo = new JObject();
-                jo.Add("part_id", item.part_id);
+                jo.Add("part_id", item.id);
                 jo.Add("part_code", item.part_code);
                 jo.Add("part_name", item.part_name);
                 jo.Add("part_type", item.part_type);

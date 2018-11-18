@@ -14,7 +14,7 @@ namespace Apps.Models
     
     public partial class WMS_Part
     {
-        public int part_id { get; set; }
+        public int id { get; set; }
         public string part_code { get; set; }
         public string part_name { get; set; }
         public string part_type { get; set; }

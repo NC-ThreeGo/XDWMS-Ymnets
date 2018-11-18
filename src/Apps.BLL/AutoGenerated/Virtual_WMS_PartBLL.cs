@@ -83,7 +83,7 @@ namespace Apps.BLL.WMS
             List<WMS_PartModel> modelList = (from r in queryData
                                               select new WMS_PartModel
                                               {
-													part_id = r.part_id,
+													id = r.id,
 													part_code = r.part_code,
 													part_name = r.part_name,
 													part_type = r.part_type,
@@ -107,14 +107,14 @@ namespace Apps.BLL.WMS
         {
             try
             {
-                WMS_Part entity = m_Rep.GetById(model.part_id);
+                WMS_Part entity = m_Rep.GetById(model.id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
                 entity = new WMS_Part();
-               				entity.part_id = model.part_id;
+               				entity.id = model.id;
 				entity.part_code = model.part_code;
 				entity.part_name = model.part_name;
 				entity.part_type = model.part_type;
@@ -208,13 +208,13 @@ namespace Apps.BLL.WMS
         {
             try
             {
-                WMS_Part entity = m_Rep.GetById(model.part_id);
+                WMS_Part entity = m_Rep.GetById(model.id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
-                              				entity.part_id = model.part_id;
+                              				entity.id = model.id;
 				entity.part_code = model.part_code;
 				entity.part_name = model.part_name;
 				entity.part_type = model.part_type;
@@ -258,7 +258,7 @@ namespace Apps.BLL.WMS
             {
                 WMS_Part entity = m_Rep.GetById(id);
                 WMS_PartModel model = new WMS_PartModel();
-                              				model.part_id = entity.part_id;
+                              				model.id = entity.id;
 				model.part_code = entity.part_code;
 				model.part_name = entity.part_name;
 				model.part_type = entity.part_type;
@@ -300,7 +300,7 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_PartModel>(x => x.part_id, "part_id");
+			 				 excelFile.AddMapping<WMS_PartModel>(x => x.id, "id");
 				 excelFile.AddMapping<WMS_PartModel>(x => x.part_code, "part_code");
 				 excelFile.AddMapping<WMS_PartModel>(x => x.part_name, "part_name");
 				 excelFile.AddMapping<WMS_PartModel>(x => x.part_type, "part_type");
@@ -323,7 +323,7 @@ namespace Apps.BLL.WMS
             {
                 var errorMessage = new StringBuilder();
                 var entity = new WMS_PartModel();
-						 				  entity.part_id = row.part_id;
+						 				  entity.id = row.id;
 				  entity.part_code = row.part_code;
 				  entity.part_name = row.part_name;
 				  entity.part_type = row.part_type;
@@ -369,7 +369,7 @@ namespace Apps.BLL.WMS
                     foreach (var model in list)
                     {
                         WMS_Part entity = new WMS_Part();
-                       						entity.part_id = model.part_id;
+                       						entity.id = model.id;
 						entity.part_code = model.part_code;
 						entity.part_name = model.part_name;
 						entity.part_type = model.part_type;

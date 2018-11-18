@@ -23,7 +23,7 @@ namespace Apps.BLL.WMS
                                                   logistics_code = r.logistics_code,
                                                   other_code = r.other_code,
                                                   part_code = r.part_code,
-                                                  part_id = r.part_id,
+                                                  id = r.id,
                                                   part_name = r.part_name,
                                                   part_type = r.part_type,
                                                   pcs = r.pcs,
