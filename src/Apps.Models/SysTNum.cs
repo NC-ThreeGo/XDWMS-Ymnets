@@ -14,7 +14,7 @@ namespace Apps.Models
     
     public partial class SysTNum
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public int Num { get; set; }
         public int MinNum { get; set; }
         public int MaxNum { get; set; }

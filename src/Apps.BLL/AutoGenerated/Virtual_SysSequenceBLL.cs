@@ -88,7 +88,7 @@ namespace Apps.BLL.Sys
             List<SysSequenceModel> modelList = (from r in queryData
                                               select new SysSequenceModel
                                               {
-													ID = r.ID,
+													Id = r.Id,
 													SN = r.SN,
 													TabName = r.TabName,
 													FirstType = r.FirstType,
@@ -117,14 +117,14 @@ namespace Apps.BLL.Sys
         {
             try
             {
-                SysSequence entity = m_Rep.GetById(model.ID);
+                SysSequence entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
                 entity = new SysSequence();
-               				entity.ID = model.ID;
+               				entity.Id = model.Id;
 				entity.SN = model.SN;
 				entity.TabName = model.TabName;
 				entity.FirstType = model.FirstType;
@@ -223,13 +223,13 @@ namespace Apps.BLL.Sys
         {
             try
             {
-                SysSequence entity = m_Rep.GetById(model.ID);
+                SysSequence entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
-                              				entity.ID = model.ID;
+                              				entity.Id = model.Id;
 				entity.SN = model.SN;
 				entity.TabName = model.TabName;
 				entity.FirstType = model.FirstType;
@@ -278,7 +278,7 @@ namespace Apps.BLL.Sys
             {
                 SysSequence entity = m_Rep.GetById(id);
                 SysSequenceModel model = new SysSequenceModel();
-                              				model.ID = entity.ID;
+                              				model.Id = entity.Id;
 				model.SN = entity.SN;
 				model.TabName = entity.TabName;
 				model.FirstType = entity.FirstType;
@@ -325,8 +325,7 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysSequenceModel>(x => x.ID, "ID");
-				 excelFile.AddMapping<SysSequenceModel>(x => x.SN, "SN");
+			 				 excelFile.AddMapping<SysSequenceModel>(x => x.SN, "SN");
 				 excelFile.AddMapping<SysSequenceModel>(x => x.TabName, "TabName");
 				 excelFile.AddMapping<SysSequenceModel>(x => x.FirstType, "FirstType");
 				 excelFile.AddMapping<SysSequenceModel>(x => x.FirstRule, "FirstRule");
@@ -353,7 +352,7 @@ namespace Apps.BLL.Sys
             {
                 var errorMessage = new StringBuilder();
                 var entity = new SysSequenceModel();
-						 				  entity.ID = row.ID;
+						 				  entity.Id = row.Id;
 				  entity.SN = row.SN;
 				  entity.TabName = row.TabName;
 				  entity.FirstType = row.FirstType;
@@ -404,7 +403,7 @@ namespace Apps.BLL.Sys
                     foreach (var model in list)
                     {
                         SysSequence entity = new SysSequence();
-                       						entity.ID = model.ID;
+                       						entity.Id = 0;
 						entity.SN = model.SN;
 						entity.TabName = model.TabName;
 						entity.FirstType = model.FirstType;

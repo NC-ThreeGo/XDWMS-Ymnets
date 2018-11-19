@@ -19,23 +19,23 @@ namespace Apps.Models.Sys
 	}
 	public class Virtual_SysSequenceModel
 	{
-		[Display(Name = "未设置")]
-		public virtual int ID { get; set; }
+		[Display(Name = "序号")]
+		public virtual int Id { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string SN { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "表名")]
 		public virtual string TabName { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "类型1")]
 		public virtual int FirstType { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "规则1")]
 		public virtual string FirstRule { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "长度1")]
 		public virtual Nullable<int> FirstLength { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "类型2")]
 		public virtual Nullable<int> SecondType { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "规则2")]
 		public virtual string SecondRule { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "长度2")]
 		public virtual Nullable<int> SecondLength { get; set; }
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> ThirdType { get; set; }
@@ -49,13 +49,13 @@ namespace Apps.Models.Sys
 		public virtual string FourRule { get; set; }
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> FourLength { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "连接符")]
 		public virtual string JoinChar { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string Sample { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string CurrentValue { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }
 		}
 }

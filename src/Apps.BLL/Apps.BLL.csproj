@@ -372,6 +372,7 @@
     <Compile Include="Sys\SysRightOperateBLL.cs" />
     <Compile Include="Sys\SysRoleBLL.cs" />
     <Compile Include="Sys\SysSampleBLL.cs" />
+    <Compile Include="Sys\SysSequenceBLL.cs" />
     <Compile Include="Sys\SysSettingsBLL.cs" />
     <Compile Include="Sys\SysStructBLL.cs" />
     <Compile Include="Sys\SysUserBLL.cs" />

@@ -268,6 +268,7 @@
     <Compile Include="Sys\SysResultModel.cs" />
     <Compile Include="Sys\SysRightDataFilterModel.cs" />
     <Compile Include="Sys\SysRightDataModelByRoleAndModule.cs" />
+    <Compile Include="Sys\SysSequenceModel.cs" />
     <Compile Include="Sys\SysTreeModel.cs" />
     <Compile Include="WC\WC_OfficalAccountsModel.cs" />
     <Compile Include="WC_Group.cs">

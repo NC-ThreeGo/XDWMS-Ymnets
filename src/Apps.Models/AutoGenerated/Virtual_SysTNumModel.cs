@@ -20,7 +20,7 @@ namespace Apps.Models.Sys
 	public class Virtual_SysTNumModel
 	{
 		[Display(Name = "未设置")]
-		public virtual int ID { get; set; }
+		public virtual int Id { get; set; }
 		[Display(Name = "未设置")]
 		public virtual int Num { get; set; }
 		[Display(Name = "未设置")]

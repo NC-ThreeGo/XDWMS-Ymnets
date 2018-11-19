@@ -818,9 +818,9 @@
         </EntityType>
         <EntityType Name="SysSequence">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="SN" Type="varchar" MaxLength="50" />
           <Property Name="TabName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="FirstType" Type="int" Nullable="false" />
@@ -865,9 +865,9 @@
         </EntityType>
         <EntityType Name="SysTNum">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Num" Type="int" Nullable="false" />
           <Property Name="MinNum" Type="int" Nullable="false" />
           <Property Name="MaxNum" Type="int" Nullable="false" />
@@ -3074,14 +3074,14 @@
             <End Role="Spl_Warehouse" EntitySet="Spl_Warehouse" />
             <End Role="SysRole" EntitySet="SysRole" />
           </AssociationSet>
-          <EntitySet Name="SysSequence" EntityType="DB.SysSequence" />
-          <EntitySet Name="SysTNum" EntityType="DB.SysTNum" />
           <FunctionImport Name="P_Sys_SwiftNum">
             <Parameter Name="Day" Mode="In" Type="String" />
             <Parameter Name="TabName" Mode="In" Type="String" />
             <Parameter Name="Num" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="WMS_Part" EntityType="DB.WMS_Part" />
+          <EntitySet Name="SysTNum" EntityType="DB.SysTNum" />
+          <EntitySet Name="SysSequence" EntityType="DB.SysSequence" />
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5342,41 +5342,6 @@
           <End Type="DB.Spl_Warehouse" Role="Spl_Warehouse" Multiplicity="*" />
           <End Type="DB.SysRole" Role="SysRole" Multiplicity="*" />
         </Association>
-        <EntityType Name="SysSequence">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="SN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TabName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="FirstType" Type="Int32" Nullable="false" />
-          <Property Name="FirstRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="FirstLength" Type="Int32" />
-          <Property Name="SecondType" Type="Int32" />
-          <Property Name="SecondRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SecondLength" Type="Int32" />
-          <Property Name="ThirdType" Type="Int32" />
-          <Property Name="ThirdRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ThirdLength" Type="Int32" />
-          <Property Name="FourType" Type="Int32" />
-          <Property Name="FourRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="FourLength" Type="Int32" />
-          <Property Name="JoinChar" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Sample" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CurrentValue" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="SysTNum">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Num" Type="Int32" Nullable="false" />
-          <Property Name="MinNum" Type="Int32" Nullable="false" />
-          <Property Name="MaxNum" Type="Int32" Nullable="false" />
-          <Property Name="Day" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="TabName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="WMS_Part">
           <Key>
             <PropertyRef Name="id" />
@@ -5395,6 +5360,41 @@
           <Property Name="creation_date" Type="DateTime" Precision="3" />
           <Property Name="updated_by" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="update_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SysTNum">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Num" Type="Int32" Nullable="false" />
+          <Property Name="MinNum" Type="Int32" Nullable="false" />
+          <Property Name="MaxNum" Type="Int32" Nullable="false" />
+          <Property Name="Day" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TabName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SysSequence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TabName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FirstType" Type="Int32" Nullable="false" />
+          <Property Name="FirstRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FirstLength" Type="Int32" />
+          <Property Name="SecondType" Type="Int32" />
+          <Property Name="SecondRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SecondLength" Type="Int32" />
+          <Property Name="ThirdType" Type="Int32" />
+          <Property Name="ThirdRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ThirdLength" Type="Int32" />
+          <Property Name="FourType" Type="Int32" />
+          <Property Name="FourRule" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FourLength" Type="Int32" />
+          <Property Name="JoinChar" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Sample" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentValue" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6718,6 +6718,39 @@
               <ScalarProperty Name="Id" ColumnName="Spl_WarehouseId" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="P_Sys_SwiftNum" FunctionName="DB.Store.P_Sys_SwiftNum" />
+          <EntitySetMapping Name="WMS_Part">
+            <EntityTypeMapping TypeName="DB.WMS_Part">
+              <MappingFragment StoreEntitySet="WMS_Part">
+                <ScalarProperty Name="update_date" ColumnName="update_date" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="storeman" ColumnName="storeman" />
+                <ScalarProperty Name="pcs" ColumnName="pcs" />
+                <ScalarProperty Name="other_code" ColumnName="other_code" />
+                <ScalarProperty Name="logistics_code" ColumnName="logistics_code" />
+                <ScalarProperty Name="customer_code" ColumnName="customer_code" />
+                <ScalarProperty Name="part_type" ColumnName="part_type" />
+                <ScalarProperty Name="part_name" ColumnName="part_name" />
+                <ScalarProperty Name="part_code" ColumnName="part_code" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysTNum">
+            <EntityTypeMapping TypeName="DB.SysTNum">
+              <MappingFragment StoreEntitySet="SysTNum">
+                <ScalarProperty Name="TabName" ColumnName="TabName" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="MaxNum" ColumnName="MaxNum" />
+                <ScalarProperty Name="MinNum" ColumnName="MinNum" />
+                <ScalarProperty Name="Num" ColumnName="Num" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SysSequence">
             <EntityTypeMapping TypeName="DB.SysSequence">
               <MappingFragment StoreEntitySet="SysSequence">
@@ -6739,40 +6772,7 @@
                 <ScalarProperty Name="FirstType" ColumnName="FirstType" />
                 <ScalarProperty Name="TabName" ColumnName="TabName" />
                 <ScalarProperty Name="SN" ColumnName="SN" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SysTNum">
-            <EntityTypeMapping TypeName="DB.SysTNum">
-              <MappingFragment StoreEntitySet="SysTNum">
-                <ScalarProperty Name="TabName" ColumnName="TabName" />
-                <ScalarProperty Name="Day" ColumnName="Day" />
-                <ScalarProperty Name="MaxNum" ColumnName="MaxNum" />
-                <ScalarProperty Name="MinNum" ColumnName="MinNum" />
-                <ScalarProperty Name="Num" ColumnName="Num" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="P_Sys_SwiftNum" FunctionName="DB.Store.P_Sys_SwiftNum" />
-          <EntitySetMapping Name="WMS_Part">
-            <EntityTypeMapping TypeName="DB.WMS_Part">
-              <MappingFragment StoreEntitySet="WMS_Part">
-                <ScalarProperty Name="update_date" ColumnName="update_date" />
-                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
-                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
-                <ScalarProperty Name="created_by" ColumnName="created_by" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="storeman" ColumnName="storeman" />
-                <ScalarProperty Name="pcs" ColumnName="pcs" />
-                <ScalarProperty Name="other_code" ColumnName="other_code" />
-                <ScalarProperty Name="logistics_code" ColumnName="logistics_code" />
-                <ScalarProperty Name="customer_code" ColumnName="customer_code" />
-                <ScalarProperty Name="part_type" ColumnName="part_type" />
-                <ScalarProperty Name="part_name" ColumnName="part_name" />
-                <ScalarProperty Name="part_code" ColumnName="part_code" />
-                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

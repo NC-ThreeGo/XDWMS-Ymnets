@@ -75,7 +75,7 @@ namespace Apps.BLL.Sys
             List<SysTNumModel> modelList = (from r in queryData
                                               select new SysTNumModel
                                               {
-													ID = r.ID,
+													Id = r.Id,
 													Num = r.Num,
 													MinNum = r.MinNum,
 													MaxNum = r.MaxNum,
@@ -91,14 +91,14 @@ namespace Apps.BLL.Sys
         {
             try
             {
-                SysTNum entity = m_Rep.GetById(model.ID);
+                SysTNum entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
                 entity = new SysTNum();
-               				entity.ID = model.ID;
+               				entity.Id = model.Id;
 				entity.Num = model.Num;
 				entity.MinNum = model.MinNum;
 				entity.MaxNum = model.MaxNum;
@@ -184,13 +184,13 @@ namespace Apps.BLL.Sys
         {
             try
             {
-                SysTNum entity = m_Rep.GetById(model.ID);
+                SysTNum entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
-                              				entity.ID = model.ID;
+                              				entity.Id = model.Id;
 				entity.Num = model.Num;
 				entity.MinNum = model.MinNum;
 				entity.MaxNum = model.MaxNum;
@@ -226,7 +226,7 @@ namespace Apps.BLL.Sys
             {
                 SysTNum entity = m_Rep.GetById(id);
                 SysTNumModel model = new SysTNumModel();
-                              				model.ID = entity.ID;
+                              				model.Id = entity.Id;
 				model.Num = entity.Num;
 				model.MinNum = entity.MinNum;
 				model.MaxNum = entity.MaxNum;
@@ -260,8 +260,7 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysTNumModel>(x => x.ID, "ID");
-				 excelFile.AddMapping<SysTNumModel>(x => x.Num, "Num");
+			 				 excelFile.AddMapping<SysTNumModel>(x => x.Num, "Num");
 				 excelFile.AddMapping<SysTNumModel>(x => x.MinNum, "MinNum");
 				 excelFile.AddMapping<SysTNumModel>(x => x.MaxNum, "MaxNum");
 				 excelFile.AddMapping<SysTNumModel>(x => x.Day, "Day");
@@ -275,7 +274,7 @@ namespace Apps.BLL.Sys
             {
                 var errorMessage = new StringBuilder();
                 var entity = new SysTNumModel();
-						 				  entity.ID = row.ID;
+						 				  entity.Id = row.Id;
 				  entity.Num = row.Num;
 				  entity.MinNum = row.MinNum;
 				  entity.MaxNum = row.MaxNum;
@@ -313,7 +312,7 @@ namespace Apps.BLL.Sys
                     foreach (var model in list)
                     {
                         SysTNum entity = new SysTNum();
-                       						entity.ID = model.ID;
+                       						entity.Id = 0;
 						entity.Num = model.Num;
 						entity.MinNum = model.MinNum;
 						entity.MaxNum = model.MaxNum;

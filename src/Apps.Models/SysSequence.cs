@@ -14,7 +14,7 @@ namespace Apps.Models
     
     public partial class SysSequence
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string SN { get; set; }
         public string TabName { get; set; }
         public int FirstType { get; set; }

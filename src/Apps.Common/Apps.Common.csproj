@@ -74,6 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultHelper.cs" />
     <Compile Include="SendMesage.cs" />
+    <Compile Include="SequenceType.cs" />
     <Compile Include="SerializationHelper.cs" />
     <Compile Include="SysConfig.cs" />
     <Compile Include="Thumbnail.cs" />
