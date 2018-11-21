@@ -1,0 +1,33 @@
+﻿@using FastReport;
+@using FastReport.Web;
+
+@{
+    ViewBag.Title = "报表设计器";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+
+@WebReportGlobals.Styles()
+@WebReportGlobals.Scripts()
+
+<div class="span12">
+    <div class="widget box light-grey">
+        <div class="widget-title">
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+                <a href="#widget-config" data-toggle="modal" class="config"></a>
+                <a href="javascript:;" class="reload"></a>
+                <a href="javascript:;" class="remove"></a>
+            </div>
+        </div>
+        <div class="widget-body">
+            @ViewBag.WebReport.GetHtml()
+        </div>
+    </div>
+</div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+
+    });
+</script>

@@ -72,6 +72,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FastReport, Version=2018.3.23.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\FastReport.dll</HintPath>
+    </Reference>
+    <Reference Include="FastReport.Web, Version=2018.3.23.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\FastReport.Web.dll</HintPath>
+    </Reference>
     <Reference Include="LinqToExcel, Version=1.10.1.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\LinqToExcel.1.10.1\lib\LinqToExcel.dll</HintPath>
@@ -264,6 +272,8 @@
     <Folder Include="Areas\MIS\Models\" />
     <Folder Include="Areas\MIS\Views\MailBox\" />
     <Folder Include="Areas\MIS\Views\Shared\" />
+    <Folder Include="Areas\Report\Models\" />
+    <Folder Include="Areas\Report\Views\Shared\" />
     <Folder Include="Areas\Spl\Models\" />
     <Folder Include="Areas\WC\Models\" />
     <Folder Include="Areas\WC\Views\Default\" />
@@ -272,6 +282,8 @@
     <Folder Include="Areas\WMS\Views\Shared\" />
     <Folder Include="Content\locale\" />
     <Folder Include="Models\" />
+    <Folder Include="ReportFiles\Template\" />
+    <Folder Include="ReportFiles\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -298,6 +310,8 @@
     <Compile Include="Areas\MIS\Controllers\WebIMController.cs" />
     <Compile Include="Areas\MIS\Controllers\WebIM_CommonTalkController.cs" />
     <Compile Include="Areas\MIS\MISAreaRegistration.cs" />
+    <Compile Include="Areas\Report\Controllers\ReportManagerController.cs" />
+    <Compile Include="Areas\Report\ReportAreaRegistration.cs" />
     <Compile Include="Areas\Spl\Controllers\ContactCompanyCategoryController.cs" />
     <Compile Include="Areas\Spl\Controllers\ContactCompanyController.cs" />
     <Compile Include="Areas\Spl\Controllers\EarlyWareingGoodController.cs" />
@@ -723,6 +737,20 @@
     <Content Include="Areas\WMS\Views\Part\Create.cshtml" />
     <Content Include="Areas\WMS\Views\Part\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\Part\Index.cshtml" />
+    <Content Include="WebReportDesigner\images\barcode-sprite.png" />
+    <Content Include="WebReportDesigner\images\i.gif" />
+    <Content Include="WebReportDesigner\images\icons.png" />
+    <Content Include="WebReportDesigner\index.html" />
+    <Content Include="WebReportDesigner\locales\en.js" />
+    <Content Include="WebReportDesigner\locales\ru.js" />
+    <Content Include="WebReportDesigner\locales\zh.js" />
+    <Content Include="WebReportDesigner\readme.txt" />
+    <Content Include="WebReportDesigner\scripts\config-data.js" />
+    <Content Include="WebReportDesigner\scripts\main.js" />
+    <Content Include="WebReportDesigner\scripts\vendors.js" />
+    <Content Include="WebReportDesigner\styles\main.css" />
+    <Content Include="Areas\Report\Views\web.config" />
+    <Content Include="Areas\Report\Views\ReportManager\Designer.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1078,6 +1106,7 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="WebReportDesigner\offline.appcache" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Apps.BLL\Apps.BLL.csproj">
