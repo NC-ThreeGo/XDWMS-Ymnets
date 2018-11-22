@@ -96,6 +96,8 @@ namespace Apps.Models
         public virtual DbSet<WMS_Part> WMS_Part { get; set; }
         public virtual DbSet<SysTNum> SysTNum { get; set; }
         public virtual DbSet<SysSequence> SysSequence { get; set; }
+        public virtual DbSet<WMS_Header> WMS_Header { get; set; }
+        public virtual DbSet<WMS_Line> WMS_Line { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {

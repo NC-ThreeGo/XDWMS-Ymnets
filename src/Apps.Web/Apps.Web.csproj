@@ -355,6 +355,8 @@
     <Compile Include="Areas\WC\Core\Server.cs" />
     <Compile Include="Areas\WC\Core\WeChatHelper.cs" />
     <Compile Include="Areas\WC\WCAreaRegistration.cs" />
+    <Compile Include="Areas\WMS\Controllers\HeaderController.cs" />
+    <Compile Include="Areas\WMS\Controllers\LineController.cs" />
     <Compile Include="Areas\WMS\Controllers\PartController.cs" />
     <Compile Include="Areas\WMS\WMSAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -751,6 +753,12 @@
     <Content Include="WebReportDesigner\styles\main.css" />
     <Content Include="Areas\Report\Views\web.config" />
     <Content Include="Areas\Report\Views\ReportManager\Designer.cshtml" />
+    <Content Include="Areas\WMS\Views\Header\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\Header\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\Header\Index.cshtml" />
+    <Content Include="Areas\WMS\Views\Line\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\Line\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\Line\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

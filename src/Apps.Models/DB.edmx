@@ -918,7 +918,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -1023,6 +1023,22 @@
           <Property Name="TagidList" Type="varchar" MaxLength="1000" />
           <Property Name="Subscribe" Type="int" Nullable="false" />
           <Property Name="OfficalAccountId" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WMS_Header">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="WMS_Line">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HeaderId" Type="int" Nullable="false" />
+          <Property Name="LineName" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="WMS_Part">
           <Key>
@@ -1993,6 +2009,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_Line_WMS_Header1">
+          <End Role="WMS_Header" Type="Self.WMS_Header" Multiplicity="1" />
+          <End Role="WMS_Line" Type="Self.WMS_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Header">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Line">
+              <PropertyRef Name="HeaderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="P_Flow_ResetCheckStepState" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="stepCheckId" Type="varchar" Mode="In" />
           <Parameter Name="ContentId" Type="varchar" Mode="In" />
@@ -2233,6 +2261,8 @@
           <EntitySet Name="WC_OfficalAccounts" EntityType="Self.WC_OfficalAccounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WC_ResponseLog" EntityType="Self.WC_ResponseLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WC_User" EntityType="Self.WC_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_Header" EntityType="Self.WMS_Header" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_Line" EntityType="Self.WMS_Line" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Part" EntityType="Self.WMS_Part" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysUserConfig" EntityType="Self.SysUserConfig" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2543,6 +2573,10 @@
           <AssociationSet Name="FK_WC_UserResponseLog_WC_OfficalAcconts" Association="Self.FK_WC_UserResponseLog_WC_OfficalAcconts">
             <End Role="WC_OfficalAccounts" EntitySet="WC_OfficalAccounts" />
             <End Role="WC_ResponseLog" EntitySet="WC_ResponseLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Line_WMS_Header1" Association="Self.FK_WMS_Line_WMS_Header1">
+            <End Role="WMS_Header" EntitySet="WMS_Header" />
+            <End Role="WMS_Line" EntitySet="WMS_Line" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -3082,6 +3116,12 @@
           <EntitySet Name="WMS_Part" EntityType="DB.WMS_Part" />
           <EntitySet Name="SysTNum" EntityType="DB.SysTNum" />
           <EntitySet Name="SysSequence" EntityType="DB.SysSequence" />
+          <EntitySet Name="WMS_Header" EntityType="DB.WMS_Header" />
+          <EntitySet Name="WMS_Line" EntityType="DB.WMS_Line" />
+          <AssociationSet Name="FK_WMS_Line_WMS_Header1" Association="DB.FK_WMS_Line_WMS_Header1">
+            <End Role="WMS_Header" EntitySet="WMS_Header" />
+            <End Role="WMS_Line" EntitySet="WMS_Line" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5396,6 +5436,36 @@
           <Property Name="CurrentValue" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="WMS_Header">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="WMS_Line" Relationship="DB.FK_WMS_Line_WMS_Header1" FromRole="WMS_Header" ToRole="WMS_Line" />
+        </EntityType>
+        <EntityType Name="WMS_Line">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HeaderId" Type="Int32" Nullable="false" />
+          <Property Name="LineName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="WMS_Header" Relationship="DB.FK_WMS_Line_WMS_Header1" FromRole="WMS_Line" ToRole="WMS_Header" />
+        </EntityType>
+        <Association Name="FK_WMS_Line_WMS_Header1">
+          <End Type="DB.WMS_Header" Role="WMS_Header" Multiplicity="1" />
+          <End Type="DB.WMS_Line" Role="WMS_Line" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Header">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Line">
+              <PropertyRef Name="HeaderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6772,6 +6842,24 @@
                 <ScalarProperty Name="FirstType" ColumnName="FirstType" />
                 <ScalarProperty Name="TabName" ColumnName="TabName" />
                 <ScalarProperty Name="SN" ColumnName="SN" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WMS_Header">
+            <EntityTypeMapping TypeName="DB.WMS_Header">
+              <MappingFragment StoreEntitySet="WMS_Header">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WMS_Line">
+            <EntityTypeMapping TypeName="DB.WMS_Line">
+              <MappingFragment StoreEntitySet="WMS_Line">
+                <ScalarProperty Name="LineName" ColumnName="LineName" />
+                <ScalarProperty Name="HeaderId" ColumnName="HeaderId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
