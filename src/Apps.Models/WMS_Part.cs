@@ -14,19 +14,19 @@ namespace Apps.Models
     
     public partial class WMS_Part
     {
-        public int id { get; set; }
-        public string part_code { get; set; }
-        public string part_name { get; set; }
-        public string part_type { get; set; }
-        public string customer_code { get; set; }
-        public string logistics_code { get; set; }
-        public string other_code { get; set; }
-        public Nullable<decimal> pcs { get; set; }
-        public string storeman { get; set; }
-        public string status { get; set; }
-        public string created_by { get; set; }
-        public Nullable<System.DateTime> creation_date { get; set; }
-        public string updated_by { get; set; }
-        public Nullable<System.DateTime> update_date { get; set; }
+        public int Id { get; set; }
+        public string PartCode { get; set; }
+        public string PartName { get; set; }
+        public string PartType { get; set; }
+        public string CustomerCode { get; set; }
+        public string LogisticsCode { get; set; }
+        public string OtherCode { get; set; }
+        public Nullable<decimal> PCS { get; set; }
+        public string StoreMan { get; set; }
+        public string Status { get; set; }
+        public string CreatePerson { get; set; }
+        public Nullable<System.DateTime> CreateTime { get; set; }
+        public string ModifyPerson { get; set; }
+        public Nullable<System.DateTime> ModifyTime { get; set; }
     }
 }

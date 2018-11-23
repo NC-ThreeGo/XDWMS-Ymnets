@@ -377,7 +377,6 @@
     <Compile Include="Controllers\SysRoleController.cs" />
     <Compile Include="Controllers\SysSampleByUpLoadController.cs" />
     <Compile Include="Controllers\SysSampleController.cs" />
-    <Compile Include="Controllers\SysSequenceController.cs" />
     <Compile Include="Controllers\SysStructController.cs" />
     <Compile Include="Controllers\SysUserController.cs" />
     <Compile Include="Core\BaseController.cs" />

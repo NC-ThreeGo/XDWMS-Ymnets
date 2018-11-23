@@ -125,14 +125,10 @@ namespace Apps.Core
 			container.RegisterType<Apps.IDAL.Sys.ISysRoleRepository, Apps.DAL.Sys.SysRoleRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysSampleBLL, Apps.BLL.Sys.SysSampleBLL>();
 			container.RegisterType<Apps.IDAL.Sys.ISysSampleRepository, Apps.DAL.Sys.SysSampleRepository>();
-			container.RegisterType<Apps.IBLL.Sys.ISysSequenceBLL, Apps.BLL.Sys.SysSequenceBLL>();
-			container.RegisterType<Apps.IDAL.Sys.ISysSequenceRepository, Apps.DAL.Sys.SysSequenceRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysSettingsBLL, Apps.BLL.Sys.SysSettingsBLL>();
 			container.RegisterType<Apps.IDAL.Sys.ISysSettingsRepository, Apps.DAL.Sys.SysSettingsRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysStructBLL, Apps.BLL.Sys.SysStructBLL>();
 			container.RegisterType<Apps.IDAL.Sys.ISysStructRepository, Apps.DAL.Sys.SysStructRepository>();
-			container.RegisterType<Apps.IBLL.Sys.ISysTNumBLL, Apps.BLL.Sys.SysTNumBLL>();
-			container.RegisterType<Apps.IDAL.Sys.ISysTNumRepository, Apps.DAL.Sys.SysTNumRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysUserBLL, Apps.BLL.Sys.SysUserBLL>();
 			container.RegisterType<Apps.IDAL.Sys.ISysUserRepository, Apps.DAL.Sys.SysUserRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysUserConfigBLL, Apps.BLL.Sys.SysUserConfigBLL>();

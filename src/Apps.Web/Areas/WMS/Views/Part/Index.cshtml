@@ -8,31 +8,31 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
-<div id="uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
-    <form name="form1" method="post" id="form1">
-        <table>
-            <tr>
-                <th style="padding:20px;"> Excel：</th>
-                <td style="padding:20px;">
-                    <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
-                    <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
-                    <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
-                    <span class="uploading">@Resource.Uploading</span>
-                </td>
-            </tr>
-        </table>
-        <div class="endbtndiv">
-            <a id="btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
-            <a id="btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
-        </div>
-    </form>
+<div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+<form name = "form1" method="post" id="form1">
+    <table>
+        <tr>
+            <th style="padding:20px;"> Excel：</th>
+            <td style="padding:20px;">
+                <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                <a href = "javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
+                <span class="uploading">@Resource.Uploading</span>
+            </td>
+        </tr>
+    </table>
+    <div class="endbtndiv">
+        <a id = "btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+        <a id = "btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+    </div>
+</form>
 </div>
 <div class="mvctool">
     <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
 </div>
@@ -48,40 +48,32 @@
             methord: 'post',
             height: SetGridHeightSub(45),
             fitColumns: true,
-            sortName: 'id',
+            sortName: 'CreateTime',
             sortOrder: 'desc',
-            idField: 'id',
+            idField: 'Id',
             pageSize: 15,
             pageList: [15, 20, 30, 40, 50],
             pagination: true,
             striped: true, //奇偶行是否区分
             singleSelect: true,//单选模式
             //rownumbers: true,//行号
-            onLoadSuccess: function (data)
-            {
-                @foreach(var r in perm)
-                {
-                    if (r.Category == 2)
-                    { 
-                        @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); ");
-                    }
-                }
+            onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
             },
             columns: [[
-                { field: 'id', title: '物料ID', width: 80,sortable:true },
-                { field: 'part_code', title: '物料编码', width: 80,sortable:true },
-                { field: 'part_name', title: '物料名称', width: 80,sortable:true },
-                { field: 'part_type', title: '物料类型', width: 80,sortable:true },
-                { field: 'customer_code', title: '客户编码', width: 80,sortable:true },
-                { field: 'logistics_code', title: '物流号', width: 80,sortable:true },
-                { field: 'other_code', title: '额外信息编码', width: 80,sortable:true },
-                { field: 'pcs', title: '每箱数量', width: 80,sortable:true },
-                { field: 'storeman', title: '保管员', width: 80,sortable:true },
-                { field: 'status', title: '物料状态', width: 80,sortable:true },
-                { field: 'created_by', title: 'created_by', width: 80,sortable:true },
-                { field: 'creation_date', title: 'creation_date', width: 80,sortable:true },
-                { field: 'updated_by', title: 'updated_by', width: 80,sortable:true },
-                { field: 'update_date', title: 'update_date', width: 80,sortable:true }
+                { field: 'Id', title: '物料ID', width: 80,hidden:true },
+                { field: 'PartCode', title: '物料编码', width: 80,sortable:true },
+                { field: 'PartName', title: '物料名称', width: 80,sortable:true },
+                { field: 'PartType', title: '物料类型', width: 80,sortable:true },
+                { field: 'CustomerCode', title: '客户编码', width: 80,sortable:true },
+                { field: 'LogisticsCode', title: '物流号', width: 80,sortable:true },
+                { field: 'OtherCode', title: '额外信息编码', width: 80,sortable:true },
+                { field: 'PCS', title: '每箱数量', width: 80,sortable:true },
+                { field: 'StoreMan', title: '保管员', width: 80,sortable:true },
+                { field: 'Status', title: '物料状态', width: 80,sortable:true },
+                { field: 'CreatePerson', title: 'CreatePerson', width: 80,sortable:true },
+                { field: 'CreateTime', title: 'CreateTime', width: 80,sortable:true },
+                { field: 'ModifyPerson', title: 'ModifyPerson', width: 80,sortable:true },
+                { field: 'ModifyTime', title: 'ModifyTime', width: 80,sortable:true }
             ]]
         });
     });
@@ -105,13 +97,13 @@
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
+                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {

@@ -142,12 +142,10 @@
         <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantDetailsOUT_Spl_WarehouseWarrantOUT" />
         <AssociationConnector Association="DB.FK_Spl_WarehouseWarrantOUT_SysUser" />
         <AssociationConnector Association="DB.SysRoleSpl_Warehouse" />
-        <EntityTypeShape EntityType="DB.WMS_Part" Width="1.5" PointX="17.375" PointY="7.75" />
-        <EntityTypeShape EntityType="DB.SysTNum" Width="1.5" PointX="0.5" PointY="21.625" />
-        <EntityTypeShape EntityType="DB.SysSequence" Width="1.5" PointX="0.5" PointY="17" />
         <EntityTypeShape EntityType="DB.WMS_Header" Width="1.5" PointX="17.375" PointY="4.875" />
         <EntityTypeShape EntityType="DB.WMS_Line" Width="1.5" PointX="19.625" PointY="4.875" />
         <AssociationConnector Association="DB.FK_WMS_Line_WMS_Header1" />
+        <EntityTypeShape EntityType="DB.WMS_Part" Width="1.5" PointX="17.375" PointY="7.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

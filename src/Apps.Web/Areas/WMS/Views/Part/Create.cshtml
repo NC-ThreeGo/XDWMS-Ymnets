@@ -52,133 +52,117 @@ $.messageBox5s(Lang.Tip, mes);
 </div>
 @using (Html.BeginForm())
 {
+             @Html.HiddenFor(model => model.Id, new { @Value = 0})
+             <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
  <table class="formtable">
     <tbody>
         <tr>
             <th>
-                @Html.LabelFor(model => model.id)：
+                @Html.LabelFor(model => model.PartCode)：
             </th>
             <td>
-                @Html.EditorFor(model => model.id)
+                @Html.EditorFor(model => model.PartCode)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.id)</td>
+            <td>@Html.ValidationMessageFor(model => model.PartCode)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.part_code)：
+                @Html.LabelFor(model => model.PartName)：
             </th>
             <td>
-                @Html.EditorFor(model => model.part_code)
+                @Html.EditorFor(model => model.PartName)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.part_code)</td>
+            <td>@Html.ValidationMessageFor(model => model.PartName)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.part_name)：
+                @Html.LabelFor(model => model.PartType)：
             </th>
             <td>
-                @Html.EditorFor(model => model.part_name)
+                @Html.EditorFor(model => model.PartType)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.part_name)</td>
+            <td>@Html.ValidationMessageFor(model => model.PartType)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.part_type)：
+                @Html.LabelFor(model => model.CustomerCode)：
             </th>
             <td>
-                @Html.EditorFor(model => model.part_type)
+                @Html.EditorFor(model => model.CustomerCode)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.part_type)</td>
+            <td>@Html.ValidationMessageFor(model => model.CustomerCode)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.customer_code)：
+                @Html.LabelFor(model => model.LogisticsCode)：
             </th>
             <td>
-                @Html.EditorFor(model => model.customer_code)
+                @Html.EditorFor(model => model.LogisticsCode)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.customer_code)</td>
+            <td>@Html.ValidationMessageFor(model => model.LogisticsCode)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.logistics_code)：
+                @Html.LabelFor(model => model.OtherCode)：
             </th>
             <td>
-                @Html.EditorFor(model => model.logistics_code)
+                @Html.EditorFor(model => model.OtherCode)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.logistics_code)</td>
+            <td>@Html.ValidationMessageFor(model => model.OtherCode)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.other_code)：
+                @Html.LabelFor(model => model.PCS)：
             </th>
             <td>
-                @Html.EditorFor(model => model.other_code)
+                @Html.EditorFor(model => model.PCS)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.other_code)</td>
+            <td>@Html.ValidationMessageFor(model => model.PCS)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.pcs)：
+                @Html.LabelFor(model => model.StoreMan)：
             </th>
             <td>
-                @Html.EditorFor(model => model.pcs)
+                @Html.EditorFor(model => model.StoreMan)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.pcs)</td>
+            <td>@Html.ValidationMessageFor(model => model.StoreMan)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.storeman)：
+                @Html.LabelFor(model => model.Status)：
             </th>
             <td>
-                @Html.EditorFor(model => model.storeman)
+                @Html.EditorFor(model => model.Status)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.storeman)</td>
+            <td>@Html.ValidationMessageFor(model => model.Status)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.status)：
+                @Html.LabelFor(model => model.CreatePerson)：
             </th>
             <td>
-                @Html.EditorFor(model => model.status)
+                @Html.EditorFor(model => model.CreatePerson)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.status)</td>
+            <td>@Html.ValidationMessageFor(model => model.CreatePerson)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.created_by)：
+                @Html.LabelFor(model => model.ModifyPerson)：
             </th>
             <td>
-                @Html.EditorFor(model => model.created_by)
+                @Html.EditorFor(model => model.ModifyPerson)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.created_by)</td>
+            <td>@Html.ValidationMessageFor(model => model.ModifyPerson)</td>
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.creation_date)：
+                @Html.LabelFor(model => model.ModifyTime)：
             </th>
             <td >
-               @Html.TextBoxFor(model => model.creation_date, new { @onClick = "WdatePicker()",@style = "width: 105px" })
+               @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
             </td>
-            <td>@Html.ValidationMessageFor(model => model.creation_date)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.updated_by)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.updated_by)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.updated_by)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.update_date)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.update_date, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.update_date)</td>
+            <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
         </tr>
     </tbody>
 </table>

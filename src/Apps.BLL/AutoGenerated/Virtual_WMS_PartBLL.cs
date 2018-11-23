@@ -42,18 +42,18 @@ namespace Apps.BLL.WMS
             {
                 queryData = m_Rep.GetList(
 								
-								a=>a.part_code.Contains(queryStr)
-								|| a.part_name.Contains(queryStr)
-								|| a.part_type.Contains(queryStr)
-								|| a.customer_code.Contains(queryStr)
-								|| a.logistics_code.Contains(queryStr)
-								|| a.other_code.Contains(queryStr)
+								a=>a.PartCode.Contains(queryStr)
+								|| a.PartName.Contains(queryStr)
+								|| a.PartType.Contains(queryStr)
+								|| a.CustomerCode.Contains(queryStr)
+								|| a.LogisticsCode.Contains(queryStr)
+								|| a.OtherCode.Contains(queryStr)
 								
-								|| a.storeman.Contains(queryStr)
-								|| a.status.Contains(queryStr)
-								|| a.created_by.Contains(queryStr)
+								|| a.StoreMan.Contains(queryStr)
+								|| a.Status.Contains(queryStr)
+								|| a.CreatePerson.Contains(queryStr)
 								
-								|| a.updated_by.Contains(queryStr)
+								|| a.ModifyPerson.Contains(queryStr)
 								
 								);
             }
@@ -83,20 +83,20 @@ namespace Apps.BLL.WMS
             List<WMS_PartModel> modelList = (from r in queryData
                                               select new WMS_PartModel
                                               {
-													id = r.id,
-													part_code = r.part_code,
-													part_name = r.part_name,
-													part_type = r.part_type,
-													customer_code = r.customer_code,
-													logistics_code = r.logistics_code,
-													other_code = r.other_code,
-													pcs = r.pcs,
-													storeman = r.storeman,
-													status = r.status,
-													created_by = r.created_by,
-													creation_date = r.creation_date,
-													updated_by = r.updated_by,
-													update_date = r.update_date,
+													Id = r.Id,
+													PartCode = r.PartCode,
+													PartName = r.PartName,
+													PartType = r.PartType,
+													CustomerCode = r.CustomerCode,
+													LogisticsCode = r.LogisticsCode,
+													OtherCode = r.OtherCode,
+													PCS = r.PCS,
+													StoreMan = r.StoreMan,
+													Status = r.Status,
+													CreatePerson = r.CreatePerson,
+													CreateTime = r.CreateTime,
+													ModifyPerson = r.ModifyPerson,
+													ModifyTime = r.ModifyTime,
           
                                               }).ToList();
 
@@ -107,27 +107,27 @@ namespace Apps.BLL.WMS
         {
             try
             {
-                WMS_Part entity = m_Rep.GetById(model.id);
+                WMS_Part entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
                 entity = new WMS_Part();
-               				entity.id = model.id;
-				entity.part_code = model.part_code;
-				entity.part_name = model.part_name;
-				entity.part_type = model.part_type;
-				entity.customer_code = model.customer_code;
-				entity.logistics_code = model.logistics_code;
-				entity.other_code = model.other_code;
-				entity.pcs = model.pcs;
-				entity.storeman = model.storeman;
-				entity.status = model.status;
-				entity.created_by = model.created_by;
-				entity.creation_date = model.creation_date;
-				entity.updated_by = model.updated_by;
-				entity.update_date = model.update_date;
+               				entity.Id = model.Id;
+				entity.PartCode = model.PartCode;
+				entity.PartName = model.PartName;
+				entity.PartType = model.PartType;
+				entity.CustomerCode = model.CustomerCode;
+				entity.LogisticsCode = model.LogisticsCode;
+				entity.OtherCode = model.OtherCode;
+				entity.PCS = model.PCS;
+				entity.StoreMan = model.StoreMan;
+				entity.Status = model.Status;
+				entity.CreatePerson = model.CreatePerson;
+				entity.CreateTime = model.CreateTime;
+				entity.ModifyPerson = model.ModifyPerson;
+				entity.ModifyTime = model.ModifyTime;
   
 
                 if (m_Rep.Create(entity))
@@ -208,26 +208,26 @@ namespace Apps.BLL.WMS
         {
             try
             {
-                WMS_Part entity = m_Rep.GetById(model.id);
+                WMS_Part entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
-                              				entity.id = model.id;
-				entity.part_code = model.part_code;
-				entity.part_name = model.part_name;
-				entity.part_type = model.part_type;
-				entity.customer_code = model.customer_code;
-				entity.logistics_code = model.logistics_code;
-				entity.other_code = model.other_code;
-				entity.pcs = model.pcs;
-				entity.storeman = model.storeman;
-				entity.status = model.status;
-				entity.created_by = model.created_by;
-				entity.creation_date = model.creation_date;
-				entity.updated_by = model.updated_by;
-				entity.update_date = model.update_date;
+                              				entity.Id = model.Id;
+				entity.PartCode = model.PartCode;
+				entity.PartName = model.PartName;
+				entity.PartType = model.PartType;
+				entity.CustomerCode = model.CustomerCode;
+				entity.LogisticsCode = model.LogisticsCode;
+				entity.OtherCode = model.OtherCode;
+				entity.PCS = model.PCS;
+				entity.StoreMan = model.StoreMan;
+				entity.Status = model.Status;
+				entity.CreatePerson = model.CreatePerson;
+				entity.CreateTime = model.CreateTime;
+				entity.ModifyPerson = model.ModifyPerson;
+				entity.ModifyTime = model.ModifyTime;
  
 
 
@@ -258,20 +258,20 @@ namespace Apps.BLL.WMS
             {
                 WMS_Part entity = m_Rep.GetById(id);
                 WMS_PartModel model = new WMS_PartModel();
-                              				model.id = entity.id;
-				model.part_code = entity.part_code;
-				model.part_name = entity.part_name;
-				model.part_type = entity.part_type;
-				model.customer_code = entity.customer_code;
-				model.logistics_code = entity.logistics_code;
-				model.other_code = entity.other_code;
-				model.pcs = entity.pcs;
-				model.storeman = entity.storeman;
-				model.status = entity.status;
-				model.created_by = entity.created_by;
-				model.creation_date = entity.creation_date;
-				model.updated_by = entity.updated_by;
-				model.update_date = entity.update_date;
+                              				model.Id = entity.Id;
+				model.PartCode = entity.PartCode;
+				model.PartName = entity.PartName;
+				model.PartType = entity.PartType;
+				model.CustomerCode = entity.CustomerCode;
+				model.LogisticsCode = entity.LogisticsCode;
+				model.OtherCode = entity.OtherCode;
+				model.PCS = entity.PCS;
+				model.StoreMan = entity.StoreMan;
+				model.Status = entity.Status;
+				model.CreatePerson = entity.CreatePerson;
+				model.CreateTime = entity.CreateTime;
+				model.ModifyPerson = entity.ModifyPerson;
+				model.ModifyTime = entity.ModifyTime;
  
                 return model;
             }
@@ -300,20 +300,19 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_PartModel>(x => x.id, "id");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.part_code, "part_code");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.part_name, "part_name");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.part_type, "part_type");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.customer_code, "customer_code");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.logistics_code, "logistics_code");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.other_code, "other_code");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.pcs, "pcs");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.storeman, "storeman");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.status, "status");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.created_by, "created_by");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.creation_date, "creation_date");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.updated_by, "updated_by");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.update_date, "update_date");
+			 				 excelFile.AddMapping<WMS_PartModel>(x => x.PartCode, "PartCode");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.PartName, "PartName");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.PartType, "PartType");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.CustomerCode, "CustomerCode");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.LogisticsCode, "LogisticsCode");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.OtherCode, "OtherCode");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.PCS, "PCS");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.StoreMan, "StoreMan");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.Status, "Status");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.CreatePerson, "CreatePerson");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.CreateTime, "CreateTime");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.ModifyPerson, "ModifyPerson");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.ModifyTime, "ModifyTime");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_PartModel>(0);
@@ -323,20 +322,20 @@ namespace Apps.BLL.WMS
             {
                 var errorMessage = new StringBuilder();
                 var entity = new WMS_PartModel();
-						 				  entity.id = row.id;
-				  entity.part_code = row.part_code;
-				  entity.part_name = row.part_name;
-				  entity.part_type = row.part_type;
-				  entity.customer_code = row.customer_code;
-				  entity.logistics_code = row.logistics_code;
-				  entity.other_code = row.other_code;
-				  entity.pcs = row.pcs;
-				  entity.storeman = row.storeman;
-				  entity.status = row.status;
-				  entity.created_by = row.created_by;
-				  entity.creation_date = row.creation_date;
-				  entity.updated_by = row.updated_by;
-				  entity.update_date = row.update_date;
+						 				  entity.Id = row.Id;
+				  entity.PartCode = row.PartCode;
+				  entity.PartName = row.PartName;
+				  entity.PartType = row.PartType;
+				  entity.CustomerCode = row.CustomerCode;
+				  entity.LogisticsCode = row.LogisticsCode;
+				  entity.OtherCode = row.OtherCode;
+				  entity.PCS = row.PCS;
+				  entity.StoreMan = row.StoreMan;
+				  entity.Status = row.Status;
+				  entity.CreatePerson = row.CreatePerson;
+				  entity.CreateTime = row.CreateTime;
+				  entity.ModifyPerson = row.ModifyPerson;
+				  entity.ModifyTime = row.ModifyTime;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -369,20 +368,20 @@ namespace Apps.BLL.WMS
                     foreach (var model in list)
                     {
                         WMS_Part entity = new WMS_Part();
-                       						entity.id = model.id;
-						entity.part_code = model.part_code;
-						entity.part_name = model.part_name;
-						entity.part_type = model.part_type;
-						entity.customer_code = model.customer_code;
-						entity.logistics_code = model.logistics_code;
-						entity.other_code = model.other_code;
-						entity.pcs = model.pcs;
-						entity.storeman = model.storeman;
-						entity.status = model.status;
-						entity.created_by = model.created_by;
-						entity.creation_date = model.creation_date;
-						entity.updated_by = model.updated_by;
-						entity.update_date = model.update_date;
+                       						entity.Id = 0;
+						entity.PartCode = model.PartCode;
+						entity.PartName = model.PartName;
+						entity.PartType = model.PartType;
+						entity.CustomerCode = model.CustomerCode;
+						entity.LogisticsCode = model.LogisticsCode;
+						entity.OtherCode = model.OtherCode;
+						entity.PCS = model.PCS;
+						entity.StoreMan = model.StoreMan;
+						entity.Status = model.Status;
+						entity.CreatePerson = model.CreatePerson;
+						entity.CreateTime = ResultHelper.NowTime;
+						entity.ModifyPerson = model.ModifyPerson;
+						entity.ModifyTime = model.ModifyTime;
  
                         db.WMS_Part.Add(entity);
                     }

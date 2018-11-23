@@ -20,32 +20,32 @@ namespace Apps.Models.WMS
 	public class Virtual_WMS_PartModel
 	{
 		[Display(Name = "物料ID")]
-		public virtual int id { get; set; }
+		public virtual int Id { get; set; }
 		[Display(Name = "物料编码")]
-		public virtual string part_code { get; set; }
+		public virtual string PartCode { get; set; }
 		[Display(Name = "物料名称")]
-		public virtual string part_name { get; set; }
+		public virtual string PartName { get; set; }
 		[Display(Name = "物料类型")]
-		public virtual string part_type { get; set; }
+		public virtual string PartType { get; set; }
 		[Display(Name = "客户编码")]
-		public virtual string customer_code { get; set; }
+		public virtual string CustomerCode { get; set; }
 		[Display(Name = "物流号")]
-		public virtual string logistics_code { get; set; }
+		public virtual string LogisticsCode { get; set; }
 		[Display(Name = "额外信息编码")]
-		public virtual string other_code { get; set; }
+		public virtual string OtherCode { get; set; }
 		[Display(Name = "每箱数量")]
-		public virtual Nullable<decimal> pcs { get; set; }
+		public virtual Nullable<decimal> PCS { get; set; }
 		[Display(Name = "保管员")]
-		public virtual string storeman { get; set; }
+		public virtual string StoreMan { get; set; }
 		[Display(Name = "物料状态")]
-		public virtual string status { get; set; }
+		public virtual string Status { get; set; }
 		[Display(Name = "未设置")]
-		public virtual string created_by { get; set; }
+		public virtual string CreatePerson { get; set; }
 		[Display(Name = "未设置")]
-		public virtual Nullable<System.DateTime> creation_date { get; set; }
+		public virtual Nullable<System.DateTime> CreateTime { get; set; }
 		[Display(Name = "未设置")]
-		public virtual string updated_by { get; set; }
+		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "未设置")]
-		public virtual Nullable<System.DateTime> update_date { get; set; }
+		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
 		}
 }

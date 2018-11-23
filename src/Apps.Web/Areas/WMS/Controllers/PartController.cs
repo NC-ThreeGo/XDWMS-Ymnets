@@ -20,14 +20,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [Dependency]
         public IWMS_PartBLL m_BLL { get; set; }
         ValidationErrors errors = new ValidationErrors();
-
+        
         [SupportFilter]
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        [SupportFilter(ActionName = "Index")]
+        [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
             List<WMS_PartModel> list = m_BLL.GetList(ref pager, queryStr);
@@ -47,20 +47,20 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public JsonResult Create(WMS_PartModel model)
         {
-            //model.id = 0;
-            model.creation_date = ResultHelper.NowTime;
+            model.Id = 0;
+            model.CreateTime = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {
 
                 if (m_BLL.Create(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "id" + model.id + ",part_code" + model.part_code, "成功", "创建", "WMS_Part");
+                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",PartCode" + model.PartCode, "成功", "创建", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "id" + model.id + ",part_code" + model.part_code + "," + ErrorCol, "失败", "创建", "WMS_Part");
+                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",PartCode" + model.PartCode + "," + ErrorCol, "失败", "创建", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
                 }
             }
@@ -88,13 +88,13 @@ namespace Apps.Web.Areas.WMS.Controllers
 
                 if (m_BLL.Edit(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "id" + model.id + ",part_code" + model.part_code, "成功", "修改", "WMS_Part");
+                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",PartCode" + model.PartCode, "成功", "修改", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "id" + model.id + ",part_code" + model.part_code + "," + ErrorCol, "失败", "修改", "WMS_Part");
+                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",PartCode" + model.PartCode + "," + ErrorCol, "失败", "修改", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
                 }
             }
@@ -120,17 +120,17 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Delete(long id)
         {
-            if (id != 0)
+            if(id!=0)
             {
                 if (m_BLL.Delete(ref errors, id))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "part_id:" + id, "成功", "删除", "WMS_Part");
+                    LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "part_id" + id + "," + ErrorCol, "失败", "删除", "WMS_Part");
+                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
                 }
             }
@@ -180,37 +180,38 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             List<WMS_PartModel> list = m_BLL.GetList(ref setNoPagerAscById, "");
             JArray jObjects = new JArray();
-            foreach (var item in list)
-            {
-                var jo = new JObject();
-                jo.Add("part_id", item.id);
-                jo.Add("part_code", item.part_code);
-                jo.Add("part_name", item.part_name);
-                jo.Add("part_type", item.part_type);
-                jo.Add("customer_code", item.customer_code);
-                jo.Add("logistics_code", item.logistics_code);
-                jo.Add("other_code", item.other_code);
-                jo.Add("pcs", item.pcs);
-                jo.Add("storeman", item.storeman);
-                jo.Add("status", item.status);
-                jo.Add("created_by", item.created_by);
-                jo.Add("creation_date", item.creation_date);
-                jo.Add("updated_by", item.updated_by);
-                jo.Add("update_date", item.update_date);
-                jObjects.Add(jo);
+                foreach (var item in list)
+                {
+                    var jo = new JObject();
+                    jo.Add("Id", item.Id);
+                    jo.Add("PartCode", item.PartCode);
+                    jo.Add("PartName", item.PartName);
+                    jo.Add("PartType", item.PartType);
+                    jo.Add("CustomerCode", item.CustomerCode);
+                    jo.Add("LogisticsCode", item.LogisticsCode);
+                    jo.Add("OtherCode", item.OtherCode);
+                    jo.Add("PCS", item.PCS);
+                    jo.Add("StoreMan", item.StoreMan);
+                    jo.Add("Status", item.Status);
+                    jo.Add("CreatePerson", item.CreatePerson);
+                    jo.Add("CreateTime", item.CreateTime);
+                    jo.Add("ModifyPerson", item.ModifyPerson);
+                    jo.Add("ModifyTime", item.ModifyTime);
+                    jObjects.Add(jo);
+                }
+                var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+                var exportFileName = string.Concat(
+                    "File",
+                    DateTime.Now.ToString("yyyyMMddHHmmss"),
+                    ".xlsx");
+                return new ExportExcelResult
+                {
+                    SheetName = "Sheet1",
+                    FileName = exportFileName,
+                    ExportData = dt
+                };
             }
-            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
-            var exportFileName = string.Concat(
-                "File",
-                DateTime.Now.ToString("yyyyMMddHHmmss"),
-                ".xlsx");
-            return new ExportExcelResult
-            {
-                SheetName = "Sheet1",
-                FileName = exportFileName,
-                ExportData = dt
-            };
-        }
         #endregion
     }
 }
+

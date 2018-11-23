@@ -17,20 +17,20 @@ namespace Apps.BLL.WMS
             List<WMS_PartModel> modelList = (from r in queryData
                                               select new WMS_PartModel
                                               {
-                                                  created_by = r.created_by,
-                                                  creation_date = r.creation_date,
-                                                  customer_code = r.customer_code,
-                                                  logistics_code = r.logistics_code,
-                                                  other_code = r.other_code,
-                                                  part_code = r.part_code,
-                                                  id = r.id,
-                                                  part_name = r.part_name,
-                                                  part_type = r.part_type,
-                                                  pcs = r.pcs,
-                                                  status = r.status,
-                                                  storeman = r.storeman,
-                                                  update_date = r.update_date,
-                                                  updated_by = r.updated_by,
+                                                  CreatePerson = r.CreatePerson,
+                                                  CreateTime = r.CreateTime,
+                                                  CustomerCode = r.CustomerCode,
+                                                  Id = r.Id,
+                                                  LogisticsCode = r.LogisticsCode,
+                                                  ModifyPerson = r.ModifyPerson,
+                                                  ModifyTime = r.ModifyTime,
+                                                  OtherCode = r.OtherCode,
+                                                  PartCode = r.PartCode,
+                                                  PartName = r.PartName,
+                                                  PartType = r.PartType,
+                                                  PCS = r.PCS,
+                                                  Status = r.Status,
+                                                  StoreMan = r.StoreMan,
                                               }).ToList();
             return modelList;
         }
