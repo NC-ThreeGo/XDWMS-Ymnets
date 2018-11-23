@@ -300,19 +300,19 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_PartModel>(x => x.PartCode, "PartCode");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.PartName, "PartName");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.PartType, "PartType");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.CustomerCode, "CustomerCode");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.LogisticsCode, "LogisticsCode");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.OtherCode, "OtherCode");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.PCS, "PCS");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.StoreMan, "StoreMan");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.Status, "Status");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.CreatePerson, "CreatePerson");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.ModifyPerson, "ModifyPerson");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.ModifyTime, "ModifyTime");
+			 				 excelFile.AddMapping<WMS_PartModel>(x => x.PartCode, "物料编码");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.PartName, "物料名称");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.PartType, "物料类型");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.CustomerCode, "客户编码");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.LogisticsCode, "物流号");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.OtherCode, "额外信息编码");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.PCS, "每箱数量");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.StoreMan, "保管员");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.Status, "物料状态");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.CreatePerson, "创建人");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.ModifyPerson, "修改人");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.ModifyTime, "修改时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_PartModel>(0);

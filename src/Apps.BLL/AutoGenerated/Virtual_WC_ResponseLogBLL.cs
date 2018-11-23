@@ -285,16 +285,16 @@ namespace Apps.BLL.WC
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.OfficalAccountId, "OfficalAccountId");
-				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.OpenId, "OpenId");
-				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.RequestType, "RequestType");
-				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.RequestContent, "RequestContent");
-				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.ResponseType, "ResponseType");
-				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.ResponseContent, "ResponseContent");
-				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.CreateBy, "CreateBy");
-				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.ModifyTime, "ModifyTime");
-				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.ModifyBy, "ModifyBy");
+			 				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.OfficalAccountId, "所属公众号");
+				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.OpenId, "OpenID");
+				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.RequestType, "请求事件");
+				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.RequestContent, "请求模块名称");
+				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.ResponseType, "相应的回复类别，text img media");
+				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.ResponseContent, "相应的信息，成功或者发送了什么");
+				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.CreateBy, "创建人");
+				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.ModifyTime, "修改时间");
+				 excelFile.AddMapping<WC_ResponseLogModel>(x => x.ModifyBy, "修改人");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WC_ResponseLogModel>(0);

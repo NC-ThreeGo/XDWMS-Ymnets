@@ -275,14 +275,14 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.WareDetailsId, "WareDetailsId");
-				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.WarehouseId, "WarehouseId");
-				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.WarehouseWarrantId, "WarehouseWarrantId");
-				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.Quantity, "Quantity");
-				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.Price, "Price");
-				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.TotalPrice, "TotalPrice");
+			 				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.WareDetailsId, "商品");
+				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.WarehouseId, "仓库名称");
+				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.WarehouseWarrantId, "出库单号");
+				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.Quantity, "数量");
+				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.Price, "价格");
+				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.TotalPrice, "总价");
 				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.Defined, "Defined");
-				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.CreateTime, "CreateTime");
+				 excelFile.AddMapping<Spl_WarehouseWarrantDetailsOUTModel>(x => x.CreateTime, "创建时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_WarehouseWarrantDetailsOUTModel>(0);

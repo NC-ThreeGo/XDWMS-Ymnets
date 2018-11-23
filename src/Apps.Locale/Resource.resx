@@ -216,6 +216,10 @@
     <value>导出</value>
     <comment>006</comment>
   </data>
+  <data name="ExportTemplate" xml:space="preserve">
+    <value>导出模板</value>
+    <comment>006</comment>
+  </data>
   <data name="Import" xml:space="preserve">
     <value>导入</value>
   </data>

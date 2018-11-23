@@ -1,0 +1,3 @@
+﻿根据需要，在Virtual_XXXBLL.cs中的CheckImportData方法，将excel的隐射由字段改成字段描述
+
+修改PartialBLL.tt中的378行代码

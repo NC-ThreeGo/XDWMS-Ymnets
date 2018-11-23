@@ -255,10 +255,10 @@ namespace Apps.BLL.MIS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<MIS_WebIM_RecentContactModel>(x => x.ContactPersons, "ContactPersons");
+			 				 excelFile.AddMapping<MIS_WebIM_RecentContactModel>(x => x.ContactPersons, "以代码显示");
 				 excelFile.AddMapping<MIS_WebIM_RecentContactModel>(x => x.UserId, "UserId");
 				 excelFile.AddMapping<MIS_WebIM_RecentContactModel>(x => x.InfoTime, "InfoTime");
-				 excelFile.AddMapping<MIS_WebIM_RecentContactModel>(x => x.ContactPersonsTitle, "ContactPersonsTitle");
+				 excelFile.AddMapping<MIS_WebIM_RecentContactModel>(x => x.ContactPersonsTitle, "以名称显示");
  
             //SheetName
             var excelContent = excelFile.Worksheet<MIS_WebIM_RecentContactModel>(0);

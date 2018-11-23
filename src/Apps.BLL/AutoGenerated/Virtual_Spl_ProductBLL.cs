@@ -280,13 +280,13 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_ProductModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Spl_ProductModel>(x => x.Code, "Code");
-				 excelFile.AddMapping<Spl_ProductModel>(x => x.Price, "Price");
+			 				 excelFile.AddMapping<Spl_ProductModel>(x => x.Name, "产品名称");
+				 excelFile.AddMapping<Spl_ProductModel>(x => x.Code, "产品代码");
+				 excelFile.AddMapping<Spl_ProductModel>(x => x.Price, "产品价格");
 				 excelFile.AddMapping<Spl_ProductModel>(x => x.CostPrice, "CostPrice");
-				 excelFile.AddMapping<Spl_ProductModel>(x => x.Color, "Color");
-				 excelFile.AddMapping<Spl_ProductModel>(x => x.Number, "Number");
-				 excelFile.AddMapping<Spl_ProductModel>(x => x.CategoryId, "CategoryId");
+				 excelFile.AddMapping<Spl_ProductModel>(x => x.Color, "产品颜色");
+				 excelFile.AddMapping<Spl_ProductModel>(x => x.Number, "产品数量");
+				 excelFile.AddMapping<Spl_ProductModel>(x => x.CategoryId, "类别");
 				 excelFile.AddMapping<Spl_ProductModel>(x => x.CreateTime, "CreateTime");
 				 excelFile.AddMapping<Spl_ProductModel>(x => x.CreateBy, "CreateBy");
  

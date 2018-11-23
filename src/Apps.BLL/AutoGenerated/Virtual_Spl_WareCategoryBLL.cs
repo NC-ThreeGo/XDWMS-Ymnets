@@ -265,12 +265,12 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.Code, "Code");
-				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.ParentId, "ParentId");
-				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.Enable, "Enable");
+			 				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.Name, "类别名称");
+				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.Code, "类别编码");
+				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.ParentId, "上级ID");
+				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.Remark, "说明");
+				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Spl_WareCategoryModel>(x => x.Enable, "是否启用");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_WareCategoryModel>(0);

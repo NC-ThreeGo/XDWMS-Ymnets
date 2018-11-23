@@ -310,21 +310,21 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.InTime, "InTime");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.Handler, "Handler");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.PriceTotal, "PriceTotal");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.State, "State");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.Checker, "Checker");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.CheckTime, "CheckTime");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.CreatePerson, "CreatePerson");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.ModifyTime, "ModifyTime");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.ModifyPerson, "ModifyPerson");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.Confirmation, "Confirmation");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.InOutCategoryId, "InOutCategoryId");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.WarehouseId, "WarehouseId");
-				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.ContractNumber, "ContractNumber");
+			 				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.InTime, "入库时间");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.Handler, "经手人");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.Remark, "说明");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.PriceTotal, "总价");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.State, "1 正常 2 审核中 3 审核完成 0作废");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.Checker, "审查人");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.CheckTime, "审查时间");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.CreatePerson, "制单人");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.ModifyTime, "修改时间");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.ModifyPerson, "修改人");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.Confirmation, "单据确认");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.InOutCategoryId, "出入库类别");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.WarehouseId, "所属仓库");
+				 excelFile.AddMapping<Spl_WarehouseWarrantModel>(x => x.ContractNumber, "合同编号");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_WarehouseWarrantModel>(0);

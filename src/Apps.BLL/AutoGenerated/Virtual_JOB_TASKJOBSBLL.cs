@@ -280,15 +280,15 @@ namespace Apps.BLL.JOB
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.sno, "sno");
-				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.taskName, "taskName");
-				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.taskTitle, "taskTitle");
-				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.taskCmd, "taskCmd");
-				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.crtDt, "crtDt");
-				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.state, "state");
-				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.creator, "creator");
-				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.procName, "procName");
-				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.procParams, "procParams");
+			 				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.sno, "ID主键");
+				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.taskName, "任务名称");
+				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.taskTitle, "任务标题");
+				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.taskCmd, "任务命令");
+				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.crtDt, "创建时间");
+				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.state, "状态");
+				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.creator, "创建人");
+				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.procName, "进程");
+				 excelFile.AddMapping<JOB_TASKJOBSModel>(x => x.procParams, "进程参数");
  
             //SheetName
             var excelContent = excelFile.Worksheet<JOB_TASKJOBSModel>(0);

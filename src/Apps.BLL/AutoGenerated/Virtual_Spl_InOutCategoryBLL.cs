@@ -250,9 +250,9 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_InOutCategoryModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Spl_InOutCategoryModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Spl_InOutCategoryModel>(x => x.Category, "Category");
+			 				 excelFile.AddMapping<Spl_InOutCategoryModel>(x => x.Name, "出入库类型");
+				 excelFile.AddMapping<Spl_InOutCategoryModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Spl_InOutCategoryModel>(x => x.Category, "出库/入库");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_InOutCategoryModel>(0);

@@ -91,6 +91,7 @@ namespace Apps.CodeHelper
                 sb.Append("                 @Html.ToolButton(\"btnDelete\", \"fa fa-trash\", Resource.Delete,ref perm, \"Delete\", true)\r\n");
                 sb.Append("                 @Html.ToolButton(\"btnImport\", \"fa fa-level-down\", Resource.Import, ref perm, \"Import\", true)\r\n");
                 sb.Append("                 @Html.ToolButton(\"btnExport\", \"fa fa-level-up\", Resource.Export, ref perm, \"Export\", true)\r\n");
+                sb.Append("                 @Html.ToolButton(\"btnExportTemplate\", \"fa fa-level-up\", Resource.ExportTemplate, ref perm, \"Export\", true)\r\n");
                 sb.Append("             </div>\r\n");
                 sb.Append("            <table id=\"List\"></table>\r\n");
                 sb.Append("        </td>\r\n");
@@ -108,6 +109,7 @@ namespace Apps.CodeHelper
                 sb.Append("    @Html.ToolButton(\"btnDelete\", \"fa fa-trash\", Resource.Delete,ref perm, \"Delete\", true)\r\n");
                 sb.Append("    @Html.ToolButton(\"btnImport\", \"fa fa-level-down\", Resource.Import, ref perm, \"Import\", true)\r\n");
                 sb.Append("    @Html.ToolButton(\"btnExport\", \"fa fa-level-up\", Resource.Export, ref perm, \"Export\", true)\r\n");
+                sb.Append("    @Html.ToolButton(\"btnExportTemplate\", \"fa fa-level-up\", Resource.ExportTemplate, ref perm, \"Export\", true)\r\n");
                 sb.Append("</div>\r\n");
                 sb.Append("<table id=\"List\"></table>\r\n");
                 sb.Append("@Html.Partial(\"~/Views/Shared/_Partial_AutoGrid.cshtml\")\r\n");
@@ -366,16 +368,23 @@ namespace Apps.CodeHelper
             sb.Append("             $(\"#uploadExcel\").window({ title: '@Resource.Import', width: 450, height: 155, iconCls: 'fa fa-level-down' }).window('open');\r\n");
             sb.Append("        });\r\n");
             sb.Append("        $(\"#btnExport\").click(function() {\r\n");
-            sb.Append("          $.post(\"@Url.Action(\"CheckExportData\")\", function(data) {\r\n");
+            sb.Append("            var queryStr = $(\"#txtQuery\").val();\r\n");
+            sb.Append("            if (queryStr == null) {\r\n");
+            sb.Append("                queryStr = \"%\";\r\n");
+            sb.Append("            }\r\n");
+            sb.Append("          $.post(\"@Url.Action(\"CheckExportData\")?queryStr=\" + queryStr, function(data) {\r\n");
             sb.Append("                if (data.type == 1)\r\n");
             sb.Append("                {\r\n");
-            sb.Append("                    window.location = \"@Url.Action(\"Export\")\";\r\n");
+            sb.Append("                    window.location = \"@Url.Action(\"Export\")?queryStr=\" + queryStr;\r\n");
             sb.Append("                }\r\n");
             sb.Append("                else\r\n");
             sb.Append("                {\r\n");
             sb.Append("                $.messageBox5s(Lang.Tip, data.message);\r\n");
             sb.Append("                }\r\n");
             sb.Append("            }, \"json\");\r\n");
+            sb.Append("        });\r\n");
+            sb.Append("        $(\"#btnExportTemplate\").click(function() {\r\n");
+            sb.Append("          window.location = \"@Url.Action(\"ExportTemplate\")\";\r\n");
             sb.Append("        });\r\n");
 
 

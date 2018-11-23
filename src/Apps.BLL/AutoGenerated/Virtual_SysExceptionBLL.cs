@@ -270,13 +270,13 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysExceptionModel>(x => x.HelpLink, "HelpLink");
-				 excelFile.AddMapping<SysExceptionModel>(x => x.Message, "Message");
-				 excelFile.AddMapping<SysExceptionModel>(x => x.Source, "Source");
-				 excelFile.AddMapping<SysExceptionModel>(x => x.StackTrace, "StackTrace");
-				 excelFile.AddMapping<SysExceptionModel>(x => x.TargetSite, "TargetSite");
-				 excelFile.AddMapping<SysExceptionModel>(x => x.Data, "Data");
-				 excelFile.AddMapping<SysExceptionModel>(x => x.CreateTime, "CreateTime");
+			 				 excelFile.AddMapping<SysExceptionModel>(x => x.HelpLink, "帮助连接");
+				 excelFile.AddMapping<SysExceptionModel>(x => x.Message, "异常信息");
+				 excelFile.AddMapping<SysExceptionModel>(x => x.Source, "来源类库");
+				 excelFile.AddMapping<SysExceptionModel>(x => x.StackTrace, "堆栈");
+				 excelFile.AddMapping<SysExceptionModel>(x => x.TargetSite, "目标站点");
+				 excelFile.AddMapping<SysExceptionModel>(x => x.Data, "程序集");
+				 excelFile.AddMapping<SysExceptionModel>(x => x.CreateTime, "发生时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysExceptionModel>(0);

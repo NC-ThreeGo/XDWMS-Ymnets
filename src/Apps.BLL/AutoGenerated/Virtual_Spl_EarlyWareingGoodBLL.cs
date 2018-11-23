@@ -275,14 +275,14 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.WareDetailsId, "WareDetailsId");
-				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.LowNumber, "LowNumber");
-				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.TotalNumber, "TotalNumber");
-				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.ProductType, "ProductType");
-				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.ProductPrice, "ProductPrice");
-				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.PriceTotal, "PriceTotal");
+			 				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.WareDetailsId, "货品名称");
+				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.LowNumber, "最低库存");
+				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.TotalNumber, "库存");
+				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.ProductType, "货品类别");
+				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.ProductPrice, "货品单价");
+				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.PriceTotal, "货品总价");
 				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.WarehouseId, "WarehouseId");
-				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.CreateTime, "CreateTime");
+				 excelFile.AddMapping<Spl_EarlyWareingGoodModel>(x => x.CreateTime, "更新时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_EarlyWareingGoodModel>(0);

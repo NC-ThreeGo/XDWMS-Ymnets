@@ -275,14 +275,14 @@ namespace Apps.BLL.MIS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.ChannelId, "ChannelId");
-				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.ParentId, "ParentId");
-				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.Sort, "Sort");
-				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.ImgUrl, "ImgUrl");
-				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.BodyContent, "BodyContent");
-				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.Enable, "Enable");
+			 				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.ChannelId, "所属栏目");
+				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.Name, "类别名称");
+				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.ParentId, "上级ID");
+				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.Sort, "排序");
+				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.ImgUrl, "类别配图");
+				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.BodyContent, "说明");
+				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<MIS_Article_CategoryModel>(x => x.Enable, "是否启用");
  
             //SheetName
             var excelContent = excelFile.Worksheet<MIS_Article_CategoryModel>(0);

@@ -270,13 +270,13 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Code, "Code");
-				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Category, "Category");
-				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Sort, "Sort");
-				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Enable, "Enable");
+			 				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Code, "代号");
+				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Category, "分类");
+				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Name, "出入库名称");
+				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Sort, "排序");
+				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Remark, "备注");
+				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Spl_WarehouseCategoryModel>(x => x.Enable, "是否启用");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_WarehouseCategoryModel>(0);

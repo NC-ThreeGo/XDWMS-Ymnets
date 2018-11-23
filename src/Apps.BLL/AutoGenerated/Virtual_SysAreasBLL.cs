@@ -280,9 +280,9 @@ namespace Apps.BLL.Sys
 				 excelFile.AddMapping<SysAreasModel>(x => x.Sort, "Sort");
 				 excelFile.AddMapping<SysAreasModel>(x => x.Enable, "Enable");
 				 excelFile.AddMapping<SysAreasModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<SysAreasModel>(x => x.IsMunicipality, "IsMunicipality");
-				 excelFile.AddMapping<SysAreasModel>(x => x.IsHKMT, "IsHKMT");
-				 excelFile.AddMapping<SysAreasModel>(x => x.IsOther, "IsOther");
+				 excelFile.AddMapping<SysAreasModel>(x => x.IsMunicipality, "直辖市");
+				 excelFile.AddMapping<SysAreasModel>(x => x.IsHKMT, "港澳台");
+				 excelFile.AddMapping<SysAreasModel>(x => x.IsOther, "其他");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysAreasModel>(0);

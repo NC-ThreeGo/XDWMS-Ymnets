@@ -405,12 +405,12 @@ namespace Apps.BLL.Flow
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Flow_FormContentModel>(x => x.Title, "Title");
-				 excelFile.AddMapping<Flow_FormContentModel>(x => x.UserId, "UserId");
-				 excelFile.AddMapping<Flow_FormContentModel>(x => x.FormId, "FormId");
-				 excelFile.AddMapping<Flow_FormContentModel>(x => x.FormLevel, "FormLevel");
-				 excelFile.AddMapping<Flow_FormContentModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Flow_FormContentModel>(x => x.AttrA, "AttrA");
+			 				 excelFile.AddMapping<Flow_FormContentModel>(x => x.Title, "标题");
+				 excelFile.AddMapping<Flow_FormContentModel>(x => x.UserId, "发起用户");
+				 excelFile.AddMapping<Flow_FormContentModel>(x => x.FormId, "对应表单");
+				 excelFile.AddMapping<Flow_FormContentModel>(x => x.FormLevel, "公文级别");
+				 excelFile.AddMapping<Flow_FormContentModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Flow_FormContentModel>(x => x.AttrA, "字段A的值");
 				 excelFile.AddMapping<Flow_FormContentModel>(x => x.AttrB, "AttrB");
 				 excelFile.AddMapping<Flow_FormContentModel>(x => x.AttrC, "AttrC");
 				 excelFile.AddMapping<Flow_FormContentModel>(x => x.AttrD, "AttrD");
@@ -435,10 +435,10 @@ namespace Apps.BLL.Flow
 				 excelFile.AddMapping<Flow_FormContentModel>(x => x.AttrW, "AttrW");
 				 excelFile.AddMapping<Flow_FormContentModel>(x => x.AttrX, "AttrX");
 				 excelFile.AddMapping<Flow_FormContentModel>(x => x.AttrY, "AttrY");
-				 excelFile.AddMapping<Flow_FormContentModel>(x => x.AttrZ, "AttrZ");
-				 excelFile.AddMapping<Flow_FormContentModel>(x => x.CustomMember, "CustomMember");
-				 excelFile.AddMapping<Flow_FormContentModel>(x => x.TimeOut, "TimeOut");
-				 excelFile.AddMapping<Flow_FormContentModel>(x => x.IsDelete, "IsDelete");
+				 excelFile.AddMapping<Flow_FormContentModel>(x => x.AttrZ, "字段Z的值");
+				 excelFile.AddMapping<Flow_FormContentModel>(x => x.CustomMember, "指定审核人");
+				 excelFile.AddMapping<Flow_FormContentModel>(x => x.TimeOut, "截止时间");
+				 excelFile.AddMapping<Flow_FormContentModel>(x => x.IsDelete, "是否已删除");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Flow_FormContentModel>(0);

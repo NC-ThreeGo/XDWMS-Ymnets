@@ -265,12 +265,12 @@ namespace Apps.BLL.Flow
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.StepCheckId, "StepCheckId");
-				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.UserId, "UserId");
-				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.CheckFlag, "CheckFlag");
-				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.Reamrk, "Reamrk");
-				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.TheSeal, "TheSeal");
-				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.CreateTime, "CreateTime");
+			 				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.StepCheckId, "所属步骤");
+				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.UserId, "审核人");
+				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.CheckFlag, "1通过0不通过2审核中");
+				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.Reamrk, "审核说明");
+				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.TheSeal, "印章");
+				 excelFile.AddMapping<Flow_FormContentStepCheckStateModel>(x => x.CreateTime, "创建时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Flow_FormContentStepCheckStateModel>(0);

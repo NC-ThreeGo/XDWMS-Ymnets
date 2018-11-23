@@ -270,13 +270,13 @@ namespace Apps.BLL.Flow
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.ContentId, "ContentId");
-				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.StepId, "StepId");
-				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.State, "State");
-				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.StateFlag, "StateFlag");
-				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.IsEnd, "IsEnd");
-				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.IsCustom, "IsCustom");
+			 				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.ContentId, "所属公文");
+				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.StepId, "所属步骤");
+				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.State, "0不通过1通过2审核中");
+				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.StateFlag, "状态(是否完成)");
+				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.IsEnd, "是否结束");
+				 excelFile.AddMapping<Flow_FormContentStepCheckModel>(x => x.IsCustom, "是否自选审核人默认为false");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Flow_FormContentStepCheckModel>(0);

@@ -250,9 +250,9 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_ContactCompanyCategoryModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Spl_ContactCompanyCategoryModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Spl_ContactCompanyCategoryModel>(x => x.Category, "Category");
+			 				 excelFile.AddMapping<Spl_ContactCompanyCategoryModel>(x => x.Name, "单位类别");
+				 excelFile.AddMapping<Spl_ContactCompanyCategoryModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Spl_ContactCompanyCategoryModel>(x => x.Category, "客户or供应商");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_ContactCompanyCategoryModel>(0);

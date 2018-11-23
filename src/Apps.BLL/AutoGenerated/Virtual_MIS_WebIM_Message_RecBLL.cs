@@ -252,7 +252,7 @@ namespace Apps.BLL.MIS
             //对应列头
 			 				 excelFile.AddMapping<MIS_WebIM_Message_RecModel>(x => x.MessageId, "MessageId");
 				 excelFile.AddMapping<MIS_WebIM_Message_RecModel>(x => x.receiver, "receiver");
-				 excelFile.AddMapping<MIS_WebIM_Message_RecModel>(x => x.State, "State");
+				 excelFile.AddMapping<MIS_WebIM_Message_RecModel>(x => x.State, "0未读，1已读");
 				 excelFile.AddMapping<MIS_WebIM_Message_RecModel>(x => x.RecDt, "RecDt");
  
             //SheetName

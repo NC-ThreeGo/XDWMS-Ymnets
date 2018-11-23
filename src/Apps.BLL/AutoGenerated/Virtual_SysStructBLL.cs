@@ -270,13 +270,13 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysStructModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<SysStructModel>(x => x.ParentId, "ParentId");
-				 excelFile.AddMapping<SysStructModel>(x => x.Sort, "Sort");
-				 excelFile.AddMapping<SysStructModel>(x => x.Higher, "Higher");
-				 excelFile.AddMapping<SysStructModel>(x => x.Enable, "Enable");
-				 excelFile.AddMapping<SysStructModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<SysStructModel>(x => x.CreateTime, "CreateTime");
+			 				 excelFile.AddMapping<SysStructModel>(x => x.Name, "名称");
+				 excelFile.AddMapping<SysStructModel>(x => x.ParentId, "上级ID");
+				 excelFile.AddMapping<SysStructModel>(x => x.Sort, "排序");
+				 excelFile.AddMapping<SysStructModel>(x => x.Higher, "领导");
+				 excelFile.AddMapping<SysStructModel>(x => x.Enable, "是否启用");
+				 excelFile.AddMapping<SysStructModel>(x => x.Remark, "说明");
+				 excelFile.AddMapping<SysStructModel>(x => x.CreateTime, "创建时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysStructModel>(0);

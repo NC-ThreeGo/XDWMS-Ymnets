@@ -265,12 +265,12 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysSampleModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<SysSampleModel>(x => x.Age, "Age");
-				 excelFile.AddMapping<SysSampleModel>(x => x.Bir, "Bir");
-				 excelFile.AddMapping<SysSampleModel>(x => x.Photo, "Photo");
-				 excelFile.AddMapping<SysSampleModel>(x => x.Note, "Note");
-				 excelFile.AddMapping<SysSampleModel>(x => x.CreateTime, "CreateTime");
+			 				 excelFile.AddMapping<SysSampleModel>(x => x.Name, "名称");
+				 excelFile.AddMapping<SysSampleModel>(x => x.Age, "年龄");
+				 excelFile.AddMapping<SysSampleModel>(x => x.Bir, "生日");
+				 excelFile.AddMapping<SysSampleModel>(x => x.Photo, "照片");
+				 excelFile.AddMapping<SysSampleModel>(x => x.Note, "说明");
+				 excelFile.AddMapping<SysSampleModel>(x => x.CreateTime, "创建时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysSampleModel>(0);

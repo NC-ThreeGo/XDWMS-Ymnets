@@ -265,12 +265,12 @@ namespace Apps.BLL.JOB
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.itemID, "itemID");
-				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.sno, "sno");
-				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.taskName, "taskName");
-				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.executeDt, "executeDt");
-				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.executeStep, "executeStep");
-				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.result, "result");
+			 				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.itemID, "ID");
+				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.sno, "ID");
+				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.taskName, "任务名称");
+				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.executeDt, "执行日期");
+				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.executeStep, "执行步骤");
+				 excelFile.AddMapping<JOB_TASKJOBS_LOGModel>(x => x.result, "执行结果");
  
             //SheetName
             var excelContent = excelFile.Worksheet<JOB_TASKJOBS_LOGModel>(0);
