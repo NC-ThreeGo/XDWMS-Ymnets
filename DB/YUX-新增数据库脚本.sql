@@ -75,7 +75,7 @@ GO
 USE [XDWMS]
 GO
 
-/****** Object:  Table [dbo].[WMS_Supplier]    Script Date: 2018/11/24 10:48:05 ******/
+/****** Object:  Table [dbo].[WMS_Supplier]    Script Date: 2018/11/24 12:48:13 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -96,7 +96,11 @@ CREATE TABLE [dbo].[WMS_Supplier](
 	[CreatePerson] [nvarchar](50) NULL,
 	[CreateTime] [datetime] NULL,
 	[ModifyPerson] [nvarchar](50) NULL,
-	[ModifyTime] [datetime] NULL
+	[ModifyTime] [datetime] NULL,
+ CONSTRAINT [PK_WMS_Supplier] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
@@ -146,7 +150,7 @@ GO
 USE [XDWMS]
 GO
 
-/****** Object:  Table [dbo].[WMS_Customer]    Script Date: 2018/11/24 10:48:52 ******/
+/****** Object:  Table [dbo].[WMS_Customer]    Script Date: 2018/11/24 12:48:52 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -217,10 +221,11 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'修改时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_Customer', @level2type=N'COLUMN',@level2name=N'ModifyTime'
 GO
 
+
 USE [XDWMS]
 GO
 
-/****** Object:  Table [dbo].[WMS_InvInfo]    Script Date: 2018/11/24 11:28:27 ******/
+/****** Object:  Table [dbo].[WMS_InvInfo]    Script Date: 2018/11/24 12:49:15 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -236,7 +241,11 @@ CREATE TABLE [dbo].[WMS_InvInfo](
 	[CreatePerson] [nvarchar](50) NULL,
 	[CreateTime] [datetime] NULL,
 	[ModifyPerson] [nvarchar](50) NULL,
-	[ModifyTime] [datetime] NULL
+	[ModifyTime] [datetime] NULL,
+ CONSTRAINT [PK_WMS_InvInfo] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
@@ -267,10 +276,11 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'修改时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_InvInfo', @level2type=N'COLUMN',@level2name=N'ModifyTime'
 GO
 
+
 USE [XDWMS]
 GO
 
-/****** Object:  Table [dbo].[WMS_SubInvInfo]    Script Date: 2018/11/24 11:38:47 ******/
+/****** Object:  Table [dbo].[WMS_SubInvInfo]    Script Date: 2018/11/24 12:49:30 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -287,7 +297,11 @@ CREATE TABLE [dbo].[WMS_SubInvInfo](
 	[CreatePerson] [nvarchar](50) NULL,
 	[CreateTime] [datetime] NULL,
 	[ModifyPerson] [nvarchar](50) NULL,
-	[ModifyTime] [datetime] NULL
+	[ModifyTime] [datetime] NULL,
+ CONSTRAINT [PK_WMS_SubInvInfo] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
@@ -320,6 +334,7 @@ GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'修改时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_SubInvInfo', @level2type=N'COLUMN',@level2name=N'ModifyTime'
 GO
+
 
 
 
