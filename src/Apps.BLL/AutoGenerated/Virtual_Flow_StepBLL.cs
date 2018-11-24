@@ -285,16 +285,16 @@ namespace Apps.BLL.Flow
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Flow_StepModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Flow_StepModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<Flow_StepModel>(x => x.Sort, "Sort");
-				 excelFile.AddMapping<Flow_StepModel>(x => x.FormId, "FormId");
-				 excelFile.AddMapping<Flow_StepModel>(x => x.FlowRule, "FlowRule");
-				 excelFile.AddMapping<Flow_StepModel>(x => x.IsCustom, "IsCustom");
-				 excelFile.AddMapping<Flow_StepModel>(x => x.IsAllCheck, "IsAllCheck");
-				 excelFile.AddMapping<Flow_StepModel>(x => x.Execution, "Execution");
-				 excelFile.AddMapping<Flow_StepModel>(x => x.CompulsoryOver, "CompulsoryOver");
-				 excelFile.AddMapping<Flow_StepModel>(x => x.IsEditAttr, "IsEditAttr");
+			 				 excelFile.AddMapping<Flow_StepModel>(x => x.Name, "步骤名称");
+				 excelFile.AddMapping<Flow_StepModel>(x => x.Remark, "步骤说明");
+				 excelFile.AddMapping<Flow_StepModel>(x => x.Sort, "排序");
+				 excelFile.AddMapping<Flow_StepModel>(x => x.FormId, "所属表单");
+				 excelFile.AddMapping<Flow_StepModel>(x => x.FlowRule, "流转规则");
+				 excelFile.AddMapping<Flow_StepModel>(x => x.IsCustom, "该流程的 发起人/创建者 是否可以 自行选择 该步骤的审批者");
+				 excelFile.AddMapping<Flow_StepModel>(x => x.IsAllCheck, "当规则或者角色被选择为多人时候，是否启用多人审核才通过");
+				 excelFile.AddMapping<Flow_StepModel>(x => x.Execution, "执行者与规则对应");
+				 excelFile.AddMapping<Flow_StepModel>(x => x.CompulsoryOver, "是否可以强制完成整个流程");
+				 excelFile.AddMapping<Flow_StepModel>(x => x.IsEditAttr, "审核者是否可以编辑发起者的附件");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Flow_StepModel>(0);

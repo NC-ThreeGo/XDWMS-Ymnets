@@ -255,10 +255,10 @@ namespace Apps.BLL.Flow
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Flow_TypeModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Flow_TypeModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<Flow_TypeModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Flow_TypeModel>(x => x.Sort, "Sort");
+			 				 excelFile.AddMapping<Flow_TypeModel>(x => x.Name, "类别");
+				 excelFile.AddMapping<Flow_TypeModel>(x => x.Remark, "说明");
+				 excelFile.AddMapping<Flow_TypeModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Flow_TypeModel>(x => x.Sort, "排序");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Flow_TypeModel>(0);

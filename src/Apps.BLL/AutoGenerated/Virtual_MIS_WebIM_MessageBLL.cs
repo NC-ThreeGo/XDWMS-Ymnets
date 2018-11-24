@@ -267,10 +267,10 @@ namespace Apps.BLL.MIS
             //对应列头
 			 				 excelFile.AddMapping<MIS_WebIM_MessageModel>(x => x.Message, "Message");
 				 excelFile.AddMapping<MIS_WebIM_MessageModel>(x => x.Sender, "Sender");
-				 excelFile.AddMapping<MIS_WebIM_MessageModel>(x => x.receiver, "receiver");
-				 excelFile.AddMapping<MIS_WebIM_MessageModel>(x => x.State, "State");
+				 excelFile.AddMapping<MIS_WebIM_MessageModel>(x => x.receiver, "以代码显示");
+				 excelFile.AddMapping<MIS_WebIM_MessageModel>(x => x.State, "即时=0，推迟=1");
 				 excelFile.AddMapping<MIS_WebIM_MessageModel>(x => x.SendDt, "SendDt");
-				 excelFile.AddMapping<MIS_WebIM_MessageModel>(x => x.receiverTitle, "receiverTitle");
+				 excelFile.AddMapping<MIS_WebIM_MessageModel>(x => x.receiverTitle, "以名称显示");
  
             //SheetName
             var excelContent = excelFile.Worksheet<MIS_WebIM_MessageModel>(0);

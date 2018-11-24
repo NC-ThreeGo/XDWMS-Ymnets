@@ -260,11 +260,11 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysUserConfigModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<SysUserConfigModel>(x => x.Value, "Value");
-				 excelFile.AddMapping<SysUserConfigModel>(x => x.Type, "Type");
-				 excelFile.AddMapping<SysUserConfigModel>(x => x.State, "State");
-				 excelFile.AddMapping<SysUserConfigModel>(x => x.UserId, "UserId");
+			 				 excelFile.AddMapping<SysUserConfigModel>(x => x.Name, "名称");
+				 excelFile.AddMapping<SysUserConfigModel>(x => x.Value, "值");
+				 excelFile.AddMapping<SysUserConfigModel>(x => x.Type, "类型");
+				 excelFile.AddMapping<SysUserConfigModel>(x => x.State, "状态");
+				 excelFile.AddMapping<SysUserConfigModel>(x => x.UserId, "所属用户");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysUserConfigModel>(0);

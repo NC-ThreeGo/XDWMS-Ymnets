@@ -374,8 +374,10 @@ if (simpleProperties.Any())
 foreach(var edmProperty in simpleProperties)
 {
 if(edmProperty.ToString()!="Id"){
+	string edmPropertyDisplay = DBHelper.GetSummary(connSection.ConnectionStrings["Conn"].ConnectionString,entity.Name,edmProperty.Name);
+	if (edmPropertyDisplay == "未设置") { edmPropertyDisplay = edmProperty.Name; }
 #>
-				 excelFile.AddMapping<<#=entity.Name #>Model>(x => x.<#=edmProperty#>, "<#=edmProperty#>");
+				 excelFile.AddMapping<<#=entity.Name #>Model>(x => x.<#=edmProperty#>, "<#=edmPropertyDisplay#>");
 <#
 }
 }

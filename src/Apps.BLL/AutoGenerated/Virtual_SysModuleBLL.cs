@@ -295,18 +295,18 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysModuleModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<SysModuleModel>(x => x.EnglishName, "EnglishName");
-				 excelFile.AddMapping<SysModuleModel>(x => x.ParentId, "ParentId");
-				 excelFile.AddMapping<SysModuleModel>(x => x.Url, "Url");
-				 excelFile.AddMapping<SysModuleModel>(x => x.Iconic, "Iconic");
-				 excelFile.AddMapping<SysModuleModel>(x => x.Sort, "Sort");
-				 excelFile.AddMapping<SysModuleModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<SysModuleModel>(x => x.Enable, "Enable");
-				 excelFile.AddMapping<SysModuleModel>(x => x.CreatePerson, "CreatePerson");
-				 excelFile.AddMapping<SysModuleModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<SysModuleModel>(x => x.IsLast, "IsLast");
-				 excelFile.AddMapping<SysModuleModel>(x => x.Version, "Version");
+			 				 excelFile.AddMapping<SysModuleModel>(x => x.Name, "模块名称");
+				 excelFile.AddMapping<SysModuleModel>(x => x.EnglishName, "英文名称");
+				 excelFile.AddMapping<SysModuleModel>(x => x.ParentId, "上级ID");
+				 excelFile.AddMapping<SysModuleModel>(x => x.Url, "URL");
+				 excelFile.AddMapping<SysModuleModel>(x => x.Iconic, "图标");
+				 excelFile.AddMapping<SysModuleModel>(x => x.Sort, "排序");
+				 excelFile.AddMapping<SysModuleModel>(x => x.Remark, "说明");
+				 excelFile.AddMapping<SysModuleModel>(x => x.Enable, "是否启用");
+				 excelFile.AddMapping<SysModuleModel>(x => x.CreatePerson, "创建");
+				 excelFile.AddMapping<SysModuleModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<SysModuleModel>(x => x.IsLast, "是否最后一项");
+				 excelFile.AddMapping<SysModuleModel>(x => x.Version, "版本");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysModuleModel>(0);

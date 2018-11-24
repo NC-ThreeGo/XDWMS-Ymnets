@@ -270,13 +270,13 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.Code, "Code");
-				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.Phone, "Phone");
-				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.ContactCompanyCategoryId, "ContactCompanyCategoryId");
+			 				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.Code, "编码");
+				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.Name, "来往单位");
+				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.Phone, "联系电话");
+				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.ContactCompanyCategoryId, "单位类别");
 				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.Enable, "Enable");
-				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.CreateTime, "CreateTime");
+				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.Enable, "是否启用");
+				 excelFile.AddMapping<Spl_ContactCompanyModel>(x => x.CreateTime, "创建时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_ContactCompanyModel>(0);

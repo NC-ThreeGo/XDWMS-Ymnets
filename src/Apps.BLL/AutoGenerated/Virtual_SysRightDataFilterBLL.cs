@@ -250,9 +250,9 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysRightDataFilterModel>(x => x.RightId, "RightId");
-				 excelFile.AddMapping<SysRightDataFilterModel>(x => x.KeyCode, "KeyCode");
-				 excelFile.AddMapping<SysRightDataFilterModel>(x => x.IsValid, "IsValid");
+			 				 excelFile.AddMapping<SysRightDataFilterModel>(x => x.RightId, "权限ID");
+				 excelFile.AddMapping<SysRightDataFilterModel>(x => x.KeyCode, "权限字段");
+				 excelFile.AddMapping<SysRightDataFilterModel>(x => x.IsValid, "是否验证（暂时不用）");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysRightDataFilterModel>(0);

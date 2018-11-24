@@ -265,12 +265,12 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.ClassId, "ClassId");
-				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.Avg, "Avg");
-				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.Photo, "Photo");
-				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.Enable, "Enable");
-				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.CreateTime, "CreateTime");
+			 				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.ClassId, "所属班级");
+				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.Name, "姓名");
+				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.Avg, "年龄");
+				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.Photo, "头像");
+				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.Enable, "状态");
+				 excelFile.AddMapping<Spl_TestStudentsModel>(x => x.CreateTime, "创建时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_TestStudentsModel>(0);

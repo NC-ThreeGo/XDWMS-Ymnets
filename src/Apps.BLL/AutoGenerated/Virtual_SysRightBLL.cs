@@ -250,9 +250,9 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysRightModel>(x => x.ModuleId, "ModuleId");
-				 excelFile.AddMapping<SysRightModel>(x => x.RoleId, "RoleId");
-				 excelFile.AddMapping<SysRightModel>(x => x.Rightflag, "Rightflag");
+			 				 excelFile.AddMapping<SysRightModel>(x => x.ModuleId, "模块ID");
+				 excelFile.AddMapping<SysRightModel>(x => x.RoleId, "角色组ID");
+				 excelFile.AddMapping<SysRightModel>(x => x.Rightflag, "是否有权限");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysRightModel>(0);

@@ -325,24 +325,24 @@ namespace Apps.BLL.WC
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.OfficalId, "OfficalId");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.OfficalName, "OfficalName");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.OfficalCode, "OfficalCode");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.OfficalPhoto, "OfficalPhoto");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.OfficalKey, "OfficalKey");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.ApiUrl, "ApiUrl");
+			 				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.OfficalId, "公众号ID");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.OfficalName, "名称");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.OfficalCode, "代码");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.OfficalPhoto, "照片");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.OfficalKey, "Key");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.ApiUrl, "中转URL");
 				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.Token, "Token");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.AppId, "AppId");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.AppId, "AppID");
 				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.AppSecret, "AppSecret");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.AccessToken, "AccessToken");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.Enable, "Enable");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.IsDefault, "IsDefault");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.Category, "Category");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.CreateBy, "CreateBy");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.ModifyTime, "ModifyTime");
-				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.ModifyBy, "ModifyBy");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.AccessToken, "获取得Token");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.Remark, "说明");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.Enable, "是否启用");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.IsDefault, "当前操作号");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.Category, "类别");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.CreateBy, "创建人");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.ModifyTime, "修改时间");
+				 excelFile.AddMapping<WC_OfficalAccountsModel>(x => x.ModifyBy, "修改人");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WC_OfficalAccountsModel>(0);

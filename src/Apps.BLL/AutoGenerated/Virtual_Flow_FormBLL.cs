@@ -410,16 +410,16 @@ namespace Apps.BLL.Flow
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Flow_FormModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Flow_FormModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<Flow_FormModel>(x => x.UsingDep, "UsingDep");
-				 excelFile.AddMapping<Flow_FormModel>(x => x.TypeId, "TypeId");
-				 excelFile.AddMapping<Flow_FormModel>(x => x.State, "State");
-				 excelFile.AddMapping<Flow_FormModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Flow_FormModel>(x => x.HtmlForm, "HtmlForm");
-				 excelFile.AddMapping<Flow_FormModel>(x => x.IsExternal, "IsExternal");
-				 excelFile.AddMapping<Flow_FormModel>(x => x.ExternalURL, "ExternalURL");
-				 excelFile.AddMapping<Flow_FormModel>(x => x.AttrA, "AttrA");
+			 				 excelFile.AddMapping<Flow_FormModel>(x => x.Name, "表单名称");
+				 excelFile.AddMapping<Flow_FormModel>(x => x.Remark, "表单说明");
+				 excelFile.AddMapping<Flow_FormModel>(x => x.UsingDep, "使用部门");
+				 excelFile.AddMapping<Flow_FormModel>(x => x.TypeId, "所属类别");
+				 excelFile.AddMapping<Flow_FormModel>(x => x.State, "是否完成流程");
+				 excelFile.AddMapping<Flow_FormModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Flow_FormModel>(x => x.HtmlForm, "自由布局");
+				 excelFile.AddMapping<Flow_FormModel>(x => x.IsExternal, "表单来源");
+				 excelFile.AddMapping<Flow_FormModel>(x => x.ExternalURL, "是否外部来源");
+				 excelFile.AddMapping<Flow_FormModel>(x => x.AttrA, "字段A");
 				 excelFile.AddMapping<Flow_FormModel>(x => x.AttrB, "AttrB");
 				 excelFile.AddMapping<Flow_FormModel>(x => x.AttrC, "AttrC");
 				 excelFile.AddMapping<Flow_FormModel>(x => x.AttrD, "AttrD");

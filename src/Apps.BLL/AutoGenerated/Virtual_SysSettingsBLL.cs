@@ -255,10 +255,10 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysSettingsModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<SysSettingsModel>(x => x.Type, "Type");
-				 excelFile.AddMapping<SysSettingsModel>(x => x.Parameter, "Parameter");
-				 excelFile.AddMapping<SysSettingsModel>(x => x.ReMark, "ReMark");
+			 				 excelFile.AddMapping<SysSettingsModel>(x => x.Name, "名称");
+				 excelFile.AddMapping<SysSettingsModel>(x => x.Type, "类型");
+				 excelFile.AddMapping<SysSettingsModel>(x => x.Parameter, "参数");
+				 excelFile.AddMapping<SysSettingsModel>(x => x.ReMark, "说明");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysSettingsModel>(0);

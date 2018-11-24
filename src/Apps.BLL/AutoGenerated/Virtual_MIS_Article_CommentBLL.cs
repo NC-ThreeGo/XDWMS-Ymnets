@@ -280,15 +280,15 @@ namespace Apps.BLL.MIS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.ArticleId, "ArticleId");
-				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.UserId, "UserId");
-				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.TrueName, "TrueName");
+			 				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.ArticleId, "所属文章");
+				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.UserId, "发布者");
+				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.TrueName, "姓名");
 				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.IP, "IP");
-				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.BodyContent, "BodyContent");
-				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.IsReply, "IsReply");
-				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.ReplyContent, "ReplyContent");
-				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.ReplyTime, "ReplyTime");
+				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.BodyContent, "内容");
+				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.IsReply, "是否回复");
+				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.ReplyContent, "回复内容");
+				 excelFile.AddMapping<MIS_Article_CommentModel>(x => x.ReplyTime, "回复时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<MIS_Article_CommentModel>(0);

@@ -275,14 +275,14 @@ namespace Apps.BLL.Flow
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.Title, "Title");
-				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.AttrType, "AttrType");
-				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.CheckRule, "CheckRule");
-				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.CheckJS, "CheckJS");
-				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.TypeId, "TypeId");
-				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.OptionList, "OptionList");
+			 				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.Title, "字段标题");
+				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.Name, "字段英文名称");
+				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.AttrType, "文本,日期,数字,多行文本");
+				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.CheckRule, "校验规则");
+				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.CheckJS, "辅助JS脚本");
+				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.TypeId, "所属类别");
+				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Flow_FormAttrModel>(x => x.OptionList, "下拉框的值");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Flow_FormAttrModel>(0);

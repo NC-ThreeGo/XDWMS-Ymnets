@@ -35,6 +35,7 @@
     @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
+    @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -70,10 +71,10 @@
                 { field: 'PCS', title: '每箱数量', width: 80,sortable:true },
                 { field: 'StoreMan', title: '保管员', width: 80,sortable:true },
                 { field: 'Status', title: '物料状态', width: 80,sortable:true },
-                { field: 'CreatePerson', title: 'CreatePerson', width: 80,sortable:true },
-                { field: 'CreateTime', title: 'CreateTime', width: 80,sortable:true },
-                { field: 'ModifyPerson', title: 'ModifyPerson', width: 80,sortable:true },
-                { field: 'ModifyTime', title: 'ModifyTime', width: 80,sortable:true }
+                { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
+                { field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
+                { field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
+                { field: 'ModifyTime', title: '修改时间', width: 80,sortable:true }
             ]]
         });
     });
@@ -122,16 +123,23 @@
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 155, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
-          $.post("@Url.Action("CheckExportData")", function(data) {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
                 if (data.type == 1)
                 {
-                    window.location = "@Url.Action("Export")";
+                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
                 }
                 else
                 {
                 $.messageBox5s(Lang.Tip, data.message);
                 }
             }, "json");
+        });
+        $("#btnExportTemplate").click(function() {
+          window.location = "@Url.Action("ExportTemplate")";
         });
     });
     function ImportData()

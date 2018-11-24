@@ -255,10 +255,10 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysRoleModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<SysRoleModel>(x => x.Description, "Description");
-				 excelFile.AddMapping<SysRoleModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<SysRoleModel>(x => x.CreatePerson, "CreatePerson");
+			 				 excelFile.AddMapping<SysRoleModel>(x => x.Name, "角色名称");
+				 excelFile.AddMapping<SysRoleModel>(x => x.Description, "说明");
+				 excelFile.AddMapping<SysRoleModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<SysRoleModel>(x => x.CreatePerson, "创建人");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysRoleModel>(0);

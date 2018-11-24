@@ -325,24 +325,24 @@ namespace Apps.BLL.WC
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.OfficalAccountId, "OfficalAccountId");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.MessageRule, "MessageRule");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.Category, "Category");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.MatchKey, "MatchKey");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.TextContent, "TextContent");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.ImgTextContext, "ImgTextContext");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.ImgTextUrl, "ImgTextUrl");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.ImgTextLink, "ImgTextLink");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.MeidaUrl, "MeidaUrl");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.MeidaLink, "MeidaLink");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.Enable, "Enable");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.IsDefault, "IsDefault");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.Sort, "Sort");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.CreateBy, "CreateBy");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.ModifyTime, "ModifyTime");
-				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.ModifyBy, "ModifyBy");
+			 				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.OfficalAccountId, "所属公众号");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.MessageRule, "消息规则");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.Category, "触发类型");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.MatchKey, "关键字");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.TextContent, "文本内容");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.ImgTextContext, "图文文本内容");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.ImgTextUrl, "图文图片URL");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.ImgTextLink, "图文跳转");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.MeidaUrl, "语言URL");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.MeidaLink, "语音跳转");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.Enable, "是否启用");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.IsDefault, "是否默认（在默认回复和关注时候回复开启）");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.Remark, "说明");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.Sort, "排序");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.CreateBy, "创建人");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.ModifyTime, "修改时间");
+				 excelFile.AddMapping<WC_MessageResponseModel>(x => x.ModifyBy, "修改人");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WC_MessageResponseModel>(0);

@@ -260,11 +260,11 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_WareUnitConvertModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Spl_WareUnitConvertModel>(x => x.MainUnit, "MainUnit");
-				 excelFile.AddMapping<Spl_WareUnitConvertModel>(x => x.AssistUnit, "AssistUnit");
-				 excelFile.AddMapping<Spl_WareUnitConvertModel>(x => x.ConvertRate, "ConvertRate");
-				 excelFile.AddMapping<Spl_WareUnitConvertModel>(x => x.CreateTime, "CreateTime");
+			 				 excelFile.AddMapping<Spl_WareUnitConvertModel>(x => x.Name, "换算名称");
+				 excelFile.AddMapping<Spl_WareUnitConvertModel>(x => x.MainUnit, "主计量单位");
+				 excelFile.AddMapping<Spl_WareUnitConvertModel>(x => x.AssistUnit, "辅计量单位");
+				 excelFile.AddMapping<Spl_WareUnitConvertModel>(x => x.ConvertRate, "换算率");
+				 excelFile.AddMapping<Spl_WareUnitConvertModel>(x => x.CreateTime, "创建时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_WareUnitConvertModel>(0);

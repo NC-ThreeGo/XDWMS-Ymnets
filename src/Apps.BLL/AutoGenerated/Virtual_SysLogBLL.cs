@@ -265,12 +265,12 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysLogModel>(x => x.Operator, "Operator");
-				 excelFile.AddMapping<SysLogModel>(x => x.Message, "Message");
-				 excelFile.AddMapping<SysLogModel>(x => x.Result, "Result");
-				 excelFile.AddMapping<SysLogModel>(x => x.Type, "Type");
-				 excelFile.AddMapping<SysLogModel>(x => x.Module, "Module");
-				 excelFile.AddMapping<SysLogModel>(x => x.CreateTime, "CreateTime");
+			 				 excelFile.AddMapping<SysLogModel>(x => x.Operator, "操作人");
+				 excelFile.AddMapping<SysLogModel>(x => x.Message, "操作信息");
+				 excelFile.AddMapping<SysLogModel>(x => x.Result, "结果");
+				 excelFile.AddMapping<SysLogModel>(x => x.Type, "类型");
+				 excelFile.AddMapping<SysLogModel>(x => x.Module, "对应模块");
+				 excelFile.AddMapping<SysLogModel>(x => x.CreateTime, "操作时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysLogModel>(0);

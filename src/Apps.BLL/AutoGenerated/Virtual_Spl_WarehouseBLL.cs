@@ -285,15 +285,15 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.Code, "Code");
-				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.IsDefault, "IsDefault");
-				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.ContactPerson, "ContactPerson");
-				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.ContactPhone, "ContactPhone");
-				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.Address, "Address");
-				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.Enable, "Enable");
-				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.CreateTime, "CreateTime");
+			 				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.Name, "仓库名称");
+				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.Code, "仓库编码");
+				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.IsDefault, "是否默认");
+				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.ContactPerson, "负责人");
+				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.ContactPhone, "联系电话");
+				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.Address, "地址");
+				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.Remark, "备注");
+				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.Enable, "状态（true启用，false停用）");
+				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<Spl_WarehouseModel>(x => x.WarehouseCategoryId, "WarehouseCategoryId");
  
             //SheetName

@@ -277,12 +277,12 @@ namespace Apps.BLL.Spl
             //对应列头
 			 				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.WarehouseId, "WarehouseId");
 				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.WareDetailsId, "WareDetailsId");
-				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.FirstEnterDate, "FirstEnterDate");
-				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.LastLeaveDate, "LastLeaveDate");
+				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.FirstEnterDate, "最后入库时间");
+				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.LastLeaveDate, "最后出库时间");
 				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.WaringQuantity, "WaringQuantity");
-				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.Quantity, "Quantity");
-				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.Price, "Price");
-				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.CreateTime, "CreateTime");
+				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.Quantity, "库存量");
+				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.Price, "加权价");
+				 excelFile.AddMapping<Spl_WareStockPileModel>(x => x.CreateTime, "创建时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_WareStockPileModel>(0);

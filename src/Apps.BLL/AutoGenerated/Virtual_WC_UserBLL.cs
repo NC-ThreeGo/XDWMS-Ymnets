@@ -311,20 +311,20 @@ namespace Apps.BLL.WC
 
             //对应列头
 			 				 excelFile.AddMapping<WC_UserModel>(x => x.OpenId, "OpenId");
-				 excelFile.AddMapping<WC_UserModel>(x => x.NickName, "NickName");
-				 excelFile.AddMapping<WC_UserModel>(x => x.Sex, "Sex");
-				 excelFile.AddMapping<WC_UserModel>(x => x.Language, "Language");
-				 excelFile.AddMapping<WC_UserModel>(x => x.City, "City");
-				 excelFile.AddMapping<WC_UserModel>(x => x.Province, "Province");
-				 excelFile.AddMapping<WC_UserModel>(x => x.Country, "Country");
-				 excelFile.AddMapping<WC_UserModel>(x => x.HeadImgUrl, "HeadImgUrl");
-				 excelFile.AddMapping<WC_UserModel>(x => x.SubscribeTime, "SubscribeTime");
+				 excelFile.AddMapping<WC_UserModel>(x => x.NickName, "名称");
+				 excelFile.AddMapping<WC_UserModel>(x => x.Sex, "性别");
+				 excelFile.AddMapping<WC_UserModel>(x => x.Language, "语言");
+				 excelFile.AddMapping<WC_UserModel>(x => x.City, "城市");
+				 excelFile.AddMapping<WC_UserModel>(x => x.Province, "省份");
+				 excelFile.AddMapping<WC_UserModel>(x => x.Country, "国家");
+				 excelFile.AddMapping<WC_UserModel>(x => x.HeadImgUrl, "头像");
+				 excelFile.AddMapping<WC_UserModel>(x => x.SubscribeTime, "关注时间");
 				 excelFile.AddMapping<WC_UserModel>(x => x.UnionId, "UnionId");
-				 excelFile.AddMapping<WC_UserModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<WC_UserModel>(x => x.GroupId, "GroupId");
-				 excelFile.AddMapping<WC_UserModel>(x => x.TagidList, "TagidList");
-				 excelFile.AddMapping<WC_UserModel>(x => x.Subscribe, "Subscribe");
-				 excelFile.AddMapping<WC_UserModel>(x => x.OfficalAccountId, "OfficalAccountId");
+				 excelFile.AddMapping<WC_UserModel>(x => x.Remark, "说明");
+				 excelFile.AddMapping<WC_UserModel>(x => x.GroupId, "所属组别");
+				 excelFile.AddMapping<WC_UserModel>(x => x.TagidList, "标签");
+				 excelFile.AddMapping<WC_UserModel>(x => x.Subscribe, "是否关注");
+				 excelFile.AddMapping<WC_UserModel>(x => x.OfficalAccountId, "所属公众号");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WC_UserModel>(0);

@@ -250,9 +250,9 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_TestClassModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<Spl_TestClassModel>(x => x.Sort, "Sort");
-				 excelFile.AddMapping<Spl_TestClassModel>(x => x.CreateTime, "CreateTime");
+			 				 excelFile.AddMapping<Spl_TestClassModel>(x => x.Name, "班级");
+				 excelFile.AddMapping<Spl_TestClassModel>(x => x.Sort, "排序");
+				 excelFile.AddMapping<Spl_TestClassModel>(x => x.CreateTime, "创建时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_TestClassModel>(0);

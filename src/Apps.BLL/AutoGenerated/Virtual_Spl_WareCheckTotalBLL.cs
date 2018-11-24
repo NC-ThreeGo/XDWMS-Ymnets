@@ -320,18 +320,18 @@ namespace Apps.BLL.Spl
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.WareDetailsId, "WareDetailsId");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.WarehouseId, "WarehouseId");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Remark, "Remark");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.DiffQuantity, "DiffQuantity");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Quantity, "Quantity");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Price, "Price");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.State, "State");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Creater, "Creater");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Checker, "Checker");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.CheckTime, "CheckTime");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Confirmation, "Confirmation");
-				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.CreateTime, "CreateTime");
+			 				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.WareDetailsId, "货品名称");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.WarehouseId, "所属仓库");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Remark, "盘点说明");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.DiffQuantity, "实际总数");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Quantity, "原有总数");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Price, "单价");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.State, "审核状态");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Creater, "创建人");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Checker, "审核人");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.CheckTime, "审核时间");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.Confirmation, "是否确认");
+				 excelFile.AddMapping<Spl_WareCheckTotalModel>(x => x.CreateTime, "创建时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Spl_WareCheckTotalModel>(0);

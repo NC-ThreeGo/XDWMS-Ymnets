@@ -332,20 +332,20 @@ namespace Apps.BLL.MIS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<MIS_ArticleModel>(x => x.ChannelId, "ChannelId");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.CategoryId, "CategoryId");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.Title, "Title");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.ImgUrl, "ImgUrl");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.BodyContent, "BodyContent");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.Sort, "Sort");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.Click, "Click");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.CheckFlag, "CheckFlag");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.Checker, "Checker");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.CheckDateTime, "CheckDateTime");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.Creater, "Creater");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.CustomLink, "CustomLink");
-				 excelFile.AddMapping<MIS_ArticleModel>(x => x.IsType, "IsType");
+			 				 excelFile.AddMapping<MIS_ArticleModel>(x => x.ChannelId, "所属栏目");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.CategoryId, "所属类别");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.Title, "文章标题");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.ImgUrl, "配图");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.BodyContent, "内容");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.Sort, "排序");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.Click, "点击量");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.CheckFlag, "审核状态");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.Checker, "审核人");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.CheckDateTime, "审核时间");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.Creater, "创建人");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.CustomLink, "自定义链接");
+				 excelFile.AddMapping<MIS_ArticleModel>(x => x.IsType, "0,普通文章，1.幻灯片,2.首页栏目");
  
             //SheetName
             var excelContent = excelFile.Worksheet<MIS_ArticleModel>(0);

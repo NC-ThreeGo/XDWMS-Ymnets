@@ -250,9 +250,9 @@ namespace Apps.BLL.Flow
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Flow_SealModel>(x => x.Path, "Path");
-				 excelFile.AddMapping<Flow_SealModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<Flow_SealModel>(x => x.SysUserId, "SysUserId");
+			 				 excelFile.AddMapping<Flow_SealModel>(x => x.Path, "印章路径");
+				 excelFile.AddMapping<Flow_SealModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<Flow_SealModel>(x => x.SysUserId, "使用者");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Flow_SealModel>(0);

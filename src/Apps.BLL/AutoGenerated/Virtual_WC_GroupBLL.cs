@@ -250,9 +250,9 @@ namespace Apps.BLL.WC
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WC_GroupModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<WC_GroupModel>(x => x.Count, "Count");
-				 excelFile.AddMapping<WC_GroupModel>(x => x.OfficalAccountId, "OfficalAccountId");
+			 				 excelFile.AddMapping<WC_GroupModel>(x => x.Name, "组别");
+				 excelFile.AddMapping<WC_GroupModel>(x => x.Count, "合计");
+				 excelFile.AddMapping<WC_GroupModel>(x => x.OfficalAccountId, "所属公众号");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WC_GroupModel>(0);

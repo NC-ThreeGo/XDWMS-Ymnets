@@ -322,9 +322,9 @@ namespace Apps.CodeHelper
 
             sb.Append("        [HttpPost]\r\n");
             sb.Append("        [SupportFilter(ActionName = \"Export\")]\r\n");
-            sb.Append("        public JsonResult CheckExportData()\r\n");
+            sb.Append("        public JsonResult CheckExportData(string queryStr)\r\n");
             sb.Append("        {\r\n");
-            sb.Append("            List<" + tableName + "Model> list = m_BLL.GetList(ref setNoPagerAscById, \"\");\r\n");
+            sb.Append("            List<" + tableName + "Model> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);\r\n");
             sb.Append("            if (list.Count().Equals(0))\r\n");
             sb.Append("            {\r\n");
             sb.Append("                return Json(JsonHandler.CreateMessage(0, \"没有可以导出的数据\"));\r\n");
@@ -336,24 +336,49 @@ namespace Apps.CodeHelper
             sb.Append("        }\r\n");
 
             sb.Append("        [SupportFilter]\r\n");
-            sb.Append("        public ActionResult Export()\r\n");
+            sb.Append("        public ActionResult Export(string queryStr)\r\n");
             sb.Append("        {\r\n");
-            sb.Append("            List<" + tableName + "Model> list = m_BLL.GetList(ref setNoPagerAscById, \"\");\r\n");
+            sb.Append("            List<" + tableName + "Model> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);\r\n");
             sb.Append("            JArray jObjects = new JArray();\r\n");
             sb.Append("                foreach (var item in list)\r\n");
             sb.Append("                {\r\n");
             sb.Append("                    var jo = new JObject();\r\n");
             foreach (CompleteField field in fields)
             {
-                sb.AppendFormat("                    jo.Add(\"{0}\", item.{0});\r\n", field.name);
+                //sb.AppendFormat("                    jo.Add(\"{0}\", item.{0});\r\n", field.name);
+                sb.AppendFormat("                    jo.Add(\"{0}\", item.{1});\r\n", String.IsNullOrEmpty(field.remark) ? field.name : field.remark, field.name);
             }
             sb.Append("                    jObjects.Add(jo);\r\n");
             sb.Append("                }\r\n");
             sb.Append("                var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());\r\n");
 
             sb.Append("                var exportFileName = string.Concat(\r\n");
-            sb.Append("                    \"File\",\r\n");
+            sb.Append("                    RouteData.Values[\"controller\"].ToString() + \"_\",\r\n");
             sb.Append("                    DateTime.Now.ToString(\"yyyyMMddHHmmss\"),\r\n");
+            sb.Append("                    \".xlsx\");\r\n");
+
+            sb.Append("                return new ExportExcelResult\r\n");
+            sb.Append("                {\r\n");
+            sb.Append("                    SheetName = \"Sheet1\",\r\n");
+            sb.Append("                    FileName = exportFileName,\r\n");
+            sb.Append("                    ExportData = dt\r\n");
+            sb.Append("                };\r\n");
+            sb.Append("            }\r\n");
+
+            sb.Append("        [SupportFilter(ActionName = \"Export\")]\r\n");
+            sb.Append("        public ActionResult ExportTemplate()\r\n");
+            sb.Append("        {\r\n");
+            sb.Append("            JArray jObjects = new JArray();\r\n");
+            sb.Append("            var jo = new JObject();\r\n");
+            foreach (CompleteField field in fields)
+            {
+                sb.AppendFormat("              jo.Add(\"{0}\", \"\");\r\n", String.IsNullOrEmpty(field.remark) ? field.name : field.remark);
+            }
+            sb.Append("            jObjects.Add(jo);\r\n");
+            sb.Append("            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());\r\n");
+
+            sb.Append("            var exportFileName = string.Concat(\r\n");
+            sb.Append("                    RouteData.Values[\"controller\"].ToString() + \"_Template\",\r\n");
             sb.Append("                    \".xlsx\");\r\n");
 
             sb.Append("                return new ExportExcelResult\r\n");

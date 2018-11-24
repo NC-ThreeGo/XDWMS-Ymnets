@@ -260,11 +260,11 @@ namespace Apps.BLL.Flow
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<Flow_StepRuleModel>(x => x.StepId, "StepId");
-				 excelFile.AddMapping<Flow_StepRuleModel>(x => x.AttrId, "AttrId");
-				 excelFile.AddMapping<Flow_StepRuleModel>(x => x.Operator, "Operator");
-				 excelFile.AddMapping<Flow_StepRuleModel>(x => x.Result, "Result");
-				 excelFile.AddMapping<Flow_StepRuleModel>(x => x.NextStep, "NextStep");
+			 				 excelFile.AddMapping<Flow_StepRuleModel>(x => x.StepId, "所属步骤");
+				 excelFile.AddMapping<Flow_StepRuleModel>(x => x.AttrId, "字段ID");
+				 excelFile.AddMapping<Flow_StepRuleModel>(x => x.Operator, "操作符号");
+				 excelFile.AddMapping<Flow_StepRuleModel>(x => x.Result, "结果");
+				 excelFile.AddMapping<Flow_StepRuleModel>(x => x.NextStep, "下一步骤ID");
  
             //SheetName
             var excelContent = excelFile.Worksheet<Flow_StepRuleModel>(0);

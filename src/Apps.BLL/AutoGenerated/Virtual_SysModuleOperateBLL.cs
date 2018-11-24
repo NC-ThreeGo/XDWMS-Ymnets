@@ -260,11 +260,11 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysModuleOperateModel>(x => x.Name, "Name");
-				 excelFile.AddMapping<SysModuleOperateModel>(x => x.KeyCode, "KeyCode");
-				 excelFile.AddMapping<SysModuleOperateModel>(x => x.ModuleId, "ModuleId");
-				 excelFile.AddMapping<SysModuleOperateModel>(x => x.IsValid, "IsValid");
-				 excelFile.AddMapping<SysModuleOperateModel>(x => x.Sort, "Sort");
+			 				 excelFile.AddMapping<SysModuleOperateModel>(x => x.Name, "操作名称");
+				 excelFile.AddMapping<SysModuleOperateModel>(x => x.KeyCode, "操作码");
+				 excelFile.AddMapping<SysModuleOperateModel>(x => x.ModuleId, "对应模块");
+				 excelFile.AddMapping<SysModuleOperateModel>(x => x.IsValid, "是否验证");
+				 excelFile.AddMapping<SysModuleOperateModel>(x => x.Sort, "排序");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysModuleOperateModel>(0);
