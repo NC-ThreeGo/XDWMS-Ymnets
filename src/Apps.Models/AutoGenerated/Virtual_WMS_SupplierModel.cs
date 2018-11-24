@@ -13,32 +13,32 @@ using System.ComponentModel.DataAnnotations;
 namespace Apps.Models.WMS
 {
 
-	public partial class WMS_PartModel:Virtual_WMS_PartModel
+	public partial class WMS_SupplierModel:Virtual_WMS_SupplierModel
 	{
 		
 	}
-	public class Virtual_WMS_PartModel
+	public class Virtual_WMS_SupplierModel
 	{
-		[Display(Name = "物料ID")]
+		[Display(Name = "供应商ID")]
 		public virtual int Id { get; set; }
-		[Display(Name = "物料编码")]
-		public virtual string PartCode { get; set; }
-		[Display(Name = "物料名称")]
-		public virtual string PartName { get; set; }
-		[Display(Name = "物料类型")]
-		public virtual string PartType { get; set; }
-		[Display(Name = "客户编码")]
-		public virtual string CustomerCode { get; set; }
-		[Display(Name = "物流号")]
-		public virtual string LogisticsCode { get; set; }
-		[Display(Name = "额外信息编码")]
-		public virtual string OtherCode { get; set; }
-		[Display(Name = "每箱数量")]
-		public virtual Nullable<decimal> PCS { get; set; }
-		[Display(Name = "保管员")]
-		public virtual string StoreMan { get; set; }
-		[Display(Name = "物料状态")]
+		[Display(Name = "供应商编码")]
+		public virtual string SupplierCode { get; set; }
+		[Display(Name = "供应商简称")]
+		public virtual string SupplierShortName { get; set; }
+		[Display(Name = "供应商名称")]
+		public virtual string SupplierName { get; set; }
+		[Display(Name = "供应商类型")]
+		public virtual string SupplierType { get; set; }
+		[Display(Name = "联系人")]
+		public virtual string LinkMan { get; set; }
+		[Display(Name = "联系人电话")]
+		public virtual string LinkManTel { get; set; }
+		[Display(Name = "联系人地址")]
+		public virtual string LinkManAddress { get; set; }
+		[Display(Name = "状态")]
 		public virtual string Status { get; set; }
+		[Display(Name = "说明")]
+		public virtual string Remark { get; set; }
 		[Display(Name = "创建人")]
 		public virtual string CreatePerson { get; set; }
 		[Display(Name = "创建时间")]

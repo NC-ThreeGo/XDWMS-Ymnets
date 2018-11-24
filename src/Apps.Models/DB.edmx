@@ -1024,6 +1024,29 @@
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“XDWMS.dbo.WMS_Supplier”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="WMS_Supplier">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="SupplierCode" />
+            <PropertyRef Name="SupplierName" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SupplierCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SupplierShortName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SupplierName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SupplierType" Type="nvarchar" MaxLength="10" />
+          <Property Name="LinkMan" Type="nvarchar" MaxLength="20" />
+          <Property Name="LinkManTel" Type="nvarchar" MaxLength="20" />
+          <Property Name="LinkManAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
+        </EntityType>
         <Association Name="FK_Flow_Form_Flow_Type">
           <End Role="Flow_Type" Type="Self.Flow_Type" Multiplicity="1" />
           <End Role="Flow_Form" Type="Self.Flow_Form" Multiplicity="*" />
@@ -2237,6 +2260,24 @@
     [SysUserConfig].[UserId] AS [UserId]
     FROM [dbo].[SysUserConfig] AS [SysUserConfig]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="WMS_Supplier" EntityType="Self.WMS_Supplier" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [WMS_Supplier].[Id] AS [Id], 
+    [WMS_Supplier].[SupplierCode] AS [SupplierCode], 
+    [WMS_Supplier].[SupplierShortName] AS [SupplierShortName], 
+    [WMS_Supplier].[SupplierName] AS [SupplierName], 
+    [WMS_Supplier].[SupplierType] AS [SupplierType], 
+    [WMS_Supplier].[LinkMan] AS [LinkMan], 
+    [WMS_Supplier].[LinkManTel] AS [LinkManTel], 
+    [WMS_Supplier].[LinkManAddress] AS [LinkManAddress], 
+    [WMS_Supplier].[Status] AS [Status], 
+    [WMS_Supplier].[Remark] AS [Remark], 
+    [WMS_Supplier].[CreatePerson] AS [CreatePerson], 
+    [WMS_Supplier].[CreateTime] AS [CreateTime], 
+    [WMS_Supplier].[ModifyPerson] AS [ModifyPerson], 
+    [WMS_Supplier].[ModifyTime] AS [ModifyTime]
+    FROM [dbo].[WMS_Supplier] AS [WMS_Supplier]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Flow_Form_Flow_Type" Association="Self.FK_Flow_Form_Flow_Type">
             <End Role="Flow_Type" EntitySet="Flow_Type" />
             <End Role="Flow_Form" EntitySet="Flow_Form" />
@@ -3083,6 +3124,7 @@
             <End Role="WMS_Line" EntitySet="WMS_Line" />
           </AssociationSet>
           <EntitySet Name="WMS_Part" EntityType="DB.WMS_Part" />
+          <EntitySet Name="WMS_Supplier" EntityType="DB.WMS_Supplier" />
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5392,6 +5434,27 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="WMS_Supplier">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="SupplierCode" />
+            <PropertyRef Name="SupplierName" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SupplierCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="LinkMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LinkManTel" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LinkManAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6749,6 +6812,26 @@
                 <ScalarProperty Name="PartType" ColumnName="PartType" />
                 <ScalarProperty Name="PartName" ColumnName="PartName" />
                 <ScalarProperty Name="PartCode" ColumnName="PartCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WMS_Supplier">
+            <EntityTypeMapping TypeName="DB.WMS_Supplier">
+              <MappingFragment StoreEntitySet="WMS_Supplier">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LinkManAddress" ColumnName="LinkManAddress" />
+                <ScalarProperty Name="LinkManTel" ColumnName="LinkManTel" />
+                <ScalarProperty Name="LinkMan" ColumnName="LinkMan" />
+                <ScalarProperty Name="SupplierType" ColumnName="SupplierType" />
+                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
+                <ScalarProperty Name="SupplierShortName" ColumnName="SupplierShortName" />
+                <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
