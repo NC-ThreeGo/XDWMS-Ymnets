@@ -60,7 +60,6 @@ namespace Apps.Core
             {
                 string fileExt = Utils.GetFileExt(postedFile.FileName); //文件扩展名，不含“.”
                 string originalFileName = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf(@"\") + 1); //取得文件原名
-                string fileName = Utils.GetRamCode() + "." + fileExt; //随机文件名
                 string dirPath = GetUpLoadPath(); //上传目录相对路径
 
                 //检查文件扩展名是否合法
@@ -78,9 +77,7 @@ namespace Apps.Core
                 {
                     return "{\"msg\": \"0\", \"msgbox\": \"文件超过限制的大小啦！\"}";
                 }
-                //获得要保存的文件路径
-                string serverFileName = dirPath + fileName;
-                string returnFileName = serverFileName;
+
                 //物理完整路径                    
                 string toFileFullPath = Utils.GetMapPath(dirPath);
                 //检查有该路径是否就创建
@@ -88,6 +85,17 @@ namespace Apps.Core
                 {
                     Directory.CreateDirectory(toFileFullPath);
                 }
+
+                //如果保存的文件名已存在，则加上时间戳作为文件名。
+                string fileName = originalFileName;
+                if (File.Exists(toFileFullPath + fileName))
+                {
+                    fileName = fileName.Substring(0, fileName.LastIndexOf('.')) + "_" + Utils.GetRamCode() + "." + fileExt; //随机文件名
+                }
+
+                //获得要保存的文件路径
+                string serverFileName = dirPath + fileName;
+                string returnFileName = serverFileName;
                 //保存文件
                 postedFile.SaveAs(toFileFullPath + fileName);
              

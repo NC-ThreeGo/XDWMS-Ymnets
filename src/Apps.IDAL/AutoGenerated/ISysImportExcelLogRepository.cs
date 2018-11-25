@@ -7,14 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using Apps.Models;
 using System;
-using Apps.Common;
-using System.Collections.Generic;
-using Apps.Models.WMS;
-namespace Apps.IBLL.WMS
+namespace Apps.IDAL.Sys
 {
-	public partial interface IWMS_SupplierBLL:IBaseBLL<WMS_SupplierModel>
+	public partial interface ISysImportExcelLogRepository:IBaseRepository<SysImportExcelLog>
 	{
-        bool ImportExcelData(string filePath, ref ValidationErrors errors);
-    }
+	
+	}
 }

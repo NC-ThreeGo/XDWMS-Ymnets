@@ -7,14 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using Apps.Models;
+using Apps.Models.Sys;
+using Apps.IDAL.Sys;
 using System;
-using Apps.Common;
-using System.Collections.Generic;
-using Apps.Models.WMS;
-namespace Apps.IBLL.WMS
+namespace Apps.DAL.Sys
 {
-	public partial interface IWMS_SupplierBLL:IBaseBLL<WMS_SupplierModel>
+	public partial class SysImportExcelLogRepository:BaseRepository<SysImportExcelLog>,ISysImportExcelLogRepository,IDisposable
 	{
-        bool ImportExcelData(string filePath, ref ValidationErrors errors);
-    }
+	    public SysImportExcelLogRepository(DBContainer db):base(db)
+        {
+        
+        }
+	}
 }

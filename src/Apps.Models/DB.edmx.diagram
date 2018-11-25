@@ -147,6 +147,7 @@
         <AssociationConnector Association="DB.FK_WMS_Line_WMS_Header1" />
         <EntityTypeShape EntityType="DB.WMS_Part" Width="1.5" PointX="17.375" PointY="7.75" />
         <EntityTypeShape EntityType="DB.WMS_Supplier" Width="1.5" PointX="0.75" PointY="17.75" />
+        <EntityTypeShape EntityType="DB.SysImportExcelLog" Width="1.5" PointX="10.375" PointY="17.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

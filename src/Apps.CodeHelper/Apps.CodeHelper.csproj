@@ -71,6 +71,9 @@
     <Compile Include="Controller\Controller.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="IBLL\IBLL.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Model\ModelPartial.cs">
       <SubType>Form</SubType>
     </Compile>

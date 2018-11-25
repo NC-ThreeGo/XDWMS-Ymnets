@@ -1,0 +1,78 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "SysImportExcelLog";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div class="mvctool">
+    <input id="txtQuery" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+</div>
+<table id="List"></table>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width:SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
+            },
+            columns: [[
+                { field: 'Id', title: 'ID', width: 80,hidden:true },
+                { field: 'ImportTime', title: '导入时间', width: 80,sortable:true },
+                { field: 'ImportTable', title: '导入的表名', width: 80,sortable:true },
+                { field: 'ImportFileName', title: '导入的文件名', width: 80,sortable:true },
+                { field: 'ImportFilePathUrl', title: '导入的文件Url', width: 160,
+                    formatter: function (value, row, index)
+                    {
+                        return '<a href="' + value + '">' + value + '</a>';
+                    }
+                },
+                { field: 'ImportStatus', title: '导入状态', width: 80,sortable:true },
+                { field: 'CreateBy', title: '导入用户', width: 80,sortable:true }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: queryStr });
+
+        });
+    });
+</script>
+

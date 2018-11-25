@@ -20,6 +20,13 @@
                 <span class="uploading">@Resource.Uploading</span>
             </td>
         </tr>
+        <tr>
+            <th style="padding:20px;"> 导入状态：</th>
+            <td style="padding:20px;">
+                <label id="importMessage"></label>
+                <a id="importResultFile" href="">         点击查看导入结果</a>
+            </td>
+        </tr>
     </table>
     <div class="endbtndiv">
         <a id = "btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
@@ -120,7 +127,7 @@
 	        });
         $("#btnImport").click(function() {
              $("#txtExcelPath").val("");
-             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 155, iconCls: 'fa fa-level-down' }).window('open');
+             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
             var queryStr = $("#txtQuery").val();
@@ -149,12 +156,15 @@
         $.post(url, function(data) {
             if (data.type == 1)
             {
-             $("#List").datagrid('load');
-             $('#uploadExcel').window('close');
-             $('#FileUpload').val('');
+                $("#List").datagrid('load');
+                $('#uploadExcel').window('close');
+                $('#FileUpload').val('');
             }
             hideLoading();
             $.messageBox5s('提示', data.message);
+
+            $('#importMessage').html(data.message);
+            $('#importResultFile').attr('href', data.value); 
         }, "json");
     }
 </script>

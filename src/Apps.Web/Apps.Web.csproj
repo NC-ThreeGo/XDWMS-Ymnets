@@ -369,6 +369,7 @@
     <Compile Include="Controllers\SysConfigController.cs" />
     <Compile Include="Controllers\SysExceptionController.cs" />
     <Compile Include="Controllers\SysHelperController.cs" />
+    <Compile Include="Controllers\SysImportExcelLogController.cs" />
     <Compile Include="Controllers\SysLogController.cs" />
     <Compile Include="Controllers\SysModuleController.cs" />
     <Compile Include="Controllers\SysPositionController.cs" />
@@ -1112,6 +1113,7 @@
     <Content Include="Views\SysSequence\Create.cshtml" />
     <Content Include="Views\SysSequence\Edit.cshtml" />
     <Content Include="Views\SysSequence\Index.cshtml" />
+    <Content Include="Views\SysImportExcelLog\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

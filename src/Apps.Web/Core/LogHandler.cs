@@ -58,27 +58,51 @@ namespace Apps.Web.Core
             if (siteConfig.logstatus == 1)
             {
                 WC_ResponseLog entity = new WC_ResponseLog();
-            entity.Id = ResultHelper.NewId;
-            entity.OpenId = model.OpenId;
-            entity.RequestType = model.RequestType;
-            entity.RequestContent = model.RequestContent;
-            entity.ResponseType = model.ResponseType;
-            entity.ResponseContent = model.ResponseContent;
-            entity.CreateBy = "";
-            entity.CreateTime = ResultHelper.NowTime;
-            entity.ModifyBy = "";
-            entity.ModifyTime = ResultHelper.NowTime;
+                entity.Id = ResultHelper.NewId;
+                entity.OpenId = model.OpenId;
+                entity.RequestType = model.RequestType;
+                entity.RequestContent = model.RequestContent;
+                entity.ResponseType = model.ResponseType;
+                entity.ResponseContent = model.ResponseContent;
+                entity.CreateBy = "";
+                entity.CreateTime = ResultHelper.NowTime;
+                entity.ModifyBy = "";
+                entity.ModifyTime = ResultHelper.NowTime;
 
-            using (WC_ResponseLogRepository logRepository = new WC_ResponseLogRepository(new DBContainer()))
-            {
-                logRepository.Create(entity);
+                using (WC_ResponseLogRepository logRepository = new WC_ResponseLogRepository(new DBContainer()))
+                {
+                    logRepository.Create(entity);
+                }
             }
-        }
             else
             {
                 return;
             }
         }
 
+
+        /// <summary>
+        /// 写入Excel导入的日志
+        /// </summary>
+        /// <param name="table">导入的表名</param>
+        /// <param name="fileName">Excel文件名</param>
+        /// <param name="fileUrl">Excel文件Url</param>
+        /// <param name="status">导入状态</param>
+        /// <param name="oper">操作员</param>
+        public static void WriteImportExcelLog(string oper, string table, string fileName, string fileUrl, string status)
+        {
+            SysImportExcelLog entity = new SysImportExcelLog();
+            entity.Id = 0;
+            entity.ImportTime = DateTime.Now;
+            entity.ImportTable = table;
+            entity.ImportFileName = fileName;
+            entity.ImportFilePathUrl = fileUrl;
+            entity.ImportStatus = status;
+            entity.CreateBy = oper;
+            using (SysImportExcelLogRepository logRepository = new SysImportExcelLogRepository(new DBContainer()))
+            {
+                logRepository.Create(entity);
+            }
+        }
     }
 }

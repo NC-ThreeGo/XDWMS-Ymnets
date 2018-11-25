@@ -12,6 +12,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
 using System.Data;
+using Apps.Common.ExcelHelper;
+using System.Data.Entity.Validation;
 
 namespace Apps.Web.Areas.WMS.Controllers
 {
@@ -20,14 +22,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [Dependency]
         public IWMS_SupplierBLL m_BLL { get; set; }
         ValidationErrors errors = new ValidationErrors();
-        
+
         [SupportFilter]
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        [SupportFilter(ActionName="Index")]
+        [SupportFilter(ActionName = "Index")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
             List<WMS_SupplierModel> list = m_BLL.GetList(ref pager, queryStr);
@@ -120,7 +122,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Delete(long id)
         {
-            if(id!=0)
+            if (id != 0)
             {
                 if (m_BLL.Delete(ref errors, id))
                 {
@@ -146,20 +148,47 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Import(string filePath)
         {
-            var list = new List<WMS_SupplierModel>();
-            bool checkResult = m_BLL.CheckImportData(Utils.GetMapPath(filePath), list, ref errors);
-            //校验通过直接保存
-            if (checkResult)
+            //var list = new List<WMS_SupplierModel>();
+            //bool checkResult = m_BLL.CheckImportData(Utils.GetMapPath(filePath), list, ref errors);
+            ////校验通过直接保存
+            //if (checkResult)
+            //{
+            //    m_BLL.SaveImportData(list);
+            //    LogHandler.WriteServiceLog(GetUserId(), "导入成功", "成功", "导入", "WMS_Supplier");
+            //    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+            //}
+            //else
+            //{
+            //    string ErrorCol = errors.Error;
+            //    LogHandler.WriteServiceLog(GetUserId(), ErrorCol, "失败", "导入", "WMS_Supplier");
+            //    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
+            //}
+            try
             {
-                m_BLL.SaveImportData(list);
-                LogHandler.WriteServiceLog(GetUserId(), "导入成功", "成功", "导入", "WMS_Supplier");
-                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+                //ImportExcelResult importResult = new ImportExcelResult();
+                //importResult.FileName = filePath;
+                if (m_BLL.ImportExcelData(Utils.GetMapPath(filePath), ref errors))
+                {
+                    LogHandler.WriteImportExcelLog(GetUserId(), "WMS_Supplier", 
+                        filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
+                }
+                else
+                {
+                    LogHandler.WriteImportExcelLog(GetUserId(), "WMS_Supplier",
+                        filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
+                }
+
+                //return Json(JsonHandler.CreateImportExcelMessage(importResult));
             }
-            else
+            catch (DbEntityValidationException ex)
             {
-                string ErrorCol = errors.Error;
-                LogHandler.WriteServiceLog(GetUserId(), ErrorCol, "失败", "导入", "WMS_Supplier");
-                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
         [HttpPost]
@@ -181,68 +210,69 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             List<WMS_SupplierModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
             JArray jObjects = new JArray();
-                foreach (var item in list)
-                {
-                    var jo = new JObject();
-                    jo.Add("供应商ID", item.Id);
-                    jo.Add("供应商编码", item.SupplierCode);
-                    jo.Add("供应商简称", item.SupplierShortName);
-                    jo.Add("供应商名称", item.SupplierName);
-                    jo.Add("供应商类型", item.SupplierType);
-                    jo.Add("联系人", item.LinkMan);
-                    jo.Add("联系人电话", item.LinkManTel);
-                    jo.Add("联系人地址", item.LinkManAddress);
-                    jo.Add("状态", item.Status);
-                    jo.Add("说明", item.Remark);
-                    jo.Add("创建人", item.CreatePerson);
-                    jo.Add("创建时间", item.CreateTime);
-                    jo.Add("修改人", item.ModifyPerson);
-                    jo.Add("修改时间", item.ModifyTime);
-                    jObjects.Add(jo);
-                }
-                var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
-                var exportFileName = string.Concat(
-                    RouteData.Values["controller"].ToString() + "_",
-                    DateTime.Now.ToString("yyyyMMddHHmmss"),
-                    ".xlsx");
-                return new ExportExcelResult
-                {
-                    SheetName = "Sheet1",
-                    FileName = exportFileName,
-                    ExportData = dt
-                };
+            foreach (var item in list)
+            {
+                var jo = new JObject();
+                jo.Add("供应商ID", item.Id);
+                jo.Add("供应商编码", item.SupplierCode);
+                jo.Add("供应商简称", item.SupplierShortName);
+                jo.Add("供应商名称", item.SupplierName);
+                jo.Add("供应商类型", item.SupplierType);
+                jo.Add("联系人", item.LinkMan);
+                jo.Add("联系人电话", item.LinkManTel);
+                jo.Add("联系人地址", item.LinkManAddress);
+                jo.Add("状态", item.Status);
+                jo.Add("说明", item.Remark);
+                jo.Add("创建人", item.CreatePerson);
+                jo.Add("创建时间", item.CreateTime);
+                jo.Add("修改人", item.ModifyPerson);
+                jo.Add("修改时间", item.ModifyTime);
+                jObjects.Add(jo);
             }
+            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+            var exportFileName = string.Concat(
+                RouteData.Values["controller"].ToString() + "_",
+                DateTime.Now.ToString("yyyyMMddHHmmss"),
+                ".xlsx");
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
         [SupportFilter(ActionName = "Export")]
         public ActionResult ExportTemplate()
         {
             JArray jObjects = new JArray();
             var jo = new JObject();
-              jo.Add("供应商ID", "");
-              jo.Add("供应商编码", "");
-              jo.Add("供应商简称", "");
-              jo.Add("供应商名称", "");
-              jo.Add("供应商类型", "");
-              jo.Add("联系人", "");
-              jo.Add("联系人电话", "");
-              jo.Add("联系人地址", "");
-              jo.Add("状态", "");
-              jo.Add("说明", "");
-              jo.Add("创建人", "");
-              jo.Add("创建时间", "");
-              jo.Add("修改人", "");
-              jo.Add("修改时间", "");
+            jo.Add("供应商ID", "");
+            jo.Add("供应商编码", "");
+            jo.Add("供应商简称", "");
+            jo.Add("供应商名称", "");
+            jo.Add("供应商类型", "");
+            jo.Add("联系人", "");
+            jo.Add("联系人电话", "");
+            jo.Add("联系人地址", "");
+            jo.Add("状态", "");
+            jo.Add("说明", "");
+            jo.Add("创建人", "");
+            jo.Add("创建时间", "");
+            jo.Add("修改人", "");
+            jo.Add("修改时间", "");
+            jo.Add("导入错误信息", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
             var exportFileName = string.Concat(
                     RouteData.Values["controller"].ToString() + "_Template",
                     ".xlsx");
-                return new ExportExcelResult
-                {
-                    SheetName = "Sheet1",
-                    FileName = exportFileName,
-                    ExportData = dt
-                };
-            }
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
         #endregion
     }
 }

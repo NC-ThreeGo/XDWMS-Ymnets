@@ -10,11 +10,11 @@
 using System;
 using Apps.Common;
 using System.Collections.Generic;
-using Apps.Models.WMS;
-namespace Apps.IBLL.WMS
+using Apps.Models.Sys;
+namespace Apps.IBLL.Sys
 {
-	public partial interface IWMS_SupplierBLL:IBaseBLL<WMS_SupplierModel>
+	public partial interface ISysImportExcelLogBLL:IBaseBLL<SysImportExcelLogModel>
 	{
-        bool ImportExcelData(string filePath, ref ValidationErrors errors);
-    }
+      
+	}
 }

@@ -105,6 +105,8 @@ namespace Apps.Core
 			container.RegisterType<Apps.IDAL.Sys.ISysCalendarPlanRepository, Apps.DAL.Sys.SysCalendarPlanRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysExceptionBLL, Apps.BLL.Sys.SysExceptionBLL>();
 			container.RegisterType<Apps.IDAL.Sys.ISysExceptionRepository, Apps.DAL.Sys.SysExceptionRepository>();
+			container.RegisterType<Apps.IBLL.Sys.ISysImportExcelLogBLL, Apps.BLL.Sys.SysImportExcelLogBLL>();
+			container.RegisterType<Apps.IDAL.Sys.ISysImportExcelLogRepository, Apps.DAL.Sys.SysImportExcelLogRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysLogBLL, Apps.BLL.Sys.SysLogBLL>();
 			container.RegisterType<Apps.IDAL.Sys.ISysLogRepository, Apps.DAL.Sys.SysLogRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysModuleBLL, Apps.BLL.Sys.SysModuleBLL>();

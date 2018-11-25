@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Apps.Common.ExcelHelper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -98,9 +99,6 @@ namespace Apps.Common
             reader.Close();
             return (T)result;
         }
-
-
-
     }
 
     public class JsonMessage
@@ -108,8 +106,6 @@ namespace Apps.Common
         public int type{get;set;}
         public string message{get;set;}
         public string value{get;set;}
-    }
-
-    
+    }    
   
 }

@@ -80,8 +80,8 @@ namespace Apps.CodeHelper
                 txt_PartialModel.Text = GetPartialModel(tableName);
             }
 
-
-
+            //获取IBLL
+            tbIBLL.Text = GetIBLL(tableName);
 
             //获取Model
             txt_Create.Text = GetCreate(tableName);
