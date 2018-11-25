@@ -707,6 +707,109 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'操作人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_InvDetail', @level2type=N'COLUMN',@level2name=N'OperateMan'
 GO
 
+USE [XDWMS]
+GO
+
+/****** Object:  Table [dbo].[WMS_ReturnOrder]    Script Date: 2018/11/25 18:49:40 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[WMS_ReturnOrder](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ReturnOrderNum] [nvarchar](50) NULL,
+	[AIID] [int] NULL,
+	[PartCode] [nvarchar](50) NULL,
+	[SupplierCode] [nvarchar](50) NULL,
+	[InvCode] [nvarchar](50) NULL,
+	[ReturnNum] [decimal](10, 3) NULL,
+	[AdjustNum] [decimal](10, 3) NULL,
+	[Remark] [nchar](10) NULL,
+	[PrintStaus] [nvarchar](10) NULL,
+	[PrintDate] [datetime] NULL,
+	[PrintMan] [nvarchar](10) NULL,
+	[ConfirmStatus] [nvarchar](10) NULL,
+	[ConfirmMan] [nvarchar](10) NULL,
+	[ConfirmDate] [datetime] NULL,
+	[Attr1] [nvarchar](50) NULL,
+	[Attr2] [nvarchar](50) NULL,
+	[Attr3] [nvarchar](50) NULL,
+	[Attr4] [nvarchar](50) NULL,
+	[Attr5] [nvarchar](50) NULL,
+	[CreatePerson] [nvarchar](50) NULL,
+	[CreateTime] [datetime] NULL,
+	[ModifyPerson] [nvarchar](50) NULL,
+	[ModifyTime] [datetime] NULL,
+ CONSTRAINT [PK_WMS_ReturnOrder] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[WMS_ReturnOrder] ADD  CONSTRAINT [DF_WMS_ReturnOrder_ConfirmStatus]  DEFAULT (N'未审核') FOR [ConfirmStatus]
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'退货单ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'Id'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'退货单号' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'ReturnOrderNum'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'到货检验单ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'AIID'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'物料编码' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'PartCode'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'代理商编码' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'SupplierCode'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'库存编码' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'InvCode'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'退货数量' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'ReturnNum'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'调整数量' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'AdjustNum'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'退货说明' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'Remark'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'打印状态' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'PrintStaus'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'打印时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'PrintDate'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'打印人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'PrintMan'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'确认状态' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'ConfirmStatus'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'确认人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'ConfirmMan'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'确认时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'ConfirmDate'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'CreatePerson'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'CreateTime'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'修改人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'ModifyPerson'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'修改时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WMS_ReturnOrder', @level2type=N'COLUMN',@level2name=N'ModifyTime'
+GO
+
+
 
 
 
