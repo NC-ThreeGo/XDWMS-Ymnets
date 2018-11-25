@@ -1024,13 +1024,9 @@
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS.dbo.WMS_Supplier”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="WMS_Supplier">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="SupplierCode" />
-            <PropertyRef Name="SupplierName" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SupplierCode" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -2250,6 +2246,7 @@
           <EntitySet Name="WMS_Header" EntityType="Self.WMS_Header" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Line" EntityType="Self.WMS_Line" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Part" EntityType="Self.WMS_Part" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_Supplier" EntityType="Self.WMS_Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysUserConfig" EntityType="Self.SysUserConfig" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [SysUserConfig].[Id] AS [Id], 
@@ -2259,24 +2256,6 @@
     [SysUserConfig].[State] AS [State], 
     [SysUserConfig].[UserId] AS [UserId]
     FROM [dbo].[SysUserConfig] AS [SysUserConfig]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="WMS_Supplier" EntityType="Self.WMS_Supplier" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [WMS_Supplier].[Id] AS [Id], 
-    [WMS_Supplier].[SupplierCode] AS [SupplierCode], 
-    [WMS_Supplier].[SupplierShortName] AS [SupplierShortName], 
-    [WMS_Supplier].[SupplierName] AS [SupplierName], 
-    [WMS_Supplier].[SupplierType] AS [SupplierType], 
-    [WMS_Supplier].[LinkMan] AS [LinkMan], 
-    [WMS_Supplier].[LinkManTel] AS [LinkManTel], 
-    [WMS_Supplier].[LinkManAddress] AS [LinkManAddress], 
-    [WMS_Supplier].[Status] AS [Status], 
-    [WMS_Supplier].[Remark] AS [Remark], 
-    [WMS_Supplier].[CreatePerson] AS [CreatePerson], 
-    [WMS_Supplier].[CreateTime] AS [CreateTime], 
-    [WMS_Supplier].[ModifyPerson] AS [ModifyPerson], 
-    [WMS_Supplier].[ModifyTime] AS [ModifyTime]
-    FROM [dbo].[WMS_Supplier] AS [WMS_Supplier]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Flow_Form_Flow_Type" Association="Self.FK_Flow_Form_Flow_Type">
             <End Role="Flow_Type" EntitySet="Flow_Type" />
@@ -5437,8 +5416,6 @@
         <EntityType Name="WMS_Supplier">
           <Key>
             <PropertyRef Name="Id" />
-            <PropertyRef Name="SupplierCode" />
-            <PropertyRef Name="SupplierName" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SupplierCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
