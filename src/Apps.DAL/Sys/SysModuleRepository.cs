@@ -37,7 +37,11 @@ namespace Apps.DAL.Sys
                     arr[5, 1] = "UnCheck";
                     arr[6, 0] = "查询";
                     arr[6, 1] = "Query";
-                    for (int i = 0; i <7; i++)
+                    arr[7, 0] = "导入";
+                    arr[7, 1] = "Import";
+                    arr[8, 0] = "导出";
+                    arr[8, 1] = "Export";
+                for (int i = 0; i <9; i++)
                     {
                         SysModuleOperate cretaeEntity = new SysModuleOperate();
                         cretaeEntity.Id = ResultHelper.NewId;
