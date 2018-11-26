@@ -15,6 +15,6 @@ namespace Apps.IBLL.WMS
 {
 	public partial interface IWMS_SupplierBLL:IBaseBLL<WMS_SupplierModel>
 	{
-        bool ImportExcelData(string filePath, ref ValidationErrors errors);
-    }
+      
+	}
 }

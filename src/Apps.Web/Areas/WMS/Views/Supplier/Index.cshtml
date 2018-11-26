@@ -127,6 +127,9 @@
 	        });
         $("#btnImport").click(function() {
              $("#txtExcelPath").val("");
+            $("#FileUpload").val("");
+            $('#importMessage').html("");
+            $('#importResultFile').attr('href', ''); 
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
@@ -156,13 +159,12 @@
         $.post(url, function(data) {
             if (data.type == 1)
             {
-                $("#List").datagrid('load');
-                $('#uploadExcel').window('close');
-                $('#FileUpload').val('');
+             $("#List").datagrid('load');
+             $('#uploadExcel').window('close');
+             $('#FileUpload').val('');
             }
             hideLoading();
             $.messageBox5s('提示', data.message);
-
             $('#importMessage').html(data.message);
             $('#importResultFile').attr('href', data.value); 
         }, "json");

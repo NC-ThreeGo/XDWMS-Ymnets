@@ -272,6 +272,16 @@ namespace Apps.CodeHelper
                     }
                 }
             }
+
+            //导出IBLL
+            using (FileStream aFile = new FileStream(txtfilepath.Text + "\\I" + tableName + "BLL.cs", FileMode.OpenOrCreate))
+            {
+                using (StreamWriter sw = new StreamWriter(aFile, Encoding.UTF8))
+                {
+                    sw.WriteLine(tbIBLL.Text);
+                }
+            }
+
             //导出BLL
             using (FileStream aFile = new FileStream(txtfilepath.Text + "\\" + tableName + "BLL.cs", FileMode.OpenOrCreate))
             {

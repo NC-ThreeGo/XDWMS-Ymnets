@@ -30,6 +30,9 @@ namespace Apps.CodeHelper
             sb.Append("using System.Collections.Generic;\r\n");
             sb.Append("using System.Linq;\r\n");
             sb.Append("using System;\r\n");
+            sb.Append("using System.IO;\r\n");
+            sb.Append("using LinqToExcel;\r\n");
+            sb.Append("using ClosedXML.Excel;\r\n");
             sb.Append("using " + txt_prefix.Text + ".Models." + leftStr.Replace(".", "") + ";\r\n");
             sb.Append("\r\n");
             sb.Append("namespace " + txt_prefix.Text + ".BLL" + (leftStr == ".Sys" ? "" : "." + leftStr) + "\r\n");
@@ -121,8 +124,22 @@ namespace Apps.CodeHelper
             sb.Append("        }\r\n");
             sb.Append("\r\n");
 
+            CodeFrom.GetImportExcelCode(tableName, comFields, ref sb);
 
-            #region 增加ImportExcelData方法
+            sb.Append("    }\r\n");
+            sb.Append(" }\r\n");
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 增加ImportExcelData方法和AdditionalCheckExcelData方法
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="sb"></param>
+        public static void GetImportExcelCode(string tableName, List<CompleteField> comFields, ref StringBuilder sb)
+        {
+            #region 增加ImportExcelData方法和AdditionalCheckExcelData方法
+            int colCount = comFields.Count() + 1;
             sb.Append("\t\tpublic bool ImportExcelData(string filePath, ref ValidationErrors errors)\r\n");
             sb.Append("\t\t{\r\n");
             sb.Append("\t\t\tbool rtn = true;\r\n");
@@ -146,7 +163,7 @@ namespace Apps.CodeHelper
             foreach (CompleteField field in comFields)
             {
                 if (field.name != "Id")
-                    sb.AppendFormat("excelFile.AddMapping<{0}Model>(x => x.{1}, \"{2}\");\r\n", tableName, field.name, field.remark ?? field.name);
+                    sb.AppendFormat("\t\t\t\t\texcelFile.AddMapping<{0}Model>(x => x.{1}, \"{2}\");\r\n", tableName, field.name, field.remark ?? field.name);
             }
             sb.Append("\r\n");
             sb.Append("\t\t\t\t\t//SheetName，第一个Sheet\r\n");
@@ -173,10 +190,24 @@ namespace Apps.CodeHelper
             sb.Append("\t\t\t\t\t\t\t\t{\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\trtn = false;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\terrors.Add(string.Format(\"第 {0} 列发现错误：{1}{2}\", rowIndex, errorMessage, \"<br/>\"));\r\n");
-            sb.AppendFormat("\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, {0}).Value = errorMessage;\r\n", comFields.Count().ToString());
+            sb.AppendFormat("\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, {0}).Value = errorMessage;\r\n", colCount.ToString());
+            sb.Append("\t\t\t\t\t\t\t\t\tcontinue;");
             sb.Append("\t\t\t\t\t\t\t\t}\r\n");
-            sb.Append("\t\t\t\t\t\t\t\telse\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t//执行额外的数据校验\r\n");
+            sb.Append("\t\t\t\t\t\t\t\ttry\r\n");
             sb.Append("\t\t\t\t\t\t\t\t{\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t\tAdditionalCheckExcelData(model);\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t}\r\n");
+            sb.Append("\t\t\t\t\t\t\t\tcatch (Exception ex)\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t{\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t\trtn = false;\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t\terrorMessage = ex.Message;\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t\terrors.Add(string.Format(\"第 {0} 列发现错误：{1}{2}\", rowIndex, errorMessage, \"<br/>\"));\r\n");
+            sb.AppendFormat("\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, {0}).Value = errorMessage;\r\n", colCount.ToString());
+            sb.Append("\t\t\t\t\t\t\t\t\tcontinue;\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t}\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\t//写入数据库\r\n");
             sb.AppendFormat("\t\t\t\t\t\t\t\t\t{0} entity = new {0}();\r\n", tableName);
             foreach (CompleteField field in comFields)
@@ -196,8 +227,7 @@ namespace Apps.CodeHelper
             sb.Append("\t\t\t\t\t\t\t\t\t\tdb.Entry(entity).State = System.Data.Entity.EntityState.Detached;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\t\terrorMessage = ex.InnerException.InnerException.Message;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\t\terrors.Add(string.Format(\"第 {0} 列发现错误：{1}{2}\", rowIndex, errorMessage, \"<br/>\"));\r\n");
-            sb.AppendFormat("\t\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, {0}).Value = errorMessage;\r\n", comFields.Count().ToString());
-            sb.Append("\t\t\t\t\t\t\t\t\t}\r\n");
+            sb.AppendFormat("\t\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, {0}).Value = errorMessage;\r\n", colCount.ToString());
             sb.Append("\t\t\t\t\t\t\t\t}\r\n");
             sb.Append("\t\t\t\t\t\t\t}\r\n");
             sb.Append("\r\n");
@@ -215,14 +245,13 @@ namespace Apps.CodeHelper
             sb.Append("\t\t\t\t}\r\n");
             sb.Append("\r\n");
             sb.Append("\t\t\t\treturn rtn;\r\n");
-
             sb.Append("\t\t\t}\r\n");
+            sb.Append("\r\n");
+            sb.AppendFormat("\t\tpublic void AdditionalCheckExcelData({0}Model model)\r\n", tableName);
+            sb.Append("\t\t{\r\n");
+            sb.Append("\t\t}\r\n");
 
             #endregion
-
-            sb.Append("    }\r\n");
-            sb.Append(" }\r\n");
-            return sb.ToString();
         }
     }
 }

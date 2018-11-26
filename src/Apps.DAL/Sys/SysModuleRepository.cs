@@ -22,7 +22,7 @@ namespace Apps.DAL.Sys
                 //创建成功--自动生成增，删，改，查，存，审核操作码(最后一项才执行)并且不是API接口的
                 if (entity.IsLast && entity.ParentId!= "ApiInterfaceAuth")
                 {
-                    string[,] arr = new string[7, 2];
+                    string[,] arr = new string[9, 2];
                     arr[0, 0] = "创建";
                     arr[0, 1] = "Create";
                     arr[1, 0] = "删除";

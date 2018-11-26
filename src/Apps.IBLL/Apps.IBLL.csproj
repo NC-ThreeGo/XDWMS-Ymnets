@@ -311,6 +311,7 @@
     <Compile Include="WC\IWC_MessageResponseBLL.cs" />
     <Compile Include="WC\IWC_OfficalAccountsBLL.cs" />
     <Compile Include="WC\IWC_UserBLL.cs" />
+    <Compile Include="WMS\IWMS_SupplierBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Apps.Common\Apps.Common.csproj">
@@ -335,9 +336,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WMS\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

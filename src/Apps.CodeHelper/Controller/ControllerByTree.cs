@@ -294,8 +294,10 @@ namespace Apps.CodeHelper
 
 
             sb.Append("        #endregion\r\n");
-            //导入导出
 
+            //导入导出
+            #region 代码重复了，直接调用GetImportExportCodeForController(ref sb, tableName, fields);
+            /*
             sb.Append("        #region 导出导入\r\n");
 
             sb.Append("        [HttpPost]\r\n");
@@ -389,6 +391,10 @@ namespace Apps.CodeHelper
             sb.Append("                };\r\n");
             sb.Append("            }\r\n");
             sb.Append("        #endregion\r\n");
+            */
+            #endregion
+            GetImportExportCodeForController(ref sb, tableName, fields);
+
             #endregion
 
             #region 父表

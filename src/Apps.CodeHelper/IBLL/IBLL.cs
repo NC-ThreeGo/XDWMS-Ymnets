@@ -12,11 +12,12 @@ namespace Apps.CodeHelper
         {
             string leftStr = GetLeftStr(tableName);
             StringBuilder sb = new StringBuilder();
+            sb.Append("using Apps.Common;\r\n");
             sb.Append("using " + txt_prefix.Text + ".Models." + leftStr.Replace(".", "") + ";\r\n");
             sb.Append("\r\n");
             sb.Append("namespace " + txt_prefix.Text + ".IBLL" + (leftStr == ".Sys" ? "" : "." + leftStr) + "\r\n");
             sb.Append("{\r\n");
-            sb.AppendFormat("    public partial interface I{0}BLL : IBaseBLL<{0}>\r\n", tableName);
+            sb.AppendFormat("    public partial interface I{0}BLL\r\n", tableName);
             sb.Append("    {\r\n");
             sb.Append("         /// <summary>\r\n");
             sb.Append("         /// 导入Excel文件，当发生导入错误时，回写错误信息，并且全部回滚。\r\n");
@@ -25,7 +26,14 @@ namespace Apps.CodeHelper
             sb.Append("         /// <param name=\"errors\"></param>\r\n");
             sb.Append("         /// <returns></returns>\r\n");
             sb.Append("         bool ImportExcelData(string filePath, ref ValidationErrors errors);\r\n");
-            sb.Append("    }r\n");
+            sb.Append("    \r\n");
+            sb.Append("         /// <summary>\r\n");
+            sb.Append("         /// 对导入进行附加的校验，例如物料编码是否存在等。\r\n");
+            sb.Append("         /// </summary>\r\n");
+            sb.Append("         /// <param name=\"model\"></param>\r\n");
+            sb.AppendFormat("         void AdditionalCheckExcelData({0}Model model);\r\n", tableName);
+            sb.Append("    }\r\n");
+            sb.Append("}");
 
             return sb.ToString();
         }

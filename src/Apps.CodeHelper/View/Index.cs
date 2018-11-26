@@ -53,6 +53,16 @@ namespace Apps.CodeHelper
             sb.Append("                <span class=\"uploading\">@Resource.Uploading</span>\r\n");
             sb.Append("            </td>\r\n");
             sb.Append("        </tr>\r\n");
+
+            //增加导入状态和查看导入结果的链接
+            sb.Append("        <tr>\r\n");
+            sb.Append("            <th style=\"padding:20px;\"> 导入状态：</th>\r\n");
+            sb.Append("            <td style=\"padding:20px;\">\r\n");
+            sb.Append("                <label id=\"importMessage\"></label>\r\n");
+            sb.Append("                <a id=\"importResultFile\" href=\"\">         点击查看导入结果</a>\r\n");
+            sb.Append("            </td>\r\n");
+            sb.Append("        </tr>\r\n");
+
             sb.Append("    </table>\r\n");
             sb.Append("    <div class=\"endbtndiv\">\r\n");
             sb.Append("        <a id = \"btnSave\" href=\"javascript:ImportData()\" class=\"easyui-linkbutton btns\">直接保存</a>\r\n");
@@ -365,7 +375,7 @@ namespace Apps.CodeHelper
             //导入导出
             sb.Append("        $(\"#btnImport\").click(function() {\r\n");
             sb.Append("             $(\"#txtExcelPath\").val(\"\");\r\n");
-            sb.Append("             $(\"#uploadExcel\").window({ title: '@Resource.Import', width: 450, height: 155, iconCls: 'fa fa-level-down' }).window('open');\r\n");
+            sb.Append("             $(\"#uploadExcel\").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');\r\n");
             sb.Append("        });\r\n");
             sb.Append("        $(\"#btnExport\").click(function() {\r\n");
             sb.Append("            var queryStr = $(\"#txtQuery\").val();\r\n");
@@ -383,6 +393,8 @@ namespace Apps.CodeHelper
             sb.Append("                }\r\n");
             sb.Append("            }, \"json\");\r\n");
             sb.Append("        });\r\n");
+
+            //导出模板的按钮
             sb.Append("        $(\"#btnExportTemplate\").click(function() {\r\n");
             sb.Append("          window.location = \"@Url.Action(\"ExportTemplate\")\";\r\n");
             sb.Append("        });\r\n");
@@ -437,6 +449,8 @@ namespace Apps.CodeHelper
             sb.Append("            }\r\n");
             sb.Append("            hideLoading();\r\n");
             sb.Append("            $.messageBox5s('提示', data.message);\r\n");
+            sb.Append("            $('#importMessage').html(data.message);\r\n");
+            sb.Append("            $('#importResultFile').attr('href', data.value); \r\n");
             sb.Append("        }, \"json\");\r\n");
             sb.Append("    }\r\n");
 

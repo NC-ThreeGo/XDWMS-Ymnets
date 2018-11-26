@@ -275,101 +275,7 @@ namespace Apps.CodeHelper
             sb.Append("\r\n");
 
             //导入导出
-            sb.Append("        #region 导出导入\r\n");
-
-            sb.Append("        [HttpPost]\r\n");
-            sb.Append("        [SupportFilter]\r\n");
-            sb.Append("        public ActionResult Import(string filePath)\r\n");
-            sb.Append("        {\r\n");
-            sb.Append("            var list = new List<" + tableName + "Model>();\r\n");
-            sb.Append("            bool checkResult = m_BLL.CheckImportData(Utils.GetMapPath(filePath), list, ref errors);\r\n");
-            sb.Append("            //校验通过直接保存\r\n");
-            sb.Append("            if (checkResult)\r\n");
-            sb.Append("            {\r\n");
-            sb.Append("                m_BLL.SaveImportData(list);\r\n");
-            sb.Append("                LogHandler.WriteServiceLog(GetUserId(), \"导入成功\", \"成功\", \"导入\", \"" + tableName + "\");\r\n");
-            sb.Append("                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));\r\n");
-            sb.Append("            }\r\n");
-            sb.Append("            else\r\n");
-            sb.Append("            {\r\n");
-            sb.Append("                string ErrorCol = errors.Error;\r\n");
-            sb.Append("                LogHandler.WriteServiceLog(GetUserId(), ErrorCol, \"失败\", \"导入\", \"" + tableName + "\");\r\n");
-            sb.Append("                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));\r\n");
-            sb.Append("            }\r\n");
-            sb.Append("        }\r\n");
-
-
-            sb.Append("        [HttpPost]\r\n");
-            sb.Append("        [SupportFilter(ActionName = \"Export\")]\r\n");
-            sb.Append("        public JsonResult CheckExportData(string queryStr)\r\n");
-            sb.Append("        {\r\n");
-            sb.Append("            List<" + tableName + "Model> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);\r\n");
-            sb.Append("            if (list.Count().Equals(0))\r\n");
-            sb.Append("            {\r\n");
-            sb.Append("                return Json(JsonHandler.CreateMessage(0, \"没有可以导出的数据\"));\r\n");
-            sb.Append("            }\r\n");
-            sb.Append("            else\r\n");
-            sb.Append("            {\r\n");
-            sb.Append("                return Json(JsonHandler.CreateMessage(1, \"可以导出\"));\r\n");
-            sb.Append("            }\r\n");
-            sb.Append("        }\r\n");
-
-            sb.Append("        [SupportFilter]\r\n");
-            sb.Append("        public ActionResult Export(string queryStr)\r\n");
-            sb.Append("        {\r\n");
-            sb.Append("            List<" + tableName + "Model> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);\r\n");
-            sb.Append("            JArray jObjects = new JArray();\r\n");
-            sb.Append("                foreach (var item in list)\r\n");
-            sb.Append("                {\r\n");
-            sb.Append("                    var jo = new JObject();\r\n");
-            foreach (CompleteField field in fields)
-            {
-                //               sb.AppendFormat("                    jo.Add(\"{0}\", item.{0});\r\n", field.name);
-                sb.AppendFormat("                    jo.Add(\"{0}\", item.{1});\r\n", String.IsNullOrEmpty(field.remark) ? field.name: field.remark, field.name);
-            }
-            sb.Append("                    jObjects.Add(jo);\r\n");
-            sb.Append("                }\r\n");
-            sb.Append("                var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());\r\n");
-
-            sb.Append("                var exportFileName = string.Concat(\r\n");
-            sb.Append("                    RouteData.Values[\"controller\"].ToString() + \"_\",\r\n");
-            sb.Append("                    DateTime.Now.ToString(\"yyyyMMddHHmmss\"),\r\n");
-            sb.Append("                    \".xlsx\");\r\n");
-
-            sb.Append("                return new ExportExcelResult\r\n");
-            sb.Append("                {\r\n");
-            sb.Append("                    SheetName = \"Sheet1\",\r\n");
-            sb.Append("                    FileName = exportFileName,\r\n");
-            sb.Append("                    ExportData = dt\r\n");
-            sb.Append("                };\r\n");
-            sb.Append("            }\r\n");
-
-            sb.Append("        [SupportFilter(ActionName = \"Export\")]\r\n");
-            sb.Append("        public ActionResult ExportTemplate()\r\n");
-            sb.Append("        {\r\n");
-            sb.Append("            JArray jObjects = new JArray();\r\n");
-            sb.Append("            var jo = new JObject();\r\n");
-            foreach (CompleteField field in fields)
-            {
-                sb.AppendFormat("              jo.Add(\"{0}\", \"\");\r\n", String.IsNullOrEmpty(field.remark) ? field.name : field.remark);
-            }
-            sb.Append("            jObjects.Add(jo);\r\n");
-            sb.Append("            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());\r\n");
-
-            sb.Append("            var exportFileName = string.Concat(\r\n");
-            sb.Append("                    RouteData.Values[\"controller\"].ToString() + \"_Template\",\r\n");
-            sb.Append("                    \".xlsx\");\r\n");
-
-            sb.Append("                return new ExportExcelResult\r\n");
-            sb.Append("                {\r\n");
-            sb.Append("                    SheetName = \"Sheet1\",\r\n");
-            sb.Append("                    FileName = exportFileName,\r\n");
-            sb.Append("                    ExportData = dt\r\n");
-            sb.Append("                };\r\n");
-            sb.Append("            }\r\n");
-            sb.Append("        #endregion\r\n");
-            #endregion
-
+            GetImportExportCodeForController(ref sb, tableName, fields);
 
             #region 父表
 
@@ -549,6 +455,105 @@ namespace Apps.CodeHelper
             sb.Append("    }\r\n");
             sb.Append("}\r\n");
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// 导入导出代码
+        /// </summary>
+        /// <param name="sb"></param>
+        /// <param name="tableName"></param>
+        /// <param name="fields"></param>
+        public static void GetImportExportCodeForController(ref StringBuilder sb, string tableName, List<CompleteField> fields)
+        {
+            sb.Append("        #region 导出导入\r\n");
+
+            sb.Append("        [HttpPost]\r\n");
+            sb.Append("        [SupportFilter]\r\n");
+            sb.Append("        public ActionResult Import(string filePath)\r\n");
+            sb.Append("        {\r\n");
+            sb.Append("            if (m_BLL.ImportExcelData(Utils.GetMapPath(filePath), ref errors))\r\n");
+            sb.Append("            {\r\n");
+            sb.AppendFormat("                 LogHandler.WriteImportExcelLog(GetUserId(), \"{0}\", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, \"导入成功\");\r\n", tableName);
+            sb.Append("                 return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));\r\n");
+            sb.Append("            }\r\n");
+            sb.Append("            else\r\n");
+            sb.Append("            {\r\n");
+            sb.AppendFormat("                 LogHandler.WriteImportExcelLog(GetUserId(), \"{0}\", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, \"导入失败\");\r\n", tableName);
+            sb.Append("                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));\r\n");
+            sb.Append("            }\r\n");
+            sb.Append("        }\r\n");
+
+
+            sb.Append("        [HttpPost]\r\n");
+            sb.Append("        [SupportFilter(ActionName = \"Export\")]\r\n");
+            sb.Append("        public JsonResult CheckExportData(string queryStr)\r\n");
+            sb.Append("        {\r\n");
+            sb.Append("            List<" + tableName + "Model> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);\r\n");
+            sb.Append("            if (list.Count().Equals(0))\r\n");
+            sb.Append("            {\r\n");
+            sb.Append("                return Json(JsonHandler.CreateMessage(0, \"没有可以导出的数据\"));\r\n");
+            sb.Append("            }\r\n");
+            sb.Append("            else\r\n");
+            sb.Append("            {\r\n");
+            sb.Append("                return Json(JsonHandler.CreateMessage(1, \"可以导出\"));\r\n");
+            sb.Append("            }\r\n");
+            sb.Append("        }\r\n");
+
+            sb.Append("        [SupportFilter]\r\n");
+            sb.Append("        public ActionResult Export(string queryStr)\r\n");
+            sb.Append("        {\r\n");
+            sb.Append("            List<" + tableName + "Model> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);\r\n");
+            sb.Append("            JArray jObjects = new JArray();\r\n");
+            sb.Append("                foreach (var item in list)\r\n");
+            sb.Append("                {\r\n");
+            sb.Append("                    var jo = new JObject();\r\n");
+            foreach (CompleteField field in fields)
+            {
+//               sb.AppendFormat("                    jo.Add(\"{0}\", item.{0});\r\n", field.name);
+                sb.AppendFormat("                    jo.Add(\"{0}\", item.{1});\r\n", String.IsNullOrEmpty(field.remark) ? field.name : field.remark, field.name);
+            }
+            sb.Append("                    jObjects.Add(jo);\r\n");
+            sb.Append("                }\r\n");
+            sb.Append("                var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());\r\n");
+
+            sb.Append("                var exportFileName = string.Concat(\r\n");
+            sb.Append("                    RouteData.Values[\"controller\"].ToString() + \"_\",\r\n");
+            sb.Append("                    DateTime.Now.ToString(\"yyyyMMddHHmmss\"),\r\n");
+            sb.Append("                    \".xlsx\");\r\n");
+
+            sb.Append("                return new ExportExcelResult\r\n");
+            sb.Append("                {\r\n");
+            sb.Append("                    SheetName = \"Sheet1\",\r\n");
+            sb.Append("                    FileName = exportFileName,\r\n");
+            sb.Append("                    ExportData = dt\r\n");
+            sb.Append("                };\r\n");
+            sb.Append("            }\r\n");
+
+            sb.Append("        [SupportFilter(ActionName = \"Export\")]\r\n");
+            sb.Append("        public ActionResult ExportTemplate()\r\n");
+            sb.Append("        {\r\n");
+            sb.Append("            JArray jObjects = new JArray();\r\n");
+            sb.Append("            var jo = new JObject();\r\n");
+            foreach (CompleteField field in fields)
+            {
+                sb.AppendFormat("              jo.Add(\"{0}\", \"\");\r\n", String.IsNullOrEmpty(field.remark) ? field.name : field.remark);
+            }
+            sb.Append("            jObjects.Add(jo);\r\n");
+            sb.Append("            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());\r\n");
+
+            sb.Append("            var exportFileName = string.Concat(\r\n");
+            sb.Append("                    RouteData.Values[\"controller\"].ToString() + \"_Template\",\r\n");
+            sb.Append("                    \".xlsx\");\r\n");
+
+            sb.Append("                return new ExportExcelResult\r\n");
+            sb.Append("                {\r\n");
+            sb.Append("                    SheetName = \"Sheet1\",\r\n");
+            sb.Append("                    FileName = exportFileName,\r\n");
+            sb.Append("                    ExportData = dt\r\n");
+            sb.Append("                };\r\n");
+            sb.Append("            }\r\n");
+            sb.Append("        #endregion\r\n");
+            #endregion
         }
     }
 }

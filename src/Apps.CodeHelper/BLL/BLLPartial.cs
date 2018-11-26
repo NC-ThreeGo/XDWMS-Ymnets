@@ -21,6 +21,7 @@ namespace Apps.CodeHelper
         {
             string leftStr = GetLeftStr(tableName);
             List<string> fields = SqlHelper.GetColumnField(conn, tableName);
+            List<CompleteField> comFields = SqlHelper.GetColumnCompleteField(conn, tableName);
 
             StringBuilder sb = new StringBuilder();
             sb.Append("using Apps.Common;\r\n");
@@ -38,7 +39,6 @@ namespace Apps.CodeHelper
             sb.Append("\r\n");
             if (cb_EnableParent.Checked)
             {
-                List<CompleteField> comFields = SqlHelper.GetColumnCompleteField(conn, tableName);
                 CompleteField parentField = null;
                 foreach (CompleteField field in comFields)
                 {
@@ -128,6 +128,10 @@ namespace Apps.CodeHelper
             sb.Append("                                              }).ToList();\r\n");
             sb.Append("            return modelList;\r\n");
             sb.Append("        }\r\n");
+            sb.Append("\r\n");
+
+            CodeFrom.GetImportExcelCode(tableName, comFields, ref sb);
+
             sb.Append("    }\r\n");
             sb.Append(" }\r\n");
             return sb.ToString();
