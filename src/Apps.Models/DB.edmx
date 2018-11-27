@@ -686,6 +686,18 @@
           <Property Name="Data" Type="nvarchar" MaxLength="500" />
           <Property Name="CreateTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="SysImportExcelLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImportTime" Type="datetime" Nullable="false" />
+          <Property Name="ImportTable" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ImportFileName" Type="varchar" MaxLength="50" />
+          <Property Name="ImportFilePathUrl" Type="varchar" MaxLength="200" />
+          <Property Name="ImportStatus" Type="varchar" MaxLength="10" />
+          <Property Name="CreateBy" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="SysLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -883,7 +895,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -2242,6 +2254,7 @@
           <EntitySet Name="SysAreas" EntityType="Self.SysAreas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysCalendarPlan" EntityType="Self.SysCalendarPlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysException" EntityType="Self.SysException" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysImportExcelLog" EntityType="Self.SysImportExcelLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysLog" EntityType="Self.SysLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysModule" EntityType="Self.SysModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysModuleDataFilter" EntityType="Self.SysModuleDataFilter" Schema="dbo" store:Type="Tables" />
@@ -3124,8 +3137,8 @@
           </AssociationSet>
           <EntitySet Name="WMS_Part" EntityType="DB.WMS_Part" />
           <EntitySet Name="WMS_Supplier" EntityType="DB.WMS_Supplier" />
-          <EntitySet Name="SysImportExcelLog" EntityType="DB.SysImportExcelLog" />
           <EntitySet Name="WMS_Customer" EntityType="DB.WMS_Customer" />
+          <EntitySet Name="SysImportExcelLog" EntityType="DB.SysImportExcelLog" />
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5454,18 +5467,6 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="SysImportExcelLog">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ImportTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ImportTable" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ImportFileName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ImportFilePathUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="ImportStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="WMS_Customer">
           <Key>
             <PropertyRef Name="Id" />
@@ -5484,6 +5485,18 @@
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SysImportExcelLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ImportTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ImportTable" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ImportFileName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ImportFilePathUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ImportStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6882,6 +6895,19 @@
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="CustomerShortName" ColumnName="CustomerShortName" />
                 <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysImportExcelLog">
+            <EntityTypeMapping TypeName="DB.SysImportExcelLog">
+              <MappingFragment StoreEntitySet="SysImportExcelLog">
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="ImportStatus" ColumnName="ImportStatus" />
+                <ScalarProperty Name="ImportFilePathUrl" ColumnName="ImportFilePathUrl" />
+                <ScalarProperty Name="ImportFileName" ColumnName="ImportFileName" />
+                <ScalarProperty Name="ImportTable" ColumnName="ImportTable" />
+                <ScalarProperty Name="ImportTime" ColumnName="ImportTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

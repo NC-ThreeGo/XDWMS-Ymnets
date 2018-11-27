@@ -19,19 +19,19 @@ namespace Apps.Models.Sys
 	}
 	public class Virtual_SysImportExcelLogModel
 	{
-		[Display(Name = "未设置")]
+		[Display(Name = "ID")]
 		public virtual int Id { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "导入时间")]
 		public virtual System.DateTime ImportTime { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "导入的表名")]
 		public virtual string ImportTable { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "导入的文件名")]
 		public virtual string ImportFileName { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "导入的文件Url")]
 		public virtual string ImportFilePathUrl { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "导入状态")]
 		public virtual string ImportStatus { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "导入用户")]
 		public virtual string CreateBy { get; set; }
 		}
 }
