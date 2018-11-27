@@ -265,12 +265,12 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportTime, "导入时间");
-				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportTable, "导入的表名");
-				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportFileName, "导入的文件名");
-				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportFilePathUrl, "导入的文件Url");
-				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportStatus, "导入状态");
-				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.CreateBy, "导入用户");
+			 				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportTime, "ImportTime");
+				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportTable, "ImportTable");
+				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportFileName, "ImportFileName");
+				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportFilePathUrl, "ImportFilePathUrl");
+				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportStatus, "ImportStatus");
+				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.CreateBy, "CreateBy");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysImportExcelLogModel>(0);
@@ -319,7 +319,7 @@ namespace Apps.BLL.Sys
                     foreach (var model in list)
                     {
                         SysImportExcelLog entity = new SysImportExcelLog();
-                       						entity.Id = 0;
+                       						entity.Id = model.Id;
 						entity.ImportTime = model.ImportTime;
 						entity.ImportTable = model.ImportTable;
 						entity.ImportFileName = model.ImportFileName;

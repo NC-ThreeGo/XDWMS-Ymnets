@@ -686,18 +686,6 @@
           <Property Name="Data" Type="nvarchar" MaxLength="500" />
           <Property Name="CreateTime" Type="datetime" />
         </EntityType>
-        <EntityType Name="SysImportExcelLog">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ImportTime" Type="datetime" Nullable="false" />
-          <Property Name="ImportTable" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="ImportFileName" Type="varchar" MaxLength="50" />
-          <Property Name="ImportFilePathUrl" Type="varchar" MaxLength="200" />
-          <Property Name="ImportStatus" Type="varchar" MaxLength="10" />
-          <Property Name="CreateBy" Type="varchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="SysLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -895,7 +883,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -1000,6 +988,25 @@
           <Property Name="TagidList" Type="varchar" MaxLength="1000" />
           <Property Name="Subscribe" Type="int" Nullable="false" />
           <Property Name="OfficalAccountId" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WMS_Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="CustomerShortName" Type="nvarchar" MaxLength="20" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustomerType" Type="nvarchar" MaxLength="20" />
+          <Property Name="LinkMan" Type="nvarchar" MaxLength="20" />
+          <Property Name="LinkManTel" Type="nvarchar" MaxLength="20" />
+          <Property Name="LinkManAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
         </EntityType>
         <EntityType Name="WMS_Header">
           <Key>
@@ -2235,7 +2242,6 @@
           <EntitySet Name="SysAreas" EntityType="Self.SysAreas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysCalendarPlan" EntityType="Self.SysCalendarPlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysException" EntityType="Self.SysException" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SysImportExcelLog" EntityType="Self.SysImportExcelLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysLog" EntityType="Self.SysLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysModule" EntityType="Self.SysModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysModuleDataFilter" EntityType="Self.SysModuleDataFilter" Schema="dbo" store:Type="Tables" />
@@ -2256,6 +2262,7 @@
           <EntitySet Name="WC_OfficalAccounts" EntityType="Self.WC_OfficalAccounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WC_ResponseLog" EntityType="Self.WC_ResponseLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WC_User" EntityType="Self.WC_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_Customer" EntityType="Self.WMS_Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Header" EntityType="Self.WMS_Header" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Line" EntityType="Self.WMS_Line" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Part" EntityType="Self.WMS_Part" Schema="dbo" store:Type="Tables" />
@@ -3118,6 +3125,7 @@
           <EntitySet Name="WMS_Part" EntityType="DB.WMS_Part" />
           <EntitySet Name="WMS_Supplier" EntityType="DB.WMS_Supplier" />
           <EntitySet Name="SysImportExcelLog" EntityType="DB.SysImportExcelLog" />
+          <EntitySet Name="WMS_Customer" EntityType="DB.WMS_Customer" />
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5458,6 +5466,25 @@
           <Property Name="ImportStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="WMS_Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerShortName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LinkMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LinkManTel" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LinkManAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6839,15 +6866,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SysImportExcelLog">
-            <EntityTypeMapping TypeName="DB.SysImportExcelLog">
-              <MappingFragment StoreEntitySet="SysImportExcelLog">
-                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
-                <ScalarProperty Name="ImportStatus" ColumnName="ImportStatus" />
-                <ScalarProperty Name="ImportFilePathUrl" ColumnName="ImportFilePathUrl" />
-                <ScalarProperty Name="ImportFileName" ColumnName="ImportFileName" />
-                <ScalarProperty Name="ImportTable" ColumnName="ImportTable" />
-                <ScalarProperty Name="ImportTime" ColumnName="ImportTime" />
+          <EntitySetMapping Name="WMS_Customer">
+            <EntityTypeMapping TypeName="DB.WMS_Customer">
+              <MappingFragment StoreEntitySet="WMS_Customer">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LinkManAddress" ColumnName="LinkManAddress" />
+                <ScalarProperty Name="LinkManTel" ColumnName="LinkManTel" />
+                <ScalarProperty Name="LinkMan" ColumnName="LinkMan" />
+                <ScalarProperty Name="CustomerType" ColumnName="CustomerType" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerShortName" ColumnName="CustomerShortName" />
+                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

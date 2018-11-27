@@ -98,6 +98,7 @@ namespace Apps.Models
         public virtual DbSet<WMS_Part> WMS_Part { get; set; }
         public virtual DbSet<WMS_Supplier> WMS_Supplier { get; set; }
         public virtual DbSet<SysImportExcelLog> SysImportExcelLog { get; set; }
+        public virtual DbSet<WMS_Customer> WMS_Customer { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {
