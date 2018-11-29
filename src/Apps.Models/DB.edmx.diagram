@@ -149,6 +149,8 @@
         <EntityTypeShape EntityType="DB.WMS_Supplier" Width="1.5" PointX="0.75" PointY="17.75" />
         <EntityTypeShape EntityType="DB.WMS_Customer" Width="1.5" PointX="17.375" PointY="12.75" />
         <EntityTypeShape EntityType="DB.SysImportExcelLog" Width="1.5" PointX="10.375" PointY="17.75" />
+        <EntityTypeShape EntityType="DB.WMS_InvInfo" Width="1.5" PointX="12.375" PointY="17.75" />
+        <EntityTypeShape EntityType="DB.WMS_SubInvInfo" Width="1.5" PointX="3.375" PointY="19.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

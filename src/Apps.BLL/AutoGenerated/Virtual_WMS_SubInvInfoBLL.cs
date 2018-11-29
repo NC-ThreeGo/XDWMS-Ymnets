@@ -19,35 +19,38 @@ using Apps.Locale;
 using LinqToExcel;
 using System.IO;
 using System.Text;
-using Apps.IDAL.Sys;
-using Apps.Models.Sys;
-using Apps.IBLL.Sys;
-namespace Apps.BLL.Sys
+using Apps.IDAL.WMS;
+using Apps.Models.WMS;
+using Apps.IBLL.WMS;
+namespace Apps.BLL.WMS
 {
-	public partial class SysImportExcelLogBLL: Virtual_SysImportExcelLogBLL,ISysImportExcelLogBLL
+	public partial class WMS_SubInvInfoBLL: Virtual_WMS_SubInvInfoBLL,IWMS_SubInvInfoBLL
 	{
         
 
 	}
-	public class Virtual_SysImportExcelLogBLL
+	public class Virtual_WMS_SubInvInfoBLL
 	{
         [Dependency]
-        public ISysImportExcelLogRepository m_Rep { get; set; }
+        public IWMS_SubInvInfoRepository m_Rep { get; set; }
 
-		public virtual List<SysImportExcelLogModel> GetList(ref GridPager pager, string queryStr)
+		public virtual List<WMS_SubInvInfoModel> GetList(ref GridPager pager, string queryStr)
         {
 
-            IQueryable<SysImportExcelLog> queryData = null;
+            IQueryable<WMS_SubInvInfo> queryData = null;
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
 								
+								a=>a.SubInvCode.Contains(queryStr)
+								|| a.SubInvName.Contains(queryStr)
+								|| a.InvCode.Contains(queryStr)
+								|| a.Status.Contains(queryStr)
+								|| a.Remark.Contains(queryStr)
+								|| a.CreatePerson.Contains(queryStr)
 								
-								a=>a.ImportTable.Contains(queryStr)
-								|| a.ImportFileName.Contains(queryStr)
-								|| a.ImportFilePathUrl.Contains(queryStr)
-								|| a.ImportStatus.Contains(queryStr)
-								|| a.CreateBy.Contains(queryStr)
+								|| a.ModifyPerson.Contains(queryStr)
+								
 								);
             }
             else
@@ -60,53 +63,59 @@ namespace Apps.BLL.Sys
             return CreateModelList(ref queryData);
         }
 
-		public virtual List<SysImportExcelLogModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
+		public virtual List<WMS_SubInvInfoModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
 		{
-			return new List<SysImportExcelLogModel>();
+			return new List<WMS_SubInvInfoModel>();
 		}
 		
-		public virtual List<SysImportExcelLogModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
+		public virtual List<WMS_SubInvInfoModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
         {
-			return new List<SysImportExcelLogModel>();
+			return new List<WMS_SubInvInfoModel>();
 		}
 
-        public virtual List<SysImportExcelLogModel> CreateModelList(ref IQueryable<SysImportExcelLog> queryData)
+        public virtual List<WMS_SubInvInfoModel> CreateModelList(ref IQueryable<WMS_SubInvInfo> queryData)
         {
 
-            List<SysImportExcelLogModel> modelList = (from r in queryData
-                                              select new SysImportExcelLogModel
+            List<WMS_SubInvInfoModel> modelList = (from r in queryData
+                                              select new WMS_SubInvInfoModel
                                               {
 													Id = r.Id,
-													ImportTime = r.ImportTime,
-													ImportTable = r.ImportTable,
-													ImportFileName = r.ImportFileName,
-													ImportFilePathUrl = r.ImportFilePathUrl,
-													ImportStatus = r.ImportStatus,
-													CreateBy = r.CreateBy,
+													SubInvCode = r.SubInvCode,
+													SubInvName = r.SubInvName,
+													InvCode = r.InvCode,
+													Status = r.Status,
+													Remark = r.Remark,
+													CreatePerson = r.CreatePerson,
+													CreateTime = r.CreateTime,
+													ModifyPerson = r.ModifyPerson,
+													ModifyTime = r.ModifyTime,
           
                                               }).ToList();
 
             return modelList;
         }
 
-        public virtual bool Create(ref ValidationErrors errors, SysImportExcelLogModel model)
+        public virtual bool Create(ref ValidationErrors errors, WMS_SubInvInfoModel model)
         {
             try
             {
-                SysImportExcelLog entity = m_Rep.GetById(model.Id);
+                WMS_SubInvInfo entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
-                entity = new SysImportExcelLog();
+                entity = new WMS_SubInvInfo();
                				entity.Id = model.Id;
-				entity.ImportTime = model.ImportTime;
-				entity.ImportTable = model.ImportTable;
-				entity.ImportFileName = model.ImportFileName;
-				entity.ImportFilePathUrl = model.ImportFilePathUrl;
-				entity.ImportStatus = model.ImportStatus;
-				entity.CreateBy = model.CreateBy;
+				entity.SubInvCode = model.SubInvCode;
+				entity.SubInvName = model.SubInvName;
+				entity.InvCode = model.InvCode;
+				entity.Status = model.Status;
+				entity.Remark = model.Remark;
+				entity.CreatePerson = model.CreatePerson;
+				entity.CreateTime = model.CreateTime;
+				entity.ModifyPerson = model.ModifyPerson;
+				entity.ModifyTime = model.ModifyTime;
   
 
                 if (m_Rep.Create(entity))
@@ -183,23 +192,26 @@ namespace Apps.BLL.Sys
 		
        
 
-        public virtual bool Edit(ref ValidationErrors errors, SysImportExcelLogModel model)
+        public virtual bool Edit(ref ValidationErrors errors, WMS_SubInvInfoModel model)
         {
             try
             {
-                SysImportExcelLog entity = m_Rep.GetById(model.Id);
+                WMS_SubInvInfo entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
                               				entity.Id = model.Id;
-				entity.ImportTime = model.ImportTime;
-				entity.ImportTable = model.ImportTable;
-				entity.ImportFileName = model.ImportFileName;
-				entity.ImportFilePathUrl = model.ImportFilePathUrl;
-				entity.ImportStatus = model.ImportStatus;
-				entity.CreateBy = model.CreateBy;
+				entity.SubInvCode = model.SubInvCode;
+				entity.SubInvName = model.SubInvName;
+				entity.InvCode = model.InvCode;
+				entity.Status = model.Status;
+				entity.Remark = model.Remark;
+				entity.CreatePerson = model.CreatePerson;
+				entity.CreateTime = model.CreateTime;
+				entity.ModifyPerson = model.ModifyPerson;
+				entity.ModifyTime = model.ModifyTime;
  
 
 
@@ -224,19 +236,22 @@ namespace Apps.BLL.Sys
 
       
 
-        public virtual SysImportExcelLogModel GetById(object id)
+        public virtual WMS_SubInvInfoModel GetById(object id)
         {
             if (IsExists(id))
             {
-                SysImportExcelLog entity = m_Rep.GetById(id);
-                SysImportExcelLogModel model = new SysImportExcelLogModel();
+                WMS_SubInvInfo entity = m_Rep.GetById(id);
+                WMS_SubInvInfoModel model = new WMS_SubInvInfoModel();
                               				model.Id = entity.Id;
-				model.ImportTime = entity.ImportTime;
-				model.ImportTable = entity.ImportTable;
-				model.ImportFileName = entity.ImportFileName;
-				model.ImportFilePathUrl = entity.ImportFilePathUrl;
-				model.ImportStatus = entity.ImportStatus;
-				model.CreateBy = entity.CreateBy;
+				model.SubInvCode = entity.SubInvCode;
+				model.SubInvName = entity.SubInvName;
+				model.InvCode = entity.InvCode;
+				model.Status = entity.Status;
+				model.Remark = entity.Remark;
+				model.CreatePerson = entity.CreatePerson;
+				model.CreateTime = entity.CreateTime;
+				model.ModifyPerson = entity.ModifyPerson;
+				model.ModifyTime = entity.ModifyTime;
  
                 return model;
             }
@@ -250,7 +265,7 @@ namespace Apps.BLL.Sys
 		 /// <summary>
         /// 校验Excel数据,这个方法一般用于重写校验逻辑
         /// </summary>
-        public virtual bool CheckImportData(string fileName, List<SysImportExcelLogModel> list,ref ValidationErrors errors )
+        public virtual bool CheckImportData(string fileName, List<WMS_SubInvInfoModel> list,ref ValidationErrors errors )
         {
           
             var targetFile = new FileInfo(fileName);
@@ -265,28 +280,34 @@ namespace Apps.BLL.Sys
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportTime, "导入时间");
-				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportTable, "导入的表名");
-				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportFileName, "导入的文件名");
-				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportFilePathUrl, "导入的文件Url");
-				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.ImportStatus, "导入状态");
-				 excelFile.AddMapping<SysImportExcelLogModel>(x => x.CreateBy, "导入用户");
+			 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvCode, "库位编码");
+				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvName, "库位名称");
+				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.InvCode, "库房编码");
+				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Status, "状态");
+				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Remark, "说明");
+				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreatePerson, "创建人");
+				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.ModifyPerson, "修改人");
+				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.ModifyTime, "修改时间");
  
             //SheetName
-            var excelContent = excelFile.Worksheet<SysImportExcelLogModel>(0);
+            var excelContent = excelFile.Worksheet<WMS_SubInvInfoModel>(0);
             int rowIndex = 1;
             //检查数据正确性
             foreach (var row in excelContent)
             {
                 var errorMessage = new StringBuilder();
-                var entity = new SysImportExcelLogModel();
+                var entity = new WMS_SubInvInfoModel();
 						 				  entity.Id = row.Id;
-				  entity.ImportTime = row.ImportTime;
-				  entity.ImportTable = row.ImportTable;
-				  entity.ImportFileName = row.ImportFileName;
-				  entity.ImportFilePathUrl = row.ImportFilePathUrl;
-				  entity.ImportStatus = row.ImportStatus;
-				  entity.CreateBy = row.CreateBy;
+				  entity.SubInvCode = row.SubInvCode;
+				  entity.SubInvName = row.SubInvName;
+				  entity.InvCode = row.InvCode;
+				  entity.Status = row.Status;
+				  entity.Remark = row.Remark;
+				  entity.CreatePerson = row.CreatePerson;
+				  entity.CreateTime = row.CreateTime;
+				  entity.ModifyPerson = row.ModifyPerson;
+				  entity.ModifyTime = row.ModifyTime;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -310,7 +331,7 @@ namespace Apps.BLL.Sys
         /// <summary>
         /// 保存数据
         /// </summary>
-        public virtual void SaveImportData(IEnumerable<SysImportExcelLogModel> list)
+        public virtual void SaveImportData(IEnumerable<WMS_SubInvInfoModel> list)
         {
             try
             {
@@ -318,16 +339,19 @@ namespace Apps.BLL.Sys
                 {
                     foreach (var model in list)
                     {
-                        SysImportExcelLog entity = new SysImportExcelLog();
+                        WMS_SubInvInfo entity = new WMS_SubInvInfo();
                        						entity.Id = 0;
-						entity.ImportTime = model.ImportTime;
-						entity.ImportTable = model.ImportTable;
-						entity.ImportFileName = model.ImportFileName;
-						entity.ImportFilePathUrl = model.ImportFilePathUrl;
-						entity.ImportStatus = model.ImportStatus;
-						entity.CreateBy = model.CreateBy;
+						entity.SubInvCode = model.SubInvCode;
+						entity.SubInvName = model.SubInvName;
+						entity.InvCode = model.InvCode;
+						entity.Status = model.Status;
+						entity.Remark = model.Remark;
+						entity.CreatePerson = model.CreatePerson;
+						entity.CreateTime = ResultHelper.NowTime;
+						entity.ModifyPerson = model.ModifyPerson;
+						entity.ModifyTime = model.ModifyTime;
  
-                        db.SysImportExcelLog.Add(entity);
+                        db.WMS_SubInvInfo.Add(entity);
                     }
                     db.SaveChanges();
                 }

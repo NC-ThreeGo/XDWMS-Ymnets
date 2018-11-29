@@ -149,10 +149,14 @@ namespace Apps.Core
 			container.RegisterType<Apps.IDAL.WMS.IWMS_CustomerRepository, Apps.DAL.WMS.WMS_CustomerRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_HeaderBLL, Apps.BLL.WMS.WMS_HeaderBLL>();
 			container.RegisterType<Apps.IDAL.WMS.IWMS_HeaderRepository, Apps.DAL.WMS.WMS_HeaderRepository>();
+			container.RegisterType<Apps.IBLL.WMS.IWMS_InvInfoBLL, Apps.BLL.WMS.WMS_InvInfoBLL>();
+			container.RegisterType<Apps.IDAL.WMS.IWMS_InvInfoRepository, Apps.DAL.WMS.WMS_InvInfoRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_LineBLL, Apps.BLL.WMS.WMS_LineBLL>();
 			container.RegisterType<Apps.IDAL.WMS.IWMS_LineRepository, Apps.DAL.WMS.WMS_LineRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_PartBLL, Apps.BLL.WMS.WMS_PartBLL>();
 			container.RegisterType<Apps.IDAL.WMS.IWMS_PartRepository, Apps.DAL.WMS.WMS_PartRepository>();
+			container.RegisterType<Apps.IBLL.WMS.IWMS_SubInvInfoBLL, Apps.BLL.WMS.WMS_SubInvInfoBLL>();
+			container.RegisterType<Apps.IDAL.WMS.IWMS_SubInvInfoRepository, Apps.DAL.WMS.WMS_SubInvInfoRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_SupplierBLL, Apps.BLL.WMS.WMS_SupplierBLL>();
 			container.RegisterType<Apps.IDAL.WMS.IWMS_SupplierRepository, Apps.DAL.WMS.WMS_SupplierRepository>();
         }

@@ -1,0 +1,134 @@
+﻿@model Apps.Models.WMS.WMS_SubInvInfoModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WMS;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(false);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+function frameReturnByClose() {
+$("#modalwindow").window('close');
+}
+function frameReturnByMes(mes) {
+$.messageBox5s(Lang.Tip, mes);
+}
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             @Html.HiddenFor(model => model.CreateTime)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.SubInvCode)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.SubInvCode)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.SubInvCode)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.SubInvName)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.SubInvName)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.SubInvName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.InvCode)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.InvCode)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.InvCode)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Status)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Status)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Status)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Remark)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Remark)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CreatePerson)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.CreatePerson)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.CreatePerson)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ModifyPerson)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ModifyPerson)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ModifyPerson)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ModifyTime)：
+            </th>
+            <td >
+               @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
+        </tr>
+    </tbody>
+</table>
+}
+
