@@ -79,9 +79,9 @@
                 { field: 'Status', title: '状态', width: 80,sortable:true },
                 { field: 'Remark', title: '说明', width: 80,sortable:true },
                 { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
-                { field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
-                { field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
-                { field: 'ModifyTime', title: '修改时间', width: 80,sortable:true }
+                //{ field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
+                //{ field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
+                //{ field: 'ModifyTime', title: '修改时间', width: 80,sortable:true }
             ]]
         });
     });
@@ -100,12 +100,12 @@
     }
     $(function () {
         $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', 400, 330, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 330, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
         });
         $("#btnDetails").click(function () {

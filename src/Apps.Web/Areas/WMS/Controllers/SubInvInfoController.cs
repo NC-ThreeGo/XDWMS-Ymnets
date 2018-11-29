@@ -48,7 +48,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_SubInvInfoModel model)
         {
             model.Id = 0;
-            model.CreateTime = ResultHelper.NowTime;
+            model.CreateTime = ResultHelper.NowTime;            
+            model.CreatePerson = GetUserId();
             if (model != null && ModelState.IsValid)
             {
 
@@ -83,6 +84,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public JsonResult Edit(WMS_SubInvInfoModel model)
         {
+            model.ModifyTime = ResultHelper.NowTime;
+            model.ModifyPerson = GetUserId();
             if (model != null && ModelState.IsValid)
             {
 

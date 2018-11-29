@@ -133,11 +133,15 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.Status)：
             </th>
             <td>
-                @Html.EditorFor(model => model.Status)
+                @* @Html.EditorFor(model => model.Status)*@
+                <select id="Status" name="Status">
+                    <option value="有效">有效</option>
+                    <option value="无效">无效</option>
+                </select>
             </td>
             <td>@Html.ValidationMessageFor(model => model.Status)</td>
         </tr>
-        <tr>
+        @*<tr>
             <th>
                 @Html.LabelFor(model => model.CreatePerson)：
             </th>
@@ -163,7 +167,7 @@ $.messageBox5s(Lang.Tip, mes);
                @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
             </td>
             <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
-        </tr>
+        </tr>*@
     </tbody>
 </table>
 }
