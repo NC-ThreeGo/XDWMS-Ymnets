@@ -41,11 +41,19 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetListByCode(GridPager pager, string partCode, string partName)
         {
-            List<WMS_PartModel> list = m_BLL.GetList(ref pager, partCode, partName);
-            GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
-            grs.rows = list;
-            grs.total = pager.totalRows;
-            return Json(grs);
+            try
+            {
+                //List<WMS_PartModel> list = m_BLL.GetList(ref pager, partCode, partName);
+                List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "PartCode.Contains(\"" + partCode + "\") && PartName.Contains(\"" + partName + "\")");
+                GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
+                grs.rows = list;
+                grs.total = pager.totalRows;
+                return Json(grs);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         #region 创建

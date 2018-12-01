@@ -16,6 +16,8 @@ namespace Apps.IBLL
         /// <param name="queryStr"></param>
         /// <returns></returns>
         List<T> GetList(ref GridPager pager, string queryStr);
+
+
         /// <summary>
         /// 根据用户获取数据
         /// </summary>

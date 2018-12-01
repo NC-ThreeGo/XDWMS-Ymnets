@@ -21,5 +21,13 @@ namespace Apps.IBLL.WMS
          void AdditionalCheckExcelData(WMS_PartModel model);
 
         List<WMS_PartModel> GetList(ref GridPager pager, string partCode, string partName);
+
+        /// <summary>
+        /// 根据where字符串获取列表数据
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="whereStr"></param>
+        /// <returns></returns>
+        List<WMS_PartModel> GetListByWhere(ref GridPager pager, string where);
     }
 }
