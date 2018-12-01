@@ -14,6 +14,11 @@ namespace Apps.Models
     
     public partial class WMS_Part
     {
+        public WMS_Part()
+        {
+            this.WMS_PO = new HashSet<WMS_PO>();
+        }
+    
         public int Id { get; set; }
         public string PartCode { get; set; }
         public string PartName { get; set; }
@@ -28,5 +33,7 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+    
+        public virtual ICollection<WMS_PO> WMS_PO { get; set; }
     }
 }

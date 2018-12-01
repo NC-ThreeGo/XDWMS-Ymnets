@@ -4,7 +4,7 @@
 @using Apps.Models.Sys;
 @using Apps.Locale;
 @{
-    ViewBag.Title = "WMS_SubInvInfo";
+    ViewBag.Title = "WMS_PO";
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
@@ -68,13 +68,22 @@
             onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
             },
             columns: [[
-                { field: 'Id', title: '库位ID', width: 80,hidden:true },
-                { field: 'SubInvCode', title: '库位编码', width: 80,sortable:true },
-                { field: 'SubInvName', title: '库位名称', width: 80,sortable:true },
-                { field: 'InvName', title: '所属库房', width: 80,sortable:true },
+                { field: 'Id', title: '采购订单ID', width: 80,hidden:true },
+                { field: 'PO', title: '采购订单', width: 80,sortable:true },
+                { field: 'PODate', title: '采购日期', width: 80,sortable:true },
+                { field: 'SupplierId', title: '供应商编码', width: 80,sortable:true },
+                { field: 'PartId', title: '物料编码', width: 80,sortable:true },
+                { field: 'QTY', title: '数量', width: 80,sortable:true },
+                { field: 'PlanDate', title: '计划到货日期', width: 80,sortable:true },
+                { field: 'POType', title: '采购订单类型', width: 80,sortable:true },
                 { field: 'Status', title: '状态', width: 80,sortable:true },
                 { field: 'Remark', title: '说明', width: 80,sortable:true },
-                { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
+                //{ field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
+                //{ field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
+                //{ field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
+                //{ field: 'Attr4', title: 'Attr4', width: 80,sortable:true },
+                //{ field: 'Attr5', title: 'Attr5', width: 80,sortable:true },
+                //{ field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
                 //{ field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
                 //{ field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
                 //{ field: 'ModifyTime', title: '修改时间', width: 80,sortable:true }
@@ -96,18 +105,18 @@
     }
     $(function () {
         $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 400, 230, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 230, 'fa fa-pencil');
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 230, 'fa fa-list');
+                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
@@ -159,7 +168,7 @@
             hideLoading();
             $.messageBox5s('提示', data.message);
             $('#importMessage').html(data.message);
-            $('#importResultFile').attr('href', data.value);
+            $('#importResultFile').attr('href', data.value); 
         }, "json");
     }
 </script>

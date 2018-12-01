@@ -361,6 +361,7 @@
     <Compile Include="Areas\WMS\Controllers\InvInfoController.cs" />
     <Compile Include="Areas\WMS\Controllers\LineController.cs" />
     <Compile Include="Areas\WMS\Controllers\PartController.cs" />
+    <Compile Include="Areas\WMS\Controllers\POController.cs" />
     <Compile Include="Areas\WMS\Controllers\SubInvInfoController.cs" />
     <Compile Include="Areas\WMS\Controllers\SupplierController.cs" />
     <Compile Include="Areas\WMS\WMSAreaRegistration.cs" />
@@ -777,6 +778,9 @@
     <Content Include="Areas\WMS\Views\SubInvInfo\Create.cshtml" />
     <Content Include="Areas\WMS\Views\SubInvInfo\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\SubInvInfo\Index.cshtml" />
+    <Content Include="Areas\WMS\Views\PO\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\PO\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\PO\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

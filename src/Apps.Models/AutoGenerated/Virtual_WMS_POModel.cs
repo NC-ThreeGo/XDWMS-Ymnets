@@ -13,24 +13,42 @@ using System.ComponentModel.DataAnnotations;
 namespace Apps.Models.WMS
 {
 
-	public partial class WMS_SubInvInfoModel:Virtual_WMS_SubInvInfoModel
+	public partial class WMS_POModel:Virtual_WMS_POModel
 	{
 		
 	}
-	public class Virtual_WMS_SubInvInfoModel
+	public class Virtual_WMS_POModel
 	{
-		[Display(Name = "库位ID")]
+		[Display(Name = "采购订单ID")]
 		public virtual int Id { get; set; }
-		[Display(Name = "库位编码")]
-		public virtual string SubInvCode { get; set; }
-		[Display(Name = "库位名称")]
-		public virtual string SubInvName { get; set; }
-		[Display(Name = "所属库房")]
-		public virtual int InvId { get; set; }
+		[Display(Name = "采购订单")]
+		public virtual string PO { get; set; }
+		[Display(Name = "采购日期")]
+		public virtual string PODate { get; set; }
+		[Display(Name = "供应商编码")]
+		public virtual int SupplierId { get; set; }
+		[Display(Name = "物料编码")]
+		public virtual int PartId { get; set; }
+		[Display(Name = "数量")]
+		public virtual decimal QTY { get; set; }
+		[Display(Name = "计划到货日期")]
+		public virtual string PlanDate { get; set; }
+		[Display(Name = "采购订单类型")]
+		public virtual string POType { get; set; }
 		[Display(Name = "状态")]
 		public virtual string Status { get; set; }
 		[Display(Name = "说明")]
 		public virtual string Remark { get; set; }
+		[Display(Name = "未设置")]
+		public virtual string Attr1 { get; set; }
+		[Display(Name = "未设置")]
+		public virtual string Attr2 { get; set; }
+		[Display(Name = "未设置")]
+		public virtual string Attr3 { get; set; }
+		[Display(Name = "未设置")]
+		public virtual string Attr4 { get; set; }
+		[Display(Name = "未设置")]
+		public virtual string Attr5 { get; set; }
 		[Display(Name = "创建人")]
 		public virtual string CreatePerson { get; set; }
 		[Display(Name = "创建时间")]
