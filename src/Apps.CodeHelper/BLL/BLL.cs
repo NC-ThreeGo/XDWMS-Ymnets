@@ -200,7 +200,7 @@ namespace Apps.CodeHelper
             sb.Append("\t\t\t\t\t\t\t\t//执行额外的数据校验\r\n");
             sb.Append("\t\t\t\t\t\t\t\ttry\r\n");
             sb.Append("\t\t\t\t\t\t\t\t{\r\n");
-            sb.Append("\t\t\t\t\t\t\t\t\tAdditionalCheckExcelData(model);\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t\tAdditionalCheckExcelData(ref model);\r\n");
             sb.Append("\t\t\t\t\t\t\t\t}\r\n");
             sb.Append("\t\t\t\t\t\t\t\tcatch (Exception ex)\r\n");
             sb.Append("\t\t\t\t\t\t\t\t{\r\n");
@@ -250,7 +250,7 @@ namespace Apps.CodeHelper
             sb.Append("\t\t\t\treturn rtn;\r\n");
             sb.Append("\t\t\t}\r\n");
             sb.Append("\r\n");
-            sb.AppendFormat("\t\tpublic void AdditionalCheckExcelData({0}Model model)\r\n", tableName);
+            sb.AppendFormat("\t\tpublic void AdditionalCheckExcelData(ref {0}Model model)\r\n", tableName);
             sb.Append("\t\t{\r\n");
             sb.Append("\t\t}\r\n");
 

@@ -31,7 +31,7 @@ namespace Apps.CodeHelper
             sb.Append("         /// 对导入进行附加的校验，例如物料编码是否存在等。\r\n");
             sb.Append("         /// </summary>\r\n");
             sb.Append("         /// <param name=\"model\"></param>\r\n");
-            sb.AppendFormat("         void AdditionalCheckExcelData({0}Model model);\r\n", tableName);
+            sb.AppendFormat("         void AdditionalCheckExcelData(ref {0}Model model);\r\n", tableName);
             sb.Append("    }\r\n");
             sb.Append("    \r\n");
             sb.Append("         /// <summary>\r\n");

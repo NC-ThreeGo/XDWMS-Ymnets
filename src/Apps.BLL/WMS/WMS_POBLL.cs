@@ -127,7 +127,7 @@ namespace Apps.BLL.WMS
 								//执行额外的数据校验
 								try
 								{
-									AdditionalCheckExcelData(model);
+									AdditionalCheckExcelData(ref model);
 								}
 								catch (Exception ex)
 								{
@@ -192,7 +192,7 @@ namespace Apps.BLL.WMS
 				return rtn;
 			}
 
-		public void AdditionalCheckExcelData(WMS_POModel model)
+		public void AdditionalCheckExcelData(ref WMS_POModel model)
 		{
             if (model.SupplierId != 2)
             {
