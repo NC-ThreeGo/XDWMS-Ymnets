@@ -8,11 +8,19 @@ using System.IO;
 using LinqToExcel;
 using ClosedXML.Excel;
 using Apps.Models.WMS;
+using Unity.Attributes;
+using Apps.IDAL.WMS;
+using System.Linq.Expressions;
 
 namespace Apps.BLL.WMS
 {
     public  partial class WMS_POBLL
     {
+        [Dependency]
+        public IWMS_PartRepository m_PartRep { get; set; }
+        [Dependency]
+        public IWMS_SupplierRepository m_SupplierRep { get; set; }
+
 
         public override List<WMS_POModel> CreateModelList(ref IQueryable<WMS_PO> queryData)
         {
@@ -65,22 +73,22 @@ namespace Apps.BLL.WMS
 					//对应列头
 					excelFile.AddMapping<WMS_POModel>(x => x.PO, "采购订单");
 					excelFile.AddMapping<WMS_POModel>(x => x.PODate, "采购日期");
-					excelFile.AddMapping<WMS_POModel>(x => x.SupplierId, "供应商编码");
-					excelFile.AddMapping<WMS_POModel>(x => x.PartId, "物料编码");
+					excelFile.AddMapping<WMS_POModel>(x => x.SupplierShortName, "供应商简称");
+					excelFile.AddMapping<WMS_POModel>(x => x.PartCode, "物料编码");
 					excelFile.AddMapping<WMS_POModel>(x => x.QTY, "数量");
 					excelFile.AddMapping<WMS_POModel>(x => x.PlanDate, "计划到货日期");
 					excelFile.AddMapping<WMS_POModel>(x => x.POType, "采购订单类型");
-					excelFile.AddMapping<WMS_POModel>(x => x.Status, "状态");
+					//excelFile.AddMapping<WMS_POModel>(x => x.Status, "状态");
 					excelFile.AddMapping<WMS_POModel>(x => x.Remark, "说明");
-					excelFile.AddMapping<WMS_POModel>(x => x.Attr1, "");
-					excelFile.AddMapping<WMS_POModel>(x => x.Attr2, "");
-					excelFile.AddMapping<WMS_POModel>(x => x.Attr3, "");
-					excelFile.AddMapping<WMS_POModel>(x => x.Attr4, "");
-					excelFile.AddMapping<WMS_POModel>(x => x.Attr5, "");
-					excelFile.AddMapping<WMS_POModel>(x => x.CreatePerson, "创建人");
-					excelFile.AddMapping<WMS_POModel>(x => x.CreateTime, "创建时间");
-					excelFile.AddMapping<WMS_POModel>(x => x.ModifyPerson, "修改人");
-					excelFile.AddMapping<WMS_POModel>(x => x.ModifyTime, "修改时间");
+					//excelFile.AddMapping<WMS_POModel>(x => x.Attr1, "");
+					//excelFile.AddMapping<WMS_POModel>(x => x.Attr2, "");
+					//excelFile.AddMapping<WMS_POModel>(x => x.Attr3, "");
+					//excelFile.AddMapping<WMS_POModel>(x => x.Attr4, "");
+					//excelFile.AddMapping<WMS_POModel>(x => x.Attr5, "");
+					//excelFile.AddMapping<WMS_POModel>(x => x.CreatePerson, "创建人");
+					//excelFile.AddMapping<WMS_POModel>(x => x.CreateTime, "创建时间");
+					//excelFile.AddMapping<WMS_POModel>(x => x.ModifyPerson, "修改人");
+					//excelFile.AddMapping<WMS_POModel>(x => x.ModifyTime, "修改时间");
 
 					//SheetName，第一个Sheet
 					var excelContent = excelFile.Worksheet<WMS_POModel>(0);
@@ -100,28 +108,28 @@ namespace Apps.BLL.WMS
 								model.Id = row.Id;
 								model.PO = row.PO;
 								model.PODate = row.PODate;
-								model.SupplierId = row.SupplierId;
-								model.PartId = row.PartId;
+								model.SupplierShortName = row.SupplierShortName;
+								model.PartCode = row.PartCode;
 								model.QTY = row.QTY;
 								model.PlanDate = row.PlanDate;
 								model.POType = row.POType;
-								model.Status = row.Status;
+								//model.Status = row.Status;
 								model.Remark = row.Remark;
-								model.Attr1 = row.Attr1;
-								model.Attr2 = row.Attr2;
-								model.Attr3 = row.Attr3;
-								model.Attr4 = row.Attr4;
-								model.Attr5 = row.Attr5;
-								model.CreatePerson = row.CreatePerson;
-								model.CreateTime = row.CreateTime;
-								model.ModifyPerson = row.ModifyPerson;
-								model.ModifyTime = row.ModifyTime;
+								//model.Attr1 = row.Attr1;
+								//model.Attr2 = row.Attr2;
+								//model.Attr3 = row.Attr3;
+								//model.Attr4 = row.Attr4;
+								//model.Attr5 = row.Attr5;
+								//model.CreatePerson = row.CreatePerson;
+								//model.CreateTime = row.CreateTime;
+								//model.ModifyPerson = row.ModifyPerson;
+								//model.ModifyTime = row.ModifyTime;
 
 								if (!String.IsNullOrEmpty(errorMessage))
 								{
 									rtn = false;
 									errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-									wws.Cell(rowIndex + 1, 20).Value = errorMessage;
+									wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
 									continue;								}
 								
 								//执行额外的数据校验
@@ -134,7 +142,7 @@ namespace Apps.BLL.WMS
 									rtn = false;
 									errorMessage = ex.Message;
 									errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-									wws.Cell(rowIndex + 1, 20).Value = errorMessage;
+									wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
 									continue;
 								}
 								
@@ -172,7 +180,7 @@ namespace Apps.BLL.WMS
 										db.Entry(entity).State = System.Data.Entity.EntityState.Detached;
 										errorMessage = ex.InnerException.InnerException.Message;
 										errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-										wws.Cell(rowIndex + 1, 20).Value = errorMessage;
+										wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
 								}
 							}
 
@@ -194,11 +202,50 @@ namespace Apps.BLL.WMS
 
 		public void AdditionalCheckExcelData(ref WMS_POModel model)
 		{
-            if (model.SupplierId != 2)
+            //获取物料ID
+            if (!String.IsNullOrEmpty(model.PartCode))
             {
-                throw new Exception("供应商编码不对！");
+                var partCode = model.PartCode;
+                Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
+
+                var part = m_PartRep.GetSingleWhere(exp);
+                if (part == null)
+                {
+                    throw new Exception("物料编码不存在！");
+                }
+                else
+                {
+                    model.PartId = part.Id;
+                }
             }
-		}
+            else
+            {
+                throw new Exception("物料编码不能为空！");
+            }
+
+            //获取代理商ID
+            if (!String.IsNullOrEmpty(model.SupplierShortName))
+            {
+                var supplierShortName = model.SupplierShortName;
+                Expression<Func<WMS_Supplier, bool>> exp = x => x.SupplierShortName == supplierShortName;
+                                
+                var supplier = m_SupplierRep.GetSingleWhere(exp);
+                if (supplier == null)
+                {
+                    throw new Exception("供应商简称不存在！");
+                }
+                else
+                {
+                    model.SupplierId = supplier.Id;
+                }                
+            }
+            else
+            {
+                throw new Exception("供应商简称不能为空！");
+            }
+
+
+        }
     }
  }
 
