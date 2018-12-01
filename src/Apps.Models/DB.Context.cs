@@ -100,8 +100,8 @@ namespace Apps.Models
         public virtual DbSet<WMS_SubInvInfo> WMS_SubInvInfo { get; set; }
         public virtual DbSet<WMS_InvInfo> WMS_InvInfo { get; set; }
         public virtual DbSet<WMS_Part> WMS_Part { get; set; }
-        public virtual DbSet<WMS_PO> WMS_PO { get; set; }
         public virtual DbSet<WMS_Supplier> WMS_Supplier { get; set; }
+        public virtual DbSet<WMS_PO> WMS_PO { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {

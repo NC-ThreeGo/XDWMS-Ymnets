@@ -24,15 +24,15 @@ namespace Apps.Models.WMS
 		[Display(Name = "采购订单")]
 		public virtual string PO { get; set; }
 		[Display(Name = "采购日期")]
-		public virtual string PODate { get; set; }
-		[Display(Name = "供应商编码")]
+		public virtual Nullable<System.DateTime> PODate { get; set; }
+		[Display(Name = "供应商ID")]
 		public virtual int SupplierId { get; set; }
-		[Display(Name = "物料编码")]
+		[Display(Name = "物料ID")]
 		public virtual int PartId { get; set; }
 		[Display(Name = "数量")]
 		public virtual decimal QTY { get; set; }
 		[Display(Name = "计划到货日期")]
-		public virtual string PlanDate { get; set; }
+		public virtual Nullable<System.DateTime> PlanDate { get; set; }
 		[Display(Name = "采购订单类型")]
 		public virtual string POType { get; set; }
 		[Display(Name = "状态")]

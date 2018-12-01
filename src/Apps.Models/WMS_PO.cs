@@ -16,11 +16,11 @@ namespace Apps.Models
     {
         public int Id { get; set; }
         public string PO { get; set; }
-        public string PODate { get; set; }
+        public Nullable<System.DateTime> PODate { get; set; }
         public int SupplierId { get; set; }
         public int PartId { get; set; }
         public decimal QTY { get; set; }
-        public string PlanDate { get; set; }
+        public Nullable<System.DateTime> PlanDate { get; set; }
         public string POType { get; set; }
         public string Status { get; set; }
         public string Remark { get; set; }

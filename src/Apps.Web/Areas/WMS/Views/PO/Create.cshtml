@@ -70,7 +70,8 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.PODate)：
             </th>
             <td>
-                @Html.EditorFor(model => model.PODate)
+                @*@Html.EditorFor(model => model.PODate)*@
+                @Html.TextBoxFor(model => model.PODate, new { @onClick = "WdatePicker()", @class = "Wdate", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
             </td>
             <td>@Html.ValidationMessageFor(model => model.PODate)</td>
         </tr>
@@ -85,7 +86,8 @@ $.messageBox5s(Lang.Tip, mes);
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.PartId)：
+                @*@Html.LabelFor(model => model.PartId)：*@
+                零件代码：
             </th>
             <td>
                 @Html.EditorFor(model => model.PartId)

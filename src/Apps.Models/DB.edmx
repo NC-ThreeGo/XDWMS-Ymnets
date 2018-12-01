@@ -1075,11 +1075,11 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PO" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="PODate" Type="nvarchar" MaxLength="50" />
+          <Property Name="PODate" Type="datetime" />
           <Property Name="SupplierId" Type="int" Nullable="false" />
           <Property Name="PartId" Type="int" Nullable="false" />
           <Property Name="QTY" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="PlanDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="PlanDate" Type="datetime" />
           <Property Name="POType" Type="nvarchar" MaxLength="10" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
           <Property Name="Remark" Type="nvarchar" MaxLength="100" />
@@ -3248,8 +3248,8 @@
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
           </AssociationSet>
           <EntitySet Name="WMS_Part" EntityType="DB.WMS_Part" />
-          <EntitySet Name="WMS_PO" EntityType="DB.WMS_PO" />
           <EntitySet Name="WMS_Supplier" EntityType="DB.WMS_Supplier" />
+          <EntitySet Name="WMS_PO" EntityType="DB.WMS_PO" />
           <AssociationSet Name="FK_WMS_PO_WMS_Part" Association="DB.FK_WMS_PO_WMS_Part">
             <End Role="WMS_Part" EntitySet="WMS_Part" />
             <End Role="WMS_PO" EntitySet="WMS_PO" />
@@ -5642,32 +5642,6 @@
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="WMS_PO" Relationship="DB.FK_WMS_PO_WMS_Part" FromRole="WMS_Part" ToRole="WMS_PO" />
         </EntityType>
-        <EntityType Name="WMS_PO">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PODate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SupplierId" Type="Int32" Nullable="false" />
-          <Property Name="PartId" Type="Int32" Nullable="false" />
-          <Property Name="QTY" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
-          <Property Name="PlanDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="POType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Attr1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Attr2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Attr3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Attr4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Attr5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_PO_WMS_Part" FromRole="WMS_PO" ToRole="WMS_Part" />
-          <NavigationProperty Name="WMS_Supplier" Relationship="DB.FK_WMS_PO_WMS_Supplier" FromRole="WMS_PO" ToRole="WMS_Supplier" />
-        </EntityType>
         <EntityType Name="WMS_Supplier">
           <Key>
             <PropertyRef Name="Id" />
@@ -5687,6 +5661,32 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="WMS_PO" Relationship="DB.FK_WMS_PO_WMS_Supplier" FromRole="WMS_Supplier" ToRole="WMS_PO" />
+        </EntityType>
+        <EntityType Name="WMS_PO">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PODate" Type="DateTime" Precision="3" />
+          <Property Name="SupplierId" Type="Int32" Nullable="false" />
+          <Property Name="PartId" Type="Int32" Nullable="false" />
+          <Property Name="QTY" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+          <Property Name="PlanDate" Type="DateTime" Precision="3" />
+          <Property Name="POType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Attr1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_PO_WMS_Part" FromRole="WMS_PO" ToRole="WMS_Part" />
+          <NavigationProperty Name="WMS_Supplier" Relationship="DB.FK_WMS_PO_WMS_Supplier" FromRole="WMS_PO" ToRole="WMS_Supplier" />
         </EntityType>
         <Association Name="FK_WMS_PO_WMS_Part">
           <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="1" />
@@ -7137,6 +7137,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="WMS_Supplier">
+            <EntityTypeMapping TypeName="DB.WMS_Supplier">
+              <MappingFragment StoreEntitySet="WMS_Supplier">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LinkManAddress" ColumnName="LinkManAddress" />
+                <ScalarProperty Name="LinkManTel" ColumnName="LinkManTel" />
+                <ScalarProperty Name="LinkMan" ColumnName="LinkMan" />
+                <ScalarProperty Name="SupplierType" ColumnName="SupplierType" />
+                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
+                <ScalarProperty Name="SupplierShortName" ColumnName="SupplierShortName" />
+                <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="WMS_PO">
             <EntityTypeMapping TypeName="DB.WMS_PO">
               <MappingFragment StoreEntitySet="WMS_PO">
@@ -7158,26 +7178,6 @@
                 <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
                 <ScalarProperty Name="PODate" ColumnName="PODate" />
                 <ScalarProperty Name="PO" ColumnName="PO" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="WMS_Supplier">
-            <EntityTypeMapping TypeName="DB.WMS_Supplier">
-              <MappingFragment StoreEntitySet="WMS_Supplier">
-                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
-                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="LinkManAddress" ColumnName="LinkManAddress" />
-                <ScalarProperty Name="LinkManTel" ColumnName="LinkManTel" />
-                <ScalarProperty Name="LinkMan" ColumnName="LinkMan" />
-                <ScalarProperty Name="SupplierType" ColumnName="SupplierType" />
-                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
-                <ScalarProperty Name="SupplierShortName" ColumnName="SupplierShortName" />
-                <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

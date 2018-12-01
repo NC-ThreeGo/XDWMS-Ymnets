@@ -151,8 +151,8 @@
         <EntityTypeShape EntityType="DB.WMS_InvInfo" Width="1.5" PointX="12.375" PointY="21.75" />
         <AssociationConnector Association="DB.FK_WMS_SubInvInfo_WMS_InvInfo" />
         <EntityTypeShape EntityType="DB.WMS_Part" Width="1.5" PointX="0.75" PointY="20.625" />
-        <EntityTypeShape EntityType="DB.WMS_PO" Width="1.5" PointX="3" PointY="20.125" />
         <EntityTypeShape EntityType="DB.WMS_Supplier" Width="1.5" PointX="0.75" PointY="25.625" />
+        <EntityTypeShape EntityType="DB.WMS_PO" Width="1.5" PointX="3" PointY="20.625" />
         <AssociationConnector Association="DB.FK_WMS_PO_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_PO_WMS_Supplier" />
         </Diagram>

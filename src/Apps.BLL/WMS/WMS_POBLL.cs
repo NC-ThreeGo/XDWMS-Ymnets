@@ -194,6 +194,8 @@ namespace Apps.BLL.WMS
 
 		public void AdditionalCheckExcelData(WMS_POModel model)
 		{
+            if (model.SupplierId != 2)
+            { throw new Exception("供应商错误"); }
 		}
     }
  }
