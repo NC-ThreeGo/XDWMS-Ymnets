@@ -20,14 +20,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [Dependency]
         public IWMS_PartBLL m_BLL { get; set; }
         ValidationErrors errors = new ValidationErrors();
-        
+
         [SupportFilter]
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        [SupportFilter(ActionName="Index1")]
+        [SupportFilter(ActionName = "Index1")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
             List<WMS_PartModel> list = m_BLL.GetList(ref pager, queryStr);
@@ -41,19 +41,12 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetListByCode(GridPager pager, string partCode, string partName)
         {
-            try
-            {
-                //List<WMS_PartModel> list = m_BLL.GetList(ref pager, partCode, partName);
-                List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "PartCode.Contains(\"" + partCode + "\") && PartName.Contains(\"" + partName + "\")");
-                GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
-                grs.rows = list;
-                grs.total = pager.totalRows;
-                return Json(grs);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            //List<WMS_PartModel> list = m_BLL.GetList(ref pager, partCode, partName);
+            List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "PartCode.Contains(\"" + partCode + "\") && PartName.Contains(\"" + partName + "\")");
+            GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
         }
 
         #region 创建
@@ -143,7 +136,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Delete(long id)
         {
-            if(id!=0)
+            if (id != 0)
             {
                 if (m_BLL.Delete(ref errors, id))
                 {
@@ -204,68 +197,68 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             List<WMS_PartModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
             JArray jObjects = new JArray();
-                foreach (var item in list)
-                {
-                    var jo = new JObject();
-                    jo.Add("物料ID", item.Id);
-                    jo.Add("物料编码", item.PartCode);
-                    jo.Add("物料名称", item.PartName);
-                    jo.Add("物料类型", item.PartType);
-                    jo.Add("客户编码", item.CustomerCode);
-                    jo.Add("物流号", item.LogisticsCode);
-                    jo.Add("额外信息编码", item.OtherCode);
-                    jo.Add("每箱数量", item.PCS);
-                    jo.Add("保管员", item.StoreMan);
-                    jo.Add("物料状态", item.Status);
-                    jo.Add("创建人", item.CreatePerson);
-                    jo.Add("创建时间", item.CreateTime);
-                    jo.Add("修改人", item.ModifyPerson);
-                    jo.Add("修改时间", item.ModifyTime);
-                    jObjects.Add(jo);
-                }
-                var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
-                var exportFileName = string.Concat(
-                    RouteData.Values["controller"].ToString() + "_",
-                    DateTime.Now.ToString("yyyyMMddHHmmss"),
-                    ".xlsx");
-                return new ExportExcelResult
-                {
-                    SheetName = "Sheet1",
-                    FileName = exportFileName,
-                    ExportData = dt
-                };
+            foreach (var item in list)
+            {
+                var jo = new JObject();
+                jo.Add("物料ID", item.Id);
+                jo.Add("物料编码", item.PartCode);
+                jo.Add("物料名称", item.PartName);
+                jo.Add("物料类型", item.PartType);
+                jo.Add("客户编码", item.CustomerCode);
+                jo.Add("物流号", item.LogisticsCode);
+                jo.Add("额外信息编码", item.OtherCode);
+                jo.Add("每箱数量", item.PCS);
+                jo.Add("保管员", item.StoreMan);
+                jo.Add("物料状态", item.Status);
+                jo.Add("创建人", item.CreatePerson);
+                jo.Add("创建时间", item.CreateTime);
+                jo.Add("修改人", item.ModifyPerson);
+                jo.Add("修改时间", item.ModifyTime);
+                jObjects.Add(jo);
             }
+            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+            var exportFileName = string.Concat(
+                RouteData.Values["controller"].ToString() + "_",
+                DateTime.Now.ToString("yyyyMMddHHmmss"),
+                ".xlsx");
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
         [SupportFilter(ActionName = "Export")]
         public ActionResult ExportTemplate()
         {
             JArray jObjects = new JArray();
             var jo = new JObject();
-              jo.Add("物料ID", "");
-              jo.Add("物料编码", "");
-              jo.Add("物料名称", "");
-              jo.Add("物料类型", "");
-              jo.Add("客户编码", "");
-              jo.Add("物流号", "");
-              jo.Add("额外信息编码", "");
-              jo.Add("每箱数量", "");
-              jo.Add("保管员", "");
-              jo.Add("物料状态", "");
-              jo.Add("创建人", "");
-              jo.Add("创建时间", "");
-              jo.Add("修改人", "");
-              jo.Add("修改时间", "");
+            jo.Add("物料ID", "");
+            jo.Add("物料编码", "");
+            jo.Add("物料名称", "");
+            jo.Add("物料类型", "");
+            jo.Add("客户编码", "");
+            jo.Add("物流号", "");
+            jo.Add("额外信息编码", "");
+            jo.Add("每箱数量", "");
+            jo.Add("保管员", "");
+            jo.Add("物料状态", "");
+            jo.Add("创建人", "");
+            jo.Add("创建时间", "");
+            jo.Add("修改人", "");
+            jo.Add("修改时间", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
             var exportFileName = string.Concat(
                     RouteData.Values["controller"].ToString() + "_Template",
                     ".xlsx");
-                return new ExportExcelResult
-                {
-                    SheetName = "Sheet1",
-                    FileName = exportFileName,
-                    ExportData = dt
-                };
-            }
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
         #endregion
     }
 }

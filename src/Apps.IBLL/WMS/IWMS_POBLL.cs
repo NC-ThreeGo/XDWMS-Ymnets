@@ -17,6 +17,6 @@ namespace Apps.IBLL.WMS
          /// 对导入进行附加的校验，例如物料编码是否存在等。
          /// </summary>
          /// <param name="model"></param>
-         void AdditionalCheckExcelData(WMS_POModel model);
+         void AdditionalCheckExcelData(ref WMS_POModel model);
     }
 }
