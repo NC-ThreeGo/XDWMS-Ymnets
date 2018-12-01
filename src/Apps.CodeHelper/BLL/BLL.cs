@@ -29,6 +29,7 @@ namespace Apps.CodeHelper
             sb.Append("using System.Linq;\r\n");
             sb.Append("using System.Collections.Generic;\r\n");
             sb.Append("using System.Linq;\r\n");
+            sb.Append("using System.Linq.Dynamic.Core;\r\n");
             sb.Append("using System;\r\n");
             sb.Append("using System.IO;\r\n");
             sb.Append("using LinqToExcel;\r\n");
@@ -253,5 +254,20 @@ namespace Apps.CodeHelper
 
             #endregion
         }
+
+        #region 根据where字符串获取列表数据
+        public static void GetListByWhere(string tableName, ref StringBuilder sb)
+        {
+            sb.AppendFormat("\t\tpublic List<{0}Model> GetListByWhere(ref GridPager pager, string where)\r\n", tableName);
+            sb.Append("\t\t{\r\n");
+            sb.AppendFormat("\t\t\tIQueryable<{0}> queryData = null;\r\n", tableName);
+            sb.Append("\t\t\tqueryData = m_Rep.GetList().Where(where);\r\n");
+            sb.Append("\t\t\tpager.totalRows = queryData.Count();\r\n");
+            sb.Append("\t\t\t//排序\r\n");
+            sb.Append("\t\t\tqueryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);\r\n");
+            sb.Append("\t\t\treturn CreateModelList(ref queryData);\r\n");
+            sb.Append("\t\t}\r\n");
+        }
+        #endregion
     }
 }
