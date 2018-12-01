@@ -27,7 +27,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             return View();
         }
         [HttpPost]
-        [SupportFilter(ActionName="Index")]
+        [SupportFilter(ActionName="Index1")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
             List<WMS_PartModel> list = m_BLL.GetList(ref pager, queryStr);
@@ -36,6 +36,18 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetListByCode(GridPager pager, string partCode, string partName)
+        {
+            List<WMS_PartModel> list = m_BLL.GetList(ref pager, partCode, partName);
+            GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+
         #region 创建
         [SupportFilter]
         public ActionResult Create()

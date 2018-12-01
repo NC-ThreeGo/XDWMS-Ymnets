@@ -538,6 +538,7 @@ namespace Apps.CodeHelper
             {
                 sb.AppendFormat("              jo.Add(\"{0}\", \"\");\r\n", String.IsNullOrEmpty(field.remark) ? field.name : field.remark);
             }
+            sb.Append("            jo.Add(\"导入的错误信息\", \"\");\r\n");
             sb.Append("            jObjects.Add(jo);\r\n");
             sb.Append("            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());\r\n");
 

@@ -229,6 +229,7 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("创建时间", "");
               jo.Add("修改人", "");
               jo.Add("修改时间", "");
+                jo.Add("导入的错误信息", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
             var exportFileName = string.Concat(

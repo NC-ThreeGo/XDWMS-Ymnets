@@ -320,6 +320,7 @@
     <Compile Include="WC\IWC_MessageResponseBLL.cs" />
     <Compile Include="WC\IWC_OfficalAccountsBLL.cs" />
     <Compile Include="WC\IWC_UserBLL.cs" />
+    <Compile Include="WMS\IWMS_PartBLL.cs" />
     <Compile Include="WMS\IWMS_CustomerBLL.cs" />
     <Compile Include="WMS\IWMS_InvInfoBLL.cs" />
     <Compile Include="WMS\IWMS_SubInvInfoBLL.cs" />

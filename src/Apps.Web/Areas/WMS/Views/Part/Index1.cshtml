@@ -28,12 +28,11 @@
 </form>
 </div>
 <div class="mvctool">
-    物料编码:<input id="txtPartCode" type="text" class="searchText" />
-    物料名称:<input id="txtPartName" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+    <input id="txtQuery" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
@@ -45,7 +44,7 @@
 <script type="text/javascript">
     $(function () {
         $('#List').datagrid({
-            url: '@Url.Action("GetListByCode")',
+            url: '@Url.Action("GetList")',
             width:SetGridWidthSub(10),
             methord: 'post',
             height: SetGridHeightSub(45),
@@ -109,16 +108,11 @@
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
-            var partCode = $("#txtPartCode").val();
-            var partName = $("#txtPartName").val();
-            if (partCode == null) {
-                partCode = "";
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
             }
-            if (partName == null)
-            {
-                partName = "";
-            }
-            $("#List").datagrid("load", { partCode: partCode, partName: partName });
+            $("#List").datagrid("load", { queryStr: queryStr });
 
         });
         $("#btnDelete").click(function () {

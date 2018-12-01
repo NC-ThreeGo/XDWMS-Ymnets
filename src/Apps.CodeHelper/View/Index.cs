@@ -353,7 +353,7 @@ namespace Apps.CodeHelper
             sb.Append("            var row = $('#List').datagrid('getSelected');\r\n");
             sb.Append("            if (row != null) {\r\n");
             sb.Append("                $.modalWindow(Lang.Edit, '@Url.Action(\"Edit\")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');\r\n");
-            sb.Append("            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }\r\n");
+            sb.Append("            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }\r\n");
             sb.Append("        });\r\n");
             sb.Append("        $(\"#btnDetails\").click(function () {\r\n");
             sb.Append("            var row = $('#List').datagrid('getSelected');\r\n");

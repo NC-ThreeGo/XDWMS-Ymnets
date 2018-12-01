@@ -895,7 +895,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -1035,7 +1035,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="InvCode" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="InvName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Remark" Type="nchar" MaxLength="10" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="50" />
           <Property Name="Status" Type="nchar" MaxLength="10" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
@@ -3170,8 +3170,8 @@
           <EntitySet Name="WMS_Supplier" EntityType="DB.WMS_Supplier" />
           <EntitySet Name="WMS_Customer" EntityType="DB.WMS_Customer" />
           <EntitySet Name="SysImportExcelLog" EntityType="DB.SysImportExcelLog" />
-          <EntitySet Name="WMS_InvInfo" EntityType="DB.WMS_InvInfo" />
           <EntitySet Name="WMS_SubInvInfo" EntityType="DB.WMS_SubInvInfo" />
+          <EntitySet Name="WMS_InvInfo" EntityType="DB.WMS_InvInfo" />
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5531,20 +5531,6 @@
           <Property Name="ImportStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="WMS_InvInfo">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="InvCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="InvName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Remark" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="WMS_SubInvInfo">
           <Key>
             <PropertyRef Name="Id" />
@@ -5555,6 +5541,20 @@
           <Property Name="InvCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="WMS_InvInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="InvName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -6974,21 +6974,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="WMS_InvInfo">
-            <EntityTypeMapping TypeName="DB.WMS_InvInfo">
-              <MappingFragment StoreEntitySet="WMS_InvInfo">
-                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
-                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="InvName" ColumnName="InvName" />
-                <ScalarProperty Name="InvCode" ColumnName="InvCode" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="WMS_SubInvInfo">
             <EntityTypeMapping TypeName="DB.WMS_SubInvInfo">
               <MappingFragment StoreEntitySet="WMS_SubInvInfo">
@@ -7001,6 +6986,21 @@
                 <ScalarProperty Name="InvCode" ColumnName="InvCode" />
                 <ScalarProperty Name="SubInvName" ColumnName="SubInvName" />
                 <ScalarProperty Name="SubInvCode" ColumnName="SubInvCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WMS_InvInfo">
+            <EntityTypeMapping TypeName="DB.WMS_InvInfo">
+              <MappingFragment StoreEntitySet="WMS_InvInfo">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="InvName" ColumnName="InvName" />
+                <ScalarProperty Name="InvCode" ColumnName="InvCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

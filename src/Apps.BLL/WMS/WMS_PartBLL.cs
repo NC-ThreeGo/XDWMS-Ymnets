@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Apps.Models.WMS;
+using System.IO;
+using LinqToExcel;
+using ClosedXML.Excel;
 
 namespace Apps.BLL.WMS
 {
@@ -33,6 +36,29 @@ namespace Apps.BLL.WMS
                                                   StoreMan = r.StoreMan,
                                               }).ToList();
             return modelList;
+        }
+
+        public bool ImportExcelData(string filePath, ref ValidationErrors errors)
+        {
+            bool rtn = true;
+
+            return rtn;
+        }
+
+        public void AdditionalCheckExcelData(WMS_PartModel model)
+        {
+        }
+
+        public List<WMS_PartModel> GetList(ref GridPager pager, string partCode, string partName)
+        {
+            IQueryable<WMS_Part> queryData = null;
+            string code = partCode ?? "";
+            string name = partName ?? "";
+            queryData = m_Rep.GetList().Where(x => x.PartCode.Contains(code) && x.PartName.Contains(name));
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return CreateModelList(ref queryData);
         }
     }
  }
