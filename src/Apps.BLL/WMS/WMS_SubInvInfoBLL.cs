@@ -30,6 +30,9 @@ namespace Apps.BLL.WMS
                                                   Status = r.Status,
                                                   SubInvCode = r.SubInvCode,
                                                   SubInvName = r.SubInvName,
+
+                                                  InvCode = r.WMS_InvInfo.InvCode,
+                                                  InvName = r.WMS_InvInfo.InvName
                                               }).ToList();
             return modelList;
         }

@@ -79,7 +79,7 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.InvId)：
             </th>
             <td>
-                @Html.EditorFor(model => model.InvId)
+                @Html.DropDownListFor(model => model.InvId, ViewBag.Inv as SelectList)
             </td>
             <td>@Html.ValidationMessageFor(model => model.InvId)</td>
         </tr>

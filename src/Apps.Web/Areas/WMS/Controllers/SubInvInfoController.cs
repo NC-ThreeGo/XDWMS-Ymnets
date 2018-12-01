@@ -20,6 +20,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [Dependency]
         public IWMS_SubInvInfoBLL m_BLL { get; set; }
         ValidationErrors errors = new ValidationErrors();
+        [Dependency]
+        public IWMS_InvInfoBLL InvInfoBll { get; set; }
         
         [SupportFilter]
         public ActionResult Index()
@@ -40,6 +42,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Create()
         {
+            ViewBag.Inv = new SelectList(InvInfoBll.GetList(ref setNoPagerAscById, ""), "Id", "InvName");
             return View();
         }
 
