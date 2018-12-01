@@ -126,6 +126,8 @@ namespace Apps.CodeHelper
             sb.Append("\r\n");
 
             CodeFrom.GetImportExcelCode(tableName, comFields, ref sb);
+            sb.Append("\r\n");
+            CodeFrom.GetListByWhere(tableName, ref sb);
 
             sb.Append("    }\r\n");
             sb.Append(" }\r\n");
