@@ -12,28 +12,29 @@ namespace Apps.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class WMS_Supplier
+    public partial class WMS_PO
     {
-        public WMS_Supplier()
-        {
-            this.WMS_PO = new HashSet<WMS_PO>();
-        }
-    
         public int Id { get; set; }
-        public string SupplierCode { get; set; }
-        public string SupplierShortName { get; set; }
-        public string SupplierName { get; set; }
-        public string SupplierType { get; set; }
-        public string LinkMan { get; set; }
-        public string LinkManTel { get; set; }
-        public string LinkManAddress { get; set; }
+        public string PO { get; set; }
+        public string PODate { get; set; }
+        public int SupplierId { get; set; }
+        public int PartId { get; set; }
+        public decimal QTY { get; set; }
+        public string PlanDate { get; set; }
+        public string POType { get; set; }
         public string Status { get; set; }
         public string Remark { get; set; }
+        public string Attr1 { get; set; }
+        public string Attr2 { get; set; }
+        public string Attr3 { get; set; }
+        public string Attr4 { get; set; }
+        public string Attr5 { get; set; }
         public string CreatePerson { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
     
-        public virtual ICollection<WMS_PO> WMS_PO { get; set; }
+        public virtual WMS_Part WMS_Part { get; set; }
+        public virtual WMS_Supplier WMS_Supplier { get; set; }
     }
 }

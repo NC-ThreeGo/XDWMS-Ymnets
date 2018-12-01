@@ -145,13 +145,16 @@
         <EntityTypeShape EntityType="DB.WMS_Header" Width="1.5" PointX="17.375" PointY="4.875" />
         <EntityTypeShape EntityType="DB.WMS_Line" Width="1.5" PointX="19.625" PointY="4.875" />
         <AssociationConnector Association="DB.FK_WMS_Line_WMS_Header1" />
-        <EntityTypeShape EntityType="DB.WMS_Part" Width="1.5" PointX="17.375" PointY="7.75" />
-        <EntityTypeShape EntityType="DB.WMS_Supplier" Width="1.5" PointX="0.75" PointY="17.75" />
         <EntityTypeShape EntityType="DB.WMS_Customer" Width="1.5" PointX="17.375" PointY="12.75" />
         <EntityTypeShape EntityType="DB.SysImportExcelLog" Width="1.5" PointX="10.375" PointY="17.75" />
         <EntityTypeShape EntityType="DB.WMS_SubInvInfo" Width="1.5" PointX="14.625" PointY="26.625" />
         <EntityTypeShape EntityType="DB.WMS_InvInfo" Width="1.5" PointX="12.375" PointY="21.75" />
         <AssociationConnector Association="DB.FK_WMS_SubInvInfo_WMS_InvInfo" />
+        <EntityTypeShape EntityType="DB.WMS_Part" Width="1.5" PointX="0.75" PointY="20.625" />
+        <EntityTypeShape EntityType="DB.WMS_PO" Width="1.5" PointX="3" PointY="20.125" />
+        <EntityTypeShape EntityType="DB.WMS_Supplier" Width="1.5" PointX="0.75" PointY="25.625" />
+        <AssociationConnector Association="DB.FK_WMS_PO_WMS_Part" />
+        <AssociationConnector Association="DB.FK_WMS_PO_WMS_Supplier" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
