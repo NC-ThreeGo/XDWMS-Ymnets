@@ -193,7 +193,7 @@ namespace Apps.CodeHelper
             sb.Append("\t\t\t\t\t\t\t\t{\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\trtn = false;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\terrors.Add(string.Format(\"第 {0} 列发现错误：{1}{2}\", rowIndex, errorMessage, \"<br/>\"));\r\n");
-            sb.AppendFormat("\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, {0}).Value = errorMessage;\r\n", colCount.ToString());
+            sb.Append("\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, excelFile.GetColumnNames(\"Sheet1\").Count()).Value = errorMessage;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\tcontinue;");
             sb.Append("\t\t\t\t\t\t\t\t}\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\r\n");
@@ -207,7 +207,7 @@ namespace Apps.CodeHelper
             sb.Append("\t\t\t\t\t\t\t\t\trtn = false;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\terrorMessage = ex.Message;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\terrors.Add(string.Format(\"第 {0} 列发现错误：{1}{2}\", rowIndex, errorMessage, \"<br/>\"));\r\n");
-            sb.AppendFormat("\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, {0}).Value = errorMessage;\r\n", colCount.ToString());
+            sb.Append("\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, excelFile.GetColumnNames(\"Sheet1\").Count()).Value = errorMessage;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\tcontinue;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t}\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\r\n");
@@ -230,7 +230,7 @@ namespace Apps.CodeHelper
             sb.Append("\t\t\t\t\t\t\t\t\t\tdb.Entry(entity).State = System.Data.Entity.EntityState.Detached;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\t\terrorMessage = ex.InnerException.InnerException.Message;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t\t\terrors.Add(string.Format(\"第 {0} 列发现错误：{1}{2}\", rowIndex, errorMessage, \"<br/>\"));\r\n");
-            sb.AppendFormat("\t\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, {0}).Value = errorMessage;\r\n", colCount.ToString());
+            sb.Append("\t\t\t\t\t\t\t\t\t\twws.Cell(rowIndex + 1, excelFile.GetColumnNames(\"Sheet1\").Count()).Value = errorMessage;\r\n");
             sb.Append("\t\t\t\t\t\t\t\t}\r\n");
             sb.Append("\t\t\t\t\t\t\t}\r\n");
             sb.Append("\r\n");
