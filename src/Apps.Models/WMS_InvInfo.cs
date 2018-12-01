@@ -14,6 +14,11 @@ namespace Apps.Models
     
     public partial class WMS_InvInfo
     {
+        public WMS_InvInfo()
+        {
+            this.WMS_SubInvInfo = new HashSet<WMS_SubInvInfo>();
+        }
+    
         public int Id { get; set; }
         public string InvCode { get; set; }
         public string InvName { get; set; }
@@ -23,5 +28,7 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+    
+        public virtual ICollection<WMS_SubInvInfo> WMS_SubInvInfo { get; set; }
     }
 }

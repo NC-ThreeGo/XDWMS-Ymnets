@@ -895,7 +895,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -1076,7 +1076,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SubInvCode" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="SubInvName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="InvCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="InvId" Type="int" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
           <Property Name="Remark" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
@@ -2065,6 +2065,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_SubInvInfo_WMS_InvInfo">
+          <End Role="WMS_InvInfo" Type="Self.WMS_InvInfo" Multiplicity="1" />
+          <End Role="WMS_SubInvInfo" Type="Self.WMS_SubInvInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_InvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_SubInvInfo">
+              <PropertyRef Name="InvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="P_Flow_ResetCheckStepState" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="stepCheckId" Type="varchar" Mode="In" />
           <Parameter Name="ContentId" Type="varchar" Mode="In" />
@@ -2625,6 +2637,10 @@
             <End Role="WMS_Header" EntitySet="WMS_Header" />
             <End Role="WMS_Line" EntitySet="WMS_Line" />
           </AssociationSet>
+          <AssociationSet Name="FK_WMS_SubInvInfo_WMS_InvInfo" Association="Self.FK_WMS_SubInvInfo_WMS_InvInfo">
+            <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
+            <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -3172,6 +3188,10 @@
           <EntitySet Name="SysImportExcelLog" EntityType="DB.SysImportExcelLog" />
           <EntitySet Name="WMS_SubInvInfo" EntityType="DB.WMS_SubInvInfo" />
           <EntitySet Name="WMS_InvInfo" EntityType="DB.WMS_InvInfo" />
+          <AssociationSet Name="FK_WMS_SubInvInfo_WMS_InvInfo" Association="DB.FK_WMS_SubInvInfo_WMS_InvInfo">
+            <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
+            <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5538,13 +5558,14 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SubInvCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="SubInvName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="InvCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="InvId" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_SubInvInfo_WMS_InvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_InvInfo" />
         </EntityType>
         <EntityType Name="WMS_InvInfo">
           <Key>
@@ -5559,7 +5580,20 @@
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_SubInvInfo_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_SubInvInfo" />
         </EntityType>
+        <Association Name="FK_WMS_SubInvInfo_WMS_InvInfo">
+          <End Type="DB.WMS_InvInfo" Role="WMS_InvInfo" Multiplicity="1" />
+          <End Type="DB.WMS_SubInvInfo" Role="WMS_SubInvInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_InvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_SubInvInfo">
+              <PropertyRef Name="InvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6983,7 +7017,7 @@
                 <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="InvCode" ColumnName="InvCode" />
+                <ScalarProperty Name="InvId" ColumnName="InvId" />
                 <ScalarProperty Name="SubInvName" ColumnName="SubInvName" />
                 <ScalarProperty Name="SubInvCode" ColumnName="SubInvCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

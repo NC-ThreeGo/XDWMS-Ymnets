@@ -17,12 +17,14 @@ namespace Apps.Models
         public int Id { get; set; }
         public string SubInvCode { get; set; }
         public string SubInvName { get; set; }
-        public string InvCode { get; set; }
+        public int InvId { get; set; }
         public string Status { get; set; }
         public string Remark { get; set; }
         public string CreatePerson { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+    
+        public virtual WMS_InvInfo WMS_InvInfo { get; set; }
     }
 }

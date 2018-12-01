@@ -23,7 +23,7 @@ namespace Apps.BLL.WMS
                                                   CreatePerson = r.CreatePerson,
                                                   CreateTime = r.CreateTime,
                                                   Id = r.Id,
-                                                  InvCode = r.InvCode,
+                                                  InvId = r.InvId,
                                                   ModifyPerson = r.ModifyPerson,
                                                   ModifyTime = r.ModifyTime,
                                                   Remark = r.Remark,
@@ -56,7 +56,7 @@ namespace Apps.BLL.WMS
 					//对应列头
 					excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvCode, "库位编码");
 					excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvName, "库位名称");
-					excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.InvCode, "库房编码");
+					excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.InvId, "库房编码");
 					excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Status, "状态");
 					excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Remark, "说明");
 					excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreatePerson, "创建人");
@@ -82,7 +82,7 @@ namespace Apps.BLL.WMS
 								model.Id = row.Id;
 								model.SubInvCode = row.SubInvCode;
 								model.SubInvName = row.SubInvName;
-								model.InvCode = row.InvCode;
+								model.InvId = row.InvId;
 								model.Status = row.Status;
 								model.Remark = row.Remark;
 								model.CreatePerson = row.CreatePerson;
@@ -116,7 +116,7 @@ namespace Apps.BLL.WMS
 									entity.Id = model.Id;
 									entity.SubInvCode = model.SubInvCode;
 									entity.SubInvName = model.SubInvName;
-									entity.InvCode = model.InvCode;
+									entity.InvId = model.InvId;
 									entity.Status = model.Status;
 									entity.Remark = model.Remark;
 									entity.CreatePerson = model.CreatePerson;

@@ -48,7 +48,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_SubInvInfoModel model)
         {
             model.Id = 0;
-            model.CreateTime = ResultHelper.NowTime;            
+            model.CreateTime = ResultHelper.NowTime;
             model.CreatePerson = GetUserId();
             if (model != null && ModelState.IsValid)
             {
@@ -185,7 +185,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("库位ID", item.Id);
                     jo.Add("库位编码", item.SubInvCode);
                     jo.Add("库位名称", item.SubInvName);
-                    jo.Add("库房编码", item.InvCode);
+                    jo.Add("库房编码", item.InvId);
                     jo.Add("状态", item.Status);
                     jo.Add("说明", item.Remark);
                     jo.Add("创建人", item.CreatePerson);

@@ -26,7 +26,7 @@ namespace Apps.Models.WMS
 		[Display(Name = "库位名称")]
 		public virtual string SubInvName { get; set; }
 		[Display(Name = "库房编码")]
-		public virtual string InvCode { get; set; }
+		public virtual int InvId { get; set; }
 		[Display(Name = "状态")]
 		public virtual string Status { get; set; }
 		[Display(Name = "说明")]

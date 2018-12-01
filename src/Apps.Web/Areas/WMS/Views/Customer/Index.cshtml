@@ -106,7 +106,7 @@
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
                 $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 330, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
