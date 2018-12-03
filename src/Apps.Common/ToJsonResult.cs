@@ -97,5 +97,18 @@ namespace Apps.Common
             return result;
 
         }
+
+        public static string GetUserId()
+        {
+            if (Session["Account"] != null)
+            {
+                AccountModel info = (AccountModel)Session["Account"];
+                return info.Id;
+            }
+            else
+            {
+                return "";
+            }
+        }
     }
 }

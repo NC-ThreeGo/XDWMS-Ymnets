@@ -143,7 +143,7 @@ namespace Apps.CodeHelper
         {
             #region 增加ImportExcelData方法和AdditionalCheckExcelData方法
             int colCount = comFields.Count() + 1;
-            sb.Append("\t\tpublic bool ImportExcelData(string filePath, ref ValidationErrors errors)\r\n");
+            sb.Append("\t\tpublic bool ImportExcelData(string oper, string filePath, ref ValidationErrors errors)\r\n");
             sb.Append("\t\t{\r\n");
             sb.Append("\t\t\tbool rtn = true;\r\n");
             sb.Append("\r\n");
@@ -217,6 +217,10 @@ namespace Apps.CodeHelper
             {
                 sb.AppendFormat("\t\t\t\t\t\t\t\t\tentity.{0} = model.{0};\r\n", field.name);
             }
+            sb.Append("\t\t\t\t\t\t\t\t\tentity.CreatePerson = oper;\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t\tentity.CreateTime = DateTime.Now;\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t\tentity.ModifyPerson = oper;\r\n");
+            sb.Append("\t\t\t\t\t\t\t\t\tentity.ModifyTime = DateTime.Now;\r\n");
             sb.Append("\r\n");
             sb.AppendFormat("\t\t\t\t\t\t\t\t\tdb.{0}.Add(entity);\r\n", tableName);
             sb.AppendFormat("\t\t\t\t\t\t\t\t\ttry\r\n", tableName);

@@ -149,7 +149,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Import(string filePath)
         {
-            if (m_BLL.ImportExcelData(Utils.GetMapPath(filePath), ref errors))
+            if (m_BLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))
             {
                  LogHandler.WriteImportExcelLog(GetUserId(), "WMS_PO", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
                  return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));

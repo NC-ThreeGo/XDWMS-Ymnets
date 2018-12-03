@@ -22,10 +22,11 @@ namespace Apps.CodeHelper
             sb.Append("         /// <summary>\r\n");
             sb.Append("         /// 导入Excel文件，当发生导入错误时，回写错误信息，并且全部回滚。\r\n");
             sb.Append("         /// </summary>\r\n");
+            sb.Append("         /// <param name=\"oper\">操作员ID</param>\r\n");
             sb.Append("         /// <param name=\"filePath\"></param>\r\n");
             sb.Append("         /// <param name=\"errors\"></param>\r\n");
             sb.Append("         /// <returns></returns>\r\n");
-            sb.Append("         bool ImportExcelData(string filePath, ref ValidationErrors errors);\r\n");
+            sb.Append("         bool ImportExcelData(string oper, string filePath, ref ValidationErrors errors);\r\n");
             sb.Append("    \r\n");
             sb.Append("         /// <summary>\r\n");
             sb.Append("         /// 对导入进行附加的校验，例如物料编码是否存在等。\r\n");

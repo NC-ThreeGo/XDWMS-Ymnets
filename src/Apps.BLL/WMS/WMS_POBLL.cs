@@ -51,7 +51,7 @@ namespace Apps.BLL.WMS
             return modelList;
         }
 
-		public bool ImportExcelData(string filePath, ref ValidationErrors errors)
+		public bool ImportExcelData(string oper, string filePath, ref ValidationErrors errors)
 		{
 			bool rtn = true;
 
@@ -163,10 +163,10 @@ namespace Apps.BLL.WMS
 									entity.Attr3 = model.Attr3;
 									entity.Attr4 = model.Attr4;
 									entity.Attr5 = model.Attr5;
-									entity.CreatePerson = model.CreatePerson;
-									entity.CreateTime = model.CreateTime;
-									entity.ModifyPerson = model.ModifyPerson;
-									entity.ModifyTime = model.ModifyTime;
+									entity.CreatePerson = oper;
+									entity.CreateTime = DateTime.Now;
+									entity.ModifyPerson = oper;
+									entity.ModifyTime = DateTime.Now;
 
 									db.WMS_PO.Add(entity);
 									try
