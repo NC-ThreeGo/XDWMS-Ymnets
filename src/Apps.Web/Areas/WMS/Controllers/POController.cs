@@ -256,17 +256,6 @@ namespace Apps.Web.Areas.WMS.Controllers
                 };
             }
         #endregion
-
-        public static SelectList GetSelectListItems(string type)
-        {
-            List<string> list = new List<string>();
-            list.Add("a");
-            list.Add("b");
-            list.Add("c");
-            SelectList selectList = new SelectList(list);
-
-            return selectList;
-        }
     }
 }
 
