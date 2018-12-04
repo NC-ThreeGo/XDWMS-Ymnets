@@ -129,7 +129,8 @@ $.messageBox5s(Lang.Tip, mes);
                     @Html.LabelFor(model => model.Status)：
                 </th>
                 <td>
-                    @Html.EditorFor(model => model.Status)
+                    @Html.DropDownListFor(model => model.Status, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("Status"))
+                    @*@Html.EditorFor(model => model.Status)*@
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.Status)</td>
             </tr>

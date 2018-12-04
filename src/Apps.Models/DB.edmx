@@ -750,6 +750,20 @@
           <Property Name="IsValid" Type="bit" Nullable="false" />
           <Property Name="Sort" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="SysParam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ParamCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="SysPosition">
           <Key>
             <PropertyRef Name="Id" />
@@ -895,7 +909,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -2348,6 +2362,7 @@
           <EntitySet Name="SysModule" EntityType="Self.SysModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysModuleDataFilter" EntityType="Self.SysModuleDataFilter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysModuleOperate" EntityType="Self.SysModuleOperate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysParam" EntityType="Self.SysParam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysPosition" EntityType="Self.SysPosition" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysRight" EntityType="Self.SysRight" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysRightDataFilter" EntityType="Self.SysRightDataFilter" Schema="dbo" store:Type="Tables" />
@@ -3258,6 +3273,7 @@
             <End Role="WMS_Supplier" EntitySet="WMS_Supplier" />
             <End Role="WMS_PO" EntitySet="WMS_PO" />
           </AssociationSet>
+          <EntitySet Name="SysParam" EntityType="DB.SysParam" />
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5712,6 +5728,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SysParam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ParamCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ParamName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7178,6 +7208,21 @@
                 <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
                 <ScalarProperty Name="PODate" ColumnName="PODate" />
                 <ScalarProperty Name="PO" ColumnName="PO" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysParam">
+            <EntityTypeMapping TypeName="DB.SysParam">
+              <MappingFragment StoreEntitySet="SysParam">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="ParamName" ColumnName="ParamName" />
+                <ScalarProperty Name="ParamCode" ColumnName="ParamCode" />
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

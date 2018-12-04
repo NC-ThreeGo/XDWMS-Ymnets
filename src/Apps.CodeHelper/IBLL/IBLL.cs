@@ -12,6 +12,7 @@ namespace Apps.CodeHelper
         {
             string leftStr = GetLeftStr(tableName);
             StringBuilder sb = new StringBuilder();
+            sb.Append("using System.Collections.Generic;\r\n");
             sb.Append("using Apps.Common;\r\n");
             sb.Append("using " + txt_prefix.Text + ".Models." + leftStr.Replace(".", "") + ";\r\n");
             sb.Append("\r\n");
@@ -33,14 +34,13 @@ namespace Apps.CodeHelper
             sb.Append("         /// </summary>\r\n");
             sb.Append("         /// <param name=\"model\"></param>\r\n");
             sb.AppendFormat("         void AdditionalCheckExcelData(ref {0}Model model);\r\n", tableName);
-            sb.Append("    }\r\n");
             sb.Append("    \r\n");
             sb.Append("         /// <summary>\r\n");
             sb.Append("         /// 根据where字符串获取列表数据。\r\n");
             sb.Append("         /// </summary>\r\n");
             sb.Append("         /// <param name=\"pager\"></param>\r\n");
             sb.Append("         /// <param name=\"whereStr\"></param>\r\n");
-            sb.AppendFormat("         List<{0}Model> GetListByWhere(ref GridPager pager, string where)", tableName);
+            sb.AppendFormat("         List<{0}Model> GetListByWhere(ref GridPager pager, string where);", tableName);
             sb.Append("    }\r\n");
             sb.Append("}");
 

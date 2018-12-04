@@ -26,7 +26,6 @@ namespace Apps.CodeHelper
             StringBuilder sb = new StringBuilder();
             sb.Append("using Apps.Common;\r\n");
             sb.Append("using Apps.Models;\r\n");
-            sb.Append("using System.Linq;\r\n");
             sb.Append("using System.Collections.Generic;\r\n");
             sb.Append("using System.Linq;\r\n");
             sb.Append("using System.Linq.Dynamic.Core;\r\n");
