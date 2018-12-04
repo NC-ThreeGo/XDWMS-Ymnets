@@ -1,41 +1,48 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-    <title>小马知途 www.zshixi.com</title>
+    <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link href="/Content/web/style.css" rel="stylesheet" type="text/css" />
 
     <script src="@Url.Content("~/Scripts/jquery.min.js")" type="text/javascript"></script>
-     @Scripts.Render("~/bundles/common")
-     @Scripts.Render("~/bundles/jqueryfrom")
+    @Scripts.Render("~/bundles/common")
+    @Scripts.Render("~/bundles/jqueryfrom")
     <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
     @Scripts.Render("~/bundles/jqueryval")
     <script src="/Scripts/JBox/jBox/jquery.jBox-2.3.min.js"></script>
     <link href="/Scripts/JBox/jBox/Skins2/green/jbox.css" rel="stylesheet" />
     <script>
-        $(function () {
+        $(function ()
+        {
             //设置nav
-            $.post("/Person/GetLoginUserId", function (data) {
-                if (data.type == 1) {
+            $.post("/Person/GetLoginUserId", function (data)
+            {
+                if (data.type == 1)
+                {
                     $("#H1,#H4").show()
-                } else {
+                } else
+                {
                     $("#H2,#H3").show()
                 }
-               
+
             });
             //安全退出
-            $("#safeOut").click(function () {
+            $("#safeOut").click(function ()
+            {
                 if (confirm("确定要退出系统？"))
                 {
-                    $.post("/Person/Logout", function (data) {
-                        if (data.type == 1) {
+                    $.post("/Person/Logout", function (data)
+                    {
+                        if (data.type == 1)
+                        {
                             window.location = "/";
                         }
                     });
                 }
             });
-       
+
         });
     </script>
 </head>

@@ -19,6 +19,8 @@ namespace Apps.Web.Areas.WMS.Controllers
     {
         [Dependency]
         public IWMS_POBLL m_BLL { get; set; }
+        [Dependency]
+        public IWMS_SupplierBLL m_SupplierBLL { get; set; }
         ValidationErrors errors = new ValidationErrors();
         
         [SupportFilter]
@@ -40,6 +42,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Create()
         {
+            ViewBag.Supplier = new SelectList(m_SupplierBLL.GetList(ref setNoPagerAscById, ""), "Id", "SupplierShortName");
             return View();
         }
 
