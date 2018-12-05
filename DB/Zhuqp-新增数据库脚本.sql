@@ -47,7 +47,7 @@ GO
 
 
 
-/****** Object:  Table [dbo].[SysParam]    Script Date: 2018/12/5 14:10:58 ******/
+/****** Object:  Table [dbo].[SysParam]    Script Date: 2018/12/5 17:12:20 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -60,6 +60,7 @@ CREATE TABLE [dbo].[SysParam](
 	[TypeName] [nvarchar](50) NULL,
 	[ParamCode] [nvarchar](50) NULL,
 	[ParamName] [nvarchar](50) NULL,
+	[Sort] [int] NULL,
 	[CreatePerson] [nvarchar](50) NULL,
 	[CreateTime] [datetime] NULL,
 	[ModifyPerson] [nvarchar](50) NULL,
@@ -84,6 +85,9 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'参数值名称' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SysParam', @level2type=N'COLUMN',@level2name=N'ParamName'
 GO
 
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'排序' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SysParam', @level2type=N'COLUMN',@level2name=N'Sort'
+GO
+
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SysParam', @level2type=N'COLUMN',@level2name=N'CreatePerson'
 GO
 
@@ -95,6 +99,7 @@ GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'修改时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SysParam', @level2type=N'COLUMN',@level2name=N'ModifyTime'
 GO
+
 
 
 

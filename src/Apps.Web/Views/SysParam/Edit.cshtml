@@ -94,6 +94,15 @@ $.messageBox5s(Lang.Tip, mes);
         </tr>
         <tr>
             <th>
+                @Html.LabelFor(model => model.Sort)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Sort)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Sort)</td>
+        </tr>
+        <tr>
+            <th>
                 @Html.LabelFor(model => model.CreatePerson)：
             </th>
             <td >

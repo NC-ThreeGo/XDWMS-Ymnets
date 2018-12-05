@@ -1,13 +1,13 @@
 ﻿using Apps.Common;
 using Apps.Models;
-using Apps.Models.Sys;
-using ClosedXML.Excel;
-using LinqToExcel;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System;
+using System.IO;
+using LinqToExcel;
+using ClosedXML.Excel;
+using Apps.Models.Sys;
 using System.Web.Mvc;
 
 namespace Apps.BLL.Sys
@@ -28,6 +28,7 @@ namespace Apps.BLL.Sys
                                                   ModifyTime = r.ModifyTime,
                                                   ParamCode = r.ParamCode,
                                                   ParamName = r.ParamName,
+                                                  Sort = r.Sort,
                                                   TypeCode = r.TypeCode,
                                                   TypeName = r.TypeName,
                                               }).ToList();
@@ -54,10 +55,11 @@ namespace Apps.BLL.Sys
 				using (IXLWorksheet wws = wb.Worksheets.First())
 				{
 					//对应列头
-					excelFile.AddMapping<SysParamModel>(x => x.TypeCode, "");
-					excelFile.AddMapping<SysParamModel>(x => x.TypeName, "");
-					excelFile.AddMapping<SysParamModel>(x => x.ParamCode, "");
-					excelFile.AddMapping<SysParamModel>(x => x.ParamName, "");
+					excelFile.AddMapping<SysParamModel>(x => x.TypeCode, "参数类别编码");
+					excelFile.AddMapping<SysParamModel>(x => x.TypeName, "参数类别名称");
+					excelFile.AddMapping<SysParamModel>(x => x.ParamCode, "参数值编码");
+					excelFile.AddMapping<SysParamModel>(x => x.ParamName, "参数值名称");
+					excelFile.AddMapping<SysParamModel>(x => x.Sort, "排序");
 					excelFile.AddMapping<SysParamModel>(x => x.CreatePerson, "创建人");
 					excelFile.AddMapping<SysParamModel>(x => x.CreateTime, "创建时间");
 					excelFile.AddMapping<SysParamModel>(x => x.ModifyPerson, "修改人");
@@ -83,6 +85,7 @@ namespace Apps.BLL.Sys
 								model.TypeName = row.TypeName;
 								model.ParamCode = row.ParamCode;
 								model.ParamName = row.ParamName;
+								model.Sort = row.Sort;
 								model.CreatePerson = row.CreatePerson;
 								model.CreateTime = row.CreateTime;
 								model.ModifyPerson = row.ModifyPerson;
@@ -116,6 +119,7 @@ namespace Apps.BLL.Sys
 									entity.TypeName = model.TypeName;
 									entity.ParamCode = model.ParamCode;
 									entity.ParamName = model.ParamName;
+									entity.Sort = model.Sort;
 									entity.CreatePerson = model.CreatePerson;
 									entity.CreateTime = model.CreateTime;
 									entity.ModifyPerson = model.ModifyPerson;
@@ -171,14 +175,15 @@ namespace Apps.BLL.Sys
 			return CreateModelList(ref queryData);
 		}
 
+
         public static SelectList GetSysParamByType(string typeCode)
         {
             using (DBContainer db = new DBContainer())
             {
-                var list = db.SysParam.Where(x => x.TypeCode == typeCode).OrderBy(x => x.ParamCode).ToList();
+                var list = db.SysParam.Where(x => x.TypeCode == typeCode).OrderBy(x => x.Sort).ToList();
                 return new SelectList(list, "ParamCode", "ParamName");
             }
         }
     }
-}
+ }
 

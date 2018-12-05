@@ -759,6 +759,7 @@
           <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
           <Property Name="ParamCode" Type="nvarchar" MaxLength="50" />
           <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Sort" Type="int" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
@@ -5741,6 +5742,7 @@
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="Sort" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7215,6 +7217,7 @@
           <EntitySetMapping Name="SysParam">
             <EntityTypeMapping TypeName="DB.SysParam">
               <MappingFragment StoreEntitySet="SysParam">
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
