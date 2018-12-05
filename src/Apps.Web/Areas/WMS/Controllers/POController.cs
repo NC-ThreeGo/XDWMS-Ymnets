@@ -40,7 +40,13 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Create()
         {
-            return View();
+            WMS_POModel model = new WMS_POModel()
+            {
+
+                PO = "PO" + DateTime.Now.ToString("yyyyMMddHHmmssff"),
+            };
+            return View(model);
+            //return View();
         }
 
         [HttpPost]

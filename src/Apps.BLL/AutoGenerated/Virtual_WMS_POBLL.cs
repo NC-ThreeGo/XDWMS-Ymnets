@@ -22,6 +22,8 @@ using System.Text;
 using Apps.IDAL.WMS;
 using Apps.Models.WMS;
 using Apps.IBLL.WMS;
+using System.Linq.Expressions;
+
 namespace Apps.BLL.WMS
 {
 	public partial class WMS_POBLL: Virtual_WMS_POBLL,IWMS_POBLL
@@ -34,7 +36,12 @@ namespace Apps.BLL.WMS
         [Dependency]
         public IWMS_PORepository m_Rep { get; set; }
 
-		public virtual List<WMS_POModel> GetList(ref GridPager pager, string queryStr)
+        [Dependency]
+        public IWMS_PartRepository m_PartRep { get; set; }
+        [Dependency]
+        public IWMS_SupplierRepository m_SupplierRep { get; set; }
+
+        public virtual List<WMS_POModel> GetList(ref GridPager pager, string queryStr)
         {
 
             IQueryable<WMS_PO> queryData = null;
@@ -125,11 +132,38 @@ namespace Apps.BLL.WMS
                 }
                 entity = new WMS_PO();
                				entity.Id = model.Id;
-				entity.PO = model.PO;
-				entity.PODate = model.PODate;
-				entity.SupplierId = model.SupplierId;
-				entity.PartId = model.PartId;
-				entity.QTY = model.QTY;
+				entity.PO = model.PO;                
+                entity.PODate = model.PODate;
+
+                //把供应商简称转为ID
+                var supplierShortName = model.SupplierShortName;
+                Expression<Func<WMS_Supplier, bool>> exp_s = x => x.SupplierShortName == supplierShortName;
+                var supplier = m_SupplierRep.GetSingleWhere(exp_s);
+                //entity.SupplierId = model.SupplierId;
+                if (supplier == null)
+                {
+                    throw new Exception("供应商简称不存在！");
+                }
+                else
+                {
+                    entity.SupplierId = supplier.Id;
+                }               
+
+                //把物料编码转为ID
+                var partCode = model.PartCode;
+                Expression<Func<WMS_Part, bool>> exp_p = x => x.PartCode == partCode;
+                var part = m_PartRep.GetSingleWhere(exp_p);
+                //entity.PartId = model.PartId;
+                if (part == null)
+                {
+                    throw new Exception("物料编码不存在！");
+                }
+                else
+                {
+                    entity.PartId = part.Id;
+                }      
+                
+                entity.QTY = model.QTY;
 				entity.PlanDate = model.PlanDate;
 				entity.POType = model.POType;
 				entity.Status = model.Status;
@@ -232,9 +266,35 @@ namespace Apps.BLL.WMS
                               				entity.Id = model.Id;
 				entity.PO = model.PO;
 				entity.PODate = model.PODate;
-				entity.SupplierId = model.SupplierId;
-				entity.PartId = model.PartId;
-				entity.QTY = model.QTY;
+				entity.SupplierId = model.SupplierId;                
+                //把供应商简称转为ID
+                //var supplierShortName = model.SupplierShortName;
+                //Expression<Func<WMS_Supplier, bool>> exp_s = x => x.SupplierShortName == supplierShortName;
+                //var supplier = m_SupplierRep.GetSingleWhere(exp_s);
+                ////entity.SupplierId = model.SupplierId;
+                //if (supplier == null)
+                //{
+                //    throw new Exception("供应商简称不存在！");
+                //}
+                //else
+                //{
+                //    entity.SupplierId = supplier.Id;
+                //}
+                entity.PartId = model.PartId;
+                //把物料编码转为ID
+                //var partCode = model.PartCode;
+                //Expression<Func<WMS_Part, bool>> exp_p = x => x.PartCode == partCode;
+                //var part = m_PartRep.GetSingleWhere(exp_p);
+                ////entity.PartId = model.PartId;
+                //if (part == null)
+                //{
+                //    throw new Exception("物料编码不存在！");
+                //}
+                //else
+                //{
+                //    entity.PartId = part.Id;
+                //}
+                entity.QTY = model.QTY;
 				entity.PlanDate = model.PlanDate;
 				entity.POType = model.POType;
 				entity.Status = model.Status;

@@ -47,6 +47,9 @@ namespace Apps.BLL.WMS
                                                   Remark = r.Remark,
                                                   Status = r.Status,
                                                   SupplierId = r.SupplierId,
+
+                                                  PartCode = r.WMS_Part.PartCode,
+                                                  SupplierShortName = r.WMS_Supplier.SupplierShortName,
                                               }).ToList();
             return modelList;
         }
@@ -141,7 +144,7 @@ namespace Apps.BLL.WMS
 								{
 									rtn = false;
 									errorMessage = ex.Message;
-									errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
+									errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));                                    
 									wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
 									continue;
 								}
@@ -156,7 +159,7 @@ namespace Apps.BLL.WMS
 									entity.QTY = model.QTY;
 									entity.PlanDate = model.PlanDate;
 									entity.POType = model.POType;
-									entity.Status = model.Status;
+									//entity.Status = model.Status;
 									entity.Remark = model.Remark;
 									entity.Attr1 = model.Attr1;
 									entity.Attr2 = model.Attr2;
@@ -164,7 +167,7 @@ namespace Apps.BLL.WMS
 									entity.Attr4 = model.Attr4;
 									entity.Attr5 = model.Attr5;
 									entity.CreatePerson = model.CreatePerson;
-									entity.CreateTime = model.CreateTime;
+									entity.CreateTime = ResultHelper.NowTime;
 									entity.ModifyPerson = model.ModifyPerson;
 									entity.ModifyTime = model.ModifyTime;
 
@@ -179,6 +182,8 @@ namespace Apps.BLL.WMS
 										//将当前报错的entity状态改为分离，类似EF的回滚（忽略之前的Add操作）
 										db.Entry(entity).State = System.Data.Entity.EntityState.Detached;
 										errorMessage = ex.InnerException.InnerException.Message;
+                                        //错误信息结果
+                                        errorMessage = "信息错误";
 										errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
 										wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
 								}
@@ -246,6 +251,16 @@ namespace Apps.BLL.WMS
 
 
         }
+
+        //public List<WMS_POModel> GetListByWhere(ref GridPager pager, string where)
+        //{
+        //    IQueryable<WMS_POModel> queryData = null;
+        //    queryData = m_Rep.GetList().Where(where);
+        //    pager.totalRows = queryData.Count();
+        //    //排序
+        //    queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+        //    return CreateModelList(ref queryData);
+        //}
     }
  }
 

@@ -61,6 +61,7 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.PO)：
             </th>
             <td>
+                @*@Html.EditorFor(model => model.PO)*@
                 @Html.EditorFor(model => model.PO)
             </td>
             <td>@Html.ValidationMessageFor(model => model.PO)</td>
@@ -77,22 +78,23 @@ $.messageBox5s(Lang.Tip, mes);
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.SupplierId)：
+                @*@Html.LabelFor(model => model.SupplierId)：*@
+                供应商简称：
             </th>
             <td>
-                @Html.EditorFor(model => model.SupplierId)
+                @Html.EditorFor(model => model.SupplierShortName)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.SupplierId)</td>
+            <td>@Html.ValidationMessageFor(model => model.SupplierShortName)</td>
         </tr>
         <tr>
             <th>
                 @*@Html.LabelFor(model => model.PartId)：*@
-                零件代码：
+                物料编码：
             </th>
             <td>
-                @Html.EditorFor(model => model.PartId)
+                @Html.EditorFor(model => model.PartCode)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.PartId)</td>
+            <td>@Html.ValidationMessageFor(model => model.PartCode)</td>
         </tr>
         <tr>
             <th>
@@ -108,7 +110,8 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.PlanDate)：
             </th>
             <td>
-                @Html.EditorFor(model => model.PlanDate)
+                @*@Html.EditorFor(model => model.PlanDate)*@
+                @Html.TextBoxFor(model => model.PlanDate, new { @onClick = "WdatePicker()", @class = "Wdate", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
             </td>
             <td>@Html.ValidationMessageFor(model => model.PlanDate)</td>
         </tr>
@@ -126,7 +129,11 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.Status)：
             </th>
             <td>
-                @Html.EditorFor(model => model.Status)
+                @*@Html.EditorFor(model => model.Status)*@
+                <select id="Status" name="Status">
+                    <option value="有效">有效</option>
+                    <option value="无效">无效</option>
+                </select>
             </td>
             <td>@Html.ValidationMessageFor(model => model.Status)</td>
         </tr>
@@ -139,7 +146,7 @@ $.messageBox5s(Lang.Tip, mes);
             </td>
             <td>@Html.ValidationMessageFor(model => model.Remark)</td>
         </tr>
-        <tr>
+        @*<tr>
             <th>
                 @Html.LabelFor(model => model.Attr1)：
             </th>
@@ -210,7 +217,7 @@ $.messageBox5s(Lang.Tip, mes);
                @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
             </td>
             <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
-        </tr>
+        </tr>*@
     </tbody>
 </table>
 }
