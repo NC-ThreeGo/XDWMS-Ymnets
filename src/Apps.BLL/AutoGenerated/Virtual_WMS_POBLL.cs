@@ -136,32 +136,32 @@ namespace Apps.BLL.WMS
                 entity.PODate = model.PODate;
 
                 //把供应商简称转为ID
-                var supplierShortName = model.SupplierShortName;
-                Expression<Func<WMS_Supplier, bool>> exp_s = x => x.SupplierShortName == supplierShortName;
-                var supplier = m_SupplierRep.GetSingleWhere(exp_s);
-                //entity.SupplierId = model.SupplierId;
-                if (supplier == null)
-                {
-                    throw new Exception("供应商简称不存在！");
-                }
-                else
-                {
-                    entity.SupplierId = supplier.Id;
-                }               
+                entity.SupplierId = model.SupplierId;
+                //var supplierShortName = model.SupplierShortName;
+                //Expression<Func<WMS_Supplier, bool>> exp_s = x => x.SupplierShortName == supplierShortName;
+                //var supplier = m_SupplierRep.GetSingleWhere(exp_s);                
+                //if (supplier == null)
+                //{
+                //    throw new Exception("供应商简称不存在！");
+                //}
+                //else
+                //{
+                //    entity.SupplierId = supplier.Id;
+                //}
 
                 //把物料编码转为ID
-                var partCode = model.PartCode;
-                Expression<Func<WMS_Part, bool>> exp_p = x => x.PartCode == partCode;
-                var part = m_PartRep.GetSingleWhere(exp_p);
-                //entity.PartId = model.PartId;
-                if (part == null)
-                {
-                    throw new Exception("物料编码不存在！");
-                }
-                else
-                {
-                    entity.PartId = part.Id;
-                }      
+                entity.PartId = model.PartId;
+                //var partCode = model.PartCode;
+                //Expression<Func<WMS_Part, bool>> exp_p = x => x.PartCode == partCode;
+                //var part = m_PartRep.GetSingleWhere(exp_p);                
+                //if (part == null)
+                //{
+                //    throw new Exception("物料编码不存在！");
+                //}
+                //else
+                //{
+                //    entity.PartId = part.Id;
+                //}      
                 
                 entity.QTY = model.QTY;
 				entity.PlanDate = model.PlanDate;

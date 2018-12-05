@@ -86,6 +86,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Edit(long id)
         {
+            ViewBag.Supplier = new SelectList(m_SupplierBLL.GetList(ref setNoPagerAscById, ""), "Id", "SupplierShortName");
             WMS_POModel entity = m_BLL.GetById(id);
             return View(entity);
         }

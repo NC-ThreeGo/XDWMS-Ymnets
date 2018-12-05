@@ -81,8 +81,9 @@ $.messageBox5s(Lang.Tip, mes);
                 @*@Html.LabelFor(model => model.SupplierId)：*@
                 供应商简称：
             </th>
-            <td >
-                @Html.EditorFor(model => model.SupplierId)
+            <td>
+                @*@Html.EditorFor(model => model.SupplierId)*@
+                @Html.DropDownListFor(model => model.SupplierId, ViewBag.Supplier as SelectList@*, new { @class = "easyui-combobox", @data_options = "filter:filterComboPY" }*@)
             </td>
             <td>@Html.ValidationMessageFor(model => model.SupplierId)</td>
         </tr>
@@ -130,10 +131,7 @@ $.messageBox5s(Lang.Tip, mes);
             </th>
             <td>
                 @*@Html.EditorFor(model => model.Status)*@
-                <select id="Status" name="Status">
-                    <option value="有效">有效</option>
-                    <option value="关闭">关闭</option>
-                </select>
+                @Html.DropDownListFor(model => model.Status, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("Status"))
             </td>
             <td>@Html.ValidationMessageFor(model => model.Status)</td>
         </tr>

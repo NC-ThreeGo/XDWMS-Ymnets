@@ -47,6 +47,8 @@ namespace Apps.BLL.WMS
                                                   Remark = r.Remark,
                                                   Status = r.Status,
                                                   SupplierId = r.SupplierId,
+                                                  PartCode = r.WMS_Part.PartCode,
+                                                  SupplierShortName = r.WMS_Supplier.SupplierShortName,
                                               }).ToList();
             return modelList;
         }
@@ -156,7 +158,7 @@ namespace Apps.BLL.WMS
 									entity.QTY = model.QTY;
 									entity.PlanDate = model.PlanDate;
 									entity.POType = model.POType;
-									entity.Status = model.Status;
+									//entity.Status = model.Status;
 									entity.Remark = model.Remark;
 									entity.Attr1 = model.Attr1;
 									entity.Attr2 = model.Attr2;

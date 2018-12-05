@@ -111,7 +111,8 @@ $.messageBox5s(Lang.Tip, mes);
                     @Html.LabelFor(model => model.PlanDate)：
                 </th>
                 <td>
-                    @Html.EditorFor(model => model.PlanDate)
+                    @*@Html.EditorFor(model => model.PlanDate)*@
+                    @Html.TextBoxFor(model => model.PlanDate, new { @onClick = "WdatePicker()", @class = "Wdate", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.PlanDate)</td>
             </tr>
@@ -142,7 +143,7 @@ $.messageBox5s(Lang.Tip, mes);
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.Remark)</td>
             </tr>
-            <tr>
+            @*<tr>
                 <th>
                     @Html.LabelFor(model => model.Attr1)：
                 </th>
@@ -215,7 +216,7 @@ $.messageBox5s(Lang.Tip, mes);
                 <td>
                     @Html.ValidationMessageFor(model => model.ModifyTime)
                 </td>
-            </tr>
+            </tr>*@
         </tbody>
     </table>
 }
