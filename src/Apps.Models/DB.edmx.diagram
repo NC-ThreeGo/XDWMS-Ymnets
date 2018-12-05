@@ -155,6 +155,7 @@
         <EntityTypeShape EntityType="DB.WMS_PO" Width="1.5" PointX="3" PointY="20.625" />
         <AssociationConnector Association="DB.FK_WMS_PO_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_PO_WMS_Supplier" />
+        <EntityTypeShape EntityType="DB.SysParam" Width="1.5" PointX="17.375" PointY="7.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

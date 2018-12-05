@@ -376,6 +376,7 @@
     <Compile Include="Controllers\SysImportExcelLogController.cs" />
     <Compile Include="Controllers\SysLogController.cs" />
     <Compile Include="Controllers\SysModuleController.cs" />
+    <Compile Include="Controllers\SysParamController.cs" />
     <Compile Include="Controllers\SysPositionController.cs" />
     <Compile Include="Controllers\SysRightController.cs" />
     <Compile Include="Controllers\SysRightGetModuleRightController.cs" />
@@ -460,6 +461,8 @@
     <Content Include="Content\themes\skin-coolblacklight.css" />
     <Content Include="Content\themes\skin-coolblacklight_bak.css" />
     <Content Include="Content\themes\skin-coolblack_bak.css" />
+    <Content Include="Scripts\ChinesePY.js" />
+    <Content Include="Scripts\easyui.combobox.py.js" />
     <Content Include="Scripts\easyui\easyui-lang-en-US.js" />
     <Content Include="Scripts\easyui\easyui-lang-zh-CN.js" />
     <Content Include="Content\themes\base\easyui.css" />
@@ -1131,6 +1134,9 @@
     <Content Include="Views\SysSequence\Edit.cshtml" />
     <Content Include="Views\SysSequence\Index.cshtml" />
     <Content Include="Views\SysImportExcelLog\Index.cshtml" />
+    <Content Include="Views\SysParam\Create.cshtml" />
+    <Content Include="Views\SysParam\Edit.cshtml" />
+    <Content Include="Views\SysParam\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

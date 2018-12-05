@@ -10,27 +10,25 @@
 using Apps.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
-namespace Apps.Models.WMS
+namespace Apps.Models.Sys
 {
 
-	public partial class WMS_SubInvInfoModel:Virtual_WMS_SubInvInfoModel
+	public partial class SysParamModel:Virtual_SysParamModel
 	{
 		
 	}
-	public class Virtual_WMS_SubInvInfoModel
+	public class Virtual_SysParamModel
 	{
-		[Display(Name = "库位ID")]
+		[Display(Name = "未设置")]
 		public virtual int Id { get; set; }
-		[Display(Name = "库位编码")]
-		public virtual string SubInvCode { get; set; }
-		[Display(Name = "库位名称")]
-		public virtual string SubInvName { get; set; }
-		[Display(Name = "库房编码")]
-		public virtual int InvId { get; set; }
-		[Display(Name = "状态")]
-		public virtual string Status { get; set; }
-		[Display(Name = "说明")]
-		public virtual string Remark { get; set; }
+		[Display(Name = "参数类别编码")]
+		public virtual string TypeCode { get; set; }
+		[Display(Name = "参数类别名称")]
+		public virtual string TypeName { get; set; }
+		[Display(Name = "参数值编码")]
+		public virtual string ParamCode { get; set; }
+		[Display(Name = "参数值名称")]
+		public virtual string ParamName { get; set; }
 		[Display(Name = "创建人")]
 		public virtual string CreatePerson { get; set; }
 		[Display(Name = "创建时间")]

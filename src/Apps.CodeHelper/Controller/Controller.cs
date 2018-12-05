@@ -471,7 +471,7 @@ namespace Apps.CodeHelper
             sb.Append("        [SupportFilter]\r\n");
             sb.Append("        public ActionResult Import(string filePath)\r\n");
             sb.Append("        {\r\n");
-            sb.Append("            if (m_BLL.ImportExcelData(Utils.GetMapPath(filePath), ref errors))\r\n");
+            sb.Append("            if (m_BLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))\r\n");
             sb.Append("            {\r\n");
             sb.AppendFormat("                 LogHandler.WriteImportExcelLog(GetUserId(), \"{0}\", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, \"导入成功\");\r\n", tableName);
             sb.Append("                 return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));\r\n");

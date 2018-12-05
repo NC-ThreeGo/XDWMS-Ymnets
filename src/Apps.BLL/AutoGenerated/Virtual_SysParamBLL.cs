@@ -19,34 +19,33 @@ using Apps.Locale;
 using LinqToExcel;
 using System.IO;
 using System.Text;
-using Apps.IDAL.WMS;
-using Apps.Models.WMS;
-using Apps.IBLL.WMS;
-namespace Apps.BLL.WMS
+using Apps.IDAL.Sys;
+using Apps.Models.Sys;
+using Apps.IBLL.Sys;
+namespace Apps.BLL.Sys
 {
-	public partial class WMS_SubInvInfoBLL: Virtual_WMS_SubInvInfoBLL,IWMS_SubInvInfoBLL
+	public partial class SysParamBLL: Virtual_SysParamBLL,ISysParamBLL
 	{
         
 
 	}
-	public class Virtual_WMS_SubInvInfoBLL
+	public class Virtual_SysParamBLL
 	{
         [Dependency]
-        public IWMS_SubInvInfoRepository m_Rep { get; set; }
+        public ISysParamRepository m_Rep { get; set; }
 
-		public virtual List<WMS_SubInvInfoModel> GetList(ref GridPager pager, string queryStr)
+		public virtual List<SysParamModel> GetList(ref GridPager pager, string queryStr)
         {
 
-            IQueryable<WMS_SubInvInfo> queryData = null;
+            IQueryable<SysParam> queryData = null;
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
 								
-								a=>a.SubInvCode.Contains(queryStr)
-								|| a.SubInvName.Contains(queryStr)
-								
-								|| a.Status.Contains(queryStr)
-								|| a.Remark.Contains(queryStr)
+								a=>a.TypeCode.Contains(queryStr)
+								|| a.TypeName.Contains(queryStr)
+								|| a.ParamCode.Contains(queryStr)
+								|| a.ParamName.Contains(queryStr)
 								|| a.CreatePerson.Contains(queryStr)
 								
 								|| a.ModifyPerson.Contains(queryStr)
@@ -63,28 +62,27 @@ namespace Apps.BLL.WMS
             return CreateModelList(ref queryData);
         }
 
-		public virtual List<WMS_SubInvInfoModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
+		public virtual List<SysParamModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
 		{
-			return new List<WMS_SubInvInfoModel>();
+			return new List<SysParamModel>();
 		}
 		
-		public virtual List<WMS_SubInvInfoModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
+		public virtual List<SysParamModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
         {
-			return new List<WMS_SubInvInfoModel>();
+			return new List<SysParamModel>();
 		}
 
-        public virtual List<WMS_SubInvInfoModel> CreateModelList(ref IQueryable<WMS_SubInvInfo> queryData)
+        public virtual List<SysParamModel> CreateModelList(ref IQueryable<SysParam> queryData)
         {
 
-            List<WMS_SubInvInfoModel> modelList = (from r in queryData
-                                              select new WMS_SubInvInfoModel
+            List<SysParamModel> modelList = (from r in queryData
+                                              select new SysParamModel
                                               {
 													Id = r.Id,
-													SubInvCode = r.SubInvCode,
-													SubInvName = r.SubInvName,
-													InvId = r.InvId,
-													Status = r.Status,
-													Remark = r.Remark,
+													TypeCode = r.TypeCode,
+													TypeName = r.TypeName,
+													ParamCode = r.ParamCode,
+													ParamName = r.ParamName,
 													CreatePerson = r.CreatePerson,
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
@@ -95,23 +93,22 @@ namespace Apps.BLL.WMS
             return modelList;
         }
 
-        public virtual bool Create(ref ValidationErrors errors, WMS_SubInvInfoModel model)
+        public virtual bool Create(ref ValidationErrors errors, SysParamModel model)
         {
             try
             {
-                WMS_SubInvInfo entity = m_Rep.GetById(model.Id);
+                SysParam entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
-                entity = new WMS_SubInvInfo();
+                entity = new SysParam();
                				entity.Id = model.Id;
-				entity.SubInvCode = model.SubInvCode;
-				entity.SubInvName = model.SubInvName;
-				entity.InvId = model.InvId;
-				entity.Status = model.Status;
-				entity.Remark = model.Remark;
+				entity.TypeCode = model.TypeCode;
+				entity.TypeName = model.TypeName;
+				entity.ParamCode = model.ParamCode;
+				entity.ParamName = model.ParamName;
 				entity.CreatePerson = model.CreatePerson;
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
@@ -192,22 +189,21 @@ namespace Apps.BLL.WMS
 		
        
 
-        public virtual bool Edit(ref ValidationErrors errors, WMS_SubInvInfoModel model)
+        public virtual bool Edit(ref ValidationErrors errors, SysParamModel model)
         {
             try
             {
-                WMS_SubInvInfo entity = m_Rep.GetById(model.Id);
+                SysParam entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
                               				entity.Id = model.Id;
-				entity.SubInvCode = model.SubInvCode;
-				entity.SubInvName = model.SubInvName;
-				entity.InvId = model.InvId;
-				entity.Status = model.Status;
-				entity.Remark = model.Remark;
+				entity.TypeCode = model.TypeCode;
+				entity.TypeName = model.TypeName;
+				entity.ParamCode = model.ParamCode;
+				entity.ParamName = model.ParamName;
 				entity.CreatePerson = model.CreatePerson;
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
@@ -236,18 +232,17 @@ namespace Apps.BLL.WMS
 
       
 
-        public virtual WMS_SubInvInfoModel GetById(object id)
+        public virtual SysParamModel GetById(object id)
         {
             if (IsExists(id))
             {
-                WMS_SubInvInfo entity = m_Rep.GetById(id);
-                WMS_SubInvInfoModel model = new WMS_SubInvInfoModel();
+                SysParam entity = m_Rep.GetById(id);
+                SysParamModel model = new SysParamModel();
                               				model.Id = entity.Id;
-				model.SubInvCode = entity.SubInvCode;
-				model.SubInvName = entity.SubInvName;
-				model.InvId = entity.InvId;
-				model.Status = entity.Status;
-				model.Remark = entity.Remark;
+				model.TypeCode = entity.TypeCode;
+				model.TypeName = entity.TypeName;
+				model.ParamCode = entity.ParamCode;
+				model.ParamName = entity.ParamName;
 				model.CreatePerson = entity.CreatePerson;
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
@@ -265,7 +260,7 @@ namespace Apps.BLL.WMS
 		 /// <summary>
         /// 校验Excel数据,这个方法一般用于重写校验逻辑
         /// </summary>
-        public virtual bool CheckImportData(string fileName, List<WMS_SubInvInfoModel> list,ref ValidationErrors errors )
+        public virtual bool CheckImportData(string fileName, List<SysParamModel> list,ref ValidationErrors errors )
         {
           
             var targetFile = new FileInfo(fileName);
@@ -280,30 +275,28 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvCode, "库位编码");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvName, "库位名称");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.InvId, "库房编码");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Status, "状态");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Remark, "说明");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreatePerson, "创建人");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreateTime, "创建时间");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.ModifyPerson, "修改人");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.ModifyTime, "修改时间");
+			 				 excelFile.AddMapping<SysParamModel>(x => x.TypeCode, "参数类别编码");
+				 excelFile.AddMapping<SysParamModel>(x => x.TypeName, "参数类别名称");
+				 excelFile.AddMapping<SysParamModel>(x => x.ParamCode, "参数值编码");
+				 excelFile.AddMapping<SysParamModel>(x => x.ParamName, "参数值名称");
+				 excelFile.AddMapping<SysParamModel>(x => x.CreatePerson, "创建人");
+				 excelFile.AddMapping<SysParamModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<SysParamModel>(x => x.ModifyPerson, "修改人");
+				 excelFile.AddMapping<SysParamModel>(x => x.ModifyTime, "修改时间");
  
             //SheetName
-            var excelContent = excelFile.Worksheet<WMS_SubInvInfoModel>(0);
+            var excelContent = excelFile.Worksheet<SysParamModel>(0);
             int rowIndex = 1;
             //检查数据正确性
             foreach (var row in excelContent)
             {
                 var errorMessage = new StringBuilder();
-                var entity = new WMS_SubInvInfoModel();
+                var entity = new SysParamModel();
 						 				  entity.Id = row.Id;
-				  entity.SubInvCode = row.SubInvCode;
-				  entity.SubInvName = row.SubInvName;
-				  entity.InvId = row.InvId;
-				  entity.Status = row.Status;
-				  entity.Remark = row.Remark;
+				  entity.TypeCode = row.TypeCode;
+				  entity.TypeName = row.TypeName;
+				  entity.ParamCode = row.ParamCode;
+				  entity.ParamName = row.ParamName;
 				  entity.CreatePerson = row.CreatePerson;
 				  entity.CreateTime = row.CreateTime;
 				  entity.ModifyPerson = row.ModifyPerson;
@@ -331,7 +324,7 @@ namespace Apps.BLL.WMS
         /// <summary>
         /// 保存数据
         /// </summary>
-        public virtual void SaveImportData(IEnumerable<WMS_SubInvInfoModel> list)
+        public virtual void SaveImportData(IEnumerable<SysParamModel> list)
         {
             try
             {
@@ -339,19 +332,18 @@ namespace Apps.BLL.WMS
                 {
                     foreach (var model in list)
                     {
-                        WMS_SubInvInfo entity = new WMS_SubInvInfo();
+                        SysParam entity = new SysParam();
                        						entity.Id = 0;
-						entity.SubInvCode = model.SubInvCode;
-						entity.SubInvName = model.SubInvName;
-						entity.InvId = model.InvId;
-						entity.Status = model.Status;
-						entity.Remark = model.Remark;
+						entity.TypeCode = model.TypeCode;
+						entity.TypeName = model.TypeName;
+						entity.ParamCode = model.ParamCode;
+						entity.ParamName = model.ParamName;
 						entity.CreatePerson = model.CreatePerson;
 						entity.CreateTime = ResultHelper.NowTime;
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
  
-                        db.WMS_SubInvInfo.Add(entity);
+                        db.SysParam.Add(entity);
                     }
                     db.SaveChanges();
                 }

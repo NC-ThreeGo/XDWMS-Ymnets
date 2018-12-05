@@ -115,6 +115,8 @@ namespace Apps.Core
 			container.RegisterType<Apps.IDAL.Sys.ISysModuleDataFilterRepository, Apps.DAL.Sys.SysModuleDataFilterRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysModuleOperateBLL, Apps.BLL.Sys.SysModuleOperateBLL>();
 			container.RegisterType<Apps.IDAL.Sys.ISysModuleOperateRepository, Apps.DAL.Sys.SysModuleOperateRepository>();
+			container.RegisterType<Apps.IBLL.Sys.ISysParamBLL, Apps.BLL.Sys.SysParamBLL>();
+			container.RegisterType<Apps.IDAL.Sys.ISysParamRepository, Apps.DAL.Sys.SysParamRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysPositionBLL, Apps.BLL.Sys.SysPositionBLL>();
 			container.RegisterType<Apps.IDAL.Sys.ISysPositionRepository, Apps.DAL.Sys.SysPositionRepository>();
 			container.RegisterType<Apps.IBLL.Sys.ISysRightBLL, Apps.BLL.Sys.SysRightBLL>();
