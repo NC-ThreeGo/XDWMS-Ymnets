@@ -147,6 +147,8 @@ namespace Apps.Core
 			container.RegisterType<Apps.IDAL.WC.IWC_ResponseLogRepository, Apps.DAL.WC.WC_ResponseLogRepository>();
 			container.RegisterType<Apps.IBLL.WC.IWC_UserBLL, Apps.BLL.WC.WC_UserBLL>();
 			container.RegisterType<Apps.IDAL.WC.IWC_UserRepository, Apps.DAL.WC.WC_UserRepository>();
+			container.RegisterType<Apps.IBLL.WMS.IWMS_AIBLL, Apps.BLL.WMS.WMS_AIBLL>();
+			container.RegisterType<Apps.IDAL.WMS.IWMS_AIRepository, Apps.DAL.WMS.WMS_AIRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_CustomerBLL, Apps.BLL.WMS.WMS_CustomerBLL>();
 			container.RegisterType<Apps.IDAL.WMS.IWMS_CustomerRepository, Apps.DAL.WMS.WMS_CustomerRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_HeaderBLL, Apps.BLL.WMS.WMS_HeaderBLL>();
