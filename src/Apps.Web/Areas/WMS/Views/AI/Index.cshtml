@@ -4,49 +4,42 @@
 @using Apps.Models.Sys;
 @using Apps.Locale;
 @{
-    ViewBag.Title = "WMS_PO";
+    ViewBag.Title = "WMS_AI";
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
-<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
-
-<div id="uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
-    <form name="form1" method="post" id="form1">
-        <table>
-            <tr>
-                <th style="padding:20px;"> Excel：</th>
-                <td style="padding:20px;">
-                    <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
-                    <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
-                    <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
-                    <span class="uploading">@Resource.Uploading</span>
-                </td>
-            </tr>
-            <tr>
-                <th style="padding:20px;"> 导入状态：</th>
-                <td style="padding:20px;">
-                    <label id="importMessage"></label>
-                    <a id="importResultFile" href="">         点击查看导入结果</a>
-                </td>
-            </tr>
-        </table>
-        <div class="endbtndiv">
-            <a id="btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
-            <a id="btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
-        </div>
-    </form>
+<div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+<form name = "form1" method="post" id="form1">
+    <table>
+        <tr>
+            <th style="padding:20px;"> Excel：</th>
+            <td style="padding:20px;">
+                <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                <a href = "javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
+                <span class="uploading">@Resource.Uploading</span>
+            </td>
+        </tr>
+        <tr>
+            <th style="padding:20px;"> 导入状态：</th>
+            <td style="padding:20px;">
+                <label id="importMessage"></label>
+                <a id="importResultFile" href="">         点击查看导入结果</a>
+            </td>
+        </tr>
+    </table>
+    <div class="endbtndiv">
+        <a id = "btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+        <a id = "btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+    </div>
+</form>
 </div>
 <div class="mvctool">
-    @*<input id="txtQuery" type="text" class="searchText" />*@
-    采购订单号: <input id="txtpo" type="text" class="searchText" />
-    供应商简称: <input id="txtsupplierShortName" type="text" class="searchText" />
-    物料编码: <input id="txtpartCode" type="text" class="searchText" />
-    导入日期从: <input type="text" id="beginDate" style="width:100px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
-     至: <input type="text" id="endDate" style="width:100px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+    <input id="txtQuery" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
@@ -75,18 +68,28 @@
             onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
             },
             columns: [[
-                { field: 'Id', title: '采购订单ID', width: 80,hidden:true },
-                { field: 'PO', title: '采购订单', width: 80,sortable:true },
-                { field: 'PODate', title: '采购日期', width: 80,sortable:true },
-                //{ field: 'SupplierId', title: '供应商编码', width: 80, sortable: true },
-                { field: 'SupplierShortName', title: '供应商简称', width: 80, sortable: true },
-                { field: 'PartId', title: '物料ID', width: 80, sortable: true },
-                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
-                { field: 'QTY', title: '数量', width: 80,sortable:true },
-                { field: 'PlanDate', title: '计划到货日期', width: 80,sortable:true },
-                { field: 'POType', title: '采购订单类型', width: 80,sortable:true },
-                { field: 'Status', title: '状态', width: 80,sortable:true },
-                { field: 'Remark', title: '说明', width: 80,sortable:true },
+                { field: 'Id', title: 'Id', width: 80,hidden:true },
+                { field: 'ArrivalBillNum', title: '到货单据号', width: 80,sortable:true },
+                { field: 'POId', title: '采购订单ID', width: 80,sortable:true },
+                { field: 'BoxNum', title: '到货箱数', width: 80,sortable:true },
+                { field: 'ArrivalNum', title: '到货数量', width: 80,sortable:true },
+                { field: 'ArrivalDate', title: '到货日期', width: 80,sortable:true },
+                { field: 'ReceiveMan', title: '接收人', width: 80,sortable:true },
+                { field: 'ReceiveStatus', title: '到货状态', width: 80,sortable:true },
+                //{ field: 'InspectBillNum', title: '送检单号', width: 80,sortable:true },
+                //{ field: 'InspectMan', title: '送检人', width: 80,sortable:true },
+                //{ field: 'InspectDate', title: '送检日期', width: 80,sortable:true },
+                //{ field: 'InspectStatus', title: '送检状体', width: 80,sortable:true },
+                //{ field: 'CheckOutDate', title: '检验日期', width: 80,sortable:true },
+                //{ field: 'CheckOutResult', title: '检验结果', width: 80,sortable:true },
+                //{ field: 'QualifyNum', title: '合格数量', width: 80,sortable:true },
+                //{ field: 'NoQualifyNum', title: '不合格数量', width: 80,sortable:true },
+                //{ field: 'CheckOutRemark', title: '检验说明', width: 80,sortable:true },
+                //{ field: 'ReInspectBillNum', title: '重新送检单', width: 80,sortable:true },
+                //{ field: 'InStoreBillNum', title: '入库单号', width: 80,sortable:true },
+                //{ field: 'InStoreMan', title: '入库员', width: 80,sortable:true },
+                //{ field: 'InvCode', title: '入库仓库', width: 80,sortable:true },
+                //{ field: 'InStoreStatus', title: '入库状态', width: 80,sortable:true },
                 //{ field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
                 //{ field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
                 //{ field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
@@ -114,41 +117,26 @@
     }
     $(function () {
         $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 400, 330, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 330, 'fa fa-pencil');
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 330, 'fa fa-list');
+                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
-            //var queryStr = $("#txtQuery").val();
-            //if (queryStr == null) {
-            //    queryStr = "%";
-            //}
-            //$("#List").datagrid("load", { queryStr: queryStr });
-            var po = $("#txtpo").val();
-            var supplierShortName = $("#txtsupplierShortName").val();
-            var partCode = $("#txtpartCode").val();
-            if (po == null) {
-                po = "";
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
             }
-            if (supplierShortName == null) {
-                supplierShortName = "";
-            }
-            if (partCode == null) {
-                partCode = "";
-            }
-            $("#List").datagrid("load", {
-                po: po, supplierShortName: supplierShortName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
-});
+            $("#List").datagrid("load", { queryStr: queryStr });
 
         });
         $("#btnDelete").click(function () {
@@ -192,7 +180,7 @@
             hideLoading();
             $.messageBox5s('提示', data.message);
             $('#importMessage').html(data.message);
-            $('#importResultFile').attr('href', data.value);
+            $('#importResultFile').attr('href', data.value); 
         }, "json");
     }
 </script>

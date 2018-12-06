@@ -758,9 +758,9 @@
           <Property Name="TypeCode" Type="nvarchar" MaxLength="20" />
           <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
           <Property Name="ParamCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
           <Property Name="Sort" Type="int" />
-          <Property Name="Enable" Type="bit" Nullable="false" />
+          <Property Name="Enable" Type="bit" />
+          <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
@@ -911,7 +911,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -1016,6 +1016,42 @@
           <Property Name="TagidList" Type="varchar" MaxLength="1000" />
           <Property Name="Subscribe" Type="int" Nullable="false" />
           <Property Name="OfficalAccountId" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WMS_AI">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArrivalBillNum" Type="nvarchar" MaxLength="50" />
+          <Property Name="POId" Type="int" Nullable="false" />
+          <Property Name="BoxNum" Type="numeric" Precision="10" Scale="3" />
+          <Property Name="ArrivalNum" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="ArrivalDate" Type="datetime" />
+          <Property Name="ReceiveMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="ReceiveStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="InspectBillNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InspectMan" Type="nvarchar" MaxLength="20" />
+          <Property Name="InspectDate" Type="datetime" />
+          <Property Name="InspectStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="CheckOutDate" Type="datetime" />
+          <Property Name="CheckOutResult" Type="nvarchar" MaxLength="50" />
+          <Property Name="QualifyNum" Type="numeric" Precision="10" Scale="3" />
+          <Property Name="NoQualifyNum" Type="numeric" Precision="10" Scale="3" />
+          <Property Name="CheckOutRemark" Type="nvarchar" MaxLength="100" />
+          <Property Name="ReInspectBillNum" Type="nvarchar" MaxLength="100" />
+          <Property Name="InStoreBillNum" Type="nvarchar" MaxLength="50" />
+          <Property Name="InStoreMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="InvCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="InStoreStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr3" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr4" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr5" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
         </EntityType>
         <EntityType Name="WMS_Customer">
           <Key>
@@ -2093,6 +2129,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_AI_WMS_PO">
+          <End Role="WMS_PO" Type="Self.WMS_PO" Multiplicity="1" />
+          <End Role="WMS_AI" Type="Self.WMS_AI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_PO">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_AI">
+              <PropertyRef Name="POId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WMS_Line_WMS_Header1">
           <End Role="WMS_Header" Type="Self.WMS_Header" Multiplicity="1" />
           <End Role="WMS_Line" Type="Self.WMS_Line" Multiplicity="*" />
@@ -2381,6 +2429,7 @@
           <EntitySet Name="WC_OfficalAccounts" EntityType="Self.WC_OfficalAccounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WC_ResponseLog" EntityType="Self.WC_ResponseLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WC_User" EntityType="Self.WC_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_AI" EntityType="Self.WMS_AI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Customer" EntityType="Self.WMS_Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Header" EntityType="Self.WMS_Header" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_InvInfo" EntityType="Self.WMS_InvInfo" Schema="dbo" store:Type="Tables" />
@@ -2698,6 +2747,10 @@
           <AssociationSet Name="FK_WC_UserResponseLog_WC_OfficalAcconts" Association="Self.FK_WC_UserResponseLog_WC_OfficalAcconts">
             <End Role="WC_OfficalAccounts" EntitySet="WC_OfficalAccounts" />
             <End Role="WC_ResponseLog" EntitySet="WC_ResponseLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_AI_WMS_PO" Association="Self.FK_WMS_AI_WMS_PO">
+            <End Role="WMS_PO" EntitySet="WMS_PO" />
+            <End Role="WMS_AI" EntitySet="WMS_AI" />
           </AssociationSet>
           <AssociationSet Name="FK_WMS_Line_WMS_Header1" Association="Self.FK_WMS_Line_WMS_Header1">
             <End Role="WMS_Header" EntitySet="WMS_Header" />
@@ -3276,6 +3329,11 @@
             <End Role="WMS_PO" EntitySet="WMS_PO" />
           </AssociationSet>
           <EntitySet Name="SysParam" EntityType="DB.SysParam" />
+          <EntitySet Name="WMS_AI" EntityType="DB.WMS_AI" />
+          <AssociationSet Name="FK_WMS_AI_WMS_PO" Association="DB.FK_WMS_AI_WMS_PO">
+            <End Role="WMS_PO" EntitySet="WMS_PO" />
+            <End Role="WMS_AI" EntitySet="WMS_AI" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5705,6 +5763,7 @@
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_PO_WMS_Part" FromRole="WMS_PO" ToRole="WMS_Part" />
           <NavigationProperty Name="WMS_Supplier" Relationship="DB.FK_WMS_PO_WMS_Supplier" FromRole="WMS_PO" ToRole="WMS_Supplier" />
+          <NavigationProperty Name="WMS_AI" Relationship="DB.FK_WMS_AI_WMS_PO" FromRole="WMS_PO" ToRole="WMS_AI" />
         </EntityType>
         <Association Name="FK_WMS_PO_WMS_Part">
           <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="1" />
@@ -5744,8 +5803,57 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <Property Name="Sort" Type="Int32" />
-          <Property Name="Enable" Type="Boolean" Nullable="false" />
+          <Property Name="Enable" Type="Boolean" />
         </EntityType>
+        <EntityType Name="WMS_AI">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArrivalBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="POId" Type="Int32" Nullable="false" />
+          <Property Name="BoxNum" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="ArrivalNum" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="ArrivalDate" Type="DateTime" Precision="3" />
+          <Property Name="ReceiveMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiveStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="InspectBillNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InspectMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="InspectDate" Type="DateTime" Precision="3" />
+          <Property Name="InspectStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CheckOutDate" Type="DateTime" Precision="3" />
+          <Property Name="CheckOutResult" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QualifyNum" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="NoQualifyNum" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="CheckOutRemark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ReInspectBillNum" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="InStoreBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InStoreMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="InvCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InStoreStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Attr1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WMS_PO" Relationship="DB.FK_WMS_AI_WMS_PO" FromRole="WMS_AI" ToRole="WMS_PO" />
+        </EntityType>
+        <Association Name="FK_WMS_AI_WMS_PO">
+          <End Type="DB.WMS_PO" Role="WMS_PO" Multiplicity="1" />
+          <End Type="DB.WMS_AI" Role="WMS_AI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_PO">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_AI">
+              <PropertyRef Name="POId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7229,6 +7337,43 @@
                 <ScalarProperty Name="ParamCode" ColumnName="ParamCode" />
                 <ScalarProperty Name="TypeName" ColumnName="TypeName" />
                 <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WMS_AI">
+            <EntityTypeMapping TypeName="DB.WMS_AI">
+              <MappingFragment StoreEntitySet="WMS_AI">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Attr5" ColumnName="Attr5" />
+                <ScalarProperty Name="Attr4" ColumnName="Attr4" />
+                <ScalarProperty Name="Attr3" ColumnName="Attr3" />
+                <ScalarProperty Name="Attr2" ColumnName="Attr2" />
+                <ScalarProperty Name="Attr1" ColumnName="Attr1" />
+                <ScalarProperty Name="InStoreStatus" ColumnName="InStoreStatus" />
+                <ScalarProperty Name="InvCode" ColumnName="InvCode" />
+                <ScalarProperty Name="InStoreMan" ColumnName="InStoreMan" />
+                <ScalarProperty Name="InStoreBillNum" ColumnName="InStoreBillNum" />
+                <ScalarProperty Name="ReInspectBillNum" ColumnName="ReInspectBillNum" />
+                <ScalarProperty Name="CheckOutRemark" ColumnName="CheckOutRemark" />
+                <ScalarProperty Name="NoQualifyNum" ColumnName="NoQualifyNum" />
+                <ScalarProperty Name="QualifyNum" ColumnName="QualifyNum" />
+                <ScalarProperty Name="CheckOutResult" ColumnName="CheckOutResult" />
+                <ScalarProperty Name="CheckOutDate" ColumnName="CheckOutDate" />
+                <ScalarProperty Name="InspectStatus" ColumnName="InspectStatus" />
+                <ScalarProperty Name="InspectDate" ColumnName="InspectDate" />
+                <ScalarProperty Name="InspectMan" ColumnName="InspectMan" />
+                <ScalarProperty Name="InspectBillNum" ColumnName="InspectBillNum" />
+                <ScalarProperty Name="ReceiveStatus" ColumnName="ReceiveStatus" />
+                <ScalarProperty Name="ReceiveMan" ColumnName="ReceiveMan" />
+                <ScalarProperty Name="ArrivalDate" ColumnName="ArrivalDate" />
+                <ScalarProperty Name="ArrivalNum" ColumnName="ArrivalNum" />
+                <ScalarProperty Name="BoxNum" ColumnName="BoxNum" />
+                <ScalarProperty Name="POId" ColumnName="POId" />
+                <ScalarProperty Name="ArrivalBillNum" ColumnName="ArrivalBillNum" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

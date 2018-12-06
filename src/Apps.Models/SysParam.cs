@@ -24,6 +24,6 @@ namespace Apps.Models
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
         public Nullable<int> Sort { get; set; }
-        public bool Enable { get; set; }
+        public Nullable<bool> Enable { get; set; }
     }
 }

@@ -11,6 +11,8 @@ using Apps.Models.WMS;
 using Unity.Attributes;
 using Apps.IDAL.WMS;
 using System.Linq.Expressions;
+using System.Linq.Dynamic.Core;
+
 
 namespace Apps.BLL.WMS
 {
@@ -270,6 +272,15 @@ namespace Apps.BLL.WMS
             //    throw new Exception("订单号不能为空！");
             //}
 
+        }
+        public List<WMS_POModel> GetListByWhere(ref GridPager pager, string where)
+        {
+            IQueryable<WMS_PO> queryData = null;
+            queryData = m_Rep.GetList().Where(where);
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return CreateModelList(ref queryData);
         }
     }
  }

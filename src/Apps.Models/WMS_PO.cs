@@ -14,6 +14,11 @@ namespace Apps.Models
     
     public partial class WMS_PO
     {
+        public WMS_PO()
+        {
+            this.WMS_AI = new HashSet<WMS_AI>();
+        }
+    
         public int Id { get; set; }
         public string PO { get; set; }
         public Nullable<System.DateTime> PODate { get; set; }
@@ -36,5 +41,6 @@ namespace Apps.Models
     
         public virtual WMS_Part WMS_Part { get; set; }
         public virtual WMS_Supplier WMS_Supplier { get; set; }
+        public virtual ICollection<WMS_AI> WMS_AI { get; set; }
     }
 }
