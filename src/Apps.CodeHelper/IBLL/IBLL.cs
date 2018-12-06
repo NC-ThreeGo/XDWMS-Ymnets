@@ -40,7 +40,7 @@ namespace Apps.CodeHelper
             sb.Append("         /// </summary>\r\n");
             sb.Append("         /// <param name=\"pager\"></param>\r\n");
             sb.Append("         /// <param name=\"whereStr\"></param>\r\n");
-            sb.AppendFormat("         List<{0}Model> GetListByWhere(ref GridPager pager, string where);", tableName);
+            sb.AppendFormat("         List<{0}Model> GetListByWhere(ref GridPager pager, string where);\r\n", tableName);
             sb.Append("    }\r\n");
             sb.Append("}");
 

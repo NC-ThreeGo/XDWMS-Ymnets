@@ -50,6 +50,7 @@ namespace Apps.BLL.Sys
 								
 								|| a.ModifyPerson.Contains(queryStr)
 								
+								
 								);
             }
             else
@@ -87,6 +88,7 @@ namespace Apps.BLL.Sys
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
+													Sort = r.Sort,
           
                                               }).ToList();
 
@@ -113,6 +115,7 @@ namespace Apps.BLL.Sys
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
+				entity.Sort = model.Sort;
   
 
                 if (m_Rep.Create(entity))
@@ -208,6 +211,7 @@ namespace Apps.BLL.Sys
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
+				entity.Sort = model.Sort;
  
 
 
@@ -247,6 +251,7 @@ namespace Apps.BLL.Sys
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
+				model.Sort = entity.Sort;
  
                 return model;
             }
@@ -283,6 +288,7 @@ namespace Apps.BLL.Sys
 				 excelFile.AddMapping<SysParamModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<SysParamModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<SysParamModel>(x => x.ModifyTime, "修改时间");
+				 excelFile.AddMapping<SysParamModel>(x => x.Sort, "排序");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysParamModel>(0);
@@ -301,6 +307,7 @@ namespace Apps.BLL.Sys
 				  entity.CreateTime = row.CreateTime;
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
+				  entity.Sort = row.Sort;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -342,6 +349,7 @@ namespace Apps.BLL.Sys
 						entity.CreateTime = ResultHelper.NowTime;
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
+						entity.Sort = model.Sort;
  
                         db.SysParam.Add(entity);
                     }

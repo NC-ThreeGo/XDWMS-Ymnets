@@ -181,10 +181,11 @@ namespace Apps.Web.Controllers
                 {
                     var jo = new JObject();
                     jo.Add("Id", item.Id);
-                    jo.Add("TypeCode", item.TypeCode);
-                    jo.Add("TypeName", item.TypeName);
-                    jo.Add("ParamCode", item.ParamCode);
-                    jo.Add("ParamName", item.ParamName);
+                    jo.Add("参数类别编码", item.TypeCode);
+                    jo.Add("参数类别名称", item.TypeName);
+                    jo.Add("参数值编码", item.ParamCode);
+                    jo.Add("参数值名称", item.ParamName);
+                    jo.Add("排序", item.Sort);
                     jo.Add("创建人", item.CreatePerson);
                     jo.Add("创建时间", item.CreateTime);
                     jo.Add("修改人", item.ModifyPerson);
@@ -209,10 +210,11 @@ namespace Apps.Web.Controllers
             JArray jObjects = new JArray();
             var jo = new JObject();
               jo.Add("Id", "");
-              jo.Add("TypeCode", "");
-              jo.Add("TypeName", "");
-              jo.Add("ParamCode", "");
-              jo.Add("ParamName", "");
+              jo.Add("参数类别编码", "");
+              jo.Add("参数类别名称", "");
+              jo.Add("参数值编码", "");
+              jo.Add("参数值名称", "");
+              jo.Add("排序", "");
               jo.Add("创建人", "");
               jo.Add("创建时间", "");
               jo.Add("修改人", "");
