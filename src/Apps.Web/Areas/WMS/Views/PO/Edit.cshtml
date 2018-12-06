@@ -102,7 +102,7 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.QTY)：
             </th>
             <td >
-                @Html.EditorFor(model => model.QTY)
+                @Html.TextBoxFor(model => model.QTY, (bool)ViewBag.QtyIsEdit ? null : new { @disabled = "disabled" })
             </td>
             <td>@Html.ValidationMessageFor(model => model.QTY)</td>
         </tr>

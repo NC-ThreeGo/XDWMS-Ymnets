@@ -57,7 +57,7 @@ namespace Apps.Models.WMS
 		public virtual string ReInspectBillNum { get; set; }
 		[Display(Name = "入库单号")]
 		public virtual string InStoreBillNum { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "入库员")]
 		public virtual string InStoreMan { get; set; }
 		[Display(Name = "入库仓库")]
 		public virtual string InvCode { get; set; }
