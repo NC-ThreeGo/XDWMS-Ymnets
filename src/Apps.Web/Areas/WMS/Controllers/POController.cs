@@ -96,6 +96,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             ViewBag.Supplier = new SelectList(m_SupplierBLL.GetList(ref setNoPagerAscById, ""), "Id", "SupplierShortName");
             WMS_POModel entity = m_BLL.GetById(id);
+            ViewBag.QtyIsEdit = true;
             return View(entity);
         }
 

@@ -758,9 +758,9 @@
           <Property Name="TypeCode" Type="nvarchar" MaxLength="20" />
           <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
           <Property Name="ParamCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="Sort" Type="int" />
-          <Property Name="Enable" Type="bit" />
           <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Sort" Type="int" />
+          <Property Name="Enable" Type="bit" Nullable="false" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
@@ -911,7 +911,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -5803,7 +5803,7 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <Property Name="Sort" Type="Int32" />
-          <Property Name="Enable" Type="Boolean" />
+          <Property Name="Enable" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="WMS_AI">
           <Key>
