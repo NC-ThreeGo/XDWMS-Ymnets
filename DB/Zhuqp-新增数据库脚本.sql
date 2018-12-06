@@ -46,7 +46,7 @@ GO
 
 
 
-/****** Object:  Table [dbo].[SysParam]    Script Date: 2018/12/6 9:32:47 ******/
+/****** Object:  Table [dbo].[SysParam]    Script Date: 2018/12/6 10:06:15 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -60,7 +60,7 @@ CREATE TABLE [dbo].[SysParam](
 	[ParamCode] [nvarchar](50) NULL,
 	[ParamName] [nvarchar](50) NULL,
 	[Sort] [int] NULL,
-	[Enable] [bit] NULL,
+	[Enable] [bit] NOT NULL,
 	[CreatePerson] [nvarchar](50) NULL,
 	[CreateTime] [datetime] NULL,
 	[ModifyPerson] [nvarchar](50) NULL,
@@ -71,6 +71,9 @@ CREATE TABLE [dbo].[SysParam](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
+GO
+
+ALTER TABLE [dbo].[SysParam] ADD  CONSTRAINT [DF_SysParam_Enable]  DEFAULT ((1)) FOR [Enable]
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'参数类别编码' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'SysParam', @level2type=N'COLUMN',@level2name=N'TypeCode'
