@@ -27,6 +27,6 @@ namespace Apps.IBLL.WMS
         /// <param name="pager"></param>
         /// <param name="whereStr"></param>
         /// <returns></returns>
-        //List<WMS_POModel> GetListByWhere(ref GridPager pager, string where);
+        List<WMS_POModel> GetListByWhere(ref GridPager pager, string where);
     }
 }

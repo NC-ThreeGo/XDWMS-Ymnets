@@ -30,13 +30,21 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         [HttpPost]
         [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr)
+        public JsonResult GetList(GridPager pager, string po,string supplierShortName,string partCode, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_POModel> list = m_BLL.GetList(ref pager, queryStr);
+            //List<WMS_POModel> list = m_BLL.GetList(ref pager, queryStr);
+            //GridRows<WMS_POModel> grs = new GridRows<WMS_POModel>();
+            //grs.rows = list;
+            //grs.total = pager.totalRows;
+            //return Json(grs);
+            List<WMS_POModel> list = m_BLL.GetListByWhere(ref pager, "PO.Contains(\"" + po + "\") && WMS_Supplier.SupplierShortName.Contains(\""
+                + supplierShortName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
+                + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")");
             GridRows<WMS_POModel> grs = new GridRows<WMS_POModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
+
         }
         #region 创建
         [SupportFilter]
