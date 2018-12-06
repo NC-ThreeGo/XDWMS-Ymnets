@@ -243,6 +243,30 @@ namespace Apps.Web.Areas.WMS.Controllers
                 };
             }
         #endregion
+
+        #region 选择供应商
+        /// <summary>
+        /// 弹出选择供应商
+        /// </summary>
+        /// <param name="mulSelect">是否多选</param>
+        /// <returns></returns>
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult SupplierLookUp(bool mulSelect = false)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult SupplierGetList(GridPager pager, string queryStr)
+        {
+            List<WMS_SupplierModel> list = m_BLL.GetList(ref pager, queryStr);/*.Where(x => x.Status == "有效").ToList();*/
+            GridRows<WMS_SupplierModel> grs = new GridRows<WMS_SupplierModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
     }
 }
 

@@ -83,7 +83,27 @@ $.messageBox5s(Lang.Tip, mes);
                 </th>
                 <td>
                     @*@Html.EditorFor(model => model.SupplierId)*@
-                    @Html.DropDownListFor(model => model.SupplierId, ViewBag.Supplier as SelectList@*, new { @class = "easyui-combobox", @data_options = "filter:filterComboPY" }*@)
+                    @*@Html.DropDownListFor(model => model.SupplierId, ViewBag.Supplier as SelectList, new { @class = "easyui-combobox", @data_options = "filter:filterComboPY" })*@
+                    
+                    <div style="height:0;width:0;overflow:hidden">
+                        @Html.EditorFor(model => model.SupplierId)
+                    </div>
+                    <input id="SupplierList" name="SupplierList" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
+                    <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelSupplier()"></a>
+                    <script type="text/javascript">
+                        function showSelSupplier()
+                        {
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Supplier/SupplierLookUp'></iframe>");
+                            $("#modalwindow").window({ title: '选择供应商', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                        }
+
+                        function SetSelResult(result, resultName)
+                        {
+                            $("#SupplierId").val(result);
+                            $("#SupplierList").val(resultName);
+                        }
+
+                    </script>
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.SupplierId)</td>
             </tr>
