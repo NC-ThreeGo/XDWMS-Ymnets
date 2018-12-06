@@ -193,25 +193,27 @@ namespace Apps.Web.Areas.WMS.Controllers
                 foreach (var item in list)
                 {
                     var jo = new JObject();
-                    jo.Add("采购订单ID", item.Id);
+                    //jo.Add("采购订单ID", item.Id);
                     jo.Add("采购订单", item.PO);
                     jo.Add("采购日期", item.PODate);
-                    jo.Add("供应商编码", item.SupplierId);
-                    jo.Add("物料编码", item.PartId);
+                //jo.Add("供应商编码", item.SupplierId);
+                //jo.Add("物料编码", item.PartId);
+                    jo.Add("供应商简称", item.SupplierShortName);
+                    jo.Add("物料编码", item.PartCode);
                     jo.Add("数量", item.QTY);
                     jo.Add("计划到货日期", item.PlanDate);
                     jo.Add("采购订单类型", item.POType);
                     jo.Add("状态", item.Status);
                     jo.Add("说明", item.Remark);
-                    jo.Add("Attr1", item.Attr1);
-                    jo.Add("Attr2", item.Attr2);
-                    jo.Add("Attr3", item.Attr3);
-                    jo.Add("Attr4", item.Attr4);
-                    jo.Add("Attr5", item.Attr5);
-                    jo.Add("创建人", item.CreatePerson);
-                    jo.Add("创建时间", item.CreateTime);
-                    jo.Add("修改人", item.ModifyPerson);
-                    jo.Add("修改时间", item.ModifyTime);
+                    //jo.Add("Attr1", item.Attr1);
+                    //jo.Add("Attr2", item.Attr2);
+                    //jo.Add("Attr3", item.Attr3);
+                    //jo.Add("Attr4", item.Attr4);
+                    //jo.Add("Attr5", item.Attr5);
+                    //jo.Add("创建人", item.CreatePerson);
+                    //jo.Add("创建时间", item.CreateTime);
+                    //jo.Add("修改人", item.ModifyPerson);
+                    //jo.Add("修改时间", item.ModifyTime);
                     jObjects.Add(jo);
                 }
                 var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
