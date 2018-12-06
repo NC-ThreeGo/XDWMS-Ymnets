@@ -23,6 +23,7 @@ namespace Apps.BLL.Sys
                                               {
                                                   CreatePerson = r.CreatePerson,
                                                   CreateTime = r.CreateTime,
+                                                  Enable = r.Enable,
                                                   Id = r.Id,
                                                   ModifyPerson = r.ModifyPerson,
                                                   ModifyTime = r.ModifyTime,
@@ -60,6 +61,7 @@ namespace Apps.BLL.Sys
 					excelFile.AddMapping<SysParamModel>(x => x.ParamCode, "参数值编码");
 					excelFile.AddMapping<SysParamModel>(x => x.ParamName, "参数值名称");
 					excelFile.AddMapping<SysParamModel>(x => x.Sort, "排序");
+					excelFile.AddMapping<SysParamModel>(x => x.Enable, "是否启用");
 					excelFile.AddMapping<SysParamModel>(x => x.CreatePerson, "创建人");
 					excelFile.AddMapping<SysParamModel>(x => x.CreateTime, "创建时间");
 					excelFile.AddMapping<SysParamModel>(x => x.ModifyPerson, "修改人");
@@ -86,6 +88,7 @@ namespace Apps.BLL.Sys
 								model.ParamCode = row.ParamCode;
 								model.ParamName = row.ParamName;
 								model.Sort = row.Sort;
+								model.Enable = row.Enable;
 								model.CreatePerson = row.CreatePerson;
 								model.CreateTime = row.CreateTime;
 								model.ModifyPerson = row.ModifyPerson;
@@ -120,6 +123,7 @@ namespace Apps.BLL.Sys
 									entity.ParamCode = model.ParamCode;
 									entity.ParamName = model.ParamName;
 									entity.Sort = model.Sort;
+									entity.Enable = model.Enable;
 									entity.CreatePerson = model.CreatePerson;
 									entity.CreateTime = model.CreateTime;
 									entity.ModifyPerson = model.ModifyPerson;
@@ -175,12 +179,11 @@ namespace Apps.BLL.Sys
 			return CreateModelList(ref queryData);
 		}
 
-
         public static SelectList GetSysParamByType(string typeCode)
         {
             using (DBContainer db = new DBContainer())
             {
-                var list = db.SysParam.Where(x => x.TypeCode == typeCode).OrderBy(x => x.Sort).ToList();
+                var list = db.SysParam.Where(x => x.TypeCode == typeCode && x.Enable == true).OrderBy(x => x.Sort).ToList();
                 return new SelectList(list, "ParamCode", "ParamName");
             }
         }

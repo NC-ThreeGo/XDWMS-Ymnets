@@ -74,6 +74,7 @@
                 { field: 'ParamCode', title: '参数值编码', width: 80,sortable:true },
                 { field: 'ParamName', title: '参数值名称', width: 80,sortable:true },
                 { field: 'Sort', title: '排序', width: 80,sortable:true },
+                { field: 'Enable', title: '是否启用', width: 40,sortable:true,align:'center', formatter: function (value) {return EnableFormatter(value)}},
                 { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
                 { field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
                 { field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },

@@ -51,6 +51,7 @@ namespace Apps.BLL.Sys
 								|| a.ModifyPerson.Contains(queryStr)
 								
 								
+								
 								);
             }
             else
@@ -89,6 +90,7 @@ namespace Apps.BLL.Sys
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
 													Sort = r.Sort,
+													Enable = r.Enable,
           
                                               }).ToList();
 
@@ -116,6 +118,7 @@ namespace Apps.BLL.Sys
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
 				entity.Sort = model.Sort;
+				entity.Enable = model.Enable;
   
 
                 if (m_Rep.Create(entity))
@@ -212,6 +215,7 @@ namespace Apps.BLL.Sys
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
 				entity.Sort = model.Sort;
+				entity.Enable = model.Enable;
  
 
 
@@ -252,6 +256,7 @@ namespace Apps.BLL.Sys
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
 				model.Sort = entity.Sort;
+				model.Enable = entity.Enable;
  
                 return model;
             }
@@ -289,6 +294,7 @@ namespace Apps.BLL.Sys
 				 excelFile.AddMapping<SysParamModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<SysParamModel>(x => x.ModifyTime, "修改时间");
 				 excelFile.AddMapping<SysParamModel>(x => x.Sort, "排序");
+				 excelFile.AddMapping<SysParamModel>(x => x.Enable, "是否启用");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysParamModel>(0);
@@ -308,6 +314,7 @@ namespace Apps.BLL.Sys
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
 				  entity.Sort = row.Sort;
+				  entity.Enable = row.Enable;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -350,6 +357,7 @@ namespace Apps.BLL.Sys
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
 						entity.Sort = model.Sort;
+						entity.Enable = model.Enable;
  
                         db.SysParam.Add(entity);
                     }

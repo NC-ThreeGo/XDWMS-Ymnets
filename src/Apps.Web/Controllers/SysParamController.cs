@@ -5,14 +5,13 @@ using Apps.IBLL;
 using Apps.Locale;
 using System.Web.Mvc;
 using Apps.Common;
-using Apps.IBLL;
+using Apps.IBLL.Sys;
 using Apps.Models.Sys;
 using Unity.Attributes;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
 using System.Data;
-using Apps.IBLL.Sys;
 
 namespace Apps.Web.Controllers
 {
@@ -186,6 +185,7 @@ namespace Apps.Web.Controllers
                     jo.Add("参数值编码", item.ParamCode);
                     jo.Add("参数值名称", item.ParamName);
                     jo.Add("排序", item.Sort);
+                    jo.Add("是否启用", item.Enable);
                     jo.Add("创建人", item.CreatePerson);
                     jo.Add("创建时间", item.CreateTime);
                     jo.Add("修改人", item.ModifyPerson);
@@ -215,6 +215,7 @@ namespace Apps.Web.Controllers
               jo.Add("参数值编码", "");
               jo.Add("参数值名称", "");
               jo.Add("排序", "");
+              jo.Add("是否启用", "");
               jo.Add("创建人", "");
               jo.Add("创建时间", "");
               jo.Add("修改人", "");

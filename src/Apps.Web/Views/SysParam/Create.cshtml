@@ -103,6 +103,15 @@ $.messageBox5s(Lang.Tip, mes);
         </tr>
         <tr>
             <th>
+                @Html.LabelFor(model => model.Enable)：
+            </th>
+            <td>
+                @Html.RadioFor("Enable", true, "启用", "禁用")
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Enable)</td>
+        </tr>
+        <tr>
+            <th>
                 @Html.LabelFor(model => model.CreatePerson)：
             </th>
             <td>
