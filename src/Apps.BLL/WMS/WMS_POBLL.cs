@@ -20,6 +20,8 @@ namespace Apps.BLL.WMS
         public IWMS_PartRepository m_PartRep { get; set; }
         [Dependency]
         public IWMS_SupplierRepository m_SupplierRep { get; set; }
+        [Dependency]
+        public IWMS_PORepository m_PORep { get; set; }
 
 
         public override List<WMS_POModel> CreateModelList(ref IQueryable<WMS_PO> queryData)
@@ -246,6 +248,27 @@ namespace Apps.BLL.WMS
                 throw new Exception("供应商简称不能为空！");
             }
 
+            //获取物料与订单号
+            //if (!String.IsNullOrEmpty(model.PO))
+            //{
+            //    var partId = model.PartId;
+            //    var po = model.PO;
+            //    Expression<Func<WMS_PO, bool>> exp = x => x.PartId == partId && x.PO == po;
+
+            //    var part = m_PORep.GetSingleWhere(exp);
+            //    if (part == null)
+            //    {
+            //        throw new Exception("订单号与物料编码重复！");
+            //    }
+            //    else
+            //    {
+            //        model.PartId = part.Id;
+            //    }
+            //}
+            //else
+            //{
+            //    throw new Exception("订单号不能为空！");
+            //}
 
         }
     }

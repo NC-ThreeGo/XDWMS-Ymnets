@@ -266,3 +266,4 @@ __pycache__/
 /src/Apps.Web/upload/201812/01/PO_Template_201812011948479175.xlsx
 /src/Apps.Web/upload/201812/03/PO_Template.xlsx
 /src/Apps.Web/upload/201812/03/PO_Template_201812031630232676.xlsx
+*.xlsx
