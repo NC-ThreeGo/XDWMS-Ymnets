@@ -260,6 +260,30 @@ namespace Apps.Web.Areas.WMS.Controllers
             };
         }
         #endregion
+
+        #region 选择物料
+        /// <summary>
+        /// 弹出选择物料
+        /// </summary>
+        /// <param name="mulSelect">是否多选</param>
+        /// <returns></returns>
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult PartLookUp(bool mulSelect = false)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult PartGetList(GridPager pager, string queryStr)
+        {
+            List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\" && PartCode.Contains(\"" + queryStr + "\")");
+            GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
     }
 }
 

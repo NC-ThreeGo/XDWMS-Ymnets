@@ -1,5 +1,6 @@
 ﻿using Apps.Common;
 using Apps.Models.WMS;
+using System.Collections.Generic;
 
 namespace Apps.IBLL.WMS
 {
@@ -18,5 +19,12 @@ namespace Apps.IBLL.WMS
          /// </summary>
          /// <param name="model"></param>
          void AdditionalCheckExcelData(WMS_SupplierModel model);
+        /// <summary>
+        /// 根据where字符串获取列表数据
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="whereStr"></param>
+        /// <returns></returns>
+        List<WMS_SupplierModel> GetListByWhere(ref GridPager pager, string where);
     }
 }

@@ -113,7 +113,27 @@ $.messageBox5s(Lang.Tip, mes);
                     零件代码：
                 </th>
                 <td>
-                    @Html.EditorFor(model => model.PartId)
+                    @*@Html.EditorFor(model => model.PartId)*@
+
+                    <div style="height:0;width:0;overflow:hidden">
+                        @Html.EditorFor(model => model.PartId)
+                    </div>
+                    <input id="PartList" name="PartList" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
+                    <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelPart()"></a>
+                    <script type="text/javascript">
+                        function showSelPart()
+                        {
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Part/PartLookUp'></iframe>");
+                            $("#modalwindow").window({ title: '选择物料', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                        }
+
+                        function SetSelResultForPart(result, resultName)
+                        {
+                            $("#PartId").val(result);
+                            $("#PartList").val(resultName);
+                        }
+
+                    </script>
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.PartId)</td>
             </tr>

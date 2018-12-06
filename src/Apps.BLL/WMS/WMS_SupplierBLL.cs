@@ -2,7 +2,7 @@
 using Apps.Models;
 using System.Linq;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Dynamic.Core;
 using System;
 using System.IO;
 using LinqToExcel;
@@ -175,6 +175,16 @@ namespace Apps.BLL.WMS
 		public void AdditionalCheckExcelData(WMS_SupplierModel model)
 		{
 		}
+
+        public List<WMS_SupplierModel> GetListByWhere(ref GridPager pager, string where)
+        {
+            IQueryable<WMS_Supplier> queryData = null;
+            queryData = m_Rep.GetList().Where(where);
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return CreateModelList(ref queryData);
+        }
     }
- }
+}
 

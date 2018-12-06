@@ -260,7 +260,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Create")]
         public JsonResult SupplierGetList(GridPager pager, string queryStr)
         {
-            List<WMS_SupplierModel> list = m_BLL.GetList(ref pager, queryStr);/*.Where(x => x.Status == "有效").ToList();*/
+            List<WMS_SupplierModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\" && SupplierShortName.Contains(\"" + queryStr + "\")");
             GridRows<WMS_SupplierModel> grs = new GridRows<WMS_SupplierModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

@@ -4,7 +4,7 @@
 @using Apps.Models.Sys;
 @using Apps.Locale;
 @{
-    ViewBag.Title = "WMS_SupplierLookUp";
+    ViewBag.Title = "WMS_PartLookUp";
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
@@ -26,7 +26,7 @@
 <script type="text/javascript">
     $(function () {
         $('#List').datagrid({
-            url: '@(Url.Action("SupplierGetList"))',
+            url: '@(Url.Action("PartGetList"))',
             width: SetGridWidthSub(220),
             methord: 'post',
             height: SetGridHeightSub(47),
@@ -48,16 +48,16 @@
             },
             columns: [[
                 { field: 'ck', checkbox: true },
-                { field: 'Id', title: '供应商ID', width: 80, hidden: true },
-                { field: 'SupplierCode', title: '供应商编码', width: 80, sortable: true },
-                { field: 'SupplierShortName', title: '供应商简称', width: 80, sortable: true },
-                { field: 'SupplierName', title: '供应商名称', width: 80, sortable: true },
-                { field: 'SupplierType', title: '供应商类型', width: 80, sortable: true },
-                { field: 'LinkMan', title: '联系人', width: 80, sortable: true },
-                { field: 'LinkManTel', title: '联系人电话', width: 80, sortable: true },
-                { field: 'LinkManAddress', title: '联系人地址', width: 80, sortable: true },
-                { field: 'Status', title: '状态', width: 80, sortable: true },
-                { field: 'Remark', title: '说明', width: 80, sortable: true },
+                { field: 'Id', title: '物料ID', width: 80, hidden: true },
+                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 80, sortable: true },
+                { field: 'PartType', title: '物料类型', width: 80, sortable: true },
+                { field: 'CustomerCode', title: '客户编码', width: 80, sortable: true },
+                { field: 'LogisticsCode', title: '物流号', width: 80, sortable: true },
+                { field: 'OtherCode', title: '额外信息编码', width: 80, sortable: true },
+                { field: 'PCS', title: '每箱数量', width: 80, sortable: true },
+                { field: 'StoreMan', title: '保管员', width: 80, sortable: true },
+                { field: 'Status', title: '物料状态', width: 80, sortable: true },
             ]]
         });
     });
@@ -89,7 +89,7 @@
             var rows = $('#List').datagrid('getSelections');
             if (rows.length > 0) {
                 //返回到上一层处理
-                window.parent.SetSelResult(rows[0].Id, rows[0].SupplierShortName);
+                window.parent.SetSelResultForPart(rows[0].Id, rows[0].PartCode);
                 window.parent.frameReturnByClose();
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
