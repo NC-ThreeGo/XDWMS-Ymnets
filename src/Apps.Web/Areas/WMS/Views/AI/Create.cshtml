@@ -173,83 +173,12 @@
         }
     }
     function onEndEdit(index, row) {
-        //var ed = $(this).datagrid('getEditor', {
-        //    index: index,
-        //    field: 'CurrentQty'
-        //});
-        //var qty = $(ed.target).val();
-        //if (qty == "")
-        //{
-        //    qty = 0;
-        //}
-        //var cb = $(this).datagrid('getEditor', {
-        //    index: index,
-        //    field: 'ck'
-        //});
-        //$(cb.target).check = qty != 0;
-        //if (qty != 0)
-        //{
-        //    $('#List').datagrid('checkRow', index);
-        //    $("input[type='checkbox']")[index + 1].disabled = true;
-        //}
-        //else
-        //{
-        //    $('#List').datagrid('uncheckRow', index);
-        //}
     }
     //进入编辑前设置
     function onBeginEdit(index, row) {
 
     }
-    //-------------------------------明细处理------------------------------------//
-    //弹出选择明细
-    function SelDetails() {
-        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("WareDetails")'></iframe>");
-        $("#modalwindow").window({ title: '请选择需要导入的库存明细', width: $(window).width() - 50, height: $(window).height() - 50, iconCls: 'fa fa-plus' }).window('open');
-    }
-    //返回值并设置到列表中来
-    function SetDetails(rows) {
 
-        var index = $('#List').datagrid('getRowIndex', $('#List').datagrid('getSelected'));
-        if (index == -1)
-            index = 0;
-
-        editIndex = $('#List').datagrid('getRows').length + rows.length-1;
-
-        for (var i = 0; i < rows.length; i++) {
-            $("#List").datagrid("insertRow", {
-                index: index + i,
-                row: {
-                    oper: "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus  color-red' href='javascript:removeit()'><a>",
-                    WareDetailsId: rows[i].Id,
-                    WareDetailsName: rows[i].Name,
-                    WarehouseId: $("#WarehouseId").val(),
-                    WarehouseName: $("#WarehouseId").find("option:selected").text(),
-                    Price: rows[i].SalePrice,
-                    Quantity: 1,
-                    TotalPrice: (rows[i].SalePrice*1)
-
-                }
-            });
-        }
-        //endEditing();
-    }
-    function append() {
-        var index = $('#List').datagrid('getRowIndex', $('#List').datagrid('getSelected'));
-        if (index == -1)
-            index = 0;
-        $("#List").datagrid("insertRow", {
-            index: index + 1,
-            row: {
-                oper: "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-red' href='javascript:removeit()'><a>",
-                WarehouseId: $("#WarehouseId").val(),
-                WarehouseName: $("#WarehouseId").find("option:selected").text(),
-                Price: 0,
-                Quantity:0,
-                TotalPrice: 0
-            }
-        });
-    }
 
     //关闭模式窗口
     function frameReturnByClose() {
@@ -336,6 +265,13 @@
 
                     </script>
                     @Html.ToolButton("btnLoadPO", "fa fa-reply", Resource.Load, false)
+                </td>
+                <th>
+                    @Html.LabelFor(model => model.ArrivalBillNum) "（自动生成）"：
+                </th>
+                <td>
+                    <input id="arrivalBillNum" type="hidden" name="arrivalBillNum" value="@ViewBag.ArrivalBillNum" />
+                    @Html.TextBox("arrivalBillNum", (string)ViewBag.ArrivalBillNum, new { @disabled = "disabled" })
                 </td>
             </tr>
 

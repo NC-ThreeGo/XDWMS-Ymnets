@@ -26,9 +26,9 @@ namespace Apps.Models.WMS
 		[Display(Name = "采购订单ID")]
 		public virtual int POId { get; set; }
 		[Display(Name = "到货箱数")]
-		public virtual Nullable<decimal> BoxNum { get; set; }
+		public virtual Nullable<decimal> BoxQty { get; set; }
 		[Display(Name = "到货数量")]
-		public virtual Nullable<decimal> ArrivalNum { get; set; }
+		public virtual Nullable<decimal> ArrivalQty { get; set; }
 		[Display(Name = "到货日期")]
 		public virtual Nullable<System.DateTime> ArrivalDate { get; set; }
 		[Display(Name = "接收人")]
@@ -48,9 +48,9 @@ namespace Apps.Models.WMS
 		[Display(Name = "检验结果")]
 		public virtual string CheckOutResult { get; set; }
 		[Display(Name = "合格数量")]
-		public virtual Nullable<decimal> QualifyNum { get; set; }
+		public virtual Nullable<decimal> QualifyQty { get; set; }
 		[Display(Name = "不合格数量")]
-		public virtual Nullable<decimal> NoQualifyNum { get; set; }
+		public virtual Nullable<decimal> NoQualifyQty { get; set; }
 		[Display(Name = "检验说明")]
 		public virtual string CheckOutRemark { get; set; }
 		[Display(Name = "重新送检单")]

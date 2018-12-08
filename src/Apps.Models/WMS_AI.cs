@@ -17,8 +17,8 @@ namespace Apps.Models
         public int Id { get; set; }
         public string ArrivalBillNum { get; set; }
         public int POId { get; set; }
-        public Nullable<decimal> BoxNum { get; set; }
-        public Nullable<decimal> ArrivalNum { get; set; }
+        public Nullable<decimal> BoxQty { get; set; }
+        public Nullable<decimal> ArrivalQty { get; set; }
         public Nullable<System.DateTime> ArrivalDate { get; set; }
         public string ReceiveMan { get; set; }
         public string ReceiveStatus { get; set; }
@@ -28,8 +28,8 @@ namespace Apps.Models
         public string InspectStatus { get; set; }
         public Nullable<System.DateTime> CheckOutDate { get; set; }
         public string CheckOutResult { get; set; }
-        public Nullable<decimal> QualifyNum { get; set; }
-        public Nullable<decimal> NoQualifyNum { get; set; }
+        public Nullable<decimal> QualifyQty { get; set; }
+        public Nullable<decimal> NoQualifyQty { get; set; }
         public string CheckOutRemark { get; set; }
         public string ReInspectBillNum { get; set; }
         public string InStoreBillNum { get; set; }

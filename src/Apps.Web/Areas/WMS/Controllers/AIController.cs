@@ -41,24 +41,26 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Create()
         {
+            ViewBag.ArrivalBillNum = "DH" + DateTime.Now.ToString("yyyyMMddHHmmssff");
             return View();
         }
 
         [HttpPost]
         [SupportFilter]
         [ValidateInput(false)]
-        public JsonResult Create(string inserted)
+        public JsonResult Create(string arrivalBillNum, string inserted)
         {
             var detailsList = JsonHandler.DeserializeJsonToList<WMS_POForAIModel>(inserted);
             foreach (var model in detailsList)
             {
                 WMS_AIModel aiModel = new WMS_AIModel();
                 aiModel.Id = 0;
+                aiModel.ArrivalBillNum = arrivalBillNum;
                 aiModel.CreateTime = ResultHelper.NowTime;
                 aiModel.CreatePerson = GetUserId();
                 aiModel.POId = model.Id;
-                aiModel.BoxNum = model.BoxNum;
-                aiModel.ArrivalNum = model.CurrentQty;
+                aiModel.BoxQty = model.BoxNum;
+                aiModel.ArrivalQty = model.CurrentQty;
                 aiModel.ArrivalDate = ResultHelper.NowTime;
                 aiModel.ReceiveMan = GetUserId();
 
@@ -215,8 +217,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("Id", item.Id);
                     jo.Add("到货单据号", item.ArrivalBillNum);
                     jo.Add("采购订单ID", item.POId);
-                    jo.Add("到货箱数", item.BoxNum);
-                    jo.Add("到货数量", item.ArrivalNum);
+                    jo.Add("到货箱数", item.BoxQty);
+                    jo.Add("到货数量", item.ArrivalQty);
                     jo.Add("到货日期", item.ArrivalDate);
                     jo.Add("接收人", item.ReceiveMan);
                     jo.Add("到货状态", item.ReceiveStatus);
@@ -226,8 +228,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("送检状体", item.InspectStatus);
                     jo.Add("检验日期", item.CheckOutDate);
                     jo.Add("检验结果", item.CheckOutResult);
-                    jo.Add("合格数量", item.QualifyNum);
-                    jo.Add("不合格数量", item.NoQualifyNum);
+                    jo.Add("合格数量", item.QualifyQty);
+                    jo.Add("不合格数量", item.NoQualifyQty);
                     jo.Add("检验说明", item.CheckOutRemark);
                     jo.Add("重新送检单", item.ReInspectBillNum);
                     jo.Add("入库单号", item.InStoreBillNum);

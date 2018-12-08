@@ -10,7 +10,7 @@ namespace Apps.DAL.WMS
         {
             var aiQty = from ai in Context.WMS_AI
                         group ai by ai.POId into g
-                        select new { g.Key, sumqty = g.Sum(p => p.ArrivalNum) };
+                        select new { g.Key, sumqty = g.Sum(p => p.ArrivalQty) };
             //ai.ToArray();
 
             var queryData = from po in Context.WMS_PO
