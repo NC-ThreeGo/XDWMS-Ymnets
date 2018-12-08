@@ -79,8 +79,9 @@ $.messageBox5s(Lang.Tip, mes);
             <th>
                 @Html.LabelFor(model => model.PartType)：
             </th>
-            <td >
-                @Html.EditorFor(model => model.PartType)
+            <td>
+                @*@Html.EditorFor(model => model.PartType)*@
+                @Html.DropDownListFor(model => model.PartType, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("PartType"))
             </td>
             <td>@Html.ValidationMessageFor(model => model.PartType)</td>
         </tr>
@@ -135,10 +136,7 @@ $.messageBox5s(Lang.Tip, mes);
             </th>
             <td>
                 @*@Html.EditorFor(model => model.Status)*@
-                <select id="Status" name="Status">
-                    <option value="有效">有效</option>
-                    <option value="无效">无效</option>
-                </select>
+                @Html.DropDownListFor(model => model.Status, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("Status"))
             </td>
             <td>@Html.ValidationMessageFor(model => model.Status)</td>
         </tr>
