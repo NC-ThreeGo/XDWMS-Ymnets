@@ -421,6 +421,15 @@ namespace Apps.Locale {
         }
         
         /// <summary>
+        ///   查找类似 加载 的本地化字符串。
+        /// </summary>
+        public static string Load {
+            get {
+                return ResourceManager.GetString("Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {0}最多{1}个汉字,{2}个字符 的本地化字符串。
         /// </summary>
         public static string MaxWordsExpression {

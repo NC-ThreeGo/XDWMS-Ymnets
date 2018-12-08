@@ -423,6 +423,7 @@
     <Compile Include="WC_User.cs">
       <DependentUpon>DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="WMS\WMS_POForAIModel.cs" />
     <Compile Include="WMS\WMS_AIModel.cs" />
     <Compile Include="WMS\WMS_CustomerModel.cs" />
     <Compile Include="WMS\WMS_HeaderModel.cs" />

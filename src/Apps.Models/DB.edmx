@@ -758,9 +758,9 @@
           <Property Name="TypeCode" Type="nvarchar" MaxLength="20" />
           <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
           <Property Name="ParamCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
           <Property Name="Sort" Type="int" />
           <Property Name="Enable" Type="bit" Nullable="false" />
-          <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
@@ -911,7 +911,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -1029,7 +1029,7 @@
           <Property Name="ArrivalDate" Type="datetime" />
           <Property Name="ReceiveMan" Type="nvarchar" MaxLength="10" />
           <Property Name="ReceiveStatus" Type="nvarchar" MaxLength="10" />
-          <Property Name="InspectBillNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InspectBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="InspectMan" Type="nvarchar" MaxLength="20" />
           <Property Name="InspectDate" Type="datetime" />
           <Property Name="InspectStatus" Type="nvarchar" MaxLength="10" />
@@ -5817,7 +5817,7 @@
           <Property Name="ArrivalDate" Type="DateTime" Precision="3" />
           <Property Name="ReceiveMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="ReceiveStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="InspectBillNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InspectBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InspectMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="InspectDate" Type="DateTime" Precision="3" />
           <Property Name="InspectStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />

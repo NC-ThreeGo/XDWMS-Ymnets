@@ -117,7 +117,7 @@
     }
     $(function () {
         $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', $(window).width() - 50, $(window).height() - 50, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');

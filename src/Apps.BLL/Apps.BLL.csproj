@@ -427,6 +427,7 @@
     <Compile Include="WC\WC_OfficalAccountsBLL.cs" />
     <Compile Include="WC\WC_UserBLL.cs" />
     <Compile Include="WebpartBLL.cs" />
+    <Compile Include="WMS\WMS_AIBLL_1.cs" />
     <Compile Include="WMS\WMS_AIBLL.cs" />
     <Compile Include="WMS\WMS_CustomerBLL.cs" />
     <Compile Include="WMS\WMS_HeaderBLL.cs" />

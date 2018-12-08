@@ -266,6 +266,9 @@
     <value>{0} must be a positive  integer</value>
     <comment>数据注解验证</comment>
   </data>
+  <data name="Load" xml:space="preserve">
+    <value>Load</value>
+  </data>
   <data name="MaxWordsExpression" xml:space="preserve">
     <value>{0} the most contains {1} chinese characters and {2} characters</value>
     <comment>数据注解验证</comment>

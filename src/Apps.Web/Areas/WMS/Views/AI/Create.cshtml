@@ -1,323 +1,352 @@
 ﻿@model Apps.Models.WMS.WMS_AIModel
 @using Apps.Web.Core;
 @using Apps.Common;
-@using Apps.Models.WMS;
+@using Apps.Models.Spl;
 @using Apps.Web;
 @using Apps.Locale;
 @using Apps.Models.Sys;
 @{
-    ViewBag.Title = "创建";
+    ViewBag.Title = "创建到货";
     Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
     List<permModel> perm = null;
 }
-
 <script type="text/javascript">
-$(function () {
-    $("#btnSave").click(function () {
-        if ($("form").valid()) {
-            $.ajax({
-                url: "@Url.Action("Create")",
-                type: "Post",
-                data: $("form").serialize(),
-                dataType: "json",
-                success: function (data) {
-                    if (data.type == 1) {
-                        window.parent.frameReturnByMes(data.message);
-                        window.parent.frameReturnByReload(true);
-                        window.parent.frameReturnByClose()
+    $(function ()
+    {
+        //加载PO
+        $("#btnLoadPO").click(function ()
+        {
+            var poNo = $("#PONo").val();
+            $("#List").datagrid("load", { poNo: poNo });
+        });
+
+        $("#btnSave").click(function ()
+        {
+            if (!$("form").valid()) {
+                $.messageBox5s('提示', $("#ErrMesList").html());
+                return;
+            }
+            if ($("form").valid()) {
+                endEditing();
+                var $dg = $('#List');
+                var rows = $dg.datagrid('getChecked');  //获取CheckBox为选中的行
+                //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
+                $("#inserted").val(JSON.stringify(rows));
+                if (rows.length) {
+                    showLoading();
+                    $.ajax({
+                        url: "@Url.Action("Create")",
+                        type: "Post",
+                        data: $("form").serialize(),
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.type == 1) {
+                                hideLoading();
+                                window.parent.frameReturnByMes(data.message);
+                                window.parent.frameReturnByReload(true);
+                                window.parent.frameReturnByClose()
+                                window.parent.frameReturnByMes("保存成功！");
+                            } else {
+                                window.parent.frameReturnByMes(data.message);
+                                hideLoading();
+
+                            }
+                        }
+                    });
+                } else {
+                    $.messageBox5s('提示', "没有数据需要保存！");
+                }
+            }
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(30),
+                height: SetGridHeightSub(50)
+            });
+        });
+
+    });
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetPODetailsList")?poNo=""',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(202),
+            fitColumns: true,
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            selectOnCheck: false,
+            checkOnSelect: false,
+            onClickCell: onClickCell,
+            onEndEdit: onEndEdit,
+            onBeginEdit: onBeginEdit,
+            remotesort: false,
+            showFooter: false,
+            onLoadSuccess: function (data) {
+                //append();
+                if (data.rows.length > 0)
+                {
+                    $("input[type='checkbox']")[0].disabled = true;
+                    //循环判断操作为新增的不能选择
+                    for (var i = 0; i < data.rows.length; i++)
+                    {
+                        $("input[type='checkbox']")[i + 1].disabled = true;
                     }
-                    else {
-                        window.parent.frameReturnByMes(data.message);
-                    }
+                }
+            },
+            columns: [[
+                {
+                    field: 'ck', checkbox: true,
+                },
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
+                { field: 'PO', title: '采购订单', width: 80,  hidden: true },
+                { field: 'PartId', title: '物料ID', width: 80,  hidden: true },
+                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true },
+                { field: 'QTY', title: '订单数量', width: 80, sortable: true, align: 'right' },
+                { field: 'SumAIQty', title: '已到货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'CurrentQty', title: '本次到货数量', width: 80, editor: { type: ['textevent'] }, align: 'right' },
+                { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
+            ]]
+        });
+    });
+    //自动计算列数据 单价*数量=总价
+    function setKeyUpValue()
+    {
+        var row = $('#List').datagrid('getSelected');
+        var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
+        var thisTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'CurrentQty' }).target;
+        thisTarget.val(thisTarget.val().replace(/[^\d]/g, ''));
+        var thisValue = thisTarget.val();
+        if (thisValue == "")
+            thisValue = 0;
+        if (thisValue != 0)
+        {
+            $('#List').datagrid('checkRow', rowIndex);
+        }
+        else
+        {
+            $('#List').datagrid('uncheckRow', rowIndex);
+        }
+        $("input[type='checkbox']")[rowIndex + 1].disabled = true;
+    }
+
+
+    //编辑的行
+    var editIndex = undefined;
+    function endEditing() {
+        if (editIndex == undefined) { return true }
+        $('#List').datagrid('endEdit', editIndex);
+
+        //执行上面的代码会使得checkbox可编辑，需要手工再次设置disabled = true
+        $("input[type='checkbox']")[editIndex + 1].disabled = true;
+
+        editIndex = undefined;
+        return true;
+    }
+    function onClickCell(index, field) {
+        if (editIndex != index) {
+            if (endEditing()) {
+                $('#List').datagrid('selectRow', index)
+                        .datagrid('beginEdit', index);
+                var ed = $('#List').datagrid('getEditor', { index: index, field: field });
+                if (ed) {
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).select();
+                }
+                editIndex = index;
+            } else {
+                setTimeout(function () {
+                    $('#List').datagrid('selectRow', editIndex);
+                }, 0);
+            }
+        }
+    }
+    function onEndEdit(index, row) {
+        //var ed = $(this).datagrid('getEditor', {
+        //    index: index,
+        //    field: 'CurrentQty'
+        //});
+        //var qty = $(ed.target).val();
+        //if (qty == "")
+        //{
+        //    qty = 0;
+        //}
+        //var cb = $(this).datagrid('getEditor', {
+        //    index: index,
+        //    field: 'ck'
+        //});
+        //$(cb.target).check = qty != 0;
+        //if (qty != 0)
+        //{
+        //    $('#List').datagrid('checkRow', index);
+        //    $("input[type='checkbox']")[index + 1].disabled = true;
+        //}
+        //else
+        //{
+        //    $('#List').datagrid('uncheckRow', index);
+        //}
+    }
+    //进入编辑前设置
+    function onBeginEdit(index, row) {
+
+    }
+    //-------------------------------明细处理------------------------------------//
+    //弹出选择明细
+    function SelDetails() {
+        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='auto' frameborder='0'' src='@Url.Action("WareDetails")'></iframe>");
+        $("#modalwindow").window({ title: '请选择需要导入的库存明细', width: $(window).width() - 50, height: $(window).height() - 50, iconCls: 'fa fa-plus' }).window('open');
+    }
+    //返回值并设置到列表中来
+    function SetDetails(rows) {
+
+        var index = $('#List').datagrid('getRowIndex', $('#List').datagrid('getSelected'));
+        if (index == -1)
+            index = 0;
+
+        editIndex = $('#List').datagrid('getRows').length + rows.length-1;
+
+        for (var i = 0; i < rows.length; i++) {
+            $("#List").datagrid("insertRow", {
+                index: index + i,
+                row: {
+                    oper: "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus  color-red' href='javascript:removeit()'><a>",
+                    WareDetailsId: rows[i].Id,
+                    WareDetailsName: rows[i].Name,
+                    WarehouseId: $("#WarehouseId").val(),
+                    WarehouseName: $("#WarehouseId").find("option:selected").text(),
+                    Price: rows[i].SalePrice,
+                    Quantity: 1,
+                    TotalPrice: (rows[i].SalePrice*1)
+
                 }
             });
         }
+        //endEditing();
+    }
+    function append() {
+        var index = $('#List').datagrid('getRowIndex', $('#List').datagrid('getSelected'));
+        if (index == -1)
+            index = 0;
+        $("#List").datagrid("insertRow", {
+            index: index + 1,
+            row: {
+                oper: "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-red' href='javascript:removeit()'><a>",
+                WarehouseId: $("#WarehouseId").val(),
+                WarehouseName: $("#WarehouseId").find("option:selected").text(),
+                Price: 0,
+                Quantity:0,
+                TotalPrice: 0
+            }
+        });
+    }
+
+    //关闭模式窗口
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+
+    function removeit() {
+        if (editIndex == undefined) { return }
+        $('#List').datagrid('selectRow', editIndex);
+
+        $('#List').datagrid('cancelEdit', editIndex)
+           .datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+    }
+
+    function reject() {
+        $('#List').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+    function getChanges() {
+        var rows = $('#List').datagrid('getChanges');
+        alert(rows.length + ' rows are changed!');
+    }
+
+    function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            if (arr[i] === obj) {
+                return true;
+            }
+        }
         return false;
-    });
-    $("#btnReturn").click(function () {
-         window.parent.frameReturnByClose();
-    });
-});
-function frameReturnByClose() {
-$("#modalwindow").window('close');
-}
-function frameReturnByMes(mes) {
-$.messageBox5s(Lang.Tip, mes);
-}
+    }
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s('提示', mes);
+    }
 </script>
+
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
-@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
-@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
 </div>
 @using (Html.BeginForm())
 {
-             @Html.HiddenFor(model => model.Id, new { @Value = 0})
-             <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
- <table class="formtable">
-    <tbody>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ArrivalBillNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ArrivalBillNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ArrivalBillNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.POId)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.POId)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.POId)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.BoxNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.BoxNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.BoxNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ArrivalNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ArrivalNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ArrivalNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ArrivalDate)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.ArrivalDate, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ArrivalDate)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ReceiveMan)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ReceiveMan)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ReceiveMan)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ReceiveStatus)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ReceiveStatus)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ReceiveStatus)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InspectBillNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InspectBillNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InspectBillNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InspectMan)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InspectMan)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InspectMan)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InspectDate)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.InspectDate, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InspectDate)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InspectStatus)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InspectStatus)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InspectStatus)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CheckOutDate)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.CheckOutDate, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CheckOutDate)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CheckOutResult)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.CheckOutResult)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CheckOutResult)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.QualifyNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.QualifyNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.QualifyNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.NoQualifyNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.NoQualifyNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.NoQualifyNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CheckOutRemark)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.CheckOutRemark)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CheckOutRemark)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ReInspectBillNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ReInspectBillNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ReInspectBillNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InStoreBillNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InStoreBillNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InStoreBillNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InStoreMan)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InStoreMan)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InStoreMan)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InvCode)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InvCode)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InvCode)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InStoreStatus)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InStoreStatus)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InStoreStatus)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr1)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr1)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr1)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr2)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr2)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr2)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr3)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr3)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr3)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr4)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr4)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr4)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr5)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr5)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr5)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CreatePerson)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.CreatePerson)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CreatePerson)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ModifyPerson)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ModifyPerson)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ModifyPerson)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ModifyTime)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
-        </tr>
-    </tbody>
-</table>
-}
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.Id)
+    <input id="inserted" type="hidden" name="inserted" value="" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.POId)：
+                </th>
+                <td>
+                    <div style="height:0;width:0;overflow:hidden">
+                        @Html.TextBoxFor(model => model.POId)
+                    </div>
+                    <input id="PONo" name="PONo" type="text" style="width: 200px; display: inline;">
+                    <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelPO()"></a>
+                    <script type="text/javascript">
+                        function showSelPO()
+                        {
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/PO/POLookUp'></iframe>");
+                            $("#modalwindow").window({ title: '选择采购订单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                        }
 
+                        function SetSelResult(result, resultName)
+                        {
+                            $("#POId").val(result);
+                            $("#PONo").val(resultName);
+                        }
+
+                    </script>
+                    @Html.ToolButton("btnLoadPO", "fa fa-reply", Resource.Load, false)
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+}
+<table>
+    <tr>
+        <td colspan="7" style="padding:4px;">
+            <table id="List"></table>
+        </td>
+    </tr>
+
+</table>
