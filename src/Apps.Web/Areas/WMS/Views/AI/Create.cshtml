@@ -112,11 +112,12 @@
                 { field: 'PO', title: '采购订单', width: 80,  hidden: true },
                 { field: 'PartId', title: '物料ID', width: 80,  hidden: true },
                 { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'CurrentQty', title: '本次到货数量', width: 80, editor: { type: ['textevent'] }, align: 'right' },
+                { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
                 { field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true },
                 { field: 'QTY', title: '订单数量', width: 80, sortable: true, align: 'right' },
                 { field: 'SumAIQty', title: '已到货数量', width: 80, sortable: true, align: 'right' },
-                { field: 'CurrentQty', title: '本次到货数量', width: 80, editor: { type: ['textevent'] }, align: 'right' },
-                { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
+                
             ]]
         });
     });
