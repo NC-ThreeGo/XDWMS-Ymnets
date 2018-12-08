@@ -790,6 +790,7 @@
     <Content Include="Areas\WMS\Views\AI\Index.cshtml" />
     <Content Include="Areas\WMS\Views\Supplier\SupplierLookUp.cshtml" />
     <Content Include="Areas\WMS\Views\Part\PartLookUp.cshtml" />
+    <Content Include="Areas\WMS\Views\PO\POLookUp.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

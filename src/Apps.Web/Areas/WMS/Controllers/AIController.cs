@@ -36,39 +36,74 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
         #region 创建
         [SupportFilter]
         public ActionResult Create()
         {
+            ViewBag.ArrivalBillNum = "DH" + DateTime.Now.ToString("yyyyMMddHHmmssff");
             return View();
         }
 
         [HttpPost]
         [SupportFilter]
-        public JsonResult Create(WMS_AIModel model)
+        [ValidateInput(false)]
+        public JsonResult Create(string arrivalBillNum, string inserted)
         {
-            model.Id = 0;
-            model.CreateTime = ResultHelper.NowTime;
-            if (model != null && ModelState.IsValid)
+            var detailsList = JsonHandler.DeserializeJsonToList<WMS_POForAIModel>(inserted);
+            foreach (var model in detailsList)
             {
+                WMS_AIModel aiModel = new WMS_AIModel();
+                aiModel.Id = 0;
+                aiModel.ArrivalBillNum = arrivalBillNum;
+                aiModel.CreateTime = ResultHelper.NowTime;
+                aiModel.CreatePerson = GetUserId();
+                aiModel.POId = model.Id;
+                aiModel.BoxQty = model.BoxNum;
+                aiModel.ArrivalQty = model.CurrentQty;
+                aiModel.ArrivalDate = ResultHelper.NowTime;
+                aiModel.ReceiveMan = GetUserId();
 
-                if (m_BLL.Create(ref errors, model))
+                try
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ArrivalBillNum" + model.ArrivalBillNum, "成功", "创建", "WMS_AI");
-                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+                    m_BLL.Create(ref errors, aiModel);
+                    LogHandler.WriteServiceLog(GetUserId(), "保存成功", "成功", "保存", "WMS_AI");
                 }
-                else
+                catch (Exception ex)
                 {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ArrivalBillNum" + model.ArrivalBillNum + "," + ErrorCol, "失败", "创建", "WMS_AI");
-                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
+                    LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "保存", "WMS_AI");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
                 }
             }
-            else
-            {
-                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail));
-            }
+            return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
         }
+
+        //[HttpPost]
+        //[SupportFilter]
+        //public JsonResult Create(WMS_AIModel model)
+        //{
+        //    model.Id = 0;
+        //    model.CreateTime = ResultHelper.NowTime;
+        //    if (model != null && ModelState.IsValid)
+        //    {
+
+        //        if (m_BLL.Create(ref errors, model))
+        //        {
+        //            LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ArrivalBillNum" + model.ArrivalBillNum, "成功", "创建", "WMS_AI");
+        //            return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+        //        }
+        //        else
+        //        {
+        //            string ErrorCol = errors.Error;
+        //            LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ArrivalBillNum" + model.ArrivalBillNum + "," + ErrorCol, "失败", "创建", "WMS_AI");
+        //            return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return Json(JsonHandler.CreateMessage(0, Resource.InsertFail));
+        //    }
+        //}
         #endregion
 
         #region 修改
@@ -182,8 +217,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("Id", item.Id);
                     jo.Add("到货单据号", item.ArrivalBillNum);
                     jo.Add("采购订单ID", item.POId);
-                    jo.Add("到货箱数", item.BoxNum);
-                    jo.Add("到货数量", item.ArrivalNum);
+                    jo.Add("到货箱数", item.BoxQty);
+                    jo.Add("到货数量", item.ArrivalQty);
                     jo.Add("到货日期", item.ArrivalDate);
                     jo.Add("接收人", item.ReceiveMan);
                     jo.Add("到货状态", item.ReceiveStatus);
@@ -193,8 +228,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("送检状体", item.InspectStatus);
                     jo.Add("检验日期", item.CheckOutDate);
                     jo.Add("检验结果", item.CheckOutResult);
-                    jo.Add("合格数量", item.QualifyNum);
-                    jo.Add("不合格数量", item.NoQualifyNum);
+                    jo.Add("合格数量", item.QualifyQty);
+                    jo.Add("不合格数量", item.NoQualifyQty);
                     jo.Add("检验说明", item.CheckOutRemark);
                     jo.Add("重新送检单", item.ReInspectBillNum);
                     jo.Add("入库单号", item.InStoreBillNum);
@@ -273,6 +308,19 @@ namespace Apps.Web.Areas.WMS.Controllers
                     ExportData = dt
                 };
             }
+        #endregion
+
+        #region 加载指定采购订单的到货行信息
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetPODetailsList(GridPager pager, string poNo)
+        {
+            List<WMS_POForAIModel> list = m_BLL.GetPOListForAI(ref pager, poNo).ToList();
+            GridRows<WMS_POForAIModel> grs = new GridRows<WMS_POForAIModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
         #endregion
     }
 }

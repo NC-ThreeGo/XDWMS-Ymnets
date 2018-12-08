@@ -285,6 +285,31 @@ namespace Apps.Web.Areas.WMS.Controllers
                 };
             }
         #endregion
+
+        #region 选择PO
+        /// <summary>
+        /// 弹出选择PO
+        /// </summary>
+        /// <param name="mulSelect">是否多选</param>
+        /// <returns></returns>
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult POLookUp(bool mulSelect = false)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult POGetList(GridPager pager, string queryStr)
+        {
+            //TODO:显示有效且未关闭的采购订单。是否需要显示PO的物料信息（还是只显示PO的头信息）？？？
+            List<WMS_POModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\"");
+            GridRows<WMS_POModel> grs = new GridRows<WMS_POModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
     }
 }
 

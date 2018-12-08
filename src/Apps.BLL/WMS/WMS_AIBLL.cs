@@ -22,13 +22,13 @@ namespace Apps.BLL.WMS
                                               {
                                                   ArrivalBillNum = r.ArrivalBillNum,
                                                   ArrivalDate = r.ArrivalDate,
-                                                  ArrivalNum = r.ArrivalNum,
+                                                  ArrivalQty = r.ArrivalQty,
                                                   Attr1 = r.Attr1,
                                                   Attr2 = r.Attr2,
                                                   Attr3 = r.Attr3,
                                                   Attr4 = r.Attr4,
                                                   Attr5 = r.Attr5,
-                                                  BoxNum = r.BoxNum,
+                                                  BoxQty = r.BoxQty,
                                                   CheckOutDate = r.CheckOutDate,
                                                   CheckOutRemark = r.CheckOutRemark,
                                                   CheckOutResult = r.CheckOutResult,
@@ -45,9 +45,9 @@ namespace Apps.BLL.WMS
                                                   InvCode = r.InvCode,
                                                   ModifyPerson = r.ModifyPerson,
                                                   ModifyTime = r.ModifyTime,
-                                                  NoQualifyNum = r.NoQualifyNum,
+                                                  NoQualifyQty = r.NoQualifyQty,
                                                   POId = r.POId,
-                                                  QualifyNum = r.QualifyNum,
+                                                  QualifyQty = r.QualifyQty,
                                                   ReceiveMan = r.ReceiveMan,
                                                   ReceiveStatus = r.ReceiveStatus,
                                                   ReInspectBillNum = r.ReInspectBillNum,
@@ -77,8 +77,8 @@ namespace Apps.BLL.WMS
 					//对应列头
 					excelFile.AddMapping<WMS_AIModel>(x => x.ArrivalBillNum, "到货单据号");
 					excelFile.AddMapping<WMS_AIModel>(x => x.POId, "采购订单ID");
-					excelFile.AddMapping<WMS_AIModel>(x => x.BoxNum, "到货箱数");
-					excelFile.AddMapping<WMS_AIModel>(x => x.ArrivalNum, "到货数量");
+					excelFile.AddMapping<WMS_AIModel>(x => x.BoxQty, "到货箱数");
+					excelFile.AddMapping<WMS_AIModel>(x => x.ArrivalQty, "到货数量");
 					excelFile.AddMapping<WMS_AIModel>(x => x.ArrivalDate, "到货日期");
 					excelFile.AddMapping<WMS_AIModel>(x => x.ReceiveMan, "接收人");
 					excelFile.AddMapping<WMS_AIModel>(x => x.ReceiveStatus, "到货状态");
@@ -88,8 +88,8 @@ namespace Apps.BLL.WMS
 					excelFile.AddMapping<WMS_AIModel>(x => x.InspectStatus, "送检状体");
 					excelFile.AddMapping<WMS_AIModel>(x => x.CheckOutDate, "检验日期");
 					excelFile.AddMapping<WMS_AIModel>(x => x.CheckOutResult, "检验结果");
-					excelFile.AddMapping<WMS_AIModel>(x => x.QualifyNum, "合格数量");
-					excelFile.AddMapping<WMS_AIModel>(x => x.NoQualifyNum, "不合格数量");
+					excelFile.AddMapping<WMS_AIModel>(x => x.QualifyQty, "合格数量");
+					excelFile.AddMapping<WMS_AIModel>(x => x.NoQualifyQty, "不合格数量");
 					excelFile.AddMapping<WMS_AIModel>(x => x.CheckOutRemark, "检验说明");
 					excelFile.AddMapping<WMS_AIModel>(x => x.ReInspectBillNum, "重新送检单");
 					excelFile.AddMapping<WMS_AIModel>(x => x.InStoreBillNum, "入库单号");
@@ -124,8 +124,8 @@ namespace Apps.BLL.WMS
 								model.Id = row.Id;
 								model.ArrivalBillNum = row.ArrivalBillNum;
 								model.POId = row.POId;
-								model.BoxNum = row.BoxNum;
-								model.ArrivalNum = row.ArrivalNum;
+								model.BoxQty = row.BoxQty;
+								model.ArrivalQty = row.ArrivalQty;
 								model.ArrivalDate = row.ArrivalDate;
 								model.ReceiveMan = row.ReceiveMan;
 								model.ReceiveStatus = row.ReceiveStatus;
@@ -135,8 +135,8 @@ namespace Apps.BLL.WMS
 								model.InspectStatus = row.InspectStatus;
 								model.CheckOutDate = row.CheckOutDate;
 								model.CheckOutResult = row.CheckOutResult;
-								model.QualifyNum = row.QualifyNum;
-								model.NoQualifyNum = row.NoQualifyNum;
+								model.QualifyQty = row.QualifyQty;
+								model.NoQualifyQty = row.NoQualifyQty;
 								model.CheckOutRemark = row.CheckOutRemark;
 								model.ReInspectBillNum = row.ReInspectBillNum;
 								model.InStoreBillNum = row.InStoreBillNum;
@@ -179,8 +179,8 @@ namespace Apps.BLL.WMS
 									entity.Id = model.Id;
 									entity.ArrivalBillNum = model.ArrivalBillNum;
 									entity.POId = model.POId;
-									entity.BoxNum = model.BoxNum;
-									entity.ArrivalNum = model.ArrivalNum;
+									entity.BoxQty = model.BoxQty;
+									entity.ArrivalQty = model.ArrivalQty;
 									entity.ArrivalDate = model.ArrivalDate;
 									entity.ReceiveMan = model.ReceiveMan;
 									entity.ReceiveStatus = model.ReceiveStatus;
@@ -190,8 +190,8 @@ namespace Apps.BLL.WMS
 									entity.InspectStatus = model.InspectStatus;
 									entity.CheckOutDate = model.CheckOutDate;
 									entity.CheckOutResult = model.CheckOutResult;
-									entity.QualifyNum = model.QualifyNum;
-									entity.NoQualifyNum = model.NoQualifyNum;
+									entity.QualifyQty = model.QualifyQty;
+									entity.NoQualifyQty = model.NoQualifyQty;
 									entity.CheckOutRemark = model.CheckOutRemark;
 									entity.ReInspectBillNum = model.ReInspectBillNum;
 									entity.InStoreBillNum = model.InStoreBillNum;

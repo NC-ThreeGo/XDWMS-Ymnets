@@ -758,9 +758,9 @@
           <Property Name="TypeCode" Type="nvarchar" MaxLength="20" />
           <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
           <Property Name="ParamCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
           <Property Name="Sort" Type="int" />
           <Property Name="Enable" Type="bit" Nullable="false" />
-          <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
@@ -911,7 +911,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -1024,19 +1024,19 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ArrivalBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="POId" Type="int" Nullable="false" />
-          <Property Name="BoxNum" Type="numeric" Precision="10" Scale="3" />
-          <Property Name="ArrivalNum" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="BoxQty" Type="numeric" Precision="10" Scale="3" />
+          <Property Name="ArrivalQty" Type="decimal" Precision="10" Scale="3" />
           <Property Name="ArrivalDate" Type="datetime" />
           <Property Name="ReceiveMan" Type="nvarchar" MaxLength="10" />
           <Property Name="ReceiveStatus" Type="nvarchar" MaxLength="10" />
-          <Property Name="InspectBillNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InspectBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="InspectMan" Type="nvarchar" MaxLength="20" />
           <Property Name="InspectDate" Type="datetime" />
           <Property Name="InspectStatus" Type="nvarchar" MaxLength="10" />
           <Property Name="CheckOutDate" Type="datetime" />
           <Property Name="CheckOutResult" Type="nvarchar" MaxLength="50" />
-          <Property Name="QualifyNum" Type="numeric" Precision="10" Scale="3" />
-          <Property Name="NoQualifyNum" Type="numeric" Precision="10" Scale="3" />
+          <Property Name="QualifyQty" Type="numeric" Precision="10" Scale="3" />
+          <Property Name="NoQualifyQty" Type="numeric" Precision="10" Scale="3" />
           <Property Name="CheckOutRemark" Type="nvarchar" MaxLength="100" />
           <Property Name="ReInspectBillNum" Type="nvarchar" MaxLength="100" />
           <Property Name="InStoreBillNum" Type="nvarchar" MaxLength="50" />
@@ -5812,19 +5812,19 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ArrivalBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="POId" Type="Int32" Nullable="false" />
-          <Property Name="BoxNum" Type="Decimal" Precision="10" Scale="3" />
-          <Property Name="ArrivalNum" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="BoxQty" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="ArrivalQty" Type="Decimal" Precision="10" Scale="3" />
           <Property Name="ArrivalDate" Type="DateTime" Precision="3" />
           <Property Name="ReceiveMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="ReceiveStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="InspectBillNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InspectBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InspectMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="InspectDate" Type="DateTime" Precision="3" />
           <Property Name="InspectStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="CheckOutDate" Type="DateTime" Precision="3" />
           <Property Name="CheckOutResult" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="QualifyNum" Type="Decimal" Precision="10" Scale="3" />
-          <Property Name="NoQualifyNum" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="QualifyQty" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="NoQualifyQty" Type="Decimal" Precision="10" Scale="3" />
           <Property Name="CheckOutRemark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ReInspectBillNum" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="InStoreBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -7359,8 +7359,8 @@
                 <ScalarProperty Name="InStoreBillNum" ColumnName="InStoreBillNum" />
                 <ScalarProperty Name="ReInspectBillNum" ColumnName="ReInspectBillNum" />
                 <ScalarProperty Name="CheckOutRemark" ColumnName="CheckOutRemark" />
-                <ScalarProperty Name="NoQualifyNum" ColumnName="NoQualifyNum" />
-                <ScalarProperty Name="QualifyNum" ColumnName="QualifyNum" />
+                <ScalarProperty Name="NoQualifyQty" ColumnName="NoQualifyQty" />
+                <ScalarProperty Name="QualifyQty" ColumnName="QualifyQty" />
                 <ScalarProperty Name="CheckOutResult" ColumnName="CheckOutResult" />
                 <ScalarProperty Name="CheckOutDate" ColumnName="CheckOutDate" />
                 <ScalarProperty Name="InspectStatus" ColumnName="InspectStatus" />
@@ -7370,8 +7370,8 @@
                 <ScalarProperty Name="ReceiveStatus" ColumnName="ReceiveStatus" />
                 <ScalarProperty Name="ReceiveMan" ColumnName="ReceiveMan" />
                 <ScalarProperty Name="ArrivalDate" ColumnName="ArrivalDate" />
-                <ScalarProperty Name="ArrivalNum" ColumnName="ArrivalNum" />
-                <ScalarProperty Name="BoxNum" ColumnName="BoxNum" />
+                <ScalarProperty Name="ArrivalQty" ColumnName="ArrivalQty" />
+                <ScalarProperty Name="BoxQty" ColumnName="BoxQty" />
                 <ScalarProperty Name="POId" ColumnName="POId" />
                 <ScalarProperty Name="ArrivalBillNum" ColumnName="ArrivalBillNum" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

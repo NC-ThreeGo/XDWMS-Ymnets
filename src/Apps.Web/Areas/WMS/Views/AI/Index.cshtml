@@ -71,8 +71,8 @@
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
                 { field: 'ArrivalBillNum', title: '到货单据号', width: 80,sortable:true },
                 { field: 'POId', title: '采购订单ID', width: 80,sortable:true },
-                { field: 'BoxNum', title: '到货箱数', width: 80,sortable:true },
-                { field: 'ArrivalNum', title: '到货数量', width: 80,sortable:true },
+                { field: 'BoxQty', title: '到货箱数', width: 80,sortable:true },
+                { field: 'ArrivalQty', title: '到货数量', width: 80,sortable:true },
                 { field: 'ArrivalDate', title: '到货日期', width: 80,sortable:true },
                 { field: 'ReceiveMan', title: '接收人', width: 80,sortable:true },
                 { field: 'ReceiveStatus', title: '到货状态', width: 80,sortable:true },
@@ -117,7 +117,7 @@
     }
     $(function () {
         $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', $(window).width() - 50, $(window).height() - 50, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');

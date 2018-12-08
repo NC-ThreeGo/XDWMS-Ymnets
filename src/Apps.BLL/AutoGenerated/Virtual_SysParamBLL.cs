@@ -293,8 +293,8 @@ namespace Apps.BLL.Sys
 				 excelFile.AddMapping<SysParamModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<SysParamModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<SysParamModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<SysParamModel>(x => x.Sort, "Sort");
-				 excelFile.AddMapping<SysParamModel>(x => x.Enable, "Enable");
+				 excelFile.AddMapping<SysParamModel>(x => x.Sort, "排序");
+				 excelFile.AddMapping<SysParamModel>(x => x.Enable, "是否启用");
  
             //SheetName
             var excelContent = excelFile.Worksheet<SysParamModel>(0);

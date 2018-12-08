@@ -691,8 +691,10 @@ $.extend($.fn.datagrid.defaults.editors, {
         },
         setValue: function (e, t) {
             $(e).val(t);
-            setTimeout(function () {
-                e.focus()
+            setTimeout(function ()
+            {
+                //zip Update:不需要自动获得焦点。
+                //e.focus()
             },
             100)
         },

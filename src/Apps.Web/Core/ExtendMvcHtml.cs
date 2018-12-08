@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using Apps.Models.Sys;
 
 namespace Apps.Web.Core
@@ -192,6 +194,23 @@ namespace Apps.Web.Core
             sb.AppendFormat("<span class=\"{0}\"></span>&nbsp;{1}</a>", icon, text);
             return new MvcHtmlString(sb.ToString());
 
+        }
+
+        /// <summary>
+        /// 能够启用只读功能的输入框
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="htmlHelper"></param>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public static MvcHtmlString ReadOnlyTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TProperty>> expression, bool isReadOnly = false)
+        {
+            if (isReadOnly)
+                return htmlHelper.TextBoxFor(expression, new { @readonly = true, @style = "background:#E7E8ED;" });
+            else
+                return htmlHelper.TextBoxFor(expression);
         }
     }
 }

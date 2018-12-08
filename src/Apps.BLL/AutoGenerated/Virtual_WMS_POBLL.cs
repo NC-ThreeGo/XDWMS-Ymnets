@@ -327,8 +327,8 @@ namespace Apps.BLL.WMS
             //对应列头
 			 				 excelFile.AddMapping<WMS_POModel>(x => x.PO, "采购订单");
 				 excelFile.AddMapping<WMS_POModel>(x => x.PODate, "采购日期");
-				 excelFile.AddMapping<WMS_POModel>(x => x.SupplierId, "供应商ID");
-				 excelFile.AddMapping<WMS_POModel>(x => x.PartId, "物料ID");
+				 excelFile.AddMapping<WMS_POModel>(x => x.SupplierId, "供应商编码");
+				 excelFile.AddMapping<WMS_POModel>(x => x.PartId, "物料编码");
 				 excelFile.AddMapping<WMS_POModel>(x => x.QTY, "数量");
 				 excelFile.AddMapping<WMS_POModel>(x => x.PlanDate, "计划到货日期");
 				 excelFile.AddMapping<WMS_POModel>(x => x.POType, "采购订单类型");
