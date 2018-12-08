@@ -1,0 +1,164 @@
+﻿@model Apps.Models.WMS.WMS_AIModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Spl;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建送检单";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script type="text/javascript">
+    $(function ()
+    {
+        //加载到货单
+        $("#btnLoadArrivalBill").click(function ()
+        {
+            var arrivalBillNum = $("#arrivalBillNum").val();
+            $("#List").datagrid("load", { arrivalBillNum: arrivalBillNum });
+        });
+
+        $("#btnSave").click(function ()
+        {
+            if (!$("form").valid()) {
+                $.messageBox5s('提示', $("#ErrMesList").html());
+                return;
+            }
+            if ($("form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("Create")",
+                    type: "Post",
+                    data: { arrivalBillNum: $("#arrivalBillNum").val() },
+                    dataType: "json",
+                    success: function (data)
+                    {
+                        if (data.type == 1)
+                        {
+                            hideLoading();
+                            window.parent.frameReturnByMes(data.message);
+                            window.parent.frameReturnByReload(true);
+                            window.parent.frameReturnByClose()
+                            window.parent.frameReturnByMes("保存成功！");
+                        } else
+                        {
+                            window.parent.frameReturnByMes(data.message);
+                            hideLoading();
+
+                        }
+                    }
+                }
+            }
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(30),
+                height: SetGridHeightSub(50)
+            });
+        });
+
+    });
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetArrivalBillList")?arrivalBillNoNo=""',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(202),
+            fitColumns: true,
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            remotesort: false,
+            showFooter: false,
+            onLoadSuccess: function (data) {
+            },
+            columns: [[
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
+                { field: 'PO', title: '采购订单', width: 80,  hidden: true },
+                { field: 'PartId', title: '物料ID', width: 80,  hidden: true },
+                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true },
+                { field: 'QTY', title: '订单数量', width: 80, sortable: true, align: 'right' },
+                { field: 'SumAIQty', title: '已到货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'CurrentQty', title: '本次到货数量', width: 80, editor: { type: ['textevent'] }, align: 'right' },
+                { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
+            ]]
+        });
+    });
+
+
+    //关闭模式窗口
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s('提示', mes);
+    }
+</script>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Print, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.Id)
+    <input id="inserted" type="hidden" name="inserted" value="" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ArrivalBillNum)：
+                </th>
+                <td>
+                    <input id="arrivalBillNum" name="ArrivalBillNo" type="text" style="width: 200px; display: inline;">
+                    <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelArrivalBill()"></a>
+                    <script type="text/javascript">
+                        function showSelArrivalBill()
+                        {
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/AI/ArrivalBillLookUp'></iframe>");
+                            $("#modalwindow").window({ title: '选择到货单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                        }
+
+                        function SetSelResult(result, resultName)
+                        {
+                            $("#arrivalBillNum").val(resultName);
+                        }
+
+                    </script>
+                    @Html.ToolButton("btnLoadArrivalBill", "fa fa-reply", Resource.Load, false)
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+}
+<table>
+    <tr>
+        <td colspan="7" style="padding:4px;">
+            <table id="List"></table>
+        </td>
+    </tr>
+
+</table>

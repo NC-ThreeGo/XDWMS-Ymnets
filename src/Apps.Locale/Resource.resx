@@ -312,6 +312,9 @@
     <value>主键重复</value>
     <comment>Suggestion</comment>
   </data>
+  <data name="Print" xml:space="preserve">
+    <value>打印</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>简介</value>
   </data>

@@ -15,7 +15,7 @@ using System.Data;
 
 namespace Apps.Web.Areas.WMS.Controllers
 {
-    public class AIController : BaseController
+    public class InspectController : BaseController
     {
         [Dependency]
         public IWMS_AIBLL m_BLL { get; set; }
@@ -30,7 +30,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
-            List<WMS_AIModel> list = m_BLL.GetList(ref pager, queryStr);
+            //TODO:查询出送检单号不为空的记录
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectBillNum.length() > 0");
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -41,7 +42,6 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Create()
         {
-            ViewBag.ArrivalBillNum = "DH" + DateTime.Now.ToString("yyyyMMddHHmmssff");
             return View();
         }
 
@@ -56,8 +56,6 @@ namespace Apps.Web.Areas.WMS.Controllers
                 WMS_AIModel aiModel = new WMS_AIModel();
                 aiModel.Id = 0;
                 aiModel.ArrivalBillNum = arrivalBillNum;
-                aiModel.ReceiveMan = GetUserId();
-                aiModel.ReceiveStatus = "已到货";
                 aiModel.CreateTime = ResultHelper.NowTime;
                 aiModel.CreatePerson = GetUserId();
                 aiModel.POId = model.Id;
@@ -286,42 +284,16 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         #endregion
 
-        #region 加载指定采购订单的到货行信息
+        #region 加载指定到货单的信息
         [HttpPost]
         [SupportFilter(ActionName = "Index")]
-        public JsonResult GetPODetailsList(GridPager pager, string poNo)
+        public JsonResult GetArrivalBillList(GridPager pager, string arrivalBillNum)
         {
-            List<WMS_POForAIModel> list = m_BLL.GetPOListForAI(ref pager, poNo).ToList();
+            List<WMS_POForAIModel> list = m_BLL.GetPOListForAI(ref pager, arrivalBillNum).ToList();
             GridRows<WMS_POForAIModel> grs = new GridRows<WMS_POForAIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
-        }
-        #endregion
-
-
-        #region 选择到货单
-        /// <summary>
-        /// 弹出选择到货单
-        /// </summary>
-        /// <param name="mulSelect">是否多选</param>
-        /// <returns></returns>
-        [SupportFilter(ActionName = "Create")]
-        public ActionResult ArrivalBillLookUp(bool mulSelect = false)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [SupportFilter(ActionName = "Create")]
-        public JsonResult ArrivalBillGetList(GridPager pager, string queryStr)
-        {
-            //TODO:显示有效且未送检的到货单。
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ArrivalBillNum == \"已到货\" && InspectStatus == \"未送检\"");
-            GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
-            grs.rows = list;
-            grs.total = pager.totalRows;
-            return Json(grs); 
         }
         #endregion
     }

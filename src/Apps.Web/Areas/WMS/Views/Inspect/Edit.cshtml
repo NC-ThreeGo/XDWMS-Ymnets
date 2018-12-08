@@ -1,0 +1,107 @@
+﻿@model Apps.Models.WMS.WMS_AIModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WMS;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(false);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+function frameReturnByClose() {
+$("#modalwindow").window('close');
+}
+function frameReturnByMes(mes) {
+$.messageBox5s(Lang.Tip, mes);
+}
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             @Html.HiddenFor(model => model.CreateTime)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ArrivalBillNum)：
+            </th>
+            <td >
+                @Html.ReadOnlyTextBoxFor(model => model.ArrivalBillNum, true)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ArrivalBillNum)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.POId)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.POId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.POId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.BoxQty)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.BoxQty)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.BoxQty)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ArrivalQty)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ArrivalQty)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ArrivalQty)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ArrivalDate)：
+            </th>
+            <td >
+               @Html.TextBoxFor(model => model.ArrivalDate, new { @onClick = "WdatePicker()",@style = "width: 105px" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ArrivalDate)</td>
+        </tr>
+    </tbody>
+</table>
+}
+

@@ -1,0 +1,95 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "WMS_POLookUp";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div class="mvctool">
+    <input id="txtQuery" placeholder="请输入关键字" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @Html.ToolButton("btnSave", "fa fa-plus", Resource.Select, ref perm, "Create", true)
+</div>
+<table>
+    <tr>
+        <td style="padding: 3px">
+            <table id="List"></table>
+        </td>
+    </tr>
+</table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@(Url.Action("ArrivalBillGetList"))',
+            width: SetGridWidthSub(20),
+            methord: 'post',
+            height: SetGridHeightSub(47),
+            nowrap: true,
+            fitColumns: false,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 50,
+            pageList: [50, 100],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            checkOnSelect: true,
+            selectOnCheck: true,
+            //rownumbers: true,//行号
+            onLoadSuccess: function (data) {
+           @foreach(var r in perm){if(r.Category==2){@Html.Raw("$(this).datagrid('hideColumn','"+r.KeyCode+"');");}}//动态根据权限隐藏列
+            },
+            columns: [[
+                { field: 'ck', checkbox: true },
+                { field: 'ArrivalBillNum', title: '到货单号', width: 80, sortable: true },
+                { field: 'POId', title: '采购订单ID', width: 100, sortable: true },
+                { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true },
+                { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true },
+                { field: 'ArrivalDate', title: '到货日期', width: 80, sortable: true },
+                { field: 'ReceiveMan', title: '接收人', width: 80, sortable: true },
+                { field: 'ReceiveStatus', title: '到货状态', width: 80, sortable: true },
+            ]]
+        });
+    });
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnQuery").click(function () {
+            var queryStr = $("#txtQuery").val();
+            if (queryStr == null) {
+                queryStr = "%";
+            }
+            $("#List").datagrid("load", { queryStr: queryStr });
+
+        });
+        //取得所选择的行
+        $("#btnSave").click(function () {
+            var rows = $('#List').datagrid('getSelections');
+            if (rows.length > 0) {
+                //返回到上一层处理
+                window.parent.SetSelResult(rows[0].ArrivalBillNum, rows[0].ArrivalBillNum);
+                window.parent.frameReturnByClose();
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+    });
+</script>
+

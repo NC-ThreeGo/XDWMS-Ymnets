@@ -520,6 +520,15 @@ namespace Apps.Locale {
         }
         
         /// <summary>
+        ///   查找类似 打印 的本地化字符串。
+        /// </summary>
+        public static string Print {
+            get {
+                return ResourceManager.GetString("Print", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 简介 的本地化字符串。
         /// </summary>
         public static string Profile {
