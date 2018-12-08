@@ -39,10 +39,10 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         [HttpPost]
         [SupportFilter(ActionName = "Index")]
-        public JsonResult GetListByCode(GridPager pager, string partCode, string partName)
+        public JsonResult GetListByCode(GridPager pager, string queryStr/*string partCode, string partName*/)
         {
-            //List<WMS_PartModel> list = m_BLL.GetList(ref pager, partCode, partName);
-            List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "PartCode.Contains(\"" + partCode + "\") && PartName.Contains(\"" + partName + "\")");
+            List<WMS_PartModel> list = m_BLL.GetList(ref pager, queryStr);
+            //List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "PartCode.Contains(\"" + partCode + "\") && PartName.Contains(\"" + partName + "\")");
             GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

@@ -159,14 +159,30 @@
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            //var queryStr = $("#txtQuery").val();
+            //if (queryStr == null) {
+            //    queryStr = "%";
+            //}
+            var po = $("#txtpo").val();
+            var supplierShortName = $("#txtsupplierShortName").val();
+            var partCode = $("#txtpartCode").val();
+            if (po == null) {
+                po = "";
             }
-          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
+            if (supplierShortName == null) {
+                supplierShortName = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            $.post("@Url.Action("CheckExportData")?po=" + po + "&supplierShortName=" + supplierShortName
+                + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
+                + "&endDate= " + $("#endDate").val(), function(data) {
                 if (data.type == 1)
                 {
-                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                    window.location = "@Url.Action("Export")?po=" + po + "&supplierShortName=" + supplierShortName
+                        + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
+                        + "&endDate= " + $("#endDate").val();
                 }
                 else
                 {

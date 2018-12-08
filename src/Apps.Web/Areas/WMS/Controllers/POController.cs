@@ -192,9 +192,12 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         [HttpPost]
         [SupportFilter(ActionName = "Export")]
-        public JsonResult CheckExportData(string queryStr)
+        public JsonResult CheckExportData(string po, string supplierShortName, string partCode, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_POModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            //List<WMS_POModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            List<WMS_POModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "PO.Contains(\"" + po + "\") && WMS_Supplier.SupplierShortName.Contains(\""
+               + supplierShortName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
+               + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")");
             if (list.Count().Equals(0))
             {
                 return Json(JsonHandler.CreateMessage(0, "没有可以导出的数据"));
@@ -205,9 +208,12 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         }
         [SupportFilter]
-        public ActionResult Export(string queryStr)
+        public ActionResult Export(string po, string supplierShortName, string partCode, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_POModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            //List<WMS_POModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            List<WMS_POModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "PO.Contains(\"" + po + "\") && WMS_Supplier.SupplierShortName.Contains(\""
+              + supplierShortName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
+              + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")");
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
