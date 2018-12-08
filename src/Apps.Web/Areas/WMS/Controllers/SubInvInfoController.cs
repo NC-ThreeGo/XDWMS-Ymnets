@@ -79,6 +79,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Edit(long id)
         {
+            ViewBag.EditStatus = true;
             ViewBag.Inv = new SelectList(InvInfoBll.GetList(ref setNoPagerAscById, ""), "Id", "InvName");
             WMS_SubInvInfoModel entity = m_BLL.GetById(id);
             return View(entity);

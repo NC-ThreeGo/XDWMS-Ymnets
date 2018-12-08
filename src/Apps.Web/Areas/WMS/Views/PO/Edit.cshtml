@@ -61,8 +61,9 @@ $.messageBox5s(Lang.Tip, mes);
             <th>
                 @Html.LabelFor(model => model.PO)：
             </th>
-            <td >
-                @Html.EditorFor(model => model.PO)
+            <td>
+                @*@Html.EditorFor(model => model.PO)*@
+                @Html.ReadOnlyTextBoxFor(model => model.PO, (bool)ViewBag.EditStatus)
             </td>
             <td>@Html.ValidationMessageFor(model => model.PO)</td>
         </tr>
@@ -137,8 +138,8 @@ $.messageBox5s(Lang.Tip, mes);
             <th>
                 @Html.LabelFor(model => model.QTY)：
             </th>
-            <td >
-                @Html.TextBoxFor(model => model.QTY, (bool)ViewBag.EditStatus ? null : new { @disabled = "disabled" })
+            <td>
+               @Html.ReadOnlyTextBoxFor(model => model.QTY, (bool)ViewBag.EditStatus)
             </td>
             <td>@Html.ValidationMessageFor(model => model.QTY)</td>
         </tr>

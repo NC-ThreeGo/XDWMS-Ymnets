@@ -61,8 +61,9 @@ $.messageBox5s(Lang.Tip, mes);
             <th>
                 @Html.LabelFor(model => model.SupplierCode)：
             </th>
-            <td >
-                @Html.EditorFor(model => model.SupplierCode)
+            <td>
+                @*@Html.EditorFor(model => model.SupplierCode)*@
+                @Html.ReadOnlyTextBoxFor(model => model.SupplierCode, (bool)ViewBag.EditStatus)
             </td>
             <td>@Html.ValidationMessageFor(model => model.SupplierCode)</td>
         </tr>

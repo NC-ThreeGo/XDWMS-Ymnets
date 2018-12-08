@@ -76,6 +76,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Edit(long id)
         {
+            ViewBag.EditStatus = true;
             WMS_InvInfoModel entity = m_BLL.GetById(id);
             return View(entity);
         }
