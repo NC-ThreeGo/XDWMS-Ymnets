@@ -90,6 +90,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public ActionResult Edit(long id)
         {
             WMS_PartModel entity = m_BLL.GetById(id);
+            ViewBag.EditStatus = true;
             return View(entity);
         }
 
@@ -200,7 +201,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             foreach (var item in list)
             {
                 var jo = new JObject();
-                jo.Add("物料ID", item.Id);
+                //jo.Add("物料ID", item.Id);
                 jo.Add("物料编码", item.PartCode);
                 jo.Add("物料名称", item.PartName);
                 jo.Add("物料类型", item.PartType);
@@ -209,11 +210,11 @@ namespace Apps.Web.Areas.WMS.Controllers
                 jo.Add("额外信息编码", item.OtherCode);
                 jo.Add("每箱数量", item.PCS);
                 jo.Add("保管员", item.StoreMan);
-                jo.Add("物料状态", item.Status);
-                jo.Add("创建人", item.CreatePerson);
-                jo.Add("创建时间", item.CreateTime);
-                jo.Add("修改人", item.ModifyPerson);
-                jo.Add("修改时间", item.ModifyTime);
+                //jo.Add("物料状态", item.Status);
+                //jo.Add("创建人", item.CreatePerson);
+                //jo.Add("创建时间", item.CreateTime);
+                //jo.Add("修改人", item.ModifyPerson);
+                //jo.Add("修改时间", item.ModifyTime);
                 jObjects.Add(jo);
             }
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
@@ -233,7 +234,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             JArray jObjects = new JArray();
             var jo = new JObject();
-            jo.Add("物料ID", "");
+            //jo.Add("物料ID", "");
             jo.Add("物料编码", "");
             jo.Add("物料名称", "");
             jo.Add("物料类型", "");
@@ -242,11 +243,11 @@ namespace Apps.Web.Areas.WMS.Controllers
             jo.Add("额外信息编码", "");
             jo.Add("每箱数量", "");
             jo.Add("保管员", "");
-            jo.Add("物料状态", "");
-            jo.Add("创建人", "");
-            jo.Add("创建时间", "");
-            jo.Add("修改人", "");
-            jo.Add("修改时间", "");
+            //jo.Add("物料状态", "");
+            //jo.Add("创建人", "");
+            //jo.Add("创建时间", "");
+            //jo.Add("修改人", "");
+            //jo.Add("修改时间", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
             var exportFileName = string.Concat(
@@ -275,9 +276,10 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         [HttpPost]
         [SupportFilter(ActionName = "Create")]
-        public JsonResult PartGetList(GridPager pager, string queryStr)
+        public JsonResult PartGetList(GridPager pager, string partCode, string partName)
         {
-            List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\" && PartCode.Contains(\"" + queryStr + "\")");
+            List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\" && PartCode.Contains(\"" 
+                + partCode + "\") && PartName.Contains(\"" + partName + "\")");
             GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

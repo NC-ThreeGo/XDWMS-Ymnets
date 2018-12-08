@@ -124,7 +124,8 @@ $.messageBox5s(Lang.Tip, mes);
                         function showSelPart()
                         {
                             $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Part/PartLookUp'></iframe>");
-                            $("#modalwindow").window({ title: '选择物料', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                            //$("#modalwindow").window({ title: '选择物料', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                            $("#modalwindow").window({ title: '选择物料', width: SetGridWidthSub(20), height: SetGridHeightSub(45), iconCls: 'fa fa-plus' }).window('open');
                         }
 
                         function SetSelResultForPart(result, resultName)

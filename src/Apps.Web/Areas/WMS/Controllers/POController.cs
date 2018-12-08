@@ -21,8 +21,11 @@ namespace Apps.Web.Areas.WMS.Controllers
         public IWMS_POBLL m_BLL { get; set; }
         [Dependency]
         public IWMS_SupplierBLL m_SupplierBLL { get; set; }
+        [Dependency]
+        public IWMS_PartBLL m_PartBLL { get; set; }
+
         ValidationErrors errors = new ValidationErrors();
-        
+
         [SupportFilter]
         public ActionResult Index()
         {
@@ -96,7 +99,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             ViewBag.Supplier = new SelectList(m_SupplierBLL.GetList(ref setNoPagerAscById, ""), "Id", "SupplierShortName");
             WMS_POModel entity = m_BLL.GetById(id);
-            ViewBag.QtyIsEdit = true;
+            //给关联字段代理商简称赋值
+            WMS_SupplierModel entity_s = m_SupplierBLL.GetById(entity.SupplierId);
+            entity.SupplierShortName = entity_s.SupplierShortName;
+            //给关联字段物料编码赋值
+            WMS_PartModel entity_p = m_PartBLL.GetById(entity.PartId);
+            entity.PartCode = entity_p.PartCode;
+            //输入框内值是否可以修改
+            ViewBag.EditStatus = true;
             return View(entity);
         }
 

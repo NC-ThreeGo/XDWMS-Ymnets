@@ -28,8 +28,8 @@
 </form>
 </div>
 <div class="mvctool">
-    物料编码:<input id="txtPartCode" type="text" class="searchText" />
-    物料名称:<input id="txtPartName" type="text" class="searchText" />
+    <input id="txtPartCode" placeholder="物料编码:" type="text" class="searchText" />
+    <input id="txtPartName" placeholder="物料名称:" type="text" class="searchText" />
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
     @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
     @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)

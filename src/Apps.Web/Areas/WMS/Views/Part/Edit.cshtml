@@ -61,8 +61,8 @@ $.messageBox5s(Lang.Tip, mes);
             <th>
                 @Html.LabelFor(model => model.PartCode)：
             </th>
-            <td >
-                @Html.EditorFor(model => model.PartCode)
+            <td>
+                @Html.TextBoxFor(model => model.PartCode, (bool)ViewBag.EditStatus ? null : new { @readonly = true ,@style = "background:#E7E8ED;" })
             </td>
             <td>@Html.ValidationMessageFor(model => model.PartCode)</td>
         </tr>

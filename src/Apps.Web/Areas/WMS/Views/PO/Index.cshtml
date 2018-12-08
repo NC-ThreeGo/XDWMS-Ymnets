@@ -38,11 +38,11 @@
 </div>
 <div class="mvctool">
     @*<input id="txtQuery" type="text" class="searchText" />*@
-    采购订单号: <input id="txtpo" type="text" class="searchText" />
-    供应商简称: <input id="txtsupplierShortName" type="text" class="searchText" />
-    物料编码: <input id="txtpartCode" type="text" class="searchText" />
-    导入日期从: <input type="text" id="beginDate" style="width:100px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
-     至: <input type="text" id="endDate" style="width:100px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    <input id="txtpo" type="text" placeholder="采购订单号:" class="searchText" />
+    <input id="txtsupplierShortName" placeholder="供应商简称:" type="text" class="searchText" />
+    <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
+    导入日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+     至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
     @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
     @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
@@ -114,12 +114,12 @@
     }
     $(function () {
         $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 400, 330, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', 800, 600, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 330, 'fa fa-pencil');
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 800, 600, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {

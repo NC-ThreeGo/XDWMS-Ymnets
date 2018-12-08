@@ -9,7 +9,8 @@
     List<permModel> perm = null;
 }
 <div class="mvctool">
-    <input id="txtQuery" placeholder="请输入关键字" type="text" class="searchText" />
+    <input id="txtPartCode" placeholder="物料代码" type="text" class="searchText" />
+    <input id="txtPartName" placeholder="物料名称" type="text" class="searchText" />
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
     @Html.ToolButton("btnSave", "fa fa-plus", Resource.Select, ref perm, "Create", true)
 </div>
@@ -27,7 +28,7 @@
     $(function () {
         $('#List').datagrid({
             url: '@(Url.Action("PartGetList"))',
-            width: SetGridWidthSub(220),
+            width: SetGridWidthSub(30),
             methord: 'post',
             height: SetGridHeightSub(47),
             nowrap: true,
@@ -35,8 +36,8 @@
             sortName: 'Id',
             sortOrder: 'desc',
             idField: 'Id',
-            pageSize: 50,
-            pageList: [50, 100],
+            pageSize: 10,
+            pageList: [10, 20, 30, 40, 50],
             pagination: true,
             striped: true, //奇偶行是否区分
             singleSelect: true,//单选模式
@@ -48,16 +49,16 @@
             },
             columns: [[
                 { field: 'ck', checkbox: true },
-                { field: 'Id', title: '物料ID', width: 80, hidden: true },
-                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
-                { field: 'PartName', title: '物料名称', width: 80, sortable: true },
-                { field: 'PartType', title: '物料类型', width: 80, sortable: true },
-                { field: 'CustomerCode', title: '客户编码', width: 80, sortable: true },
-                { field: 'LogisticsCode', title: '物流号', width: 80, sortable: true },
-                { field: 'OtherCode', title: '额外信息编码', width: 80, sortable: true },
-                { field: 'PCS', title: '每箱数量', width: 80, sortable: true },
-                { field: 'StoreMan', title: '保管员', width: 80, sortable: true },
-                { field: 'Status', title: '物料状态', width: 80, sortable: true },
+                //{ field: 'Id', title: '物料ID', width: 80, hidden: true },
+                { field: 'PartCode', title: '物料编码', width: 120, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 200, sortable: true },
+                //{ field: 'PartType', title: '物料类型', width: 80, sortable: true },
+                { field: 'CustomerCode', title: '客户编码', width: 120, sortable: true },
+                { field: 'LogisticsCode', title: '物流号', width: 120, sortable: true },
+                { field: 'OtherCode', title: '额外信息编码', width: 120, sortable: true },
+                //{ field: 'PCS', title: '每箱数量', width: 80, sortable: true },
+                //{ field: 'StoreMan', title: '保管员', width: 80, sortable: true },
+                //{ field: 'Status', title: '物料状态', width: 80, sortable: true },
             ]]
         });
     });
@@ -77,11 +78,17 @@
     }
     $(function () {
         $("#btnQuery").click(function () {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            var partCode = $("#txtPartCode").val();
+            if (partCode == null) {
+                partCode = "";
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
+
+            var partName = $("#txtPartName").val();
+            if (partName == null) {
+                partName = "";
+            }
+
+            $("#List").datagrid("load", { partCode: partCode, partName: partName });
 
         });
         //取得所选择的行
