@@ -31,7 +31,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult GetList(GridPager pager, string queryStr)
         {
             //TODO:查询出送检单号不为空的记录
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectBillNum.length() > 0");
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus != \"未送检\" ");
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -48,40 +48,25 @@ namespace Apps.Web.Areas.WMS.Controllers
         [HttpPost]
         [SupportFilter]
         [ValidateInput(false)]
-        public JsonResult Create(string arrivalBillNum, string inserted)
+        public JsonResult Create(string arrivalBillNum)
         {
-            var detailsList = JsonHandler.DeserializeJsonToList<WMS_POForAIModel>(inserted);
-            foreach (var model in detailsList)
+            try
             {
-                WMS_AIModel aiModel = new WMS_AIModel();
-                aiModel.Id = 0;
-                aiModel.ArrivalBillNum = arrivalBillNum;
-                aiModel.CreateTime = ResultHelper.NowTime;
-                aiModel.CreatePerson = GetUserId();
-                aiModel.POId = model.Id;
-                aiModel.BoxQty = model.BoxNum;
-                aiModel.ArrivalQty = model.CurrentQty;
-                aiModel.ArrivalDate = ResultHelper.NowTime;
-                aiModel.ReceiveMan = GetUserId();
-
-                try
-                {
-                    m_BLL.Create(ref errors, aiModel);
-                    LogHandler.WriteServiceLog(GetUserId(), "保存成功", "成功", "保存", "WMS_AI");
-                }
-                catch (Exception ex)
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "保存", "WMS_AI");
-                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
-                }
+                m_BLL.CreateInspectBill(GetUserId(), arrivalBillNum);
+                LogHandler.WriteServiceLog(GetUserId(), "保存送检单成功", "成功", "保存", "WMS_AI");
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
             }
-            return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "保存", "WMS_AI");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+            }
         }
 
-        #endregion
+    #endregion
 
-        #region 修改
-        [SupportFilter]
+    #region 修改
+    [SupportFilter]
         public ActionResult Edit(long id)
         {
             WMS_AIModel entity = m_BLL.GetById(id);
@@ -289,8 +274,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetArrivalBillList(GridPager pager, string arrivalBillNum)
         {
-            List<WMS_POForAIModel> list = m_BLL.GetPOListForAI(ref pager, arrivalBillNum).ToList();
-            GridRows<WMS_POForAIModel> grs = new GridRows<WMS_POForAIModel>();
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ArrivalBillNum == \"" + arrivalBillNum + "\"").ToList();
+            GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);

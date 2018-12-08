@@ -1028,11 +1028,11 @@
           <Property Name="ArrivalQty" Type="decimal" Precision="10" Scale="3" />
           <Property Name="ArrivalDate" Type="datetime" />
           <Property Name="ReceiveMan" Type="nvarchar" MaxLength="10" />
-          <Property Name="ReceiveStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="ReceiveStatus" Type="nvarchar" MaxLength="10" StoreGeneratedPattern="None" />
           <Property Name="InspectBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="InspectMan" Type="nvarchar" MaxLength="20" />
           <Property Name="InspectDate" Type="datetime" />
-          <Property Name="InspectStatus" Type="nvarchar" MaxLength="10" StoreGeneratedPattern="Identity" />
+          <Property Name="InspectStatus" Type="nvarchar" MaxLength="10" StoreGeneratedPattern="None" />
           <Property Name="CheckOutDate" Type="datetime" />
           <Property Name="CheckOutResult" Type="nvarchar" MaxLength="50" />
           <Property Name="QualifyQty" Type="numeric" Precision="10" Scale="3" />
@@ -1042,7 +1042,7 @@
           <Property Name="InStoreBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="InStoreMan" Type="nvarchar" MaxLength="10" />
           <Property Name="InvCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="InStoreStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="InStoreStatus" Type="nvarchar" MaxLength="10" StoreGeneratedPattern="None" />
           <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr3" Type="nvarchar" MaxLength="50" />
@@ -2361,6 +2361,10 @@
           <Parameter Name="Rows" Type="int" Mode="In" />
           <Parameter Name="UserId" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="P_WMS_CreateInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userId" Type="varchar" Mode="In" />
+          <Parameter Name="arrivalBillNum" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="DBStoreContainer">
           <EntitySet Name="Flow_External" EntityType="Self.Flow_External" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Flow_Form" EntityType="Self.Flow_Form" Schema="dbo" store:Type="Tables" />
@@ -3334,6 +3338,10 @@
             <End Role="WMS_PO" EntitySet="WMS_PO" />
             <End Role="WMS_AI" EntitySet="WMS_AI" />
           </AssociationSet>
+          <FunctionImport Name="P_WMS_CreateInspectBill">
+            <Parameter Name="userId" Mode="In" Type="String" />
+            <Parameter Name="arrivalBillNum" Mode="In" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5816,11 +5824,11 @@
           <Property Name="ArrivalQty" Type="Decimal" Precision="10" Scale="3" />
           <Property Name="ArrivalDate" Type="DateTime" Precision="3" />
           <Property Name="ReceiveMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ReceiveStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiveStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="None" />
           <Property Name="InspectBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InspectMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="InspectDate" Type="DateTime" Precision="3" />
-          <Property Name="InspectStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InspectStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="None" />
           <Property Name="CheckOutDate" Type="DateTime" Precision="3" />
           <Property Name="CheckOutResult" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="QualifyQty" Type="Decimal" Precision="10" Scale="3" />
@@ -5830,7 +5838,7 @@
           <Property Name="InStoreBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="InStoreMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="InvCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="InStoreStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="InStoreStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="None" />
           <Property Name="Attr1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Attr2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Attr3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -7378,6 +7386,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="P_WMS_CreateInspectBill" FunctionName="DB.Store.P_WMS_CreateInspectBill" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

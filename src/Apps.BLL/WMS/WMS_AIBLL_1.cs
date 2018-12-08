@@ -23,6 +23,22 @@ namespace Apps.BLL.WMS
 			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
 			return queryData;
 		}
+
+        public IQueryable<WMS_POForAIModel> GetArrivalBillListForNum(ref GridPager pager, string arrivalBillNum)
+        {
+            //IQueryable<WMS_POForAIModel> queryData = null;
+            //queryData = m_Rep.GetList().Where(arrivalBillNum);
+            //pager.totalRows = queryData.Count();
+            ////排序
+            //queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            //return queryData;
+            return null;
+        }
+
+        public void CreateInspectBill(string opt, string arrivalBillNum)
+        {
+            m_Rep.CreateInspectBill(opt, arrivalBillNum);
+        }
     }
- }
+}
 

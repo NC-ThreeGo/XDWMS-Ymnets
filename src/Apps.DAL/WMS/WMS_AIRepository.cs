@@ -34,5 +34,11 @@ namespace Apps.DAL.WMS
 
             return queryData;
         }
+
+        public void CreateInspectBill(string opt, string arrivalBillNum)
+        {
+            Context.P_WMS_CreateInspectBill(opt, arrivalBillNum);
+        }
+
     }
 }

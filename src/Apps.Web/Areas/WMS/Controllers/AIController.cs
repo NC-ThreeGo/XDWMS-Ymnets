@@ -65,6 +65,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                 aiModel.ArrivalQty = model.CurrentQty;
                 aiModel.ArrivalDate = ResultHelper.NowTime;
                 aiModel.ReceiveMan = GetUserId();
+                aiModel.InspectStatus = "未送检";
+                aiModel.InStoreStatus = "未入库";
 
                 try
                 {
@@ -317,7 +319,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult ArrivalBillGetList(GridPager pager, string queryStr)
         {
             //TODO:显示有效且未送检的到货单。
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ArrivalBillNum == \"已到货\" && InspectStatus == \"未送检\"");
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ReceiveStatus == \"已到货\" && InspectStatus == \"未送检\"");
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

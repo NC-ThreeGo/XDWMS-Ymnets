@@ -669,5 +669,18 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_Sys_SwiftNum", dayParameter, tabNameParameter, num);
         }
+    
+        public virtual int P_WMS_CreateInspectBill(string userId, string arrivalBillNum)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("userId", userId) :
+                new ObjectParameter("userId", typeof(string));
+    
+            var arrivalBillNumParameter = arrivalBillNum != null ?
+                new ObjectParameter("arrivalBillNum", arrivalBillNum) :
+                new ObjectParameter("arrivalBillNum", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateInspectBill", userIdParameter, arrivalBillNumParameter);
+        }
     }
 }

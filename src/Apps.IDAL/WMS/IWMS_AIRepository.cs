@@ -7,5 +7,7 @@ namespace Apps.IDAL.WMS
     public partial interface IWMS_AIRepository
     {
         IQueryable<WMS_POForAIModel> GetPOListForAI(string poNo);
+
+        void CreateInspectBill(string opt, string arrivalBillNum);
     }
 }
