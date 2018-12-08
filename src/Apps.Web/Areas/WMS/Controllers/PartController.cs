@@ -163,21 +163,32 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Import(string filePath)
         {
-            var list = new List<WMS_PartModel>();
-            bool checkResult = m_BLL.CheckImportData(Utils.GetMapPath(filePath), list, ref errors);
-            //校验通过直接保存
-            if (checkResult)
+            if (m_BLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))
             {
-                m_BLL.SaveImportData(list);
-                LogHandler.WriteServiceLog(GetUserId(), "导入成功", "成功", "导入", "WMS_Part");
-                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+                LogHandler.WriteImportExcelLog(GetUserId(), "WMS_Part", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
             }
             else
             {
-                string ErrorCol = errors.Error;
-                LogHandler.WriteServiceLog(GetUserId(), ErrorCol, "失败", "导入", "WMS_Part");
-                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
+                LogHandler.WriteImportExcelLog(GetUserId(), "WMS_Part", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
             }
+
+            //var list = new List<WMS_PartModel>();
+            //bool checkResult = m_BLL.CheckImportData(Utils.GetMapPath(filePath), list, ref errors);
+            ////校验通过直接保存
+            //if (checkResult)
+            //{
+            //    m_BLL.SaveImportData(list);
+            //    LogHandler.WriteServiceLog(GetUserId(), "导入成功", "成功", "导入", "WMS_Part");
+            //    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+            //}
+            //else
+            //{
+            //    string ErrorCol = errors.Error;
+            //    LogHandler.WriteServiceLog(GetUserId(), ErrorCol, "失败", "导入", "WMS_Part");
+            //    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
+            //}
         }
         [HttpPost]
         [SupportFilter(ActionName = "Export")]

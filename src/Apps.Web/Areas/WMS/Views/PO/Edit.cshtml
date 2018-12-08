@@ -157,8 +157,9 @@ $.messageBox5s(Lang.Tip, mes);
             <th>
                 @Html.LabelFor(model => model.POType)：
             </th>
-            <td >
-                @Html.EditorFor(model => model.POType)
+            <td>
+                @*@Html.EditorFor(model => model.POType)*@
+                @Html.DropDownListFor(model => model.POType, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("POType"))
             </td>
             <td>@Html.ValidationMessageFor(model => model.POType)</td>
         </tr>

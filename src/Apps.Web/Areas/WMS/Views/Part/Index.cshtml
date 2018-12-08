@@ -15,9 +15,16 @@
             <th style="padding:20px;"> Excel：</th>
             <td style="padding:20px;">
                 <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
-                <a href = "javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
                 <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
                 <span class="uploading">@Resource.Uploading</span>
+            </td>
+        </tr>
+        <tr>
+            <th style="padding:20px;"> 导入状态：</th>
+            <td style="padding:20px;">
+                <label id="importMessage"></label>
+                <a id="importResultFile" href="">         点击查看导入结果</a>
             </td>
         </tr>
     </table>
@@ -132,7 +139,7 @@
 	        });
         $("#btnImport").click(function() {
              $("#txtExcelPath").val("");
-             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 155, iconCls: 'fa fa-level-down' }).window('open');
+             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
             var queryStr = $("#txtQuery").val();
