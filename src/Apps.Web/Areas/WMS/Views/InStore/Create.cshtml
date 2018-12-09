@@ -6,7 +6,7 @@
 @using Apps.Locale;
 @using Apps.Models.Sys;
 @{
-    ViewBag.Title = "创建到货";
+    ViewBag.Title = "创建入库单";
     Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
     List<permModel> perm = null;
 }
@@ -14,10 +14,10 @@
     $(function ()
     {
         //加载PO
-        $("#btnLoadPO").click(function ()
+        $("#btnLoadInspectBill").click(function ()
         {
-            var poNo = $("#PONo").val();
-            $("#List").datagrid("load", { poNo: poNo });
+            var inspectBillNum = $("#InspectBillNum").val();
+            $("#List").datagrid("load", { inspectBillNum: inspectBillNum });
         });
 
         $("#btnSave").click(function ()
@@ -29,7 +29,7 @@
             if ($("form").valid()) {
                 endEditing();
                 var $dg = $('#List');
-                var rows = $dg.datagrid('getChecked');  //获取CheckBox为选中的行
+                var rows = $dg.datagrid('getRows');  //一张送检单必须一次性输入全部行的检验结果。
                 //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
                 $("#inserted").val(JSON.stringify(rows));
                 if (rows.length) {
@@ -74,7 +74,7 @@
     });
     $(function () {
         $('#List').datagrid({
-            url: '@Url.Action("GetPODetailsList")?poNo=""',
+            url: '@Url.Action("GetInspectBillList")?inspectBillNum=""',
             width: SetGridWidthSub(10),
             methord: 'post',
             height: SetGridHeightSub(202),
@@ -96,15 +96,13 @@
                 //append();
                 if (data.rows.length > 0)
                 {
+                    //所有送检单行必须同时输入检验结果，并根据结果入库或退货。
                     $("input[type='checkbox']")[0].disabled = true;
-                    //循环判断操作为新增的不能选择
                     for (var i = 0; i < data.rows.length; i++)
                     {
                         $("input[type='checkbox']")[i + 1].disabled = true;
+                        $("input[type='checkbox']")[i + 1].checked = true;
                     }
-
-                    //将POId赋值给Input输入框
-                    //$("#Id").val(data.rows[0].Id);
                 }
             },
             columns: [[
@@ -112,42 +110,58 @@
                     field: 'ck', checkbox: true,
                 },
                 { field: 'Id', title: 'Id', width: 80, hidden: true },
-                { field: 'PO', title: '采购订单', width: 80,  hidden: true },
-                { field: 'PartId', title: '物料ID', width: 80,  hidden: true },
+                { field: 'InspectBillNum', title: '送检单号', width: 80, sortable: true },
+                { field: 'ArrivalBillNum', title: '到货单号', width: 80, sortable: true },
                 { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
-                { field: 'CurrentQty', title: '本次到货数量', width: 80, editor: { type: ['textevent'] }, align: 'right' },
-                { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
-                { field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true },
-                { field: 'QTY', title: '订单数量', width: 80, sortable: true, align: 'right' },
-                { field: 'SumAIQty', title: '已到货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'PartName', title: '物料名称', width: 80, sortable: true },
+                { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true, align: 'right' },
+                { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'CheckOutResult', title: '检验结果', width: 80, sortable: true, editor: { type: 'textbox' } },
+                { field: 'QualifyQty', title: '合格数量', width: 80, sortable: true, editor: { type: 'zip_textevent' } },
+                { field: 'NoQualifyQty', title: '不合格数量', width: 80, sortable: true, editor: { type: 'zip_textevent' } },
+                { field: 'CheckOutRemark', title: '检验说明', width: 80, sortable: true, editor: { type: 'textbox' } },
                 
             ]]
         });
     });
-    //输入到货数量（<>0）后自动选择当前行
-    function setKeyUpValue()
+    //自动计算合格数量+不合格数量=到货数量
+    function setKeyUpValue(sender)
     {
         var row = $('#List').datagrid('getSelected');
         var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
-        var thisTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'CurrentQty' }).target;
-        thisTarget.val(thisTarget.val().replace(/[^\d]/g, ''));
-        var thisValue = thisTarget.val();
-        if (thisValue == "")
-            thisValue = 0;
-        if (thisValue != 0)
+        var arrivalQty = row.ArrivalQty;
+        //var arrivalQtyTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'ArrivalQty' }).target;
+        var qualifyQtyTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'QualifyQty' }).target;
+        var noQualifyQtyTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'NoQualifyQty' }).target;
+
+        if (sender.attributes["field"].value == "QualifyQty")
         {
-            $('#List').datagrid('checkRow', rowIndex);
+            //屏蔽非数字字符
+            qualifyQtyTarget.val(qualifyQtyTarget.val().replace(/[^\d]/g, ''));
+            if (qualifyQtyTarget.val() == "")
+            {
+                qualifyQtyTarget.val(0)
+            }
+            noQualifyQtyTarget.val(arrivalQty - qualifyQtyTarget.val());
         }
-        else
+        if (sender.attributes["field"].value == "NoQualifyQty")
         {
-            $('#List').datagrid('uncheckRow', rowIndex);
+            noQualifyQtyTarget.val(noQualifyQtyTarget.val().replace(/[^\d]/g, ''));
+            if (noQualifyQtyTarget.val() == "")
+            {
+                noQualifyQtyTarget.val(0)
+            }
+            qualifyQtyTarget.val(arrivalQty - noQualifyQtyTarget.val());
         }
+
         $("input[type='checkbox']")[rowIndex + 1].disabled = true;
     }
 
 
     //编辑的行
     var editIndex = undefined;
+    //编辑的单元格
+    var editCell = undefined;
     function endEditing() {
         if (editIndex == undefined) { return true }
         $('#List').datagrid('endEdit', editIndex);
@@ -167,6 +181,7 @@
                 if (ed) {
                     ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
                     ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).select();
+                    editCell = field;
                 }
                 editIndex = index;
             } else {
@@ -246,36 +261,36 @@
         <tbody>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.POId)：
+                    @Html.LabelFor(model => model.InspectBillNum)：
                 </th>
                 <td>
                     <div style="height:0;width:0;overflow:hidden">
                         @*@Html.TextBoxFor(model => model.POId)*@
                     </div>
-                    <input id="PONo" name="PONo" type="text" style="width: 200px; display: inline;">
-                    <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelPO()"></a>
+                    <input id="InspectBillNum" name="InspectBillNum" type="text" style="width: 200px; display: inline;">
+                    <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelInspectBill()"></a>
                     <script type="text/javascript">
-                        function showSelPO()
+                        function showSelInspectBill()
                         {
-                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/PO/POLookUp'></iframe>");
-                            $("#modalwindow").window({ title: '选择采购订单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Inspect/InspectBillLookUp'></iframe>");
+                            $("#modalwindow").window({ title: '选择送检单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
                         }
 
                         function SetSelResult(result, resultName)
                         {
                             //$("#POId").val(result);
-                            $("#PONo").val(resultName);
+                            $("#InspectBillNum").val(resultName);
                         }
 
                     </script>
-                    @Html.ToolButton("btnLoadPO", "fa fa-reply", Resource.Load, false)
+                    @Html.ToolButton("btnLoadInspectBill", "fa fa-reply", Resource.Load, false)
                 </td>
                 <th>
-                    @Html.LabelFor(model => model.ArrivalBillNum) （自动生成）：
+                    @Html.LabelFor(model => model.InStoreBillNum) （自动生成）：
                 </th>
                 <td>
-                    <input id="arrivalBillNum" type="hidden" name="arrivalBillNum" value="@ViewBag.ArrivalBillNum" />
-                    @Html.TextBox("arrivalBillNum", (string)ViewBag.ArrivalBillNum, new { @disabled = "disabled" })
+                    <input id="inStoreBillNum" type="hidden" name="inStoreBillNum" value="@ViewBag.ArrivalBillNum" />
+                    @Html.TextBox("inStoreBillNum", (string)ViewBag.InStoreBillNum, new { @disabled = "disabled" })
                 </td>
             </tr>
 

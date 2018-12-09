@@ -4,7 +4,7 @@
 @using Apps.Models.Sys;
 @using Apps.Locale;
 @{
-    ViewBag.Title = "WMS_Inspect";
+    ViewBag.Title = "WMS_InStore";
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
@@ -73,21 +73,17 @@
                 { field: 'ArrivalBillNum', title: '到货单号', width: 80,sortable:true },
                 { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
                 { field: 'PartName', title: '物料名称', width: 80, sortable: true },
-                //{ field: 'POId', title: '采购订单ID', width: 80,sortable:true },
                 { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true, align: 'right' },
                 { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
-                //{ field: 'ArrivalDate', title: '到货日期', width: 80,sortable:true },
-                //{ field: 'ReceiveMan', title: '接收人', width: 80,sortable:true },
-                //{ field: 'ReceiveStatus', title: '到货状态', width: 80,sortable:true },
-                { field: 'InspectMan', title: '送检人', width: 80,sortable:true },
-                { field: 'InspectDate', title: '送检日期', width: 80,sortable:true },
-                { field: 'InspectStatus', title: '送检状体', width: 80,sortable:true },
-                { field: 'CheckOutDate', title: '检验日期', width: 80,sortable:true },
+                { field: 'InspectStatus', title: '送检状态', width: 80, sortable: true },
+                //{ field: 'InspectMan', title: '送检人', width: 80,sortable:true },
+                //{ field: 'InspectDate', title: '送检日期', width: 80,sortable:true },
+                //{ field: 'CheckOutDate', title: '检验日期', width: 80,sortable:true },
                 { field: 'CheckOutResult', title: '检验结果', width: 80,sortable:true },
-                { field: 'QualifyNum', title: '合格数量', width: 80,sortable:true },
-                { field: 'NoQualifyNum', title: '不合格数量', width: 80,sortable:true },
+                { field: 'QualifyNum', title: '合格数量', width: 80, sortable: true, align: 'right' },
+                { field: 'NoQualifyNum', title: '不合格数量', width: 80, sortable: true, align: 'right' },
                 { field: 'CheckOutRemark', title: '检验说明', width: 80,sortable:true },
-                { field: 'ReInspectBillNum', title: '重新送检单', width: 80,sortable:true },
+                //{ field: 'ReInspectBillNum', title: '重新送检单', width: 80,sortable:true },
                 //{ field: 'InStoreBillNum', title: '入库单号', width: 80,sortable:true },
                 //{ field: 'InStoreMan', title: '入库员', width: 80,sortable:true },
                 //{ field: 'InvCode', title: '入库仓库', width: 80,sortable:true },
