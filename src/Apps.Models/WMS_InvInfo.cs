@@ -28,6 +28,7 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+        public Nullable<bool> IsDefault { get; set; }
     
         public virtual ICollection<WMS_SubInvInfo> WMS_SubInvInfo { get; set; }
     }

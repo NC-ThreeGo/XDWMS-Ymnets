@@ -19,6 +19,8 @@ namespace Apps.Web.Areas.WMS.Controllers
     {
         [Dependency]
         public IWMS_AIBLL m_BLL { get; set; }
+        [Dependency]
+        public IWMS_InvInfoBLL m_InvInfoBll { get; set; }
         ValidationErrors errors = new ValidationErrors();
         
         [SupportFilter]
@@ -30,8 +32,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
-            //TODO：显示已打印的送检单
-            List<WMS_AIModel> list = m_BLL.GetList(ref pager, "InspectStatus == \"已打印\"");
+            //TODO：显示已入库的送检单
+            List<WMS_AIModel> list = m_BLL.GetList(ref pager, "InspectStatus == \"已入库\"");
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -44,6 +46,9 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             //TODO：入库单的单据号是否允许断号？
             ViewBag.InStoreBillNum = "RK" + DateTime.Now.ToString("yyyyMMddHHmmssff");
+            
+            //ViewBag.Inv = new SelectList(m_InvInfoBll.GetListByWhere("Status == \"有效\""), "InvCode", "InvName");
+
             return View();
         }
 

@@ -30,8 +30,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
-            //TODO:查询出送检单号不为空的记录
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus != \"未送检\" ");
+            //TODO:查询出检验状态=已送检 and 入库状态=未入库 的记录
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已检验\" && InStoreStatus == \"未入库\" ");
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -299,7 +299,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult InspectBillGetList(GridPager pager, string queryStr)
         {
             //TODO:显示有效且已打印的送检单。
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已打印\"");
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已检验\"");
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

@@ -1,10 +1,12 @@
 ﻿using Apps.Common.ExcelHelper;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web.Mvc;
 
 namespace Apps.Common
 {
@@ -106,6 +108,27 @@ namespace Apps.Common
         public int type{get;set;}
         public string message{get;set;}
         public string value{get;set;}
-    }    
-  
+    }
+
+    public class CamelJsonResult : JsonResult
+    {
+        public CamelJsonResult(object data)
+        {
+            Data = data;
+        }
+        public object Data { get; set; }
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            var json = JsonConvert.SerializeObject(Data,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),        //小驼峰命名法
+                    DateFormatString = "yyyy-MM-dd HH:mm:ss"
+                }
+                );
+            context.HttpContext.Response.Write(json);
+        }
+    }
 }

@@ -1028,11 +1028,11 @@
           <Property Name="ArrivalQty" Type="decimal" Precision="10" Scale="3" />
           <Property Name="ArrivalDate" Type="datetime" />
           <Property Name="ReceiveMan" Type="nvarchar" MaxLength="10" />
-          <Property Name="ReceiveStatus" Type="nvarchar" MaxLength="10" StoreGeneratedPattern="None" />
+          <Property Name="ReceiveStatus" Type="nvarchar" MaxLength="10" />
           <Property Name="InspectBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="InspectMan" Type="nvarchar" MaxLength="20" />
           <Property Name="InspectDate" Type="datetime" />
-          <Property Name="InspectStatus" Type="nvarchar" MaxLength="10" StoreGeneratedPattern="None" />
+          <Property Name="InspectStatus" Type="nvarchar" MaxLength="10" />
           <Property Name="CheckOutDate" Type="datetime" />
           <Property Name="CheckOutResult" Type="nvarchar" MaxLength="50" />
           <Property Name="QualifyQty" Type="numeric" Precision="10" Scale="3" />
@@ -1042,7 +1042,7 @@
           <Property Name="InStoreBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="InStoreMan" Type="nvarchar" MaxLength="10" />
           <Property Name="InvCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="InStoreStatus" Type="nvarchar" MaxLength="10" StoreGeneratedPattern="None" />
+          <Property Name="InStoreStatus" Type="nvarchar" MaxLength="10" />
           <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr3" Type="nvarchar" MaxLength="50" />
@@ -1093,6 +1093,7 @@
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
+          <Property Name="IsDefault" Type="bit" />
         </EntityType>
         <EntityType Name="WMS_Line">
           <Key>
@@ -5693,6 +5694,7 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_SubInvInfo_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_SubInvInfo" />
+          <Property Name="IsDefault" Type="Boolean" />
         </EntityType>
         <Association Name="FK_WMS_SubInvInfo_WMS_InvInfo">
           <End Type="DB.WMS_InvInfo" Role="WMS_InvInfo" Multiplicity="1" />
@@ -7255,6 +7257,7 @@
           <EntitySetMapping Name="WMS_InvInfo">
             <EntityTypeMapping TypeName="DB.WMS_InvInfo">
               <MappingFragment StoreEntitySet="WMS_InvInfo">
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />

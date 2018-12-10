@@ -116,9 +116,31 @@
                 { field: 'PartName', title: '物料名称', width: 80, sortable: true },
                 { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true, align: 'right' },
                 { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'CheckOutDate', title: '检验日期', width: 80, sortable: true, editor: { type: 'datetimebox' } },
                 { field: 'CheckOutResult', title: '检验结果', width: 80, sortable: true, editor: { type: 'textbox' } },
-                { field: 'QualifyQty', title: '合格数量', width: 80, sortable: true, editor: { type: 'zip_textevent' } },
-                { field: 'NoQualifyQty', title: '不合格数量', width: 80, sortable: true, editor: { type: 'zip_textevent' } },
+                { field: 'QualifyQty', title: '合格数量', width: 80, sortable: true, editor: { type: 'numberbox', options: { required: true, min : 0 } } },
+                { field: 'InvName', title: '仓库名称', width: 80, hidden: true },
+                {
+                    field: 'InvCode', title: '入库仓库', width: 80, sortable: true,
+                    formatter: function (value, row)
+                    {
+                        return row.InvName;
+                    },
+                    editor:
+                    {
+                        type: 'combobox',
+                        options:
+                        {
+                            valueField: 'value',
+                            textField: 'text',
+                            method: 'post',
+                            url: '/WMS/InvInfo/GetInvList',
+                            required: true,
+                            editable: false
+                        }
+                    }
+                },
+                { field: 'NoQualifyQty', title: '不合格数量', width: 80, sortable: true, editor: { type: 'numberbox', options: { required : true, min : 0 } } },
                 { field: 'CheckOutRemark', title: '检验说明', width: 80, sortable: true, editor: { type: 'textbox' } },
                 
             ]]
@@ -132,26 +154,30 @@
         var arrivalQty = row.ArrivalQty;
         //var arrivalQtyTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'ArrivalQty' }).target;
         var qualifyQtyTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'QualifyQty' }).target;
+        var qualifyQtyTarget_Input = $(qualifyQtyTarget).data('numberbox') ? $(qualifyQtyTarget).numberbox('textbox') : $(qualifyQtyTarget);
         var noQualifyQtyTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'NoQualifyQty' }).target;
+        var noQualifyQtyTarget_Input = $(noQualifyQtyTarget).data('numberbox') ? $(noQualifyQtyTarget).numberbox('textbox') : $(noQualifyQtyTarget);
 
-        if (sender.attributes["field"].value == "QualifyQty")
-        {
-            //屏蔽非数字字符
-            qualifyQtyTarget.val(qualifyQtyTarget.val().replace(/[^\d]/g, ''));
-            if (qualifyQtyTarget.val() == "")
+        if ($(sender).attr("field") == "QualifyQty")
+        { 
+            //qualifyQtyTarget_Input.val()：当前按键按下后的值，如果使用qualifyQtyTarget.numberbox('getValue')，取的是按键按下前的值
+            //noQualifyQtyTarget.numberbox('setValue', xxx):设置numberbox的值
+            //如果输入的值>到货数量，则修改成到货数量
+            if (qualifyQtyTarget_Input.val() > arrivalQty)
             {
-                qualifyQtyTarget.val(0)
+                qualifyQtyTarget_Input.val(arrivalQty);
             }
-            noQualifyQtyTarget.val(arrivalQty - qualifyQtyTarget.val());
+            noQualifyQtyTarget.numberbox('setValue', arrivalQty - qualifyQtyTarget_Input.val());
         }
-        if (sender.attributes["field"].value == "NoQualifyQty")
+        if ($(sender).attr("field") == "NoQualifyQty")
         {
-            noQualifyQtyTarget.val(noQualifyQtyTarget.val().replace(/[^\d]/g, ''));
-            if (noQualifyQtyTarget.val() == "")
+            //qualifyQtyTarget.val(arrivalQty - noQualifyQtyTarget.val());
+            //如果输入的值>到货数量，则修改成到货数量
+            if (noQualifyQtyTarget_Input.val() > arrivalQty)
             {
-                noQualifyQtyTarget.val(0)
+                noQualifyQtyTarget_Input.val(arrivalQty);
             }
-            qualifyQtyTarget.val(arrivalQty - noQualifyQtyTarget.val());
+            qualifyQtyTarget.numberbox('setValue', arrivalQty - noQualifyQtyTarget_Input.val());
         }
 
         $("input[type='checkbox']")[rowIndex + 1].disabled = true;
@@ -160,8 +186,6 @@
 
     //编辑的行
     var editIndex = undefined;
-    //编辑的单元格
-    var editCell = undefined;
     function endEditing() {
         if (editIndex == undefined) { return true }
         $('#List').datagrid('endEdit', editIndex);
@@ -176,13 +200,38 @@
         if (editIndex != index) {
             if (endEditing()) {
                 $('#List').datagrid('selectRow', index)
-                        .datagrid('beginEdit', index);
-                var ed = $('#List').datagrid('getEditor', { index: index, field: field });
-                if (ed) {
-                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
-                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).select();
-                    editCell = field;
+                    .datagrid('beginEdit', index);
+
+                //获取当前行的到货数量，用于设置合格数量和不合格数量的最大值
+                //var thisRow = $('#List').datagrid('getSelected');
+                //var arrivalQty = thisRow.ArrivalQty;
+
+                //给numberbox增加keyup事件，以便自动计算合格数量和不合格数量
+                var eds = $('#List').datagrid('getEditors', index);
+                for (var i = 0; i < eds.length; i++)
+                {
+                    var ed = eds[i];
+                    //alert(ed.field);
+                    if (ed.field == 'QualifyQty' || ed.field == 'NoQualifyQty')
+                    {
+                        var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                        target.attr("field", ed.field)
+                        target.bind("keyup", function ()
+                        {
+                            return setKeyUpValue($(this));
+                        });
+                    }
                 }
+
+                //当当前ClickCell是QualifyQty或NoQualifyQty时，自动获得焦点和全选
+                if (field == 'QualifyQty' || field == 'NoQualifyQty')
+                {
+                    var ed = $('#List').datagrid('getEditor', { index: index, field: field });
+                    var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                    target.focus();
+                    target.select();
+                }
+
                 editIndex = index;
             } else {
                 setTimeout(function () {
@@ -192,6 +241,11 @@
         }
     }
     function onEndEdit(index, row) {
+        var ed = $(this).datagrid('getEditor', {
+            index: index,
+            field: 'InvCode'
+        });
+        row.InvName = $(ed.target).combobox('getText');
     }
     //进入编辑前设置
     function onBeginEdit(index, row) {
@@ -292,6 +346,12 @@
                     <input id="inStoreBillNum" type="hidden" name="inStoreBillNum" value="@ViewBag.ArrivalBillNum" />
                     @Html.TextBox("inStoreBillNum", (string)ViewBag.InStoreBillNum, new { @disabled = "disabled" })
                 </td>
+                @*<th>
+                    @Html.LabelFor(model => model.InvCode):
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.InvCode, ViewBag.Inv as SelectList)
+                </td>*@
             </tr>
 
         </tbody>

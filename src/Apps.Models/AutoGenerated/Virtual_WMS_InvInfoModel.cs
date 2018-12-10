@@ -37,5 +37,7 @@ namespace Apps.Models.WMS
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
+		[Display(Name = "是否是默认库房")]
+		public virtual Nullable<bool> IsDefault { get; set; }
 		}
 }
