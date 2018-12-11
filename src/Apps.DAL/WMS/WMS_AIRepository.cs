@@ -1,4 +1,5 @@
 ﻿using Apps.Models.WMS;
+using System.Data.Entity.Core.Objects;
 using System.Dynamic;
 using System.Linq;
 
@@ -40,5 +41,13 @@ namespace Apps.DAL.WMS
             Context.P_WMS_CreateInspectBill(opt, arrivalBillNum);
         }
 
+        public string ProcessInspectBill(string opt, string jsonInspectBill)
+        {
+            ObjectParameter returnValue  = new ObjectParameter("ReturnValue", typeof(string));
+
+            Context.P_WMS_ProcessInspectBill(opt, jsonInspectBill, returnValue);
+
+            return returnValue.Value.ToString();
+        }
     }
 }

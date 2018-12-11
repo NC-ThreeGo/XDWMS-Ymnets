@@ -31,7 +31,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult GetList(GridPager pager, string queryStr)
         {
             //TODO:显示到货的到货单
-            List<WMS_AIModel> list = m_BLL.GetList(ref pager, "ReceiveStatus == \"已到货\"");
+            List<WMS_AIModel> list = m_BLL.GetList(ref pager, queryStr);
             GridRows <WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -62,10 +62,12 @@ namespace Apps.Web.Areas.WMS.Controllers
                 aiModel.CreateTime = ResultHelper.NowTime;
                 aiModel.CreatePerson = GetUserId();
                 aiModel.POId = model.Id;
+                aiModel.PartId = model.PartId;
                 aiModel.BoxQty = model.BoxNum;
                 aiModel.ArrivalQty = model.CurrentQty;
                 aiModel.ArrivalDate = ResultHelper.NowTime;
                 aiModel.ReceiveMan = GetUserId();
+                //TODO:送检单到货时的状态是“未送检”还是“未打印”？？？
                 aiModel.InspectStatus = "未送检";
                 aiModel.InStoreStatus = "未入库";
 
@@ -196,6 +198,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("Id", item.Id);
                     jo.Add("到货单据号", item.ArrivalBillNum);
                     jo.Add("采购订单ID", item.POId);
+                    jo.Add("物料ID", item.PartId);
                     jo.Add("到货箱数", item.BoxQty);
                     jo.Add("到货数量", item.ArrivalQty);
                     jo.Add("到货日期", item.ArrivalDate);
@@ -213,7 +216,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("重新送检单", item.ReInspectBillNum);
                     jo.Add("入库单号", item.InStoreBillNum);
                     jo.Add("InStoreMan", item.InStoreMan);
-                    jo.Add("入库仓库", item.InvCode);
+                    jo.Add("入库仓库", item.InvId);
                     jo.Add("入库状态", item.InStoreStatus);
                     jo.Add("Attr1", item.Attr1);
                     jo.Add("Attr2", item.Attr2);
@@ -320,7 +323,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult ArrivalBillGetList(GridPager pager, string queryStr)
         {
             //TODO:显示有效且未送检的到货单。
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ReceiveStatus == \"已到货\" && InspectStatus == \"未送检\"");
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ReceiveStatus == \"已到货\" && InspectStatus == \"未送检\"")
+                .OrderBy(p => p.ArrivalBillNum).ToList();
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

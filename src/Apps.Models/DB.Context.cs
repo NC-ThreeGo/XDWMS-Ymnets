@@ -673,14 +673,27 @@ namespace Apps.Models
         public virtual int P_WMS_CreateInspectBill(string userId, string arrivalBillNum)
         {
             var userIdParameter = userId != null ?
-                new ObjectParameter("userId", userId) :
-                new ObjectParameter("userId", typeof(string));
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
     
             var arrivalBillNumParameter = arrivalBillNum != null ?
-                new ObjectParameter("arrivalBillNum", arrivalBillNum) :
-                new ObjectParameter("arrivalBillNum", typeof(string));
+                new ObjectParameter("ArrivalBillNum", arrivalBillNum) :
+                new ObjectParameter("ArrivalBillNum", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateInspectBill", userIdParameter, arrivalBillNumParameter);
+        }
+    
+        public virtual int P_WMS_ProcessInspectBill(string userId, string jsonInspectBill, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var jsonInspectBillParameter = jsonInspectBill != null ?
+                new ObjectParameter("JsonInspectBill", jsonInspectBill) :
+                new ObjectParameter("JsonInspectBill", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ProcessInspectBill", userIdParameter, jsonInspectBillParameter, returnValue);
         }
     }
 }

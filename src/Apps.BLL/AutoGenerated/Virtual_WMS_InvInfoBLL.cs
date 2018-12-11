@@ -50,6 +50,7 @@ namespace Apps.BLL.WMS
 								
 								|| a.ModifyPerson.Contains(queryStr)
 								
+								
 								);
             }
             else
@@ -87,6 +88,7 @@ namespace Apps.BLL.WMS
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
+													IsDefault = r.IsDefault,
           
                                               }).ToList();
 
@@ -113,6 +115,7 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
+				entity.IsDefault = model.IsDefault;
   
 
                 if (m_Rep.Create(entity))
@@ -208,6 +211,7 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
+				entity.IsDefault = model.IsDefault;
  
 
 
@@ -247,6 +251,7 @@ namespace Apps.BLL.WMS
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
+				model.IsDefault = entity.IsDefault;
  
                 return model;
             }
@@ -283,6 +288,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_InvInfoModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_InvInfoModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_InvInfoModel>(x => x.ModifyTime, "修改时间");
+				 excelFile.AddMapping<WMS_InvInfoModel>(x => x.IsDefault, "是否是默认库房");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_InvInfoModel>(0);
@@ -301,6 +307,7 @@ namespace Apps.BLL.WMS
 				  entity.CreateTime = row.CreateTime;
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
+				  entity.IsDefault = row.IsDefault;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -342,6 +349,7 @@ namespace Apps.BLL.WMS
 						entity.CreateTime = ResultHelper.NowTime;
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
+						entity.IsDefault = model.IsDefault;
  
                         db.WMS_InvInfo.Add(entity);
                     }

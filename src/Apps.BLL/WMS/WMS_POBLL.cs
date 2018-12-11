@@ -162,7 +162,7 @@ namespace Apps.BLL.WMS
 									entity.QTY = model.QTY;
 									entity.PlanDate = model.PlanDate;
 									entity.POType = model.POType;
-									//entity.Status = model.Status;
+									entity.Status = "有效";
 									entity.Remark = model.Remark;
 									entity.Attr1 = model.Attr1;
 									entity.Attr2 = model.Attr2;

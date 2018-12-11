@@ -31,7 +31,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult GetList(GridPager pager, string queryStr)
         {
             //TODO:查询出检验状态=已送检 and 入库状态=未入库 的记录
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已检验\" && InStoreStatus == \"未入库\" ");
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已检验\" && InStoreStatus == \"未入库\" ")
+                .OrderBy(p => p.InspectBillNum).ToList();
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -193,7 +194,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                 jo.Add("重新送检单", item.ReInspectBillNum);
                 jo.Add("入库单号", item.InStoreBillNum);
                 jo.Add("InStoreMan", item.InStoreMan);
-                jo.Add("入库仓库", item.InvCode);
+                jo.Add("入库仓库", item.InvId);
+                jo.Add("子库", item.SubInvId);
                 jo.Add("入库状态", item.InStoreStatus);
                 jo.Add("Attr1", item.Attr1);
                 jo.Add("Attr2", item.Attr2);
@@ -299,7 +301,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult InspectBillGetList(GridPager pager, string queryStr)
         {
             //TODO:显示有效且已打印的送检单。
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已检验\"");
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已检验\" and InStoreStatus == \"未入库\"")
+                .OrderBy(p => p.InspectBillNum).ToList();
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

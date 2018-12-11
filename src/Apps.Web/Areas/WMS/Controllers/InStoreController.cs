@@ -33,7 +33,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult GetList(GridPager pager, string queryStr)
         {
             //TODO：显示已入库的送检单
-            List<WMS_AIModel> list = m_BLL.GetList(ref pager, "InspectStatus == \"已入库\"");
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InStoreStatus == \"已入库\"");
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -44,8 +44,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Create()
         {
-            //TODO：入库单的单据号是否允许断号？
-            ViewBag.InStoreBillNum = "RK" + DateTime.Now.ToString("yyyyMMddHHmmssff");
+            //ViewBag.InStoreBillNum = "RK" + DateTime.Now.ToString("yyyyMMddHHmmssff");
             
             //ViewBag.Inv = new SelectList(m_InvInfoBll.GetListByWhere("Status == \"有效\""), "InvCode", "InvName");
 
@@ -57,36 +56,17 @@ namespace Apps.Web.Areas.WMS.Controllers
         [ValidateInput(false)]
         public JsonResult Create(string inspectBillNum, string inserted)
         {
-            var detailsList = JsonHandler.DeserializeJsonToList<WMS_POForAIModel>(inserted);
-            //foreach (var model in detailsList)
-            //{
-            //    WMS_AIModel aiModel = new WMS_AIModel();
-            //    aiModel.Id = 0;
-            //    aiModel.ArrivalBillNum = arrivalBillNum;
-            //    aiModel.ReceiveMan = GetUserId();
-            //    aiModel.ReceiveStatus = "已到货";
-            //    aiModel.CreateTime = ResultHelper.NowTime;
-            //    aiModel.CreatePerson = GetUserId();
-            //    aiModel.POId = model.Id;
-            //    aiModel.BoxQty = model.BoxNum;
-            //    aiModel.ArrivalQty = model.CurrentQty;
-            //    aiModel.ArrivalDate = ResultHelper.NowTime;
-            //    aiModel.ReceiveMan = GetUserId();
-            //    aiModel.InspectStatus = "未送检";
-            //    aiModel.InStoreStatus = "未入库";
-
-            //    try
-            //    {
-            //        m_BLL.Create(ref errors, aiModel);
-            //        LogHandler.WriteServiceLog(GetUserId(), "保存成功", "成功", "保存", "WMS_AI");
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "保存", "WMS_AI");
-            //        return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
-            //    }
-            //}
-            return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+            if (m_BLL.ProcessInspectBill(ref errors, GetUserId(), inserted))
+            {
+                LogHandler.WriteServiceLog(GetUserId(), "检验单：" + inspectBillNum + "处理", "成功", "处理", "WMS_AI");
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+            }
+            else
+            {
+                string ErrorCol = errors.Error;
+                LogHandler.WriteServiceLog(GetUserId(), "检验单：" + inspectBillNum + "处理" + "," + ErrorCol, "失败", "处理", "WMS_AI");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
+            }
         }
 
         #endregion
@@ -202,6 +182,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("Id", item.Id);
                     jo.Add("到货单据号", item.ArrivalBillNum);
                     jo.Add("采购订单ID", item.POId);
+                    jo.Add("物料ID", item.PartId);
                     jo.Add("到货箱数", item.BoxQty);
                     jo.Add("到货数量", item.ArrivalQty);
                     jo.Add("到货日期", item.ArrivalDate);
@@ -219,7 +200,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("重新送检单", item.ReInspectBillNum);
                     jo.Add("入库单号", item.InStoreBillNum);
                     jo.Add("InStoreMan", item.InStoreMan);
-                    jo.Add("入库仓库", item.InvCode);
+                    jo.Add("入库仓库", item.InvId);
                     jo.Add("入库状态", item.InStoreStatus);
                     jo.Add("Attr1", item.Attr1);
                     jo.Add("Attr2", item.Attr2);
@@ -308,31 +289,6 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
-
-        #region 选择到货单
-        /// <summary>
-        /// 弹出选择到货单
-        /// </summary>
-        /// <param name="mulSelect">是否多选</param>
-        /// <returns></returns>
-        [SupportFilter(ActionName = "Create")]
-        public ActionResult ArrivalBillLookUp(bool mulSelect = false)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [SupportFilter(ActionName = "Create")]
-        public JsonResult ArrivalBillGetList(GridPager pager, string queryStr)
-        {
-            //TODO:显示有效且未送检的到货单。
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ReceiveStatus == \"已到货\" && InspectStatus == \"未送检\"");
-            GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
-            grs.rows = list;
-            grs.total = pager.totalRows;
-            return Json(grs); 
-        }
-        #endregion
     }
 }
 
