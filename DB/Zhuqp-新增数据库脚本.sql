@@ -149,11 +149,11 @@ GO
 
 
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2018/12/11 15:18:45 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2018/12/11 15:21:40 ******/
 DROP PROCEDURE [dbo].[P_WMS_ProcessInspectBill]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2018/12/11 15:18:45 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2018/12/11 15:21:40 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -326,7 +326,7 @@ BEGIN
 						ib.PartId,
 						po.SupplierId,
 						ib.NoQualifyQty,
-						0,
+						ib.NoQualifyQty,
 						@UserId,
 						@now
 					FROM #InspectBill ib,
@@ -342,5 +342,3 @@ BEGIN
 END
 
 GO
-
-
