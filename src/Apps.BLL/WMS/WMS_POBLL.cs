@@ -119,7 +119,7 @@ namespace Apps.BLL.WMS
 								model.QTY = row.QTY;
 								model.PlanDate = row.PlanDate;
 								model.POType = row.POType;
-								//model.Status = row.Status;
+								model.Status = "有效";
 								model.Remark = row.Remark;
 								//model.Attr1 = row.Attr1;
 								//model.Attr2 = row.Attr2;
