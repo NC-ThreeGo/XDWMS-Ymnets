@@ -119,7 +119,7 @@
                 { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
                 { field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true },
                 { field: 'QTY', title: '订单数量', width: 80, sortable: true, align: 'right' },
-                { field: 'SumAIQty', title: '已到货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'SumAIQty', title: '已到货数量', width: 80, sortable: true, align: 'right'/*, formatter: function (value) { return CheckFormatter(value) }*/},
                 
             ]]
         });
@@ -246,7 +246,8 @@
         <tbody>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.POId)：
+                    @*@Html.LabelFor(model => model.POId)*@
+                    采购订单：
                 </th>
                 <td>
                     <div style="height:0;width:0;overflow:hidden">
