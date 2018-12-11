@@ -11,7 +11,7 @@ namespace Apps.IBLL.WMS
          /// <param name="filePath"></param>
          /// <param name="errors"></param>
          /// <returns></returns>
-         bool ImportExcelData(string filePath, ref ValidationErrors errors);
+         bool ImportExcelData(string oper, string filePath, ref ValidationErrors errors);
     
          /// <summary>
          /// 对导入进行附加的校验，例如物料编码是否存在等。

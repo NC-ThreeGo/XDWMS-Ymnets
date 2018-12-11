@@ -8,11 +8,19 @@ using Apps.Models.WMS;
 using System.IO;
 using LinqToExcel;
 using ClosedXML.Excel;
+using System.Linq.Expressions;
+using Apps.IDAL.Sys;
+using Unity.Attributes;
 
 namespace Apps.BLL.WMS
 {
     public  partial class WMS_PartBLL
     {
+        [Dependency]
+        public ISysParamRepository m_SysParamRep { get; set; }
+
+        [Dependency]
+        public IDAL.WMS.IWMS_PartRepository m_PartRep { get; set; }
 
         public override List<WMS_PartModel> CreateModelList(ref IQueryable<WMS_Part> queryData)
         {
@@ -102,7 +110,7 @@ namespace Apps.BLL.WMS
                             {
                                 rtn = false;
                                 errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-                                wws.Cell(rowIndex + 1, 15).Value = errorMessage;
+                                wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
                                 continue;
                             }
 
@@ -116,7 +124,7 @@ namespace Apps.BLL.WMS
                                 rtn = false;
                                 errorMessage = ex.Message;
                                 errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-                                wws.Cell(rowIndex + 1, 15).Value = errorMessage;
+                                wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
                                 continue;
                             }
 
@@ -149,7 +157,7 @@ namespace Apps.BLL.WMS
                                 db.Entry(entity).State = System.Data.Entity.EntityState.Detached;
                                 errorMessage = ex.InnerException.InnerException.Message;
                                 errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-                                wws.Cell(rowIndex + 1, 15).Value = errorMessage;
+                                wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
                             }
                         }
 
@@ -171,6 +179,35 @@ namespace Apps.BLL.WMS
 
         public void AdditionalCheckExcelData(WMS_PartModel model)
         {
+            //获取物料ID
+            if (!String.IsNullOrEmpty(model.PartCode))
+            {
+                var partCode = model.PartCode;
+                Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
+
+                var part = m_PartRep.GetSingleWhere(exp);
+                if (part != null)
+                {
+                    throw new Exception("物料编码重复！");
+                }
+
+            }
+            else
+            {
+                throw new Exception("物料编码不能为空！");
+            }
+            //获取物料类型
+            if (!String.IsNullOrEmpty(model.PartType))
+            {
+                var partType = model.PartType;                
+                Expression<Func<SysParam, bool>> exp = x => x.ParamName == partType && x.TypeCode == "PartType";
+
+                var part = m_SysParamRep.GetSingleWhere(exp);
+                if (part == null)
+                {
+                    throw new Exception("物料类型不存在！");
+                }
+            }
 
         }
 
