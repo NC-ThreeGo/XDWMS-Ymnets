@@ -60,7 +60,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                 }
                 else
                 {
-                    string ErrorCol = errors.Error;
+                    //string ErrorCol = errors.Error;
+                    string ErrorCol = " ：输入错误数据";
                     LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",SupplierCode" + model.SupplierCode + "," + ErrorCol, "失败", "创建", "WMS_Supplier");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
                 }
@@ -150,7 +151,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Import(string filePath)
         {
-            if (m_BLL.ImportExcelData(Utils.GetMapPath(filePath), ref errors))
+            if (m_BLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))
             {
                  LogHandler.WriteImportExcelLog(GetUserId(), "WMS_Supplier", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
                  return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
@@ -183,7 +184,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                 foreach (var item in list)
                 {
                     var jo = new JObject();
-                    jo.Add("供应商ID", item.Id);
+                    //jo.Add("供应商ID", item.Id);
                     jo.Add("供应商编码", item.SupplierCode);
                     jo.Add("供应商简称", item.SupplierShortName);
                     jo.Add("供应商名称", item.SupplierName);
@@ -191,12 +192,12 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("联系人", item.LinkMan);
                     jo.Add("联系人电话", item.LinkManTel);
                     jo.Add("联系人地址", item.LinkManAddress);
-                    jo.Add("状态", item.Status);
+                    //jo.Add("状态", item.Status);
                     jo.Add("说明", item.Remark);
-                    jo.Add("创建人", item.CreatePerson);
-                    jo.Add("创建时间", item.CreateTime);
-                    jo.Add("修改人", item.ModifyPerson);
-                    jo.Add("修改时间", item.ModifyTime);
+                    //jo.Add("创建人", item.CreatePerson);
+                    //jo.Add("创建时间", item.CreateTime);
+                    //jo.Add("修改人", item.ModifyPerson);
+                    //jo.Add("修改时间", item.ModifyTime);
                     jObjects.Add(jo);
                 }
                 var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
@@ -216,7 +217,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             JArray jObjects = new JArray();
             var jo = new JObject();
-              jo.Add("供应商ID", "");
+              //jo.Add("供应商ID", "");
               jo.Add("供应商编码", "");
               jo.Add("供应商简称", "");
               jo.Add("供应商名称", "");
@@ -224,13 +225,13 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("联系人", "");
               jo.Add("联系人电话", "");
               jo.Add("联系人地址", "");
-              jo.Add("状态", "");
+              //jo.Add("状态", "");
               jo.Add("说明", "");
-              jo.Add("创建人", "");
-              jo.Add("创建时间", "");
-              jo.Add("修改人", "");
-              jo.Add("修改时间", "");
-                jo.Add("导入的错误信息", "");
+              //jo.Add("创建人", "");
+              //jo.Add("创建时间", "");
+              //jo.Add("修改人", "");
+              //jo.Add("修改时间", "");
+               jo.Add("导入的错误信息", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
             var exportFileName = string.Concat(

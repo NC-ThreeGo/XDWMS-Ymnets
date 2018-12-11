@@ -20,7 +20,13 @@ namespace Apps.Web.Areas.WMS.Controllers
         [Dependency]
         public IWMS_AIBLL m_BLL { get; set; }
         ValidationErrors errors = new ValidationErrors();
-        
+
+        [Dependency]
+        public IWMS_POBLL m_POBLL { get; set; }
+
+        [Dependency]
+        public IWMS_PartBLL m_PartBLL { get; set; }
+
         [SupportFilter]
         public ActionResult Index()
         {
@@ -92,7 +98,13 @@ namespace Apps.Web.Areas.WMS.Controllers
         public ActionResult Edit(long id)
         {
             WMS_AIModel entity = m_BLL.GetById(id);
-            return View(entity);
+            //给关联字段订单号赋值
+            WMS_POModel entity_po = m_POBLL.GetById(entity.POId);
+            entity.PO = entity_po.PO;
+            //给关联字段物料编码赋值
+            WMS_PartModel entity_p = m_PartBLL.GetById(entity.PartId);
+            entity.PartCode = entity_p.PartCode;
+            return View(entity);            
         }
 
         [HttpPost]

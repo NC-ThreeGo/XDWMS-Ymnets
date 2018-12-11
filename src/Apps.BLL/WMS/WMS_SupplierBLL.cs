@@ -8,11 +8,19 @@ using System.IO;
 using LinqToExcel;
 using ClosedXML.Excel;
 using Apps.Models.WMS;
+using System.Linq.Expressions;
+using Apps.IDAL.Sys;
+using Unity.Attributes;
 
 namespace Apps.BLL.WMS
 {
     public  partial class WMS_SupplierBLL
     {
+        [Dependency]
+        public ISysParamRepository m_SysParamRep { get; set; }
+
+        [Dependency]
+        public IDAL.WMS.IWMS_SupplierRepository m_SupplierRep { get; set; }
 
         public override List<WMS_SupplierModel> CreateModelList(ref IQueryable<WMS_Supplier> queryData)
         {
@@ -38,7 +46,7 @@ namespace Apps.BLL.WMS
             return modelList;
         }
 
-		public bool ImportExcelData(string filePath, ref ValidationErrors errors)
+		public bool ImportExcelData(string oper, string filePath, ref ValidationErrors errors)
 		{
 			bool rtn = true;
 
@@ -65,12 +73,12 @@ namespace Apps.BLL.WMS
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkMan, "联系人");
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkManTel, "联系人电话");
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkManAddress, "联系人地址");
-					excelFile.AddMapping<WMS_SupplierModel>(x => x.Status, "状态");
+					//excelFile.AddMapping<WMS_SupplierModel>(x => x.Status, "状态");
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.Remark, "说明");
-					excelFile.AddMapping<WMS_SupplierModel>(x => x.CreatePerson, "创建人");
-					excelFile.AddMapping<WMS_SupplierModel>(x => x.CreateTime, "创建时间");
-					excelFile.AddMapping<WMS_SupplierModel>(x => x.ModifyPerson, "修改人");
-					excelFile.AddMapping<WMS_SupplierModel>(x => x.ModifyTime, "修改时间");
+					//excelFile.AddMapping<WMS_SupplierModel>(x => x.CreatePerson, "创建人");
+					//excelFile.AddMapping<WMS_SupplierModel>(x => x.CreateTime, "创建时间");
+					//excelFile.AddMapping<WMS_SupplierModel>(x => x.ModifyPerson, "修改人");
+					//excelFile.AddMapping<WMS_SupplierModel>(x => x.ModifyTime, "修改时间");
 
 					//SheetName，第一个Sheet
 					var excelContent = excelFile.Worksheet<WMS_SupplierModel>(0);
@@ -95,18 +103,18 @@ namespace Apps.BLL.WMS
 								model.LinkMan = row.LinkMan;
 								model.LinkManTel = row.LinkManTel;
 								model.LinkManAddress = row.LinkManAddress;
-								model.Status = row.Status;
+								//model.Status = row.Status;
 								model.Remark = row.Remark;
-								model.CreatePerson = row.CreatePerson;
-								model.CreateTime = row.CreateTime;
-								model.ModifyPerson = row.ModifyPerson;
-								model.ModifyTime = row.ModifyTime;
+								//model.CreatePerson = row.CreatePerson;
+								//model.CreateTime = row.CreateTime;
+								//model.ModifyPerson = row.ModifyPerson;
+								//model.ModifyTime = row.ModifyTime;
 
 								if (!String.IsNullOrEmpty(errorMessage))
 								{
 									rtn = false;
 									errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-									wws.Cell(rowIndex + 1, 15).Value = errorMessage;
+									wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
 									continue;								}
 								
 								//执行额外的数据校验
@@ -119,8 +127,8 @@ namespace Apps.BLL.WMS
 									rtn = false;
 									errorMessage = ex.Message;
 									errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-									wws.Cell(rowIndex + 1, 15).Value = errorMessage;
-									continue;
+									wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                                    continue;
 								}
 								
 									//写入数据库
@@ -133,12 +141,12 @@ namespace Apps.BLL.WMS
 									entity.LinkMan = model.LinkMan;
 									entity.LinkManTel = model.LinkManTel;
 									entity.LinkManAddress = model.LinkManAddress;
-									entity.Status = model.Status;
+									entity.Status = "有效";
 									entity.Remark = model.Remark;
-									entity.CreatePerson = model.CreatePerson;
-									entity.CreateTime = model.CreateTime;
-									entity.ModifyPerson = model.ModifyPerson;
-									entity.ModifyTime = model.ModifyTime;
+									entity.CreatePerson = oper;
+									entity.CreateTime = DateTime.Now;
+									entity.ModifyPerson = oper;
+									entity.ModifyTime = DateTime.Now;
 
 									db.WMS_Supplier.Add(entity);
 									try
@@ -152,7 +160,7 @@ namespace Apps.BLL.WMS
 										db.Entry(entity).State = System.Data.Entity.EntityState.Detached;
 										errorMessage = ex.InnerException.InnerException.Message;
 										errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-										wws.Cell(rowIndex + 1, 15).Value = errorMessage;
+										wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
 								}
 							}
 
@@ -174,7 +182,36 @@ namespace Apps.BLL.WMS
 
 		public void AdditionalCheckExcelData(WMS_SupplierModel model)
 		{
-		}
+            //获取客户编码
+            if (!String.IsNullOrEmpty(model.SupplierCode))
+            {
+                var supplierCode = model.SupplierCode;
+                Expression<Func<WMS_Supplier, bool>> exp = x => x.SupplierCode == supplierCode;
+
+                var supplier = m_SupplierRep.GetSingleWhere(exp);
+                if (supplier != null)
+                {
+                    throw new Exception("供应商编码重复！");
+                }
+
+            }
+            else
+            {
+                throw new Exception("客户编码不能为空！");
+            }
+            //获取物料类型
+            if (!String.IsNullOrEmpty(model.SupplierType))
+            {
+                var supplier = model.SupplierType;
+                Expression<Func<SysParam, bool>> exp = x => x.ParamName == supplier && x.TypeCode == "SupplierType";
+
+                var part = m_SysParamRep.GetSingleWhere(exp);
+                if (part == null)
+                {
+                    throw new Exception("供应商类型不存在！");
+                }
+            }
+        }
 
         public List<WMS_SupplierModel> GetListByWhere(ref GridPager pager, string where)
         {

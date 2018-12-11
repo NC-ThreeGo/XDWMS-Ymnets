@@ -73,7 +73,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                 }
                 else
                 {
-                    string ErrorCol = errors.Error;
+                    //string ErrorCol = errors.Error;
+                    string ErrorCol = " ：输入错误数据";
                     LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",PartCode" + model.PartCode + "," + ErrorCol, "失败", "创建", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
                 }
