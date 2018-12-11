@@ -51,6 +51,7 @@ namespace Apps.Models.Sys
         private string _emailpassword = "";
         private string _emailnickname = "";
 
+        private string _reportfilepath = "";
         private string _attachpath = "";
         private string _attachextension = "";
         private int _attachsave = 1;
@@ -275,6 +276,11 @@ namespace Apps.Models.Sys
         {
             get { return _emailnickname; }
             set { _emailnickname = value; }
+        }
+        public string reportfilepath
+        {
+            get { return _reportfilepath; }
+            set { _reportfilepath = value; }
         }
         /// <summary>
         /// 附件上传目录

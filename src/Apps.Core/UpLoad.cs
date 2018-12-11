@@ -223,14 +223,25 @@ namespace Apps.Core
         /// </summary>
         /// <param name="postedFile"></param>
         /// <returns></returns>
-        public string ExcelFileSaveAs(HttpPostedFile postedFile)
+        public string ExcelFileSaveAs(HttpPostedFile postedFile, bool isReportFile = false)
         {
             try
             {
                 string fileExt = Utils.GetFileExt(postedFile.FileName); //文件扩展名，不含“.”
                 string originalFileName = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf(@"\") + 1); //取得文件原名
-                string fileName = Utils.GetRamCode() + "." + fileExt; //随机文件名
-                string dirPath = GetUpLoadPath(); //上传目录相对路径
+                string fileName;
+                string dirPath;
+
+                if (isReportFile)
+                {
+                    fileName = originalFileName; 
+                    dirPath = GetReportFilePath(); //上传目录相对路径
+                }
+                else
+                {
+                    fileName = Utils.GetRamCode() + "." + fileExt; //随机文件名
+                    dirPath = GetUpLoadPath(); //上传目录相对路径
+                }
 
                 //检查文件扩展名是否合法
                 if (!CheckFileExt(fileExt))
@@ -238,10 +249,10 @@ namespace Apps.Core
                     return "{\"msg\": \"0\", \"msgbox\": \"不允许上传" + fileExt + "类型的文件！\"}";
                 }
                 //检查是否必须上传图片
-                if (!IsExcel(fileExt))
-                {
-                    return "{\"msg\": \"0\", \"msgbox\": \"对不起，仅允许上传Excel文件！\"}";
-                }
+                //if (!IsExcel(fileExt))
+                //{
+                //    return "{\"msg\": \"0\", \"msgbox\": \"对不起，仅允许上传Excel文件！\"}";
+                //}
                 //检查文件大小是否合法
                 if (!CheckFileSize(fileExt, postedFile.ContentLength))
                 {
@@ -283,6 +294,15 @@ namespace Apps.Core
                     break;
             }
             return path + "/";
+        }
+
+        /// <summary>
+        /// 返回报表文件上传目录的相对路径
+        /// </summary>
+        /// <returns></returns>
+        private string GetReportFilePath()
+        {
+            return siteConfig.webpath + siteConfig.reportfilepath + "/"; 
         }
 
         /// <summary>

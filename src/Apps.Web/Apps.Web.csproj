@@ -312,6 +312,7 @@
     <Compile Include="Areas\MIS\Controllers\WebIM_CommonTalkController.cs" />
     <Compile Include="Areas\MIS\MISAreaRegistration.cs" />
     <Compile Include="Areas\Report\Controllers\ReportManagerController.cs" />
+    <Compile Include="Areas\Report\Controllers\ReportParamController.cs" />
     <Compile Include="Areas\Report\ReportAreaRegistration.cs" />
     <Compile Include="Areas\Spl\Controllers\ContactCompanyCategoryController.cs" />
     <Compile Include="Areas\Spl\Controllers\ContactCompanyController.cs" />
@@ -801,6 +802,12 @@
     <Content Include="Areas\WMS\Views\InStore\Create.cshtml" />
     <Content Include="Areas\WMS\Views\InStore\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\InStore\Index.cshtml" />
+    <Content Include="Areas\Report\Views\ReportManager\Create.cshtml" />
+    <Content Include="Areas\Report\Views\ReportManager\Edit.cshtml" />
+    <Content Include="Areas\Report\Views\ReportManager\Index.cshtml" />
+    <Content Include="Areas\Report\Views\ReportParam\Create.cshtml" />
+    <Content Include="Areas\Report\Views\ReportParam\Edit.cshtml" />
+    <Content Include="Areas\Report\Views\ReportParam\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

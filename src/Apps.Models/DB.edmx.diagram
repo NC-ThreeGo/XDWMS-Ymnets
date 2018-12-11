@@ -158,6 +158,9 @@
         <EntityTypeShape EntityType="DB.SysParam" Width="1.5" PointX="17.375" PointY="7.75" />
         <EntityTypeShape EntityType="DB.WMS_AI" Width="1.5" PointX="5.25" PointY="36.5" />
         <AssociationConnector Association="DB.FK_WMS_AI_WMS_PO" />
+        <EntityTypeShape EntityType="DB.WMS_Report" Width="1.5" PointX="22.375" PointY="1.25" />
+        <EntityTypeShape EntityType="DB.WMS_ReportParam" Width="1.5" PointX="24.625" PointY="1" />
+        <AssociationConnector Association="DB.FK_WMS_ReportParam_WMS_Report" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

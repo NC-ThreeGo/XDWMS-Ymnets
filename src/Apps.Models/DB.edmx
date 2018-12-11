@@ -1148,6 +1148,44 @@
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="WMS_Report">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReportCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ReportName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ReportType" Type="int" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="200" />
+          <Property Name="DataSource" Type="nvarchar" MaxLength="4000" />
+          <Property Name="DataSourceType" Type="int" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WMS_ReportParam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParamCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ReportId" Type="int" Nullable="false" />
+          <Property Name="InputNo" Type="varchar" MaxLength="50" />
+          <Property Name="ParamName" Type="varchar" MaxLength="50" />
+          <Property Name="ShowName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ParamType" Type="varchar" MaxLength="50" />
+          <Property Name="ParamData" Type="varchar" MaxLength="1000" />
+          <Property Name="DefaultValue" Type="varchar" MaxLength="100" />
+          <Property Name="ParamElement" Type="varchar" MaxLength="200" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="WMS_SubInvInfo">
           <Key>
             <PropertyRef Name="Id" />
@@ -2180,6 +2218,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_ReportParam_WMS_Report">
+          <End Role="WMS_Report" Type="Self.WMS_Report" Multiplicity="1" />
+          <End Role="WMS_ReportParam" Type="Self.WMS_ReportParam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Report">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReportParam">
+              <PropertyRef Name="ReportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WMS_SubInvInfo_WMS_InvInfo">
           <End Role="WMS_InvInfo" Type="Self.WMS_InvInfo" Multiplicity="1" />
           <End Role="WMS_SubInvInfo" Type="Self.WMS_SubInvInfo" Multiplicity="*" />
@@ -2448,6 +2498,8 @@
           <EntitySet Name="WMS_Line" EntityType="Self.WMS_Line" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Part" EntityType="Self.WMS_Part" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_PO" EntityType="Self.WMS_PO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_Report" EntityType="Self.WMS_Report" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_ReportParam" EntityType="Self.WMS_ReportParam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_SubInvInfo" EntityType="Self.WMS_SubInvInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Supplier" EntityType="Self.WMS_Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysUserConfig" EntityType="Self.SysUserConfig" store:Type="Tables" store:Schema="dbo">
@@ -2775,6 +2827,10 @@
           <AssociationSet Name="FK_WMS_PO_WMS_Supplier" Association="Self.FK_WMS_PO_WMS_Supplier">
             <End Role="WMS_Supplier" EntitySet="WMS_Supplier" />
             <End Role="WMS_PO" EntitySet="WMS_PO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReportParam_WMS_Report" Association="Self.FK_WMS_ReportParam_WMS_Report">
+            <End Role="WMS_Report" EntitySet="WMS_Report" />
+            <End Role="WMS_ReportParam" EntitySet="WMS_ReportParam" />
           </AssociationSet>
           <AssociationSet Name="FK_WMS_SubInvInfo_WMS_InvInfo" Association="Self.FK_WMS_SubInvInfo_WMS_InvInfo">
             <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
@@ -3355,6 +3411,12 @@
             <Parameter Name="JsonInspectBill" Mode="In" Type="String" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
+          <EntitySet Name="WMS_Report" EntityType="DB.WMS_Report" />
+          <EntitySet Name="WMS_ReportParam" EntityType="DB.WMS_ReportParam" />
+          <AssociationSet Name="FK_WMS_ReportParam_WMS_Report" Association="DB.FK_WMS_ReportParam_WMS_Report">
+            <End Role="WMS_Report" EntitySet="WMS_Report" />
+            <End Role="WMS_ReportParam" EntitySet="WMS_ReportParam" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -5878,6 +5940,58 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="WMS_Report">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReportCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ReportName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReportType" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DataSource" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="FileName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WMS_ReportParam" Relationship="DB.FK_WMS_ReportParam_WMS_Report" FromRole="WMS_Report" ToRole="WMS_ReportParam" />
+          <Property Name="DataSourceType" Type="Int32" />
+        </EntityType>
+        <EntityType Name="WMS_ReportParam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParamCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ReportId" Type="Int32" Nullable="false" />
+          <Property Name="InputNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParamName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShowName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ParamType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParamData" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="DefaultValue" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ParamElement" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WMS_Report" Relationship="DB.FK_WMS_ReportParam_WMS_Report" FromRole="WMS_ReportParam" ToRole="WMS_Report" />
+        </EntityType>
+        <Association Name="FK_WMS_ReportParam_WMS_Report">
+          <End Type="DB.WMS_Report" Role="WMS_Report" Multiplicity="1" />
+          <End Type="DB.WMS_ReportParam" Role="WMS_ReportParam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Report">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReportParam">
+              <PropertyRef Name="ReportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7407,6 +7521,46 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="P_WMS_ProcessInspectBill" FunctionName="DB.Store.P_WMS_ProcessInspectBill" />
+          <EntitySetMapping Name="WMS_Report">
+            <EntityTypeMapping TypeName="DB.WMS_Report">
+              <MappingFragment StoreEntitySet="WMS_Report">
+                <ScalarProperty Name="DataSourceType" ColumnName="DataSourceType" />
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="DataSource" ColumnName="DataSource" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ReportType" ColumnName="ReportType" />
+                <ScalarProperty Name="ReportName" ColumnName="ReportName" />
+                <ScalarProperty Name="ReportCode" ColumnName="ReportCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WMS_ReportParam">
+            <EntityTypeMapping TypeName="DB.WMS_ReportParam">
+              <MappingFragment StoreEntitySet="WMS_ReportParam">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ParamElement" ColumnName="ParamElement" />
+                <ScalarProperty Name="DefaultValue" ColumnName="DefaultValue" />
+                <ScalarProperty Name="ParamData" ColumnName="ParamData" />
+                <ScalarProperty Name="ParamType" ColumnName="ParamType" />
+                <ScalarProperty Name="ShowName" ColumnName="ShowName" />
+                <ScalarProperty Name="ParamName" ColumnName="ParamName" />
+                <ScalarProperty Name="InputNo" ColumnName="InputNo" />
+                <ScalarProperty Name="ReportId" ColumnName="ReportId" />
+                <ScalarProperty Name="ParamCode" ColumnName="ParamCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

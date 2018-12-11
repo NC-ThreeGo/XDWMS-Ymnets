@@ -1,0 +1,138 @@
+﻿@model Apps.Models.WMS.WMS_ReportModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WMS;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Create")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+function frameReturnByClose() {
+$("#modalwindow").window('close');
+}
+function frameReturnByMes(mes) {
+$.messageBox5s(Lang.Tip, mes);
+}
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id, new { @Value = 0})
+             <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+ <table class="formtable">
+     <tbody>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.ReportCode)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.ReportCode)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.ReportCode)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.ReportName)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.ReportName)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.ReportName)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.ReportType)：
+             </th>
+             <td>
+                 @Html.DropDownListFor(model => model.ReportType, ViewBag.ReportTypes as SelectList)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.ReportType)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.DataSource)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.DataSource)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.DataSource)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.DataSourceType)：
+             </th>
+             <td>
+                 @Html.DropDownListFor(model => model.DataSourceType, ViewBag.DataSourceTypes as SelectList)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.DataSourceType)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.FileName)：
+             </th>
+             <td>
+                 <input name="FileName" type="text" maxlength="255" id="FileName" readonly="readonly" style="width:200px" class="txtInput normal left">
+                 <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                 <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ReportFile', 'FileName', 'FileUpload'); ">
+                 <span class="uploading">@Resource.Uploading</span>
+                 @*@Html.EditorFor(model => model.FileName)*@
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.FileName)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.Status)：
+             </th>
+             <td>
+                 @Html.DropDownListFor(model => model.Status, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("Status"))
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.Status)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.Remark)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.Remark)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+         </tr>
+     </tbody>
+</table>
+}
+

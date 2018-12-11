@@ -45,10 +45,37 @@ namespace Apps.Web
                 case "ExcelFile":  //Excel文件
                     Excelfile(context);
                     break;
+                case "ReportFile":  //Excel文件
+                    ReportFile(context);
+                    break;
 
             }
 
         }
+
+        #region 上传报表文件处理===================================
+        private void ReportFile(HttpContext context)
+        {
+            string _refilepath = ContextRequest.GetQueryString("ReFilePath"); //取得返回的对象名称
+            string _upfilepath = ContextRequest.GetQueryString("UpFilePath"); //取得上传的对象名称
+            string _delfile = ContextRequest.GetString(_refilepath);
+            HttpPostedFile _upfile = context.Request.Files[_upfilepath];
+
+            if (_upfile == null)
+            {
+                context.Response.Write("{\"msg\": 0, \"msgbox\": \"请选择要上传文件！\"}");
+                return;
+            }
+            UpLoad upFiles = new UpLoad();
+            string msg = upFiles.ExcelFileSaveAs(_upfile, true);
+            //删除已存在的旧文件
+            Utils.DeleteUpFile(_delfile);
+            //返回成功信息
+            context.Response.Write(msg);
+            context.Response.End();
+        }
+        #endregion
+        
         #region 上传单文件处理===================================
         private void Excelfile(HttpContext context)
         {
