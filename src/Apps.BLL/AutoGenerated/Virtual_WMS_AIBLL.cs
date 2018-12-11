@@ -47,6 +47,7 @@ namespace Apps.BLL.WMS
 								
 								
 								
+								
 								|| a.ReceiveMan.Contains(queryStr)
 								|| a.ReceiveStatus.Contains(queryStr)
 								|| a.InspectBillNum.Contains(queryStr)
@@ -61,7 +62,8 @@ namespace Apps.BLL.WMS
 								|| a.ReInspectBillNum.Contains(queryStr)
 								|| a.InStoreBillNum.Contains(queryStr)
 								|| a.InStoreMan.Contains(queryStr)
-								|| a.InvCode.Contains(queryStr)
+								
+								
 								|| a.InStoreStatus.Contains(queryStr)
 								|| a.Attr1.Contains(queryStr)
 								|| a.Attr2.Contains(queryStr)
@@ -103,6 +105,7 @@ namespace Apps.BLL.WMS
 													Id = r.Id,
 													ArrivalBillNum = r.ArrivalBillNum,
 													POId = r.POId,
+													PartId = r.PartId,
 													BoxQty = r.BoxQty,
 													ArrivalQty = r.ArrivalQty,
 													ArrivalDate = r.ArrivalDate,
@@ -120,7 +123,8 @@ namespace Apps.BLL.WMS
 													ReInspectBillNum = r.ReInspectBillNum,
 													InStoreBillNum = r.InStoreBillNum,
 													InStoreMan = r.InStoreMan,
-													InvCode = r.InvCode,
+													InvId = r.InvId,
+													SubInvId = r.SubInvId,
 													InStoreStatus = r.InStoreStatus,
 													Attr1 = r.Attr1,
 													Attr2 = r.Attr2,
@@ -151,6 +155,7 @@ namespace Apps.BLL.WMS
                				entity.Id = model.Id;
 				entity.ArrivalBillNum = model.ArrivalBillNum;
 				entity.POId = model.POId;
+				entity.PartId = model.PartId;
 				entity.BoxQty = model.BoxQty;
 				entity.ArrivalQty = model.ArrivalQty;
 				entity.ArrivalDate = model.ArrivalDate;
@@ -168,7 +173,8 @@ namespace Apps.BLL.WMS
 				entity.ReInspectBillNum = model.ReInspectBillNum;
 				entity.InStoreBillNum = model.InStoreBillNum;
 				entity.InStoreMan = model.InStoreMan;
-				entity.InvCode = model.InvCode;
+				entity.InvId = model.InvId;
+				entity.SubInvId = model.SubInvId;
 				entity.InStoreStatus = model.InStoreStatus;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
@@ -268,6 +274,7 @@ namespace Apps.BLL.WMS
                               				entity.Id = model.Id;
 				entity.ArrivalBillNum = model.ArrivalBillNum;
 				entity.POId = model.POId;
+				entity.PartId = model.PartId;
 				entity.BoxQty = model.BoxQty;
 				entity.ArrivalQty = model.ArrivalQty;
 				entity.ArrivalDate = model.ArrivalDate;
@@ -285,7 +292,8 @@ namespace Apps.BLL.WMS
 				entity.ReInspectBillNum = model.ReInspectBillNum;
 				entity.InStoreBillNum = model.InStoreBillNum;
 				entity.InStoreMan = model.InStoreMan;
-				entity.InvCode = model.InvCode;
+				entity.InvId = model.InvId;
+				entity.SubInvId = model.SubInvId;
 				entity.InStoreStatus = model.InStoreStatus;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
@@ -329,6 +337,7 @@ namespace Apps.BLL.WMS
                               				model.Id = entity.Id;
 				model.ArrivalBillNum = entity.ArrivalBillNum;
 				model.POId = entity.POId;
+				model.PartId = entity.PartId;
 				model.BoxQty = entity.BoxQty;
 				model.ArrivalQty = entity.ArrivalQty;
 				model.ArrivalDate = entity.ArrivalDate;
@@ -346,7 +355,8 @@ namespace Apps.BLL.WMS
 				model.ReInspectBillNum = entity.ReInspectBillNum;
 				model.InStoreBillNum = entity.InStoreBillNum;
 				model.InStoreMan = entity.InStoreMan;
-				model.InvCode = entity.InvCode;
+				model.InvId = entity.InvId;
+				model.SubInvId = entity.SubInvId;
 				model.InStoreStatus = entity.InStoreStatus;
 				model.Attr1 = entity.Attr1;
 				model.Attr2 = entity.Attr2;
@@ -387,6 +397,7 @@ namespace Apps.BLL.WMS
             //对应列头
 			 				 excelFile.AddMapping<WMS_AIModel>(x => x.ArrivalBillNum, "到货单据号");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.POId, "采购订单ID");
+				 excelFile.AddMapping<WMS_AIModel>(x => x.PartId, "PartId");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.BoxQty, "到货箱数");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.ArrivalQty, "到货数量");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.ArrivalDate, "到货日期");
@@ -404,7 +415,8 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_AIModel>(x => x.ReInspectBillNum, "重新送检单");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.InStoreBillNum, "入库单号");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.InStoreMan, "入库员");
-				 excelFile.AddMapping<WMS_AIModel>(x => x.InvCode, "入库仓库");
+				 excelFile.AddMapping<WMS_AIModel>(x => x.InvId, "入库仓库");
+				 excelFile.AddMapping<WMS_AIModel>(x => x.SubInvId, "SubInvId");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.InStoreStatus, "入库状态");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.Attr1, "Attr1");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.Attr2, "Attr2");
@@ -427,6 +439,7 @@ namespace Apps.BLL.WMS
 						 				  entity.Id = row.Id;
 				  entity.ArrivalBillNum = row.ArrivalBillNum;
 				  entity.POId = row.POId;
+				  entity.PartId = row.PartId;
 				  entity.BoxQty = row.BoxQty;
 				  entity.ArrivalQty = row.ArrivalQty;
 				  entity.ArrivalDate = row.ArrivalDate;
@@ -444,7 +457,8 @@ namespace Apps.BLL.WMS
 				  entity.ReInspectBillNum = row.ReInspectBillNum;
 				  entity.InStoreBillNum = row.InStoreBillNum;
 				  entity.InStoreMan = row.InStoreMan;
-				  entity.InvCode = row.InvCode;
+				  entity.InvId = row.InvId;
+				  entity.SubInvId = row.SubInvId;
 				  entity.InStoreStatus = row.InStoreStatus;
 				  entity.Attr1 = row.Attr1;
 				  entity.Attr2 = row.Attr2;
@@ -490,6 +504,7 @@ namespace Apps.BLL.WMS
                        						entity.Id = 0;
 						entity.ArrivalBillNum = model.ArrivalBillNum;
 						entity.POId = model.POId;
+						entity.PartId = model.PartId;
 						entity.BoxQty = model.BoxQty;
 						entity.ArrivalQty = model.ArrivalQty;
 						entity.ArrivalDate = model.ArrivalDate;
@@ -507,7 +522,8 @@ namespace Apps.BLL.WMS
 						entity.ReInspectBillNum = model.ReInspectBillNum;
 						entity.InStoreBillNum = model.InStoreBillNum;
 						entity.InStoreMan = model.InStoreMan;
-						entity.InvCode = model.InvCode;
+						entity.InvId = model.InvId;
+						entity.SubInvId = model.SubInvId;
 						entity.InStoreStatus = model.InStoreStatus;
 						entity.Attr1 = model.Attr1;
 						entity.Attr2 = model.Attr2;

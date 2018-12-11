@@ -102,6 +102,9 @@
                     {
                         $("input[type='checkbox']")[i + 1].disabled = true;
                     }
+
+                    //将POId赋值给Input输入框
+                    //$("#Id").val(data.rows[0].Id);
                 }
             },
             columns: [[
@@ -121,7 +124,7 @@
             ]]
         });
     });
-    //自动计算列数据 单价*数量=总价
+    //输入到货数量（<>0）后自动选择当前行
     function setKeyUpValue()
     {
         var row = $('#List').datagrid('getSelected');
@@ -237,7 +240,7 @@
             @Html.ValidationSummary(false)
         </div>
     </div>
-    @Html.HiddenFor(model => model.Id)
+    @*@Html.HiddenFor(model => model.Id)*@
     <input id="inserted" type="hidden" name="inserted" value="" />
     <table class="formtable">
         <tbody>
@@ -247,7 +250,7 @@
                 </th>
                 <td>
                     <div style="height:0;width:0;overflow:hidden">
-                        @Html.TextBoxFor(model => model.POId)
+                        @*@Html.TextBoxFor(model => model.POId)*@
                     </div>
                     <input id="PONo" name="PONo" type="text" style="width: 200px; display: inline;">
                     <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelPO()"></a>
@@ -260,7 +263,7 @@
 
                         function SetSelResult(result, resultName)
                         {
-                            $("#POId").val(result);
+                            //$("#POId").val(result);
                             $("#PONo").val(resultName);
                         }
 
@@ -268,7 +271,7 @@
                     @Html.ToolButton("btnLoadPO", "fa fa-reply", Resource.Load, false)
                 </td>
                 <th>
-                    @Html.LabelFor(model => model.ArrivalBillNum) "（自动生成）"：
+                    @Html.LabelFor(model => model.ArrivalBillNum) （自动生成）：
                 </th>
                 <td>
                     <input id="arrivalBillNum" type="hidden" name="arrivalBillNum" value="@ViewBag.ArrivalBillNum" />

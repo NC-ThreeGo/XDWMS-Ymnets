@@ -26,7 +26,8 @@
                 $.messageBox5s('提示', $("#ErrMesList").html());
                 return;
             }
-            if ($("form").valid()) {
+            if ($("form").valid()) 
+            {
                 $.ajax({
                     url: "@Url.Action("Create")",
                     type: "Post",
@@ -48,7 +49,7 @@
 
                         }
                     }
-                }
+                })
             }
         });
         $("#btnReturn").click(function () {
@@ -65,9 +66,10 @@
         });
 
     });
-    $(function () {
+    $(function () 
+    {
         $('#List').datagrid({
-            url: '@Url.Action("GetArrivalBillList")?arrivalBillNoNo=""',
+            url: '@Url.Action("GetArrivalBillList")?arrivalBillNum=""',
             width: SetGridWidthSub(10),
             methord: 'post',
             height: SetGridHeightSub(202),
@@ -79,21 +81,17 @@
             striped: true, //奇偶行是否区分
             remotesort: false,
             showFooter: false,
-            onLoadSuccess: function (data) {
-            },
             columns: [[
-                { field: 'Id', title: 'Id', width: 80, hidden: true },
-                { field: 'PO', title: '采购订单', width: 80,  hidden: true },
-                { field: 'PartId', title: '物料ID', width: 80,  hidden: true },
-                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
-                { field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true },
-                { field: 'QTY', title: '订单数量', width: 80, sortable: true, align: 'right' },
-                { field: 'SumAIQty', title: '已到货数量', width: 80, sortable: true, align: 'right' },
-                { field: 'CurrentQty', title: '本次到货数量', width: 80, editor: { type: ['textevent'] }, align: 'right' },
-                { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
+                { field: 'ArrivalBillNum', title: '到货单号', width: 80, sortable: true },
+                { field: 'POId', title: '采购订单ID', width: 100, sortable: true },
+                { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true, align: 'right' },
+                { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'ArrivalDate', title: '到货日期', width: 80, sortable: true },
+                { field: 'ReceiveMan', title: '接收人', width: 80, sortable: true },
+                { field: 'ReceiveStatus', title: '到货状态', width: 80, sortable: true },
             ]]
         });
-    });
+    })
 
 
     //关闭模式窗口

@@ -25,6 +25,8 @@ namespace Apps.Models.WMS
 		public virtual string ArrivalBillNum { get; set; }
 		[Display(Name = "采购订单ID")]
 		public virtual int POId { get; set; }
+		[Display(Name = "未设置")]
+		public virtual Nullable<int> PartId { get; set; }
 		[Display(Name = "到货箱数")]
 		public virtual Nullable<decimal> BoxQty { get; set; }
 		[Display(Name = "到货数量")]
@@ -60,7 +62,9 @@ namespace Apps.Models.WMS
 		[Display(Name = "入库员")]
 		public virtual string InStoreMan { get; set; }
 		[Display(Name = "入库仓库")]
-		public virtual string InvCode { get; set; }
+		public virtual Nullable<int> InvId { get; set; }
+		[Display(Name = "未设置")]
+		public virtual Nullable<int> SubInvId { get; set; }
 		[Display(Name = "入库状态")]
 		public virtual string InStoreStatus { get; set; }
 		[Display(Name = "未设置")]

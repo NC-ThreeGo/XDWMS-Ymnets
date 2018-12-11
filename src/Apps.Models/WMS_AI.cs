@@ -17,6 +17,7 @@ namespace Apps.Models
         public int Id { get; set; }
         public string ArrivalBillNum { get; set; }
         public int POId { get; set; }
+        public Nullable<int> PartId { get; set; }
         public Nullable<decimal> BoxQty { get; set; }
         public Nullable<decimal> ArrivalQty { get; set; }
         public Nullable<System.DateTime> ArrivalDate { get; set; }
@@ -34,7 +35,8 @@ namespace Apps.Models
         public string ReInspectBillNum { get; set; }
         public string InStoreBillNum { get; set; }
         public string InStoreMan { get; set; }
-        public string InvCode { get; set; }
+        public Nullable<int> InvId { get; set; }
+        public Nullable<int> SubInvId { get; set; }
         public string InStoreStatus { get; set; }
         public string Attr1 { get; set; }
         public string Attr2 { get; set; }

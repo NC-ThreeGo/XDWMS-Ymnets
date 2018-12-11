@@ -680,7 +680,7 @@ $.extend($.fn.datagrid.defaults.editors, {
     textevent: {
         init: function (t, a) {
             //setKeyUpValue自行逻辑
-            var i = $('<input type="text" class="datagrid-editable-input" onkeyup="setKeyUpValue()"/>').appendTo(t);
+            var i = $('<input type="text" class="datagrid-editable-input" onkeyup="setKeyUpValue(this)"/>').appendTo(t);
             return i
         },
         destroy: function (e) {
@@ -699,6 +699,37 @@ $.extend($.fn.datagrid.defaults.editors, {
             100)
         },
         resize: function (e, t) {
+            $(e[0]).width(t - 15);
+        }
+    },
+    zip_textevent: {
+        init: function (t, a)
+        {
+            var field = $(t).context.attributes[0].value;
+            //setKeyUpValue自行逻辑
+            var i = $('<input type="text" field="' + field + '" class="datagrid-editable-input" onkeyup="setKeyUpValue(this)"/>').appendTo(t);
+            return i
+        },
+        destroy: function (e)
+        {
+            $(e).remove()
+        },
+        getValue: function (e)
+        {
+            return $(e).val()
+        },
+        setValue: function (e, t)
+        {
+            $(e).val(t);
+            setTimeout(function ()
+            {
+                //zip Update:不需要自动获得焦点。
+                //e.focus()
+            },
+                100)
+        },
+        resize: function (e, t)
+        {
             $(e[0]).width(t - 15);
         }
     },

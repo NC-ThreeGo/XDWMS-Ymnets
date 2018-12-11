@@ -2,7 +2,7 @@
 using Apps.Models;
 using System.Linq;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Dynamic.Core;
 using System;
 using System.IO;
 using LinqToExcel;
@@ -155,6 +155,13 @@ namespace Apps.BLL.WMS
 		public void AdditionalCheckExcelData(WMS_InvInfoModel model)
 		{
 		}
+
+        public List<WMS_InvInfoModel> GetListByWhere(string where)
+        {
+            IQueryable<WMS_InvInfo> queryData = null;
+            queryData = m_Rep.GetList().Where(where).OrderBy(p => p.InvCode);
+            return CreateModelList(ref queryData);
+        }
     }
- }
+}
 

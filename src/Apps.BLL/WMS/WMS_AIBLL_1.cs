@@ -12,17 +12,56 @@ using System.Dynamic;
 
 namespace Apps.BLL.WMS
 {
-    public  partial class WMS_AIBLL
+    public partial class WMS_AIBLL
     {
-		public IQueryable<WMS_POForAIModel> GetPOListForAI(ref GridPager pager, string poNo)
+        public IQueryable<WMS_POForAIModel> GetPOListForAI(ref GridPager pager, string poNo)
         {
-			IQueryable<WMS_POForAIModel> queryData = null;
-			queryData = m_Rep.GetPOListForAI(poNo);
-			pager.totalRows = queryData.Count();
-			//排序
-			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
-			return queryData;
-		}
+            IQueryable<WMS_POForAIModel> queryData = null;
+            queryData = m_Rep.GetPOListForAI(poNo);
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return queryData;
+        }
+
+        public IQueryable<WMS_POForAIModel> GetArrivalBillListForNum(ref GridPager pager, string arrivalBillNum)
+        {
+            //IQueryable<WMS_POForAIModel> queryData = null;
+            //queryData = m_Rep.GetList().Where(arrivalBillNum);
+            //pager.totalRows = queryData.Count();
+            ////排序
+            //queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            //return queryData;
+            return null;
+        }
+
+        public void CreateInspectBill(string opt, string arrivalBillNum)
+        {
+            m_Rep.CreateInspectBill(opt, arrivalBillNum);
+        }
+
+        public bool ProcessInspectBill(ref ValidationErrors errors, string opt, string jsonInspectBill)
+        {
+            string result = String.Empty;
+            try
+            {
+                result = m_Rep.ProcessInspectBill(opt, jsonInspectBill);
+                if (String.IsNullOrEmpty(result))
+                {
+                    return true;
+                }
+                else
+                {
+                    errors.Add(result);
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                errors.Add(ex.Message);
+                return false;
+            }
+        }
     }
- }
+}
 

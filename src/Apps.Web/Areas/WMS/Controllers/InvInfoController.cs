@@ -233,6 +233,13 @@ namespace Apps.Web.Areas.WMS.Controllers
                 };
             }
         #endregion
+
+        [HttpPost]
+        public JsonResult GetInvList()
+        {
+            var list = new SelectList(m_BLL.GetListByWhere("Status == \"有效\""), "Id", "InvName");
+            return Json(list);
+        }
     }
 }
 

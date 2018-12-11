@@ -26,7 +26,7 @@
 <script type="text/javascript">
     $(function () {
         $('#List').datagrid({
-            url: '@(Url.Action("ArrivalBillGetList"))',
+            url: '@(Url.Action("InspectBillGetList"))',
             width: SetGridWidthSub(20),
             methord: 'post',
             height: SetGridHeightSub(47),
@@ -48,13 +48,12 @@
             },
             columns: [[
                 { field: 'ck', checkbox: true },
+                { field: 'InspectBillNum', title: '送检单号', width: 120, sortable: true },
                 { field: 'ArrivalBillNum', title: '到货单号', width: 145, sortable: true },
-                { field: 'POId', title: '采购订单ID', width: 100, sortable: true },
-                { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true },
-                { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true },
-                { field: 'ArrivalDate', title: '到货日期', width: 80, sortable: true },
-                { field: 'ReceiveMan', title: '接收人', width: 80, sortable: true },
-                { field: 'ReceiveStatus', title: '到货状态', width: 80, sortable: true },
+                { field: 'ArrivalDate', title: '到货日期', width: 80,sortable:true },
+                { field: 'InspectMan', title: '送检人', width: 80, sortable: true },
+                { field: 'InspectDate', title: '送检日期', width: 80, sortable: true },
+                { field: 'InspectStatus', title: '送检状态', width: 80, sortable: true },
             ]]
         });
     });
@@ -86,7 +85,7 @@
             var rows = $('#List').datagrid('getSelections');
             if (rows.length > 0) {
                 //返回到上一层处理
-                window.parent.SetSelResult(rows[0].ArrivalBillNum, rows[0].ArrivalBillNum);
+                window.parent.SetSelResult(rows[0].InspectBillNum, rows[0].InspectBillNum);
                 window.parent.frameReturnByClose();
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });

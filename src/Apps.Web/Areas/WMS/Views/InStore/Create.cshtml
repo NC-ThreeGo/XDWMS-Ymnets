@@ -1,0 +1,367 @@
+﻿@model Apps.Models.WMS.WMS_AIModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Spl;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建入库单";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script type="text/javascript">
+    $(function ()
+    {
+        //加载PO
+        $("#btnLoadInspectBill").click(function ()
+        {
+            var inspectBillNum = $("#InspectBillNum").val();
+            $("#List").datagrid("load", { inspectBillNum: inspectBillNum });
+        });
+
+        $("#btnSave").click(function ()
+        {
+            if (!$("form").valid()) {
+                $.messageBox5s('提示', $("#ErrMesList").html());
+                return;
+            }
+            if ($("form").valid()) {
+                endEditing();
+                var $dg = $('#List');
+                var rows = $dg.datagrid('getRows');  //一张送检单必须一次性输入全部行的检验结果。
+                //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
+                $("#inserted").val(JSON.stringify(rows));
+                if (rows.length) {
+                    showLoading();
+                    $.ajax({
+                        url: "@Url.Action("Create")",
+                        type: "Post",
+                        data: $("form").serialize(),
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.type == 1) {
+                                hideLoading();
+                                window.parent.frameReturnByMes(data.message);
+                                window.parent.frameReturnByReload(true);
+                                window.parent.frameReturnByClose()
+                                window.parent.frameReturnByMes("保存成功！");
+                            } else {
+                                window.parent.frameReturnByMes(data.message);
+                                hideLoading();
+
+                            }
+                        }
+                    });
+                } else {
+                    $.messageBox5s('提示', "没有数据需要保存！");
+                }
+            }
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(30),
+                height: SetGridHeightSub(50)
+            });
+        });
+
+    });
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetInspectBillList")?inspectBillNum=""',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(202),
+            fitColumns: true,
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            selectOnCheck: false,
+            checkOnSelect: false,
+            onClickCell: onClickCell,
+            onEndEdit: onEndEdit,
+            onBeginEdit: onBeginEdit,
+            remotesort: false,
+            showFooter: false,
+            onLoadSuccess: function (data) {
+                //append();
+                if (data.rows.length > 0)
+                {
+                    //所有送检单行必须同时输入检验结果，并根据结果入库或退货。
+                    $("input[type='checkbox']")[0].disabled = true;
+                    for (var i = 0; i < data.rows.length; i++)
+                    {
+                        $("input[type='checkbox']")[i + 1].disabled = true;
+                        $("input[type='checkbox']")[i + 1].checked = true;
+                    }
+                }
+            },
+            columns: [[
+                {
+                    field: 'ck', checkbox: true,
+                },
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
+                { field: 'InspectBillNum', title: '送检单号', width: 80, sortable: true },
+                { field: 'ArrivalBillNum', title: '到货单号', width: 80, sortable: true },
+                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 80, sortable: true },
+                { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true, align: 'right' },
+                { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'CheckOutDate', title: '检验日期', width: 80, sortable: true, editor: { type: 'datetimebox' } },
+                { field: 'CheckOutResult', title: '检验结果', width: 80, sortable: true, editor: { type: 'textbox' } },
+                { field: 'QualifyQty', title: '合格数量', width: 80, sortable: true, editor: { type: 'numberbox', options: { required: true, min : 0 } } },
+                { field: 'InvName', title: '仓库名称', width: 80, hidden: true },
+                {
+                    field: 'InvId', title: '入库仓库', width: 80, sortable: true,
+                    formatter: function (value, row)
+                    {
+                        return row.InvName;
+                    },
+                    editor:
+                    {
+                        type: 'combobox',
+                        options:
+                        {
+                            valueField: 'Value',
+                            textField: 'Text',
+                            method: 'post',
+                            url: '/WMS/InvInfo/GetInvList',
+                            required: true,
+                            editable: false
+                        }
+                    }
+                },
+                { field: 'NoQualifyQty', title: '不合格数量', width: 80, sortable: true, editor: { type: 'numberbox', options: { required : true, min : 0 } } },
+                { field: 'CheckOutRemark', title: '检验说明', width: 80, sortable: true, editor: { type: 'textbox' } },
+                
+            ]]
+        });
+    });
+    //自动计算合格数量+不合格数量=到货数量
+    function setKeyUpValue(sender)
+    {
+        var row = $('#List').datagrid('getSelected');
+        var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
+        var arrivalQty = row.ArrivalQty;
+        //var arrivalQtyTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'ArrivalQty' }).target;
+        var qualifyQtyTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'QualifyQty' }).target;
+        var qualifyQtyTarget_Input = $(qualifyQtyTarget).data('numberbox') ? $(qualifyQtyTarget).numberbox('textbox') : $(qualifyQtyTarget);
+        var noQualifyQtyTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'NoQualifyQty' }).target;
+        var noQualifyQtyTarget_Input = $(noQualifyQtyTarget).data('numberbox') ? $(noQualifyQtyTarget).numberbox('textbox') : $(noQualifyQtyTarget);
+
+        if ($(sender).attr("field") == "QualifyQty")
+        { 
+            //qualifyQtyTarget_Input.val()：当前按键按下后的值，如果使用qualifyQtyTarget.numberbox('getValue')，取的是按键按下前的值
+            //noQualifyQtyTarget.numberbox('setValue', xxx):设置numberbox的值
+            //如果输入的值>到货数量，则修改成到货数量
+            if (qualifyQtyTarget_Input.val() > arrivalQty)
+            {
+                qualifyQtyTarget_Input.val(arrivalQty);
+            }
+            noQualifyQtyTarget.numberbox('setValue', arrivalQty - qualifyQtyTarget_Input.val());
+        }
+        if ($(sender).attr("field") == "NoQualifyQty")
+        {
+            //qualifyQtyTarget.val(arrivalQty - noQualifyQtyTarget.val());
+            //如果输入的值>到货数量，则修改成到货数量
+            if (noQualifyQtyTarget_Input.val() > arrivalQty)
+            {
+                noQualifyQtyTarget_Input.val(arrivalQty);
+            }
+            qualifyQtyTarget.numberbox('setValue', arrivalQty - noQualifyQtyTarget_Input.val());
+        }
+
+        $("input[type='checkbox']")[rowIndex + 1].disabled = true;
+    }
+
+
+    //编辑的行
+    var editIndex = undefined;
+    function endEditing() {
+        if (editIndex == undefined) { return true }
+        $('#List').datagrid('endEdit', editIndex);
+
+        //执行上面的代码会使得checkbox可编辑，需要手工再次设置disabled = true
+        $("input[type='checkbox']")[editIndex + 1].disabled = true;
+
+        editIndex = undefined;
+        return true;
+    }
+    function onClickCell(index, field) {
+        if (editIndex != index) {
+            if (endEditing()) {
+                $('#List').datagrid('selectRow', index)
+                    .datagrid('beginEdit', index);
+
+                //获取当前行的到货数量，用于设置合格数量和不合格数量的最大值
+                //var thisRow = $('#List').datagrid('getSelected');
+                //var arrivalQty = thisRow.ArrivalQty;
+
+                //给numberbox增加keyup事件，以便自动计算合格数量和不合格数量
+                var eds = $('#List').datagrid('getEditors', index);
+                for (var i = 0; i < eds.length; i++)
+                {
+                    var ed = eds[i];
+                    //alert(ed.field);
+                    if (ed.field == 'QualifyQty' || ed.field == 'NoQualifyQty')
+                    {
+                        var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                        target.attr("field", ed.field)
+                        target.bind("keyup", function ()
+                        {
+                            return setKeyUpValue($(this));
+                        });
+                    }
+                }
+
+                //当当前ClickCell是QualifyQty或NoQualifyQty时，自动获得焦点和全选
+                if (field == 'QualifyQty' || field == 'NoQualifyQty')
+                {
+                    var ed = $('#List').datagrid('getEditor', { index: index, field: field });
+                    var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                    target.focus();
+                    target.select();
+                }
+
+                editIndex = index;
+            } else {
+                setTimeout(function () {
+                    $('#List').datagrid('selectRow', editIndex);
+                }, 0);
+            }
+        }
+    }
+    function onEndEdit(index, row) {
+        var ed = $(this).datagrid('getEditor', {
+            index: index,
+            field: 'InvId'
+        });
+        row.InvName = $(ed.target).combobox('getText');
+    }
+    //进入编辑前设置
+    function onBeginEdit(index, row) {
+
+    }
+
+
+    //关闭模式窗口
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+
+    function removeit() {
+        if (editIndex == undefined) { return }
+        $('#List').datagrid('selectRow', editIndex);
+
+        $('#List').datagrid('cancelEdit', editIndex)
+           .datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+    }
+
+    function reject() {
+        $('#List').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+    function getChanges() {
+        var rows = $('#List').datagrid('getChanges');
+        alert(rows.length + ' rows are changed!');
+    }
+
+    function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            if (arr[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s('提示', mes);
+    }
+</script>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+    @*@Html.HiddenFor(model => model.Id)*@
+    <input id="inserted" type="hidden" name="inserted" value="" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.InspectBillNum)：
+                </th>
+                <td>
+                    <div style="height:0;width:0;overflow:hidden">
+                        @*@Html.TextBoxFor(model => model.POId)*@
+                    </div>
+                    <input id="InspectBillNum" name="InspectBillNum" type="text" style="width: 200px; display: inline;">
+                    <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelInspectBill()"></a>
+                    <script type="text/javascript">
+                        function showSelInspectBill()
+                        {
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Inspect/InspectBillLookUp'></iframe>");
+                            $("#modalwindow").window({ title: '选择送检单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                        }
+
+                        function SetSelResult(result, resultName)
+                        {
+                            //$("#POId").val(result);
+                            $("#InspectBillNum").val(resultName);
+                        }
+
+                    </script>
+                    @Html.ToolButton("btnLoadInspectBill", "fa fa-reply", Resource.Load, false)
+                </td>
+                @*<th>
+                    @Html.LabelFor(model => model.InStoreBillNum) （自动生成）：
+                </th>
+                <td>
+                    <input id="inStoreBillNum" type="hidden" name="inStoreBillNum" value="@ViewBag.ArrivalBillNum" />
+                    @Html.TextBox("inStoreBillNum", (string)ViewBag.InStoreBillNum, new { @disabled = "disabled" })
+                </td>*@
+                @*<th>
+                    @Html.LabelFor(model => model.InvCode):
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.InvCode, ViewBag.Inv as SelectList)
+                </td>*@
+            </tr>
+
+        </tbody>
+    </table>
+}
+<table>
+    <tr>
+        <td colspan="7" style="padding:4px;">
+            <table id="List"></table>
+        </td>
+    </tr>
+
+</table>
