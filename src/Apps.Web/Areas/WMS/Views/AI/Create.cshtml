@@ -10,6 +10,7 @@
     Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
     List<permModel> perm = null;
 }
+
 <script type="text/javascript">
     $(function ()
     {
@@ -92,6 +93,13 @@
             onBeginEdit: onBeginEdit,
             remotesort: false,
             showFooter: false,
+            rowStyler: function (index, row)
+            {
+                if (Number(row.CurrentQty) + Number(row.SumAIQty) > Number(row.QTY))
+                {
+                    return 'background: #f00; color: #fff';
+                }
+            },
             onLoadSuccess: function (data) {
                 //append();
                 if (data.rows.length > 0)
@@ -117,6 +125,7 @@
                 { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
                 { field: 'CurrentQty', title: '本次到货数量', width: 80, editor: { type: ['textevent'] }, align: 'right' },
                 { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
+                { field: 'ArrivalDate', title: '到货日期', width: 80, sortable: true, editor: { type: 'datebox' } },
                 { field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true },
                 { field: 'QTY', title: '订单数量', width: 80, sortable: true, align: 'right' },
                 { field: 'SumAIQty', title: '已到货数量', width: 80, sortable: true, align: 'right'/*, formatter: function (value) { return CheckFormatter(value) }*/},
@@ -143,8 +152,33 @@
             $('#List').datagrid('uncheckRow', rowIndex);
         }
         $("input[type='checkbox']")[rowIndex + 1].disabled = true;
+
+        //如果到货日期为空，则给到货日期赋值当前日期
+        var dateTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'ArrivalDate' }).target;
+        if (dateTarget.datebox('getValue') == "")
+        {
+            dateTarget.datebox('setValue', formatterDate(new Date()));
+        }
+
+        //当前到货数量+已到货数量>订单数量，则改变行的背景颜色
+        //if (thisValue + row.SumAIQty > row.QTY)
+        //{
+        //    $(thisTarget).closest('td[field]').parent().addClass('overbalance');
+        //}
+        //else
+        //{
+        //    $(thisTarget).closest('td[field]').parent().removeClass('overbalance');
+        //}
     }
 
+    //得到当前日期
+    formatterDate = function (date)
+    {
+        var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+        var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0"
+            + (date.getMonth() + 1);
+        return date.getFullYear() + '-' + month + '-' + day;
+    };
 
     //编辑的行
     var editIndex = undefined;
@@ -177,6 +211,7 @@
         }
     }
     function onEndEdit(index, row) {
+
     }
     //进入编辑前设置
     function onBeginEdit(index, row) {

@@ -116,7 +116,7 @@
                 { field: 'PartName', title: '物料名称', width: 80, sortable: true },
                 { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true, align: 'right' },
                 { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
-                { field: 'CheckOutDate', title: '检验日期', width: 80, sortable: true, editor: { type: 'datetimebox' } },
+                { field: 'CheckOutDate', title: '检验日期', width: 80, sortable: true, editor: { type: 'datebox' } },
                 { field: 'CheckOutResult', title: '检验结果', width: 80, sortable: true, editor: { type: 'textbox' } },
                 { field: 'QualifyQty', title: '合格数量', width: 80, sortable: true, editor: { type: 'numberbox', options: { required: true, min : 0 } } },
                 { field: 'InvName', title: '仓库名称', width: 80, hidden: true },
@@ -249,7 +249,6 @@
     }
     //进入编辑前设置
     function onBeginEdit(index, row) {
-
     }
 
 
