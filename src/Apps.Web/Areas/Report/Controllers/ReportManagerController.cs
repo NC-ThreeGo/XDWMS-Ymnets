@@ -21,6 +21,9 @@ namespace Apps.Web.Areas.Report.Controllers
     {
         [Dependency]
         public IWMS_ReportBLL m_BLL { get; set; }
+        [Dependency]
+        public IWMS_ReportParamBLL m_ParamBLL { get; set; }
+
         ValidationErrors errors = new ValidationErrors();
 
         [SupportFilter]
@@ -80,6 +83,8 @@ namespace Apps.Web.Areas.Report.Controllers
         [SupportFilter]
         public ActionResult Edit(long id)
         {
+            ViewBag.ReportTypes = new SelectList(WMS_ReportModel.GetReportType(), "Type", "Name");
+            ViewBag.DataSourceTypes = new SelectList(WMS_ReportModel.GetDataSourceType(), "Type", "Name");
             WMS_ReportModel entity = m_BLL.GetById(id);
             return View(entity);
         }
@@ -152,9 +157,13 @@ namespace Apps.Web.Areas.Report.Controllers
         /// 报表设计
         /// </summary>
         /// <returns></returns>
-        public ActionResult Designer()
+        public ActionResult Designer(long id)
         {
-            string ReportNum = string.Empty;
+            WMS_ReportModel entity = m_BLL.GetById(1);
+            List<WMS_ReportParamModel> listParam = m_ParamBLL.GetListByWhere(ref setNoPagerAscById, "ReportId == " + id.ToString())
+                .OrderBy(p => p.Id).ToList();
+            DataSet ds = m_BLL.GetDataSource(entity, listParam);
+
             WebReport webReport = new WebReport();
             webReport.Width = Unit.Percentage(100);
             webReport.Height = 600;
@@ -165,9 +174,8 @@ namespace Apps.Web.Areas.Report.Controllers
             webReport.ShowExports = true;
             webReport.ShowPrint = true;
             webReport.SinglePage = true;
-            DataSet ds = null;
-            //ds = new ReportProvider().GetDataSource(entity, list, orderType, "");
-            string path = Server.MapPath("~/ReportFiles/" + "入库单打印模板.frx");
+
+            string path = Server.MapPath("~/ReportFiles/" + "检验单打印模板.frx");
             //if (!FileManager.FileExists(path))
             //{
             //    string template = Server.MapPath("~/ReportFiles/Temp/Report.frx");
@@ -187,7 +195,7 @@ namespace Apps.Web.Areas.Report.Controllers
             webReport.DesignScriptCode = true;
             webReport.DesignerSavePath = "~/ReportFiles/Temp/";
             webReport.DesignerSaveCallBack = "~/Report/ReportManager/SaveDesignedReport";
-            webReport.ID = ReportNum;
+            webReport.ID = id.ToString();
 
             ViewBag.WebReport = webReport;
             return View();
@@ -201,22 +209,72 @@ namespace Apps.Web.Areas.Report.Controllers
         /// <returns></returns>
         public ActionResult SaveDesignedReport(string reportID, string reportUUID)
         {
-            //ReportProvider provider = new ReportProvider();
-            //if (reportID.IsEmpty())
-            //{
-            //    return Redirect("/Report/Manager/List");
-            //}
-            //ReportsEntity entity = provider.GetReport(reportID);
-            //if (entity.IsNull())
-            //{
-            //    return Redirect("/Report/Manager/List");
-            //}
-            //string FileRealPath = Server.MapPath("~" + entity.FileName);
-            //string FileTempPath = Server.MapPath("~/Theme/content/report/temp/" + reportUUID);
-            //FileManager.DeleteFile(FileRealPath);
-            //System.IO.File.Copy(FileTempPath, FileRealPath, true);
+            WMS_ReportModel entity = m_BLL.GetById(1);
+            string FileRealPath = Server.MapPath("~" + entity.FileName);
+            string FileTempPath = Server.MapPath("~/ReportFiles/Temp/" + reportUUID);
+            Utils.DeleteUpFile(FileRealPath);
+            System.IO.File.Copy(FileTempPath, FileRealPath, true);
             return Content("");
         }
         #endregion
+
+        /// <summary>
+        /// 显示报表内容
+        /// </summary>
+        /// <param name="id">报表的ID</param>
+        /// <param name="billNum">报表的单据号</param>
+        /// <returns></returns>
+        //[SupportFilter]
+        public ActionResult Show(long id, string searchValues)
+        {
+            WMS_ReportModel entity = m_BLL.GetById(1);
+
+            List<WMS_ReportParamModel> listParams = m_ParamBLL.GetListByWhere(ref setNoPagerAscById, "ReportId == " + id.ToString())
+                .OrderBy(p => p.Id).ToList();
+            //List<WMS_ReportParamModel> listParamValues = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WMS_ReportParamModel>>(searchValues);
+            //foreach (var item in listParamValues)
+            //{
+            //    item.ParamName = item.ParamName.Replace("arg_", "@");
+            //    if (listParams.Exists(a => a.ParamName == item.ParamName))
+            //    {
+            //        listParams.First(a => a.ParamName == item.ParamName).DefaultValue = item.DefaultValue;
+            //    }
+            //}
+            listParams[0].DefaultValue = searchValues;
+            ViewBag.Entity = entity;
+            ViewBag.ListParam = listParams;
+
+            WebReport webReport = new WebReport();
+            webReport.Width = Unit.Percentage(100);
+            webReport.Height = 600;
+            webReport.ToolbarIconsStyle = ToolbarIconsStyle.Black;
+            webReport.ToolbarIconsStyle = ToolbarIconsStyle.Black;
+            webReport.PrintInBrowser = true;
+            webReport.PrintInPdf = true;
+            webReport.ShowExports = true;
+            webReport.ShowPrint = true;
+            webReport.SinglePage = true;
+
+            DataSet ds = m_BLL.GetDataSource(entity, listParams);
+            //ds = new ReportProvider().GetDataSource(entity, list, orderType, orderNum);
+            string path = Server.MapPath("~/ReportFiles/" + entity.FileName);
+            //if (!FileManager.FileExists(path))
+            //{
+            //    string template = Server.MapPath("~/Theme/content/report/temp/Report.frx");
+            //    System.IO.File.Copy(template, path, true);
+            //}
+            webReport.Report.Load(path);
+            if (ds != null && ds.Tables != null && ds.Tables.Count > 0)
+            {
+                webReport.Report.RegisterData(ds);
+                for (int i = 0; i < ds.Tables.Count; i++)
+                {
+                    webReport.Report.GetDataSource(ds.Tables[i].TableName).Enabled = true;
+                }
+            }
+            webReport.ID = id.ToString();
+            ViewBag.WebReport = webReport;
+            return View();
+        }
     }
 }

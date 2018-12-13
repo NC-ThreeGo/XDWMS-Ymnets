@@ -672,7 +672,7 @@ namespace Apps.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_Sys_SwiftNum", dayParameter, tabNameParameter, num);
         }
     
-        public virtual int P_WMS_CreateInspectBill(string userId, string arrivalBillNum)
+        public virtual int P_WMS_CreateInspectBill(string userId, string arrivalBillNum, ObjectParameter inspectBillNum)
         {
             var userIdParameter = userId != null ?
                 new ObjectParameter("UserId", userId) :
@@ -682,7 +682,7 @@ namespace Apps.Models
                 new ObjectParameter("ArrivalBillNum", arrivalBillNum) :
                 new ObjectParameter("ArrivalBillNum", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateInspectBill", userIdParameter, arrivalBillNumParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateInspectBill", userIdParameter, arrivalBillNumParameter, inspectBillNum);
         }
     
         public virtual int P_WMS_ProcessInspectBill(string userId, string jsonInspectBill, ObjectParameter returnValue)

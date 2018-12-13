@@ -2417,6 +2417,7 @@
         <Function Name="P_WMS_CreateInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="ArrivalBillNum" Type="varchar" Mode="In" />
+          <Parameter Name="InspectBillNum" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="P_WMS_ProcessInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
@@ -3400,6 +3401,7 @@
           <FunctionImport Name="P_WMS_CreateInspectBill">
             <Parameter Name="UserId" Mode="In" Type="String" />
             <Parameter Name="ArrivalBillNum" Mode="In" Type="String" />
+            <Parameter Name="InspectBillNum" Mode="InOut" Type="String" />
           </FunctionImport>
           <EntitySet Name="WMS_AI" EntityType="DB.WMS_AI" />
           <AssociationSet Name="FK_WMS_AI_WMS_PO" Association="DB.FK_WMS_AI_WMS_PO">

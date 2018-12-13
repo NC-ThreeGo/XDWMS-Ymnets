@@ -43,6 +43,7 @@
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
+    @Html.ToolButton("btnReport", "fa fa-search", "查看报表", ref perm, "Query", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -166,6 +167,12 @@
         });
         $("#btnExportTemplate").click(function() {
           window.location = "@Url.Action("ExportTemplate")";
+        });
+        $("#btnReport").click(function() {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow("报表设计", '@Url.Action("Show", "ReportManager", new { area = "Report" })?id=1&searchValues=' + row.InspectBillNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
     });
     function ImportData()

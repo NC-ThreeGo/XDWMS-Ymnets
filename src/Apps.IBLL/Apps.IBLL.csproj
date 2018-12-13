@@ -342,6 +342,7 @@
     <Compile Include="WMS\IWMS_CustomerBLL.cs" />
     <Compile Include="WMS\IWMS_InvInfoBLL.cs" />
     <Compile Include="WMS\IWMS_POBLL.cs" />
+    <Compile Include="WMS\IWMS_ReportBLL_1.cs" />
     <Compile Include="WMS\IWMS_ReportBLL.cs" />
     <Compile Include="WMS\IWMS_ReportParamBLL.cs" />
     <Compile Include="WMS\IWMS_SubInvInfoBLL.cs" />

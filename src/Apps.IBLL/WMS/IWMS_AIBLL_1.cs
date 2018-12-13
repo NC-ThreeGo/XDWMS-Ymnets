@@ -25,7 +25,7 @@ namespace Apps.IBLL.WMS
         /// </summary>
         /// <param name="opt"></param>
         /// <param name="arrivalBillNum"></param>
-        void CreateInspectBill(string opt, string arrivalBillNum);
+        string CreateInspectBill(string opt, string arrivalBillNum);
 
         /// <summary>
         /// 输入检验结果，并把合格数量入库，不合格数量暂存到退货单上。

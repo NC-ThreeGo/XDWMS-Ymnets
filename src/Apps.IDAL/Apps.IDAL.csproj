@@ -334,6 +334,7 @@
     <Compile Include="WC\IWC_GroupRepository.cs" />
     <Compile Include="WC\IWC_MessageResponseRepository.cs" />
     <Compile Include="WC\IWC_OfficalAccountsRepository.cs" />
+    <Compile Include="WMS\IWMS_ReportRepository.cs" />
     <Compile Include="WMS\IWMS_AIRepository.cs" />
   </ItemGroup>
   <ItemGroup>
