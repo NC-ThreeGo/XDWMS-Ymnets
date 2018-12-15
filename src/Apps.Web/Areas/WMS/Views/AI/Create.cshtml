@@ -95,9 +95,12 @@
             showFooter: false,
             rowStyler: function (index, row)
             {
-                if (Number(row.CurrentQty) + Number(row.SumAIQty) > Number(row.QTY))
+                if (Number(row.SumAIQty) >= Number(row.QTY))
                 {
-                    return 'background: #f00; color: #fff';
+                    return 'background: #D24D57; color: #fff';
+                }
+                if (Number(row.SumAIQty) < Number(row.QTY) && Number(row.SumAIQty) > 0) {
+                    return 'background: #26A65B; color: #fff';
                 }
             },
             onLoadSuccess: function (data) {

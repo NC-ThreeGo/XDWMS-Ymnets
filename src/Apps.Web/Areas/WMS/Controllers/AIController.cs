@@ -71,9 +71,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                 aiModel.PartId = model.PartId;
                 aiModel.BoxQty = model.BoxNum;
                 aiModel.ArrivalQty = model.CurrentQty;
-                aiModel.ArrivalDate = ResultHelper.NowTime;
-                aiModel.ReceiveMan = GetUserId();
-                //TODO:送检单到货时的状态是“未送检”还是“未打印”？？？
+                aiModel.ArrivalDate = model.;
+                aiModel.ReceiveMan = GetUserId();                
                 aiModel.InspectStatus = "未送检";
                 aiModel.InStoreStatus = "未入库";
 
