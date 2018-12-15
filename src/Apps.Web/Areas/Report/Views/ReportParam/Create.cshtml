@@ -74,7 +74,7 @@ $.messageBox5s(Lang.Tip, mes);
             </td>
             <td>@Html.ValidationMessageFor(model => model.ParamCode)</td>
         </tr>
-        <tr>
+        @*<tr>
             <th>
                 @Html.LabelFor(model => model.InputNo)：
             </th>
@@ -82,13 +82,13 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.EditorFor(model => model.InputNo)
             </td>
             <td>@Html.ValidationMessageFor(model => model.InputNo)</td>
-        </tr>
+        </tr>*@
         <tr>
             <th>
                 @Html.LabelFor(model => model.ParamName)：
             </th>
             <td>
-                @Html.EditorFor(model => model.ParamName)
+                @Html.TextBox("ParamName", "", new { placeholder = "输入带@前缀的参数" })
             </td>
             <td>@Html.ValidationMessageFor(model => model.ParamName)</td>
         </tr>
@@ -106,7 +106,7 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.ParamType)：
             </th>
             <td>
-                @Html.EditorFor(model => model.ParamType)
+                @Html.DropDownListFor(model => model.ParamType, ViewBag.ParamTypes as SelectList)
             </td>
             <td>@Html.ValidationMessageFor(model => model.ParamType)</td>
         </tr>
@@ -133,7 +133,7 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.ParamElement)：
             </th>
             <td>
-                @Html.EditorFor(model => model.ParamElement)
+                @Html.DropDownListFor(model => model.ParamElement, ViewBag.ParamElements as SelectList)
             </td>
             <td>@Html.ValidationMessageFor(model => model.ParamElement)</td>
         </tr>
@@ -145,33 +145,6 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.EditorFor(model => model.Remark)
             </td>
             <td>@Html.ValidationMessageFor(model => model.Remark)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CreatePerson)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.CreatePerson)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CreatePerson)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ModifyPerson)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ModifyPerson)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ModifyPerson)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ModifyTime)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
         </tr>
     </tbody>
 </table>

@@ -36,13 +36,12 @@
 </div>
 <div class="mvctool">
     <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
-    @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
-    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
-    @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+    @Html.ToolButton("btnDesigner", "fa fa-search", "设计报表", ref perm, "Query", true)
+    @Html.ToolButton("btnReport", "fa fa-search", "查看报表", ref perm, "Query", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -69,18 +68,18 @@
             },
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
-                { field: 'ReportCode', title: '报表编码', width: 80,sortable:true },
+                { field: 'ReportCode', title: '报表编码', width: 70,sortable:true },
                 { field: 'ReportName', title: '报表名称', width: 80,sortable:true },
-                { field: 'ReportType', title: '报表类型', width: 80,sortable:true },
-                { field: 'Remark', title: '备注', width: 80,sortable:true },
-                { field: 'DataSource', title: '数据源', width: 80,sortable:true },
-                { field: 'DsType', title: '数据源类型', width: 80,sortable:true },
-                { field: 'FileName', title: '报表文件', width: 80,sortable:true },
-                { field: 'Status', title: '状态', width: 80,sortable:true },
-                { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
-                { field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
-                { field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
-                { field: 'ModifyTime', title: '修改时间', width: 80,sortable:true }
+                { field: 'ReportType', title: '报表类型', width: 60,sortable:true },
+                { field: 'DataSourceType', title: '数据源类型', width: 70, sortable: true },
+                { field: 'DataSource', title: '数据源', width: 200,sortable:true },
+                { field: 'FileName', title: '报表文件', width: 120,sortable:true },
+                { field: 'Status', title: '状态', width: 50,sortable:true },
+                { field: 'Remark', title: '备注', width: 100, sortable: true },
+                { field: 'CreatePerson', title: '创建人', width: 70,sortable:true },
+                { field: 'CreateTime', title: '创建时间', width: 70,sortable:true },
+                { field: 'ModifyPerson', title: '修改人', width: 70,sortable:true },
+                { field: 'ModifyTime', title: '修改时间', width: 70,sortable:true }
             ]]
         });
     });
@@ -124,46 +123,12 @@
         $("#btnDelete").click(function () {
 	            dataDelete("@Url.Action("Delete")", "List");
 	        });
-        $("#btnImport").click(function() {
-             $("#txtExcelPath").val("");
-             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
-        });
-        $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
-            }
-          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
-                if (data.type == 1)
-                {
-                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
-                }
-                else
-                {
-                $.messageBox5s(Lang.Tip, data.message);
-                }
-            }, "json");
-        });
-        $("#btnExportTemplate").click(function() {
-          window.location = "@Url.Action("ExportTemplate")";
+        $("#btnDesigner").click(function() {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow("报表设计", '@Url.Action("Designer")?id=' + row.Id + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
     });
-    function ImportData()
-    {
-        showLoading();
-        var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
-        $.post(url, function(data) {
-            if (data.type == 1)
-            {
-             $("#List").datagrid('load');
-             $('#uploadExcel').window('close');
-             $('#FileUpload').val('');
-            }
-            hideLoading();
-            $.messageBox5s('提示', data.message);
-            $('#importMessage').html(data.message);
-            $('#importResultFile').attr('href', data.value); 
-        }, "json");
-    }
 </script>
 

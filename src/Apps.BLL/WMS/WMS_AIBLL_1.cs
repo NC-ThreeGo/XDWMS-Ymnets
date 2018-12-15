@@ -35,9 +35,9 @@ namespace Apps.BLL.WMS
             return null;
         }
 
-        public void CreateInspectBill(string opt, string arrivalBillNum)
+        public string CreateInspectBill(string opt, string arrivalBillNum)
         {
-            m_Rep.CreateInspectBill(opt, arrivalBillNum);
+            return m_Rep.CreateInspectBill(opt, arrivalBillNum);
         }
 
         public bool ProcessInspectBill(ref ValidationErrors errors, string opt, string jsonInspectBill)

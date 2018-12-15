@@ -441,6 +441,7 @@
     <Compile Include="WMS\WMS_LineBLL.cs" />
     <Compile Include="WMS\WMS_PartBLL.cs" />
     <Compile Include="WMS\WMS_POBLL.cs" />
+    <Compile Include="WMS\WMS_ReportBLL_1.cs" />
     <Compile Include="WMS\WMS_ReportBLL.cs" />
     <Compile Include="WMS\WMS_ReportParamBLL.cs" />
     <Compile Include="WMS\WMS_SubInvInfoBLL.cs" />

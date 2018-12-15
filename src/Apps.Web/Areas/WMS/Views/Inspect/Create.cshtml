@@ -38,10 +38,13 @@
                         if (data.type == 1)
                         {
                             hideLoading();
-                            window.parent.frameReturnByMes(data.message);
-                            window.parent.frameReturnByReload(true);
-                            window.parent.frameReturnByClose()
-                            window.parent.frameReturnByMes("保存成功！");
+                            //window.parent.frameReturnByMes(data.message);
+                            //window.parent.frameReturnByReload(true);
+                            //window.parent.frameReturnByClose()
+                            //window.parent.frameReturnByMes("保存成功！");
+
+                            //打开报表打印的窗口
+                            self.location = '@Url.Action("Show", "ReportManager", new { area = "Report" })?id=1&searchValues=' + data.value;
                         } else
                         {
                             window.parent.frameReturnByMes(data.message);

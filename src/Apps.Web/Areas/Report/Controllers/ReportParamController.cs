@@ -22,17 +22,19 @@ namespace Apps.Web.Areas.Report.Controllers
         [Dependency]
         public IWMS_ReportBLL m_ReportBLL { get; set; }
         ValidationErrors errors = new ValidationErrors();
-        
+
         [SupportFilter]
         public ActionResult Index()
         {
+            ViewBag.ParamTypes = new SelectList(WMS_ReportParamModel.GetParamType(), "TypeCode", "TypeName");
+            ViewBag.ParamElements = new SelectList(WMS_ReportParamModel.GetParamElement(), "ElementCode", "ElementName");
             return View();
         }
         [HttpPost]
-        [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr,string parentId)
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetList(GridPager pager, string queryStr, string parentId)
         {
-            List<WMS_ReportParamModel> list = m_BLL.GetListByParentId(ref pager, queryStr,parentId);
+            List<WMS_ReportParamModel> list = m_BLL.GetListByParentId(ref pager, queryStr, parentId);
             GridRows<WMS_ReportParamModel> grs = new GridRows<WMS_ReportParamModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -43,6 +45,8 @@ namespace Apps.Web.Areas.Report.Controllers
         public ActionResult Create()
         {
             ViewBag.Report = new SelectList(m_ReportBLL.GetList(ref setNoPagerAscById, ""), "Id", "ReportName");
+            ViewBag.ParamTypes = new SelectList(WMS_ReportParamModel.GetParamType(), "TypeCode", "TypeName");
+            ViewBag.ParamElements = new SelectList(WMS_ReportParamModel.GetParamElement(), "ElementCode", "ElementName");
             return View();
         }
 
@@ -78,8 +82,10 @@ namespace Apps.Web.Areas.Report.Controllers
         [SupportFilter]
         public ActionResult Edit(long id)
         {
+            ViewBag.ParamTypes = new SelectList(WMS_ReportParamModel.GetParamType(), "TypeCode", "TypeName");
+            ViewBag.ParamElements = new SelectList(WMS_ReportParamModel.GetParamElement(), "ElementCode", "ElementName");
             WMS_ReportParamModel entity = m_BLL.GetById(id);
-         ViewBag.Report = new SelectList(m_ReportBLL.GetList(ref setNoPagerAscById, ""), "Id", "Name",entity.ReportId);
+            ViewBag.Report = new SelectList(m_ReportBLL.GetList(ref setNoPagerAscById, ""), "Id", "ReportName", entity.ReportId);
             return View(entity);
         }
 
@@ -124,7 +130,7 @@ namespace Apps.Web.Areas.Report.Controllers
         [SupportFilter]
         public ActionResult Delete(long id)
         {
-            if(id!=0)
+            if (id != 0)
             {
                 if (m_BLL.Delete(ref errors, id))
                 {
@@ -152,12 +158,12 @@ namespace Apps.Web.Areas.Report.Controllers
         {
             if (m_BLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))
             {
-                 LogHandler.WriteImportExcelLog(GetUserId(), "WMS_ReportParam", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
-                 return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
+                LogHandler.WriteImportExcelLog(GetUserId(), "WMS_ReportParam", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
             }
             else
             {
-                 LogHandler.WriteImportExcelLog(GetUserId(), "WMS_ReportParam", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                LogHandler.WriteImportExcelLog(GetUserId(), "WMS_ReportParam", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
             }
         }
@@ -180,74 +186,74 @@ namespace Apps.Web.Areas.Report.Controllers
         {
             List<WMS_ReportParamModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
             JArray jObjects = new JArray();
-                foreach (var item in list)
-                {
-                    var jo = new JObject();
-                    jo.Add("Id", item.Id);
-                    jo.Add("参数代码", item.ParamCode);
-                    jo.Add("报表ID", item.ReportId);
-                    jo.Add("InputNo", item.InputNo);
-                    jo.Add("参数名", item.ParamName);
-                    jo.Add("显示名称", item.ShowName);
-                    jo.Add("参数类型：varchar、int、datetime", item.ParamType);
-                    jo.Add("可选值", item.ParamData);
-                    jo.Add("默认值", item.DefaultValue);
-                    jo.Add("显示元素：文本框、下拉框、日期框等", item.ParamElement);
-                    jo.Add("备注", item.Remark);
-                    jo.Add("创建人", item.CreatePerson);
-                    jo.Add("创建时间", item.CreateTime);
-                    jo.Add("修改人", item.ModifyPerson);
-                    jo.Add("修改时间", item.ModifyTime);
-                    jObjects.Add(jo);
-                }
-                var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
-                var exportFileName = string.Concat(
-                    RouteData.Values["controller"].ToString() + "_",
-                    DateTime.Now.ToString("yyyyMMddHHmmss"),
-                    ".xlsx");
-                return new ExportExcelResult
-                {
-                    SheetName = "Sheet1",
-                    FileName = exportFileName,
-                    ExportData = dt
-                };
+            foreach (var item in list)
+            {
+                var jo = new JObject();
+                jo.Add("Id", item.Id);
+                jo.Add("参数代码", item.ParamCode);
+                jo.Add("报表ID", item.ReportId);
+                jo.Add("InputNo", item.InputNo);
+                jo.Add("参数名", item.ParamName);
+                jo.Add("显示名称", item.ShowName);
+                jo.Add("参数类型：varchar、int、datetime", item.ParamType);
+                jo.Add("可选值", item.ParamData);
+                jo.Add("默认值", item.DefaultValue);
+                jo.Add("显示元素：文本框、下拉框、日期框等", item.ParamElement);
+                jo.Add("备注", item.Remark);
+                jo.Add("创建人", item.CreatePerson);
+                jo.Add("创建时间", item.CreateTime);
+                jo.Add("修改人", item.ModifyPerson);
+                jo.Add("修改时间", item.ModifyTime);
+                jObjects.Add(jo);
             }
+            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+            var exportFileName = string.Concat(
+                RouteData.Values["controller"].ToString() + "_",
+                DateTime.Now.ToString("yyyyMMddHHmmss"),
+                ".xlsx");
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
         [SupportFilter(ActionName = "Export")]
         public ActionResult ExportTemplate()
         {
             JArray jObjects = new JArray();
             var jo = new JObject();
-              jo.Add("Id", "");
-              jo.Add("参数代码", "");
-              jo.Add("报表ID", "");
-              jo.Add("InputNo", "");
-              jo.Add("参数名", "");
-              jo.Add("显示名称", "");
-              jo.Add("参数类型：varchar、int、datetime", "");
-              jo.Add("可选值", "");
-              jo.Add("默认值", "");
-              jo.Add("显示元素：文本框、下拉框、日期框等", "");
-              jo.Add("备注", "");
-              jo.Add("创建人", "");
-              jo.Add("创建时间", "");
-              jo.Add("修改人", "");
-              jo.Add("修改时间", "");
+            jo.Add("Id", "");
+            jo.Add("参数代码", "");
+            jo.Add("报表ID", "");
+            jo.Add("InputNo", "");
+            jo.Add("参数名", "");
+            jo.Add("显示名称", "");
+            jo.Add("参数类型：varchar、int、datetime", "");
+            jo.Add("可选值", "");
+            jo.Add("默认值", "");
+            jo.Add("显示元素：文本框、下拉框、日期框等", "");
+            jo.Add("备注", "");
+            jo.Add("创建人", "");
+            jo.Add("创建时间", "");
+            jo.Add("修改人", "");
+            jo.Add("修改时间", "");
             jo.Add("导入的错误信息", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
             var exportFileName = string.Concat(
                     RouteData.Values["controller"].ToString() + "_Template",
                     ".xlsx");
-                return new ExportExcelResult
-                {
-                    SheetName = "Sheet1",
-                    FileName = exportFileName,
-                    ExportData = dt
-                };
-            }
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
         #endregion
         [HttpPost]
-        [SupportFilter(ActionName="Index")]
+        [SupportFilter(ActionName = "Index")]
         public JsonResult GetListParent(GridPager pager, string queryStr)
         {
             List<WMS_ReportModel> list = m_ReportBLL.GetList(ref pager, queryStr);

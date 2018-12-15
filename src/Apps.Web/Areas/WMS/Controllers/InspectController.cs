@@ -53,9 +53,11 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             try
             {
-                m_BLL.CreateInspectBill(GetUserId(), arrivalBillNum);
+                var inspectBillNum = m_BLL.CreateInspectBill(GetUserId(), arrivalBillNum);
                 LogHandler.WriteServiceLog(GetUserId(), "保存送检单成功", "成功", "保存", "WMS_AI");
-                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+
+                //Response.Redirect("~/Report/ReportManager/Show?id=1&searchValues=" + inspectBillNum);
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, inspectBillNum));
             }
             catch (Exception ex)
             {

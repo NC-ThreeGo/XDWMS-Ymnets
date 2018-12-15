@@ -338,6 +338,7 @@
     <Compile Include="WC\WC_MessageResponseRepository.cs" />
     <Compile Include="WC\WC_OfficalAccountsRepository.cs" />
     <Compile Include="WebpartRepository.cs" />
+    <Compile Include="WMS\WMS_ReportRepository.cs" />
     <Compile Include="WMS\WMS_AIRepository.cs" />
   </ItemGroup>
   <ItemGroup>
