@@ -110,6 +110,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public JsonResult Edit(WMS_AIModel model)
         {
+            model.ModifyTime = ResultHelper.NowTime;
+            model.ModifyPerson = GetUserId();
             if (model != null && ModelState.IsValid)
             {
 
@@ -331,10 +333,11 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         [HttpPost]
         [SupportFilter(ActionName = "Create")]
-        public JsonResult ArrivalBillGetList(GridPager pager, string queryStr)
+        public JsonResult ArrivalBillGetList(GridPager pager, string arrivalBillNum)
         {
             //TODO:显示有效且未送检的到货单。
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ReceiveStatus == \"已到货\" && InspectStatus == \"未送检\"")
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ArrivalBillNum.Contains(\"" 
+                + arrivalBillNum + "\") && ReceiveStatus == \"已到货\" && InspectStatus == \"未送检\"")
                 .OrderBy(p => p.ArrivalBillNum).ToList();
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;

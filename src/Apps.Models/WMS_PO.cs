@@ -42,5 +42,7 @@ namespace Apps.Models
         public virtual WMS_Part WMS_Part { get; set; }
         public virtual WMS_Supplier WMS_Supplier { get; set; }
         public virtual ICollection<WMS_AI> WMS_AI { get; set; }
+
+        public virtual WMS_AI WMS_AI_NEW { get; set; }
     }
 }

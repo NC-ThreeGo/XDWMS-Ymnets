@@ -57,6 +57,11 @@ $.messageBox5s(Lang.Tip, mes);
     @Html.HiddenFor(model => model.PartId)
     @Html.HiddenFor(model => model.CreateTime)
     @Html.HiddenFor(model => model.CreatePerson)
+    @Html.HiddenFor(model => model.ReceiveMan)
+    @Html.HiddenFor(model => model.ReceiveStatus)
+    @Html.HiddenFor(model => model.ReceiveStatus)
+    @Html.HiddenFor(model => model.InspectStatus)
+    @Html.HiddenFor(model => model.InStoreStatus)
     <table class="formtable">
         <tbody>
             <tr>
@@ -88,15 +93,6 @@ $.messageBox5s(Lang.Tip, mes);
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.BoxQty)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.BoxQty)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.BoxQty)</td>
-            </tr>
-            <tr>
-                <th>
                     @Html.LabelFor(model => model.ArrivalQty)：
                 </th>
                 <td>
@@ -104,6 +100,16 @@ $.messageBox5s(Lang.Tip, mes);
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.ArrivalQty)</td>
             </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.BoxQty)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.BoxQty)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.BoxQty)</td>
+            </tr>
+            
             <tr>
                 <th>
                     @Html.LabelFor(model => model.ArrivalDate)：

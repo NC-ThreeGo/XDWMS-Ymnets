@@ -7,6 +7,7 @@ namespace Apps.Models.WMS
     {
         public string PartCode { get; set; }
         public string SupplierShortName { get; set; }
+        public decimal? ArrivalQty { get; set; }
     }
 }
 

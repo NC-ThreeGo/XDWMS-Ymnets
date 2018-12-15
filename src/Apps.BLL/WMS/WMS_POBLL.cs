@@ -24,35 +24,39 @@ namespace Apps.BLL.WMS
         public IWMS_SupplierRepository m_SupplierRep { get; set; }
         [Dependency]
         public IWMS_PORepository m_PORep { get; set; }
+        [Dependency]
+        public IWMS_AIRepository m_AIRep { get; set; }
+
 
 
         public override List<WMS_POModel> CreateModelList(ref IQueryable<WMS_PO> queryData)
         {
 
             List<WMS_POModel> modelList = (from r in queryData
-                                              select new WMS_POModel
-                                              {
-                                                  Attr1 = r.Attr1,
-                                                  Attr2 = r.Attr2,
-                                                  Attr3 = r.Attr3,
-                                                  Attr4 = r.Attr4,
-                                                  Attr5 = r.Attr5,
-                                                  CreatePerson = r.CreatePerson,
-                                                  CreateTime = r.CreateTime,
-                                                  Id = r.Id,
-                                                  ModifyPerson = r.ModifyPerson,
-                                                  ModifyTime = r.ModifyTime,
-                                                  PartId = r.PartId,
-                                                  PlanDate = r.PlanDate,
-                                                  PO = r.PO,
-                                                  PODate = r.PODate,
-                                                  POType = r.POType,
-                                                  QTY = r.QTY,
-                                                  Remark = r.Remark,
-                                                  Status = r.Status,
-                                                  SupplierId = r.SupplierId,
-                                                  PartCode = r.WMS_Part.PartCode,
-                                                  SupplierShortName = r.WMS_Supplier.SupplierShortName,
+                                           select new WMS_POModel
+                                           {
+                                               Attr1 = r.Attr1,
+                                               Attr2 = r.Attr2,
+                                               Attr3 = r.Attr3,
+                                               Attr4 = r.Attr4,
+                                               Attr5 = r.Attr5,
+                                               CreatePerson = r.CreatePerson,
+                                               CreateTime = r.CreateTime,
+                                               Id = r.Id,
+                                               ModifyPerson = r.ModifyPerson,
+                                               ModifyTime = r.ModifyTime,
+                                               PartId = r.PartId,
+                                               PlanDate = r.PlanDate,
+                                               PO = r.PO,
+                                               PODate = r.PODate,
+                                               POType = r.POType,
+                                               QTY = r.QTY,
+                                               Remark = r.Remark,
+                                               Status = r.Status,
+                                               SupplierId = r.SupplierId,
+                                               PartCode = r.WMS_Part.PartCode,
+                                               SupplierShortName = r.WMS_Supplier.SupplierShortName,
+                                               //ArrivalQty = r.WMS_AI_NEW.ArrivalQty,
                                               }).ToList();
             return modelList;
         }
