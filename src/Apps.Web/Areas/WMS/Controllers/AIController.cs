@@ -71,7 +71,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                 aiModel.PartId = model.PartId;
                 aiModel.BoxQty = model.BoxNum;
                 aiModel.ArrivalQty = model.CurrentQty;
-                aiModel.ArrivalDate = ResultHelper.NowTime;
+                aiModel.ArrivalDate = model.ArrivalDate;
                 aiModel.ReceiveMan = GetUserId();                
                 aiModel.InspectStatus = "未送检";
                 aiModel.InStoreStatus = "未入库";

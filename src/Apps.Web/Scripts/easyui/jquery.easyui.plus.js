@@ -1,4 +1,23 @@
-﻿//删除
+﻿//zip:Update 2018/12/17
+//返回一个只包括日期格式的日期（不包含时分秒）
+formatterDateNoHour = function (date)
+{
+    if (date != '')
+    {
+        return date.substring(0, 10);
+        //var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+        //var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0"
+        //    + (date.getMonth() + 1);
+        //return date.getFullYear() + '-' + month + '-' + day;
+    }
+    else
+    {
+        return date;
+    }
+};
+
+
+//删除
 function dataDelete(url, datagrid) {
     var row = $('#' + datagrid).datagrid('getSelected');
     if (row != null) {

@@ -171,7 +171,7 @@
         $("#btnReport").click(function() {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow("报表设计", '@Url.Action("Show", "ReportManager", new { area = "Report" })?id=1&searchValues=' + row.InspectBillNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=InspectBill&billNum=' + row.InspectBillNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
     });

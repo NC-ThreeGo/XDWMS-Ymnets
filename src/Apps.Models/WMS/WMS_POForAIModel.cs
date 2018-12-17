@@ -14,6 +14,9 @@ namespace Apps.Models.WMS
 
         [Display(Name = "到货箱数")]
         public decimal BoxNum { get; set; }
+
+        [Display(Name = "到货日期")]
+        public DateTime ArrivalDate { get; set; }
     }
 }
 

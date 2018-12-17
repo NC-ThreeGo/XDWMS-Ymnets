@@ -219,17 +219,17 @@ namespace Apps.Web.Areas.Report.Controllers
         #endregion
 
         /// <summary>
-        /// 显示报表内容
+        /// 显示要打印的单据
         /// </summary>
         /// <param name="id">报表的ID</param>
-        /// <param name="billNum">报表的单据号</param>
+        /// <param name="billNum">单据号</param>
         /// <returns></returns>
         //[SupportFilter]
-        public ActionResult Show(long id, string searchValues)
+        public ActionResult ShowBill(string reportCode, string billNum)
         {
-            WMS_ReportModel entity = m_BLL.GetById(1);
+            WMS_ReportModel entity = m_BLL.GetListByWhere(ref setNoPagerAscById, "ReportCode == \"" + reportCode + "\"").First();
 
-            List<WMS_ReportParamModel> listParams = m_ParamBLL.GetListByWhere(ref setNoPagerAscById, "ReportId == " + id.ToString())
+            List<WMS_ReportParamModel> listParams = m_ParamBLL.GetListByWhere(ref setNoPagerAscById, "ReportId == " + entity.Id.ToString())
                 .OrderBy(p => p.Id).ToList();
             //List<WMS_ReportParamModel> listParamValues = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WMS_ReportParamModel>>(searchValues);
             //foreach (var item in listParamValues)
@@ -240,7 +240,7 @@ namespace Apps.Web.Areas.Report.Controllers
             //        listParams.First(a => a.ParamName == item.ParamName).DefaultValue = item.DefaultValue;
             //    }
             //}
-            listParams[0].DefaultValue = searchValues;
+            listParams[0].DefaultValue = billNum;
             ViewBag.Entity = entity;
             ViewBag.ListParam = listParams;
 
@@ -272,7 +272,7 @@ namespace Apps.Web.Areas.Report.Controllers
                     webReport.Report.GetDataSource(ds.Tables[i].TableName).Enabled = true;
                 }
             }
-            webReport.ID = id.ToString();
+            webReport.ID = reportCode;
             ViewBag.WebReport = webReport;
             return View();
         }
