@@ -157,7 +157,7 @@ namespace Apps.Web.Areas.Report.Controllers
         /// 报表设计
         /// </summary>
         /// <returns></returns>
-        public ActionResult Designer(long id)
+        public ActionResult Designer(long id = 1)
         {
             WMS_ReportModel entity = m_BLL.GetById(1);
             List<WMS_ReportParamModel> listParam = m_ParamBLL.GetListByWhere(ref setNoPagerAscById, "ReportId == " + id.ToString())

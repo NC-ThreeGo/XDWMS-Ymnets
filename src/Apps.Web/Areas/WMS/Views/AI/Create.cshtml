@@ -45,8 +45,11 @@
                                 hideLoading();
                                 window.parent.frameReturnByMes(data.message);
                                 window.parent.frameReturnByReload(true);
-                                window.parent.frameReturnByClose()
                                 window.parent.frameReturnByMes("保存成功！");
+                                //保存后不关闭当前对话框，但把控件数据清空
+                                //window.parent.frameReturnByClose();
+                                clear();
+
                             } else {
                                 window.parent.frameReturnByMes(data.message);
                                 hideLoading();
@@ -264,6 +267,14 @@
     function frameReturnByMes(mes) {
         $.messageBox5s('提示', mes);
     }
+
+    //清空控件的数据
+    function clear()
+    {
+        $('#PONo').val("");
+        $('#List').datagrid("Load");
+
+    }
 </script>
 
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
@@ -309,13 +320,13 @@
                     </script>
                     @Html.ToolButton("btnLoadPO", "fa fa-reply", Resource.Load, false)
                 </td>
-                <th>
+                @*<th>
                     @Html.LabelFor(model => model.ArrivalBillNum) （自动生成）：
                 </th>
                 <td>
                     <input id="arrivalBillNum" type="hidden" name="arrivalBillNum" value="@ViewBag.ArrivalBillNum" />
                     @Html.TextBox("arrivalBillNum", (string)ViewBag.ArrivalBillNum, new { @disabled = "disabled" })
-                </td>
+                </td>*@
             </tr>
 
         </tbody>
