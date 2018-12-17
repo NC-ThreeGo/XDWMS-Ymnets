@@ -47,8 +47,8 @@
                                 window.parent.frameReturnByReload(true);
                                 window.parent.frameReturnByMes("保存成功！");
                                 //保存后不关闭当前对话框，但把控件数据清空
-                                //window.parent.frameReturnByClose();
-                                clear();
+                                window.parent.frameReturnByRefresh();
+                                //clear();
 
                             } else {
                                 window.parent.frameReturnByMes(data.message);
@@ -268,7 +268,7 @@
         $.messageBox5s('提示', mes);
     }
 
-    //清空控件的数据
+    //清空控件的数据（暂时没用）。
     function clear()
     {
         $('#PONo').val("");
@@ -320,13 +320,13 @@
                     </script>
                     @Html.ToolButton("btnLoadPO", "fa fa-reply", Resource.Load, false)
                 </td>
-                @*<th>
+                <th>
                     @Html.LabelFor(model => model.ArrivalBillNum) （自动生成）：
                 </th>
                 <td>
                     <input id="arrivalBillNum" type="hidden" name="arrivalBillNum" value="@ViewBag.ArrivalBillNum" />
                     @Html.TextBox("arrivalBillNum", (string)ViewBag.ArrivalBillNum, new { @disabled = "disabled" })
-                </td>*@
+                </td>
             </tr>
 
         </tbody>
