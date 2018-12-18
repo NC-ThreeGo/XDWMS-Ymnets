@@ -1,4 +1,5 @@
 ﻿using Apps.Models.WMS;
+using System;
 using System.Data.Entity.Core.Objects;
 using System.Dynamic;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace Apps.DAL.WMS
                                 PlanDate = po.PlanDate,
                                 POType = po.POType,
                                 SumAIQty = t.sumqty,
+                                ArrivalDate = DateTime.Now
                             };
 
             return queryData;
