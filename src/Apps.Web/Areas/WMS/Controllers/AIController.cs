@@ -34,10 +34,13 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         [HttpPost]
         [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr)
+        public JsonResult GetList(GridPager pager, string po, string supplierShortName, string partCode, DateTime beginDate, DateTime endDate)
         {
             //TODO:显示到货的到货单
-            List<WMS_AIModel> list = m_BLL.GetList(ref pager, queryStr);
+            //List<WMS_AIModel> list = m_BLL.GetList(ref pager, queryStr);
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "WMS_PO.PO.Contains(\"" + po + "\") && WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
+               + supplierShortName + "\")&& WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& ArrivalDate>=(\""
+               + beginDate + "\")&& ArrivalDate<=(\"" + endDate + "\")");
             GridRows <WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
