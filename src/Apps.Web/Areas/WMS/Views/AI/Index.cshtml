@@ -8,6 +8,7 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
 <div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
 <form name = "form1" method="post" id="form1">
     <table>
@@ -35,11 +36,16 @@
 </form>
 </div>
 <div class="mvctool">
-    <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+    @*<input id="txtQuery" type="text" class="searchText" />*@
+    <input id="txtpo" type="text" placeholder="采购订单号:" class="searchText" />
+    <input id="txtsupplierShortName" placeholder="供应商简称:" type="text" class="searchText" />
+    <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
+    到货日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
@@ -155,12 +161,26 @@
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            //var queryStr = $("#txtQuery").val();
+            //if (queryStr == null) {
+            //    queryStr = "%";
+            //}
+            //$("#List").datagrid("load", { queryStr: queryStr });
+            var po = $("#txtpo").val();
+            var supplierShortName = $("#txtsupplierShortName").val();
+            var partCode = $("#txtpartCode").val();
+            if (po == null) {
+                po = "";
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
-
+            if (supplierShortName == null) {
+                supplierShortName = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            $("#List").datagrid("load", {
+                po: po, supplierShortName: supplierShortName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+            });
         });
         $("#btnDelete").click(function () {
             var row = $('#List').datagrid('getSelected');
