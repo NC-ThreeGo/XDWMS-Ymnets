@@ -14,6 +14,11 @@ namespace Apps.Models
     
     public partial class WMS_AI
     {
+        public WMS_AI()
+        {
+            this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
+        }
+    
         public int Id { get; set; }
         public string ArrivalBillNum { get; set; }
         public int POId { get; set; }
@@ -49,5 +54,6 @@ namespace Apps.Models
         public Nullable<System.DateTime> ModifyTime { get; set; }
     
         public virtual WMS_PO WMS_PO { get; set; }
+        public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
     }
 }

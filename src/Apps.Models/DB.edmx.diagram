@@ -161,6 +161,10 @@
         <EntityTypeShape EntityType="DB.WMS_Report" Width="1.5" PointX="22.375" PointY="1.25" />
         <EntityTypeShape EntityType="DB.WMS_ReportParam" Width="1.5" PointX="24.625" PointY="1" />
         <AssociationConnector Association="DB.FK_WMS_ReportParam_WMS_Report" />
+        <EntityTypeShape EntityType="DB.WMS_ReturnOrder" Width="1.5" PointX="16.875" PointY="31.75" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_AI" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_InvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
