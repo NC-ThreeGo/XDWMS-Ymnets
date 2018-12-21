@@ -47,12 +47,12 @@ namespace Apps.BLL.WMS
 								
 								|| a.Remark.Contains(queryStr)
 								|| a.DataSource.Contains(queryStr)
-								
 								|| a.FileName.Contains(queryStr)
 								|| a.Status.Contains(queryStr)
 								|| a.CreatePerson.Contains(queryStr)
 								
 								|| a.ModifyPerson.Contains(queryStr)
+								
 								
 								);
             }
@@ -88,13 +88,13 @@ namespace Apps.BLL.WMS
 													ReportType = r.ReportType,
 													Remark = r.Remark,
 													DataSource = r.DataSource,
-                                                    DataSourceType = r.DataSourceType,
 													FileName = r.FileName,
 													Status = r.Status,
 													CreatePerson = r.CreatePerson,
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
+													DataSourceType = r.DataSourceType,
           
                                               }).ToList();
 
@@ -118,13 +118,13 @@ namespace Apps.BLL.WMS
 				entity.ReportType = model.ReportType;
 				entity.Remark = model.Remark;
 				entity.DataSource = model.DataSource;
-				entity.DataSourceType = model.DataSourceType;
 				entity.FileName = model.FileName;
 				entity.Status = model.Status;
 				entity.CreatePerson = model.CreatePerson;
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
+				entity.DataSourceType = model.DataSourceType;
   
 
                 if (m_Rep.Create(entity))
@@ -217,13 +217,13 @@ namespace Apps.BLL.WMS
 				entity.ReportType = model.ReportType;
 				entity.Remark = model.Remark;
 				entity.DataSource = model.DataSource;
-				entity.DataSourceType = model.DataSourceType;
 				entity.FileName = model.FileName;
 				entity.Status = model.Status;
 				entity.CreatePerson = model.CreatePerson;
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
+				entity.DataSourceType = model.DataSourceType;
  
 
 
@@ -260,13 +260,13 @@ namespace Apps.BLL.WMS
 				model.ReportType = entity.ReportType;
 				model.Remark = entity.Remark;
 				model.DataSource = entity.DataSource;
-				model.DataSourceType = entity.DataSourceType;
 				model.FileName = entity.FileName;
 				model.Status = entity.Status;
 				model.CreatePerson = entity.CreatePerson;
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
+				model.DataSourceType = entity.DataSourceType;
  
                 return model;
             }
@@ -300,13 +300,13 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_ReportModel>(x => x.ReportType, "报表类型：1-单据，2-报表");
 				 excelFile.AddMapping<WMS_ReportModel>(x => x.Remark, "备注");
 				 excelFile.AddMapping<WMS_ReportModel>(x => x.DataSource, "数据源");
-				 excelFile.AddMapping<WMS_ReportModel>(x => x.DataSourceType, "数据源类型：1-SQL语句；2-存储过程");
 				 excelFile.AddMapping<WMS_ReportModel>(x => x.FileName, "报表文件");
 				 excelFile.AddMapping<WMS_ReportModel>(x => x.Status, "状态");
 				 excelFile.AddMapping<WMS_ReportModel>(x => x.CreatePerson, "创建人");
 				 excelFile.AddMapping<WMS_ReportModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_ReportModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_ReportModel>(x => x.ModifyTime, "修改时间");
+				 excelFile.AddMapping<WMS_ReportModel>(x => x.DataSourceType, "数据源类型：1-SQL语句；2-存储过程");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_ReportModel>(0);
@@ -322,13 +322,13 @@ namespace Apps.BLL.WMS
 				  entity.ReportType = row.ReportType;
 				  entity.Remark = row.Remark;
 				  entity.DataSource = row.DataSource;
-				  entity.DataSourceType = row.DataSourceType;
 				  entity.FileName = row.FileName;
 				  entity.Status = row.Status;
 				  entity.CreatePerson = row.CreatePerson;
 				  entity.CreateTime = row.CreateTime;
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
+				  entity.DataSourceType = row.DataSourceType;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -367,13 +367,13 @@ namespace Apps.BLL.WMS
 						entity.ReportType = model.ReportType;
 						entity.Remark = model.Remark;
 						entity.DataSource = model.DataSource;
-						entity.DataSourceType = model.DataSourceType;
 						entity.FileName = model.FileName;
 						entity.Status = model.Status;
 						entity.CreatePerson = model.CreatePerson;
 						entity.CreateTime = ResultHelper.NowTime;
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
+						entity.DataSourceType = model.DataSourceType;
  
                         db.WMS_Report.Add(entity);
                     }

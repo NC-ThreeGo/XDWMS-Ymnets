@@ -48,6 +48,7 @@ namespace Apps.DAL.WMS
 
         public string ProcessInspectBill(string opt, string jsonInspectBill)
         {
+            ObjectParameter inspectBillNum = new ObjectParameter("InspectBillNum", typeof(string));
             ObjectParameter returnValue  = new ObjectParameter("ReturnValue", typeof(string));
 
             Context.P_WMS_ProcessInspectBill(opt, jsonInspectBill, returnValue);

@@ -106,6 +106,7 @@ namespace Apps.Models
         public virtual DbSet<WMS_AI> WMS_AI { get; set; }
         public virtual DbSet<WMS_Report> WMS_Report { get; set; }
         public virtual DbSet<WMS_ReportParam> WMS_ReportParam { get; set; }
+        public virtual DbSet<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {
@@ -696,6 +697,19 @@ namespace Apps.Models
                 new ObjectParameter("JsonInspectBill", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ProcessInspectBill", userIdParameter, jsonInspectBillParameter, returnValue);
+        }
+    
+        public virtual int P_WMS_CreateBatchReturnOrder(string userId, string jsonReturnOrder, ObjectParameter returnOrderNum, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var jsonReturnOrderParameter = jsonReturnOrder != null ?
+                new ObjectParameter("JsonReturnOrder", jsonReturnOrder) :
+                new ObjectParameter("JsonReturnOrder", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateBatchReturnOrder", userIdParameter, jsonReturnOrderParameter, returnOrderNum, returnValue);
         }
     }
 }

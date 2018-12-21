@@ -14,6 +14,11 @@ namespace Apps.Models
     
     public partial class WMS_SubInvInfo
     {
+        public WMS_SubInvInfo()
+        {
+            this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
+        }
+    
         public int Id { get; set; }
         public string SubInvCode { get; set; }
         public string SubInvName { get; set; }
@@ -26,5 +31,6 @@ namespace Apps.Models
         public Nullable<System.DateTime> ModifyTime { get; set; }
     
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
+        public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
     }
 }
