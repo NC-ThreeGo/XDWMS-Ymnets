@@ -37,9 +37,10 @@
 </div>
 <div class="mvctool">
     @*<input id="txtQuery" type="text" class="searchText" />*@
-    <input id="txtpo" type="text" placeholder="采购订单号:" class="searchText" />
+    <input id="txtpo" type="text" placeholder="采购订单号:" class="searchText" />    
     <input id="txtsupplierShortName" placeholder="供应商简称:" type="text" class="searchText" />
     <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
+    送检状态：@Html.DropDownList("txtInspectStatus", ViewBag.InspStatus as SelectList, new { @style = "width:70px;" })
     到货日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
     至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
@@ -146,7 +147,7 @@
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                if (row.InspectStatus == "已送检") {            
+                if (row.InspectStatus == "已送验") {            
                 $.messager.confirm(index_lang_tip, "单据已送检不能被修改")
             }
             else { $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
@@ -169,6 +170,7 @@
             var po = $("#txtpo").val();
             var supplierShortName = $("#txtsupplierShortName").val();
             var partCode = $("#txtpartCode").val();
+            var inspectStatus = $("#txtInspectStatus").val();
             if (po == null) {
                 po = "";
             }
@@ -179,7 +181,7 @@
                 partCode = "";
             }
             $("#List").datagrid("load", {
-                po: po, supplierShortName: supplierShortName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+                po: po, supplierShortName: supplierShortName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val(), inspectStatus: inspectStatus
             });
         });
         $("#btnDelete").click(function () {
@@ -195,14 +197,26 @@
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            var po = $("#txtpo").val();
+            var supplierShortName = $("#txtsupplierShortName").val();
+            var partCode = $("#txtpartCode").val();
+            if (po == null) {
+                po = "";
             }
-          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
+            if (supplierShortName == null) {
+                supplierShortName = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            $.post("@Url.Action("CheckExportData")?po=" + po + "&supplierShortName=" + supplierShortName
+                + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
+                + "&endDate= " + $("#endDate").val(), function(data) {
                 if (data.type == 1)
                 {
-                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                    window.location = "@Url.Action("Export")?po=" + po + "&supplierShortName=" + supplierShortName
+                        + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
+                        + "&endDate= " + $("#endDate").val();
                 }
                 else
                 {
