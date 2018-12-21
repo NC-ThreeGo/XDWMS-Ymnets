@@ -92,7 +92,7 @@
                 //{ field: 'InStoreBillNum', title: '入库单号', width: 80,sortable:true },
                 //{ field: 'InStoreMan', title: '入库员', width: 80,sortable:true },
                 //{ field: 'InvCode', title: '入库仓库', width: 80,sortable:true },
-                //{ field: 'InStoreStatus', title: '入库状态', width: 80,sortable:true },
+                { field: 'InStoreStatus', title: '入库状态', width: 80,sortable:true },
                 //{ field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
                 //{ field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
                 //{ field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
@@ -143,7 +143,13 @@
 
         });
         $("#btnDelete").click(function () {
-	            dataDelete("@Url.Action("Delete")", "List");
+            //dataDelete("@Url.Action("Delete")", "List");
+            var row = $('#List').datagrid('getSelected');
+            if (row.InStoreStatus == "已入库") {                
+                $.messager.confirm(index_lang_tip, "单据已入库不能被删除")
+            }
+            else { dataDelete("@Url.Action("Delete")", "List");
+            } 
 	        });
         $("#btnImport").click(function() {
              $("#txtExcelPath").val("");
