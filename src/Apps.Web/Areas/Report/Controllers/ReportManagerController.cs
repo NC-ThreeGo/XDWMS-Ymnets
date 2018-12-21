@@ -159,7 +159,7 @@ namespace Apps.Web.Areas.Report.Controllers
         /// <returns></returns>
         public ActionResult Designer(long id = 1)
         {
-            WMS_ReportModel entity = m_BLL.GetById(1);
+            WMS_ReportModel entity = m_BLL.GetById(id);
             List<WMS_ReportParamModel> listParam = m_ParamBLL.GetListByWhere(ref setNoPagerAscById, "ReportId == " + id.ToString())
                 .OrderBy(p => p.Id).ToList();
             DataSet ds = m_BLL.GetDataSource(entity, listParam);
@@ -175,7 +175,7 @@ namespace Apps.Web.Areas.Report.Controllers
             webReport.ShowPrint = true;
             webReport.SinglePage = true;
 
-            string path = Server.MapPath("~/ReportFiles/" + "检验单打印模板.frx");
+            string path = Server.MapPath("~/ReportFiles/" + entity.FileName);
             //if (!FileManager.FileExists(path))
             //{
             //    string template = Server.MapPath("~/ReportFiles/Temp/Report.frx");
@@ -209,10 +209,10 @@ namespace Apps.Web.Areas.Report.Controllers
         /// <returns></returns>
         public ActionResult SaveDesignedReport(string reportID, string reportUUID)
         {
-            WMS_ReportModel entity = m_BLL.GetById(1);
-            string FileRealPath = Server.MapPath("~" + entity.FileName);
+            WMS_ReportModel entity = m_BLL.GetById(Int32.Parse(reportID));
+            string FileRealPath = Server.MapPath("~/ReportFiles/" + entity.FileName);
             string FileTempPath = Server.MapPath("~/ReportFiles/Temp/" + reportUUID);
-            Utils.DeleteUpFile(FileRealPath);
+            Utils.DeleteFile(FileRealPath, true);
             System.IO.File.Copy(FileTempPath, FileRealPath, true);
             return Content("");
         }

@@ -752,13 +752,17 @@ namespace Apps.Common
         /// 删除单个文件
         /// </summary>
         /// <param name="_filepath">文件相对路径</param>
-        public static bool DeleteFile(string _filepath)
+        public static bool DeleteFile(string _filepath, bool isFullPath = false)
         {
             if (string.IsNullOrEmpty(_filepath))
             {
                 return false;
             }
-            string fullpath = GetMapPath(_filepath);
+
+            string fullpath = _filepath;
+            if (!isFullPath)
+                fullpath = GetMapPath(_filepath);
+                
             if (File.Exists(fullpath))
             {
                 File.Delete(fullpath);
