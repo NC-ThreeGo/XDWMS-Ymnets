@@ -41,12 +41,12 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         [HttpPost]
         [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string po, string supplierShortName, string partCode, DateTime beginDate, DateTime endDate,string inspectStatus)
+        public JsonResult GetList(GridPager pager,string arrivalBillNum, string po, string supplierShortName, string partCode, DateTime beginDate, DateTime endDate,string inspectStatus)
         {
             //TODO:显示到货的到货单
             //List<WMS_AIModel> list = m_BLL.GetList(ref pager, queryStr);
             
-            List <WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "WMS_PO.PO.Contains(\"" + po + "\") && WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
+            List <WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "WMS_PO.PO.Contains(\"" + po + "\")&&ArrivalBillNum.Contains(\"" + arrivalBillNum + "\") && WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
                + supplierShortName + "\")&& WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& InspectStatus.Contains(\"" + inspectStatus + "\")&& ArrivalDate>=(\""
                + beginDate + "\")&& ArrivalDate<=(\"" + endDate + "\")");
             GridRows <WMS_AIModel> grs = new GridRows<WMS_AIModel>();
@@ -212,11 +212,11 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         }
         [SupportFilter]
-        public ActionResult Export(string po, string supplierShortName, string partCode, DateTime beginDate, DateTime endDate)
+        public ActionResult Export(string arrivalBillNum, string po, string supplierShortName, string partCode, DateTime beginDate, DateTime endDate,string inspectStatus)
         {
             //List<WMS_AIModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "WMS_PO.PO.Contains(\"" + po + "\") && WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
-               + supplierShortName + "\")&& WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& ArrivalDate>=(\""
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "WMS_PO.PO.Contains(\"" + po + "\") &&ArrivalBillNum.Contains(\"" + arrivalBillNum + "\")&& WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
+               + supplierShortName + "\")&& InspectStatus.Contains(\"" + inspectStatus + "\")&& WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& ArrivalDate>=(\""
                + beginDate + "\")&& ArrivalDate<=(\"" + endDate + "\")");
             JArray jObjects = new JArray();
                 foreach (var item in list)

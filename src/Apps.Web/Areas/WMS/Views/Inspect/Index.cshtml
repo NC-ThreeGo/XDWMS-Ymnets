@@ -8,6 +8,7 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
 <div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
 <form name = "form1" method="post" id="form1">
     <table>
@@ -35,11 +36,18 @@
 </form>
 </div>
 <div class="mvctool">
-    <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+    @*<input id="txtQuery" type="text" class="searchText" />*@
+    <input id="txtInspectBillNum" type="text" placeholder="送检单号:" class="searchText" />
+    <input id="txtpo" type="text" placeholder="采购订单号:" class="searchText" />
+    <input id="txtsupplierShortName" placeholder="供应商简称:" type="text" class="searchText" />
+    <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
+    入库状态：@Html.DropDownList("txtInStoreStatus", ViewBag.InStoreStatus as SelectList, new { @style = "width:70px;" })
+    送检日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
@@ -71,12 +79,14 @@
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
                 { field: 'InspectBillNum', title: '送检单号', width: 120,sortable:true },
-                { field: 'ArrivalBillNum', title: '到货单号', width: 145,sortable:true },
+                { field: 'ArrivalBillNum', title: '到货单号', width: 145, sortable: true },
+                { field: 'PO', title: '采购订单号', width: 80, sortable: true },
                 { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
                 { field: 'PartName', title: '物料名称', width: 80, sortable: true },
+                { field: 'SupplierShortName', title: '供应商简称', width: 80, sortable: true },
                 //{ field: 'POId', title: '采购订单ID', width: 80,sortable:true },
-                { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true, align: 'right' },
                 { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true, align: 'right' },                
                 //{ field: 'ArrivalDate', title: '到货日期', width: 80,sortable:true },
                 //{ field: 'ReceiveMan', title: '接收人', width: 80,sortable:true },
                 //{ field: 'ReceiveStatus', title: '到货状态', width: 80,sortable:true },
@@ -123,10 +133,20 @@
             $.modalWindow(Lang.Create, '@Url.Action("Create")', $(window).width() - 50, $(window).height() - 50, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
-            var row = $('#List').datagrid('getSelected');
+            @*var row = $('#List').datagrid('getSelected');
             if (row != null) {
                 $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }*@
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                if (row.InspectStatus == "已入库") {
+                    $.messager.confirm(index_lang_tip, "单据已入库不能被修改")
+                }
+                else {
+                    $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
+                }
+
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }  
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
@@ -135,12 +155,26 @@
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            var po = $("#txtpo").val();
+            var supplierShortName = $("#txtsupplierShortName").val();
+            var partCode = $("#txtpartCode").val();
+            var inStoreStatus = $("#txtInStoreStatus").val();
+            var inspectBillNum = $("#txtInspectBillNum").val();
+            if (po == null) {
+                po = "";
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
-
+            if (supplierShortName == null) {
+                supplierShortName = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (inspectBillNum == null) {
+                inspectBillNum = "";
+            }
+            $("#List").datagrid("load", {
+                inspectBillNum: inspectBillNum, po: po, supplierShortName: supplierShortName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val(), inStoreStatus: inStoreStatus
+            });
         });
         $("#btnDelete").click(function () {
             //dataDelete("@Url.Action("Delete")", "List");
@@ -156,7 +190,7 @@
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
+            @*var queryStr = $("#txtQuery").val();
             if (queryStr == null) {
                 queryStr = "%";
             }
@@ -164,6 +198,37 @@
                 if (data.type == 1)
                 {
                     window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                }
+                else
+                {
+                $.messageBox5s(Lang.Tip, data.message);
+                }
+            }, "json");*@
+            var po = $("#txtpo").val();
+            var supplierShortName = $("#txtsupplierShortName").val(); 
+            var partCode = $("#txtpartCode").val();
+            var inspectBillNum = $("#txtInspectBillNum").val();
+            var inStoreStatus = $("#txtInStoreStatus").val();
+            if (po == null) {
+                po = "";
+            }
+            if (supplierShortName == null) {
+                supplierShortName = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (inspectBillNum == null) {
+                inspectBillNum = "";
+            }
+            $.post("@Url.Action("CheckExportData")?po=" + po + "&inspectBillNum=" + inspectBillNum +"&supplierShortName=" + supplierShortName
+                + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
+                + "&endDate= " + $("#endDate").val(), function(data) {
+                if (data.type == 1)
+                {
+                    window.location = "@Url.Action("Export")?po=" + po + "&inspectBillNum=" + inspectBillNum + "&inStoreStatus=" + inStoreStatus +"&supplierShortName=" + supplierShortName
+                        + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
+                        + "&endDate= " + $("#endDate").val();
                 }
                 else
                 {

@@ -37,7 +37,8 @@
 </div>
 <div class="mvctool">
     @*<input id="txtQuery" type="text" class="searchText" />*@
-    <input id="txtpo" type="text" placeholder="采购订单号:" class="searchText" />    
+    <input id="txtArrivalBillNum" type="text" placeholder="到货单号:" class="searchText" />
+    <input id="txtpo" type="text" placeholder="采购订单号:" class="searchText" />
     <input id="txtsupplierShortName" placeholder="供应商简称:" type="text" class="searchText" />
     <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
     送检状态：@Html.DropDownList("txtInspectStatus", ViewBag.InspStatus as SelectList, new { @style = "width:70px;" })
@@ -171,6 +172,7 @@
             var supplierShortName = $("#txtsupplierShortName").val();
             var partCode = $("#txtpartCode").val();
             var inspectStatus = $("#txtInspectStatus").val();
+            var arrivalBillNum = $("#txtArrivalBillNum").val();
             if (po == null) {
                 po = "";
             }
@@ -180,8 +182,11 @@
             if (partCode == null) {
                 partCode = "";
             }
+            if (arrivalBillNum == null) {
+                arrivalBillNum = "";
+            }
             $("#List").datagrid("load", {
-                po: po, supplierShortName: supplierShortName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val(), inspectStatus: inspectStatus
+                arrivalBillNum:arrivalBillNum, po: po, supplierShortName: supplierShortName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val(), inspectStatus: inspectStatus
             });
         });
         $("#btnDelete").click(function () {
@@ -198,8 +203,10 @@
         });
         $("#btnExport").click(function() {
             var po = $("#txtpo").val();
-            var supplierShortName = $("#txtsupplierShortName").val();
+            var supplierShortName = $("#txtsupplierShortName").val(); 
             var partCode = $("#txtpartCode").val();
+            var arrivalBillNum = $("#txtArrivalBillNum").val();
+            var inspectStatus = $("#txtInspectStatus").val();
             if (po == null) {
                 po = "";
             }
@@ -209,12 +216,15 @@
             if (partCode == null) {
                 partCode = "";
             }
-            $.post("@Url.Action("CheckExportData")?po=" + po + "&supplierShortName=" + supplierShortName
+            if (arrivalBillNum == null) {
+                arrivalBillNum = "";
+            }
+            $.post("@Url.Action("CheckExportData")?po=" + po + "&arrivalBillNum=" + arrivalBillNum +"&supplierShortName=" + supplierShortName
                 + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
                 + "&endDate= " + $("#endDate").val(), function(data) {
                 if (data.type == 1)
                 {
-                    window.location = "@Url.Action("Export")?po=" + po + "&supplierShortName=" + supplierShortName
+                    window.location = "@Url.Action("Export")?po=" + po + "&arrivalBillNum=" + arrivalBillNum + "&inspectStatus=" + inspectStatus +"&supplierShortName=" + supplierShortName
                         + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
                         + "&endDate= " + $("#endDate").val();
                 }
