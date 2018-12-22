@@ -75,76 +75,16 @@
                     }
                 }
 
-                /*
-                //合并单据号单元格
-                var start = 0;
-                var end = 0;
-                if (data.total > 0)
-                {
-                    var temp = data.rows[0].InspectBillNum;
-                    for (var i = 1; i < data.rows.length; i++)
-                    {
-                        if (temp == data.rows[i].InspectBillNum)
-                        {
-                            end++;
-                        } else
-                        {
-                            if (end > start)
-                            {
-                                $(this).datagrid('mergeCells', {
-                                    index: start,
-                                    rowspan: end - start + 1,
-                                    field: 'InspectBillNum'
-                                })
-                            }
-                            temp = data.rows[i].InspectBillNum;
-                            start = i;
-                            end = i;
-                        }
-                    }
-                    //这里是为了判断重复内容出现在最后的情况，如ABCC
-                    if (end > start)
-                    {
-                        $(this).datagrid('mergeCells', {
-                            index: start,
-                            rowspan: end - start + 1,
-                            field: 'InspectBillNum'
-                        })
-                    }
-                }
-                */
             },
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
-                { field: 'InspectBillNum', title: '送检单号', width: 80,sortable:true },
-                { field: 'ArrivalBillNum', title: '到货单号', width: 105,sortable:true },
+                { field: 'InspectBillNum', title: '入库单号', width: 80,sortable:true },
                 { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
                 { field: 'PartName', title: '物料名称', width: 80, sortable: true },
-                { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true, align: 'right' },
-                { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
-                { field: 'InspectStatus', title: '送检状态', width: 80, sortable: true },
-                //{ field: 'InspectMan', title: '送检人', width: 80,sortable:true },
-                //{ field: 'InspectDate', title: '送检日期', width: 80,sortable:true },
-                //{ field: 'CheckOutDate', title: '检验日期', width: 80,sortable:true },
-                { field: 'CheckOutResult', title: '检验结果', width: 80,sortable:true },
-                { field: 'QualifyQty', title: '合格数量', width: 80, sortable: true, align: 'right' },
-                { field: 'NoQualifyQty', title: '不合格数量', width: 80, sortable: true, align: 'right' },
-                { field: 'CheckOutRemark', title: '检验说明', width: 80,sortable:true },
+                { field: 'LogisticsCode', title: '物流号', width: 80, sortable: true },
+                { field: 'CustomerCode', title: '主机厂图号', width: 80, sortable: true },
                 { field: 'InvId', title: '入库仓库', width: 80,sortable:true },
-                //{ field: 'ReInspectBillNum', title: '重新送检单', width: 80,sortable:true },
-                //{ field: 'InStoreBillNum', title: '入库单号', width: 80,sortable:true },
-                //{ field: 'InStoreMan', title: '入库员', width: 80,sortable:true },
-                //{ field: 'InvCode', title: '入库仓库', width: 80,sortable:true },
-                //{ field: 'InStoreStatus', title: '入库状态', width: 80,sortable:true },
-                //{ field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
-                //{ field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
-                //{ field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
-                //{ field: 'Attr4', title: 'Attr4', width: 80,sortable:true },
-                //{ field: 'Attr5', title: 'Attr5', width: 80,sortable:true },
-                //{ field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
-                //{ field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
-                //{ field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
-                //{ field: 'ModifyTime', title: '修改时间', width: 80,sortable:true }
+                { field: 'ArrivalQty', title: '入库数量', width: 80, sortable: true, align: 'right' },
             ]]
         });
     });

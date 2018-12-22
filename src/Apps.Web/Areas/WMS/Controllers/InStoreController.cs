@@ -23,11 +23,26 @@ namespace Apps.Web.Areas.WMS.Controllers
         public IWMS_InvInfoBLL m_InvInfoBll { get; set; }
         ValidationErrors errors = new ValidationErrors();
         
+        /// <summary>
+        /// 检验入库的Index
+        /// </summary>
+        /// <returns></returns>
         [SupportFilter]
         public ActionResult Index()
         {
             return View();
         }
+
+        /// <summary>
+        /// 手工入库的Index
+        /// </summary>
+        /// <returns></returns>
+        [SupportFilter(ActionName = "Index")]
+        public ActionResult Index1()
+        {
+            return View();
+        }
+
         [HttpPost]
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string queryStr)

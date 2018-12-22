@@ -179,11 +179,17 @@ namespace Apps.BLL.Sys
 			return CreateModelList(ref queryData);
 		}
 
-        public static SelectList GetSysParamByType(string typeCode)
+        public static SelectList GetSysParamByType(string typeCode, bool hasNull = false)
         {
             using (DBContainer db = new DBContainer())
             {
                 var list = db.SysParam.Where(x => x.TypeCode == typeCode && x.Enable == true).OrderBy(x => x.Sort).ToList();
+
+                if (hasNull)
+                {
+                    list.Insert(0, new SysParam() { ParamCode = "", ParamName = "" });
+                }
+
                 return new SelectList(list, "ParamCode", "ParamName");
             }
         }
