@@ -61,7 +61,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.CreateTime = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {
-                if (m_BLL.CreateReturnOrder(GetUserId(), model.PartID, model.SupplierId, model.InvId, model.AdjustQty, model.Remark) != "")
+                if (m_BLL.CreateReturnOrder(ref errors, GetUserId(), model.PartID, model.SupplierId, model.InvId, model.AdjustQty, model.Remark))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum, "成功", "创建", "WMS_ReturnOrder");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
@@ -80,9 +80,9 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
-        #region 批量确认
+        #region 打印
         [SupportFilter(ActionName = "Create")]
-        public ActionResult CreateBatch()
+        public ActionResult Print()
         {
             return View();
         }
@@ -90,18 +90,27 @@ namespace Apps.Web.Areas.WMS.Controllers
         [HttpPost]
         [SupportFilter(ActionName = "Create")]
         [ValidateInput(false)]
-        public JsonResult CreateBatch(string inserted)
+        public JsonResult Print(string inserted)
         {
             try
             {
-                var returnOrderNum = m_BLL.CreateBatchReturnOrder(GetUserId(), inserted);
-                LogHandler.WriteServiceLog(GetUserId(), "保存退货单成功", "成功", "保存", "WMS_ReturnOrder");
+                var returnOrderNum = m_BLL.PrintReturnOrder(ref errors, GetUserId(), inserted);
+                if (!String.IsNullOrEmpty(returnOrderNum))
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), "打印退货单成功", "成功", "打印", "WMS_ReturnOrder");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnOrderNum));
+                    //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
+                }
+                else
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), errors.Error, "失败", "打印", "WMS_ReturnOrder");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+                }
 
-                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnOrderNum));
             }
             catch (Exception ex)
             {
-                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "保存", "WMS_ReturnOrder");
+                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "打印", "WMS_ReturnOrder");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }
@@ -341,24 +350,24 @@ namespace Apps.Web.Areas.WMS.Controllers
         #endregion
 
         #region 打印
-        [SupportFilter(ActionName = "Create")]
-        public ActionResult Print(string returnOrderNum)
-        {
-            var entity = m_BLL.GetListByWhere(ref setNoPagerAscById, "ReturnOrderNum == \"" + returnOrderNum + "\"").First();
-            if (entity.PrintStaus == "未退货")
-            {
-                if (m_BLL.PrintReturnOrder(ref errors, GetUserId(), returnOrderNum))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "ReturnOrderNum" + returnOrderNum, "成功", "打印", "WMS_ReturnOrder");
-                }
-                else
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "ReturnOrderNum" + returnOrderNum + "," + errors.Error, "失败", "打印", "WMS_ReturnOrder");
-                    return Json(JsonHandler.CreateMessage(0, Resource.EditFail + errors.Error), JsonRequestBehavior.AllowGet);
-                }
-            }
-            return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
-        }
+       //[SupportFilter(ActionName = "Create")]
+       //public ActionResult Print(string returnOrderNum)
+       // {
+       //     var entity = m_BLL.GetListByWhere(ref setNoPagerAscById, "ReturnOrderNum == \"" + returnOrderNum + "\"").First();
+       //     if (entity.PrintStaus == "未退货")
+       //     {
+       //         if (m_BLL.PrintReturnOrder(ref errors, GetUserId(), returnOrderNum))
+       //         {
+       //             LogHandler.WriteServiceLog(GetUserId(), "ReturnOrderNum" + returnOrderNum, "成功", "打印", "WMS_ReturnOrder");
+       //         }
+       //         else
+       //         {
+       //             LogHandler.WriteServiceLog(GetUserId(), "ReturnOrderNum" + returnOrderNum + "," + errors.Error, "失败", "打印", "WMS_ReturnOrder");
+       //             return Json(JsonHandler.CreateMessage(0, Resource.EditFail + errors.Error), JsonRequestBehavior.AllowGet);
+       //         }
+       //     }
+       //     return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
+       // }
         #endregion
     }
 }

@@ -2505,12 +2505,6 @@
           <Parameter Name="Rows" Type="int" Mode="In" />
           <Parameter Name="UserId" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="P_WMS_CreateBatchReturnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="UserId" Type="varchar" Mode="In" />
-          <Parameter Name="JsonReturnOrder" Type="nvarchar(max)" Mode="In" />
-          <Parameter Name="ReturnOrderNum" Type="varchar" Mode="InOut" />
-          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
-        </Function>
         <Function Name="P_WMS_CreateInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="ArrivalBillNum" Type="varchar" Mode="In" />
@@ -2523,12 +2517,12 @@
           <Parameter Name="InvId" Type="int" Mode="In" />
           <Parameter Name="Qty" Type="decimal" Mode="In" />
           <Parameter Name="Remark" Type="nvarchar" Mode="In" />
-          <Parameter Name="ReturnOrderNum" Type="varchar" Mode="InOut" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="P_WMS_PrintReturnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
-          <Parameter Name="ReturnOrderNum" Type="varchar" Mode="In" />
+          <Parameter Name="JsonReturnOrder" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="ReturnOrderNum" Type="varchar" Mode="InOut" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="P_WMS_ProcessInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -3565,12 +3559,6 @@
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
           </AssociationSet>
-          <FunctionImport Name="P_WMS_CreateBatchReturnOrder">
-            <Parameter Name="UserId" Mode="In" Type="String" />
-            <Parameter Name="JsonReturnOrder" Mode="In" Type="String" />
-            <Parameter Name="ReturnOrderNum" Mode="InOut" Type="String" />
-            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
-          </FunctionImport>
           <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Part" Association="DB.FK_WMS_ReturnOrder_WMS_Part">
             <End Role="WMS_Part" EntitySet="WMS_Part" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
@@ -3586,12 +3574,12 @@
             <Parameter Name="InvId" Mode="In" Type="Int32" />
             <Parameter Name="Qty" Mode="In" Type="Decimal" />
             <Parameter Name="Remark" Mode="In" Type="String" />
-            <Parameter Name="ReturnOrderNum" Mode="InOut" Type="String" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="P_WMS_PrintReturnOrder">
             <Parameter Name="UserId" Mode="In" Type="String" />
-            <Parameter Name="ReturnOrderNum" Mode="In" Type="String" />
+            <Parameter Name="JsonReturnOrder" Mode="In" Type="String" />
+            <Parameter Name="ReturnOrderNum" Mode="InOut" Type="String" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
           </EntityContainer>
@@ -7871,7 +7859,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="P_WMS_CreateBatchReturnOrder" FunctionName="DB.Store.P_WMS_CreateBatchReturnOrder" />
           <FunctionImportMapping FunctionImportName="P_WMS_CreateReturnOrder" FunctionName="DB.Store.P_WMS_CreateReturnOrder" />
           <FunctionImportMapping FunctionImportName="P_WMS_PrintReturnOrder" FunctionName="DB.Store.P_WMS_PrintReturnOrder" />
           </EntityContainerMapping>

@@ -12,10 +12,10 @@ namespace Apps.IDAL.WMS
         /// <param name="opt"></param>
         /// <param name="jsonReturnOrder"></param>
         /// <returns></returns>
-        string CreateBatchReturnOrder(string opt, string jsonReturnOrder);
+        //string CreateBatchReturnOrder(string opt, string jsonReturnOrder);
 
         /// <summary>
-        /// 手工创建退货单，并返回退货单号，以便打印
+        /// 手工创建退货单
         /// </summary>
         /// <param name="opt"></param>
         /// <param name="partId"></param>
@@ -26,6 +26,12 @@ namespace Apps.IDAL.WMS
         /// <returns></returns>
         string CreateReturnOrder(string opt, int? partId, int? supplierId, int? invId, decimal? qty, string remark);
 
-        string PrintReturnOrder(string opt, string returnOrderNum);
+        /// <summary>
+        /// 将所选择的退货单行生成退货单号，以便打印
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="jsonReturnOrder">所选择的退货单行</param>
+        /// <returns></returns>
+        string PrintReturnOrder(string opt, string jsonReturnOrder);
     }
 }

@@ -813,7 +813,7 @@
     <Content Include="Areas\WMS\Views\ReturnOrder\Create.cshtml" />
     <Content Include="Areas\WMS\Views\ReturnOrder\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\ReturnOrder\Index.cshtml" />
-    <Content Include="Areas\WMS\Views\ReturnOrder\CreateBatch.cshtml" />
+    <Content Include="Areas\WMS\Views\ReturnOrder\Print.cshtml" />
     <Content Include="Areas\WMS\Views\InStore\Index1.cshtml" />
     <Content Include="Areas\WMS\Views\ReturnOrder\SupplierLookUp.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">

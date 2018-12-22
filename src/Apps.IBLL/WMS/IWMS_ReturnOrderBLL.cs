@@ -34,7 +34,7 @@ namespace Apps.IBLL.WMS
         /// <param name="opt"></param>
         /// <param name="jsonReturnOrder"></param>
         /// <returns></returns>
-        string CreateBatchReturnOrder(string opt, string jsonReturnOrder);
+        //string CreateBatchReturnOrder(string opt, string jsonReturnOrder);
 
         /// <summary>
         /// 手工创建退货单，并返回退货单号
@@ -46,7 +46,7 @@ namespace Apps.IBLL.WMS
         /// <param name="qty"></param>
         /// <param name="remark"></param>
         /// <returns></returns>
-        string CreateReturnOrder(string opt, int? partId, int? supplierId, int? invId, decimal? qty, string remark);
+        bool CreateReturnOrder(ref ValidationErrors errors, string opt, int? partId, int? supplierId, int? invId, decimal? qty, string remark);
 
         /// <summary>
         /// 打印退货单
@@ -54,6 +54,6 @@ namespace Apps.IBLL.WMS
         /// <param name="errors"></param>
         /// <param name="returnOrderNum"></param>
         /// <returns></returns>
-        bool PrintReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
+        string PrintReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
     }
 }

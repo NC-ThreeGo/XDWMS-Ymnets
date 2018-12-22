@@ -699,20 +699,7 @@ namespace Apps.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ProcessInspectBill", userIdParameter, jsonInspectBillParameter, returnValue);
         }
     
-        public virtual int P_WMS_CreateBatchReturnOrder(string userId, string jsonReturnOrder, ObjectParameter returnOrderNum, ObjectParameter returnValue)
-        {
-            var userIdParameter = userId != null ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(string));
-    
-            var jsonReturnOrderParameter = jsonReturnOrder != null ?
-                new ObjectParameter("JsonReturnOrder", jsonReturnOrder) :
-                new ObjectParameter("JsonReturnOrder", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateBatchReturnOrder", userIdParameter, jsonReturnOrderParameter, returnOrderNum, returnValue);
-        }
-    
-        public virtual int P_WMS_CreateReturnOrder(string userId, Nullable<int> partId, Nullable<int> supplierId, Nullable<int> invId, Nullable<decimal> qty, string remark, ObjectParameter returnOrderNum, ObjectParameter returnValue)
+        public virtual int P_WMS_CreateReturnOrder(string userId, Nullable<int> partId, Nullable<int> supplierId, Nullable<int> invId, Nullable<decimal> qty, string remark, ObjectParameter returnValue)
         {
             var userIdParameter = userId != null ?
                 new ObjectParameter("UserId", userId) :
@@ -738,20 +725,20 @@ namespace Apps.Models
                 new ObjectParameter("Remark", remark) :
                 new ObjectParameter("Remark", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateReturnOrder", userIdParameter, partIdParameter, supplierIdParameter, invIdParameter, qtyParameter, remarkParameter, returnOrderNum, returnValue);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateReturnOrder", userIdParameter, partIdParameter, supplierIdParameter, invIdParameter, qtyParameter, remarkParameter, returnValue);
         }
     
-        public virtual int P_WMS_PrintReturnOrder(string userId, string returnOrderNum, ObjectParameter returnValue)
+        public virtual int P_WMS_PrintReturnOrder(string userId, string jsonReturnOrder, ObjectParameter returnOrderNum, ObjectParameter returnValue)
         {
             var userIdParameter = userId != null ?
                 new ObjectParameter("UserId", userId) :
                 new ObjectParameter("UserId", typeof(string));
     
-            var returnOrderNumParameter = returnOrderNum != null ?
-                new ObjectParameter("ReturnOrderNum", returnOrderNum) :
-                new ObjectParameter("ReturnOrderNum", typeof(string));
+            var jsonReturnOrderParameter = jsonReturnOrder != null ?
+                new ObjectParameter("JsonReturnOrder", jsonReturnOrder) :
+                new ObjectParameter("JsonReturnOrder", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_PrintReturnOrder", userIdParameter, returnOrderNumParameter, returnValue);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_PrintReturnOrder", userIdParameter, jsonReturnOrderParameter, returnOrderNum, returnValue);
         }
     }
 }

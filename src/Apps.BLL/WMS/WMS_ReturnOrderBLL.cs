@@ -243,33 +243,47 @@ namespace Apps.BLL.WMS
 			return CreateModelList(ref queryData);
 		}
 
-        public string CreateBatchReturnOrder(string opt, string jsonReturnOrder)
-        {
-            return m_Rep.CreateBatchReturnOrder(opt, jsonReturnOrder);
-        }
+        //public string CreateBatchReturnOrder(string opt, string jsonReturnOrder)
+        //{
+        //    return m_Rep.CreateBatchReturnOrder(opt, jsonReturnOrder);
+        //}
 
-        public string CreateReturnOrder(string opt, int? partId, int? supplierId, int? invId, decimal? qty, string remark)
-        {
-            return m_Rep.CreateReturnOrder(opt, partId, supplierId, invId, qty, remark);
-        }
-
-        public bool PrintReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum)
+        public bool CreateReturnOrder(ref ValidationErrors errors, string opt, int? partId, int? supplierId, int? invId, decimal? qty, string remark)
         {
             try
             {
-                var rtn = m_Rep.PrintReturnOrder(opt, returnOrderNum);
-                if (!String.IsNullOrEmpty(rtn))
+                var message = m_Rep.CreateReturnOrder(opt, partId, supplierId, invId, qty, remark);
+                if (String.IsNullOrEmpty(message))
+                    return true;
+                else
                 {
-                    errors.Add(rtn);
+                    errors.Add(message);
                     return false;
                 }
-                else
-                    return true;
             }
             catch(Exception ex)
             {
                 errors.Add(ex.Message);
                 return false;
+            }
+        }
+
+        public string PrintReturnOrder(ref ValidationErrors errors, string opt, string jsonReturnOrderNum)
+        {
+            try
+            {
+                var rtn = m_Rep.PrintReturnOrder(opt, jsonReturnOrderNum);
+                if (!String.IsNullOrEmpty(rtn))
+                {
+                    return rtn;
+                }
+                else
+                    return null;
+            }
+            catch(Exception ex)
+            {
+                errors.Add(ex.Message);
+                return null;
             }
         }
     }
