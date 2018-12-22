@@ -297,6 +297,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult GetReturnOrderList(GridPager pager, string supplierId)
         {
             //TODO：指定供应商，且退货单号为空的退货行
+            if (String.IsNullOrEmpty(supplierId))
+                supplierId = "0";
             List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "SupplierId == \"" + supplierId + "\" && ReturnOrderNum == null").ToList();
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
