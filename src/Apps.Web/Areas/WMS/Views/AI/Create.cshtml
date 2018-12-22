@@ -120,6 +120,11 @@
                     //将POId赋值给Input输入框
                     //$("#Id").val(data.rows[0].Id);
                 }
+                else
+                {
+                    if ($("#PONo").val() != '')
+                        alert('没有需要处理的数据！'); 
+                }
             },
             columns: [[
                 {
