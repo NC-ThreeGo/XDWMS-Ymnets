@@ -9,6 +9,8 @@ using LinqToExcel;
 using ClosedXML.Excel;
 using Apps.Models.WMS;
 using System.Dynamic;
+using Apps.Locale;
+using Apps.BLL.Core;
 
 namespace Apps.BLL.WMS
 {
@@ -38,6 +40,42 @@ namespace Apps.BLL.WMS
         public string CreateInspectBill(string opt, string arrivalBillNum)
         {
             return m_Rep.CreateInspectBill(opt, arrivalBillNum);
+        }
+
+        public virtual bool CancelInspectBill(ref ValidationErrors errors, string opt, int aiId)
+        {
+            try
+            {
+                WMS_AI entity = m_Rep.GetById(aiId);
+                if (entity == null)
+                {
+                    errors.Add(Resource.Disable);
+                    return false;
+                }
+                //entity.Id = aiId;               
+                entity.InspectBillNum = "";
+                entity.InspectMan = "";
+                entity.InspectDate = null;
+                entity.InspectStatus = "未送检";
+                entity.ModifyPerson = opt;
+                entity.ModifyTime = DateTime.Now;
+
+                if (m_Rep.Edit(entity))
+                {
+                    return true;
+                }
+                else
+                {
+                    errors.Add(Resource.NoDataChange);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+                ExceptionHander.WriteException(ex);
+                return false;
+            }
         }
 
         public bool ProcessInspectBill(ref ValidationErrors errors, string opt, string jsonInspectBill)

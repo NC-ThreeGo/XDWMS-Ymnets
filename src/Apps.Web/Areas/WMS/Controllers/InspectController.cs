@@ -125,11 +125,13 @@ namespace Apps.Web.Areas.WMS.Controllers
         #region 删除
         [HttpPost]
         [SupportFilter]
-        public ActionResult Delete(long id)
+        public ActionResult Delete(int id)
         {
+            
             if (id != 0)
             {
-                if (m_BLL.Delete(ref errors, id))
+                //if (m_BLL.Delete(ref errors, id))
+                if (m_BLL.CancelInspectBill(ref errors, GetUserId(),id))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_AI");
                     return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));

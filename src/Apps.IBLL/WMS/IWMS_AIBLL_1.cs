@@ -34,5 +34,13 @@ namespace Apps.IBLL.WMS
         /// <param name="opt"></param>
         /// <param name="jsonInspectBill"></param>
         bool ProcessInspectBill(ref ValidationErrors errors, string opt, string jsonInspectBill);
-}
+
+        /// <summary>
+        /// 取消送检单
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="arrivalBillNum"></param>
+        bool CancelInspectBill(ref ValidationErrors errors, string opt, int aiId);
+
+    }
 }
