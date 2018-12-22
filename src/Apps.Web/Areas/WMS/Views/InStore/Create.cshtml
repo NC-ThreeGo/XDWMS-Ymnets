@@ -104,6 +104,11 @@
                         $("input[type='checkbox']")[i + 1].checked = true;
                     }
                 }
+                else
+                {
+                    if ($("#InspectBillNum").val() != '')
+                        alert('没有需要处理的数据！'); 
+                }
             },
             columns: [[
                 {

@@ -295,7 +295,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetArrivalBillList(GridPager pager, string arrivalBillNum)
         {
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ArrivalBillNum == \"" + arrivalBillNum + "\"").ToList();
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "ArrivalBillNum == \"" + arrivalBillNum + "\" && InspectStatus == \"" + "未送检" + "\"").ToList();
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

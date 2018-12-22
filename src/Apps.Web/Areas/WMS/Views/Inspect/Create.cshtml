@@ -26,33 +26,43 @@
                 $.messageBox5s('提示', $("#ErrMesList").html());
                 return;
             }
-            if ($("form").valid()) 
+            if ($("form").valid())
             {
-                $.ajax({
-                    url: "@Url.Action("Create")",
-                    type: "Post",
-                    data: { arrivalBillNum: $("#arrivalBillNum").val() },
-                    dataType: "json",
-                    success: function (data)
-                    {
-                        if (data.type == 1)
+                var $dg = $('#List');
+                var rows = $dg.datagrid('getRows');  //一张送检单必须一次性输入全部行的检验结果。
+                //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
+                if (rows.length)
+                {
+                    $.ajax({
+                        url: "@Url.Action("Create")",
+                        type: "Post",
+                        data: { arrivalBillNum: $("#arrivalBillNum").val() },
+                        dataType: "json",
+                        success: function (data)
                         {
-                            hideLoading();
-                            //window.parent.frameReturnByMes(data.message);
-                            //window.parent.frameReturnByReload(true);
-                            //window.parent.frameReturnByClose()
-                            //window.parent.frameReturnByMes("保存成功！");
+                            if (data.type == 1)
+                            {
+                                hideLoading();
+                                //window.parent.frameReturnByMes(data.message);
+                                //window.parent.frameReturnByReload(true);
+                                //window.parent.frameReturnByClose()
+                                //window.parent.frameReturnByMes("保存成功！");
 
-                            //打开报表打印的窗口
-                            self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=InspectBill&billNum=' + data.value;
-                        } else
-                        {
-                            window.parent.frameReturnByMes(data.message);
-                            hideLoading();
+                                //打开报表打印的窗口
+                                self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=InspectBill&billNum=' + data.value;
+                            } else
+                            {
+                                window.parent.frameReturnByMes(data.message);
+                                hideLoading();
 
+                            }
                         }
-                    }
-                })
+                    })
+                }
+                else
+                {
+                    $.messageBox5s('提示', "没有数据需要保存！");
+                }
             }
         });
         $("#btnReturn").click(function () {
@@ -69,7 +79,7 @@
         });
 
     });
-    $(function () 
+    $(function ()
     {
         $('#List').datagrid({
             url: '@Url.Action("GetArrivalBillList")?arrivalBillNum=""',
@@ -84,6 +94,14 @@
             striped: true, //奇偶行是否区分
             remotesort: false,
             showFooter: false,
+            onLoadSuccess: function (data)
+            {
+                if (data.rows.length == 0)
+                {
+                    if ($("#arrivalBillNum").val() !='')
+                        alert('没有需要处理的数据！');
+                }
+            },
             columns: [[
                 { field: 'ArrivalBillNum', title: '到货单号', width: 80, sortable: true },
                 { field: 'PO', title: '采购订单', width: 100, sortable: true },
