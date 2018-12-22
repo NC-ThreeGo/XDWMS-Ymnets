@@ -711,5 +711,47 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateBatchReturnOrder", userIdParameter, jsonReturnOrderParameter, returnOrderNum, returnValue);
         }
+    
+        public virtual int P_WMS_CreateReturnOrder(string userId, Nullable<int> partId, Nullable<int> supplierId, Nullable<int> invId, Nullable<decimal> qty, string remark, ObjectParameter returnOrderNum, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var partIdParameter = partId.HasValue ?
+                new ObjectParameter("PartId", partId) :
+                new ObjectParameter("PartId", typeof(int));
+    
+            var supplierIdParameter = supplierId.HasValue ?
+                new ObjectParameter("SupplierId", supplierId) :
+                new ObjectParameter("SupplierId", typeof(int));
+    
+            var invIdParameter = invId.HasValue ?
+                new ObjectParameter("InvId", invId) :
+                new ObjectParameter("InvId", typeof(int));
+    
+            var qtyParameter = qty.HasValue ?
+                new ObjectParameter("Qty", qty) :
+                new ObjectParameter("Qty", typeof(decimal));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("Remark", remark) :
+                new ObjectParameter("Remark", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateReturnOrder", userIdParameter, partIdParameter, supplierIdParameter, invIdParameter, qtyParameter, remarkParameter, returnOrderNum, returnValue);
+        }
+    
+        public virtual int P_WMS_PrintReturnOrder(string userId, string returnOrderNum, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var returnOrderNumParameter = returnOrderNum != null ?
+                new ObjectParameter("ReturnOrderNum", returnOrderNum) :
+                new ObjectParameter("ReturnOrderNum", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_PrintReturnOrder", userIdParameter, returnOrderNumParameter, returnValue);
+        }
     }
 }

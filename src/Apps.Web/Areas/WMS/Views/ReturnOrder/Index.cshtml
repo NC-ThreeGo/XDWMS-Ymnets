@@ -44,7 +44,7 @@
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
-    @Html.ToolButton("btnReport", "fa fa-search", "查看报表", ref perm, "Query", true)
+    @Html.ToolButton("btnReport", "fa fa-search", Resource.Print, ref perm, "Create", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -71,11 +71,11 @@
             },
             columns: [[
                 { field: 'Id', title: '退货单ID', width: 80,hidden:true },
-                { field: 'ReturnOrderNum', title: '退货单号', width: 80,sortable:true },
-                { field: 'ArrivalBillNum', title: '到货单号', width: 80,sortable:true },
-                { field: 'InspectBillNum', title: '检验单号', width: 80, sortable: true },
-                { field: 'PartCode', title: '物料编码', width: 80,sortable:true },
-                { field: 'SupplierShortName', title: '代理商', width: 80,sortable:true },
+                { field: 'ReturnOrderNum', title: '退货单号', width: 110,sortable:true },
+                { field: 'ArrivalBillNum', title: '到货单号', width: 140,sortable:true },
+                { field: 'InspectBillNum', title: '检验单号', width: 110, sortable: true },
+                { field: 'PartCode', title: '物料编码', width: 60,sortable:true },
+                { field: 'SupplierShortName', title: '供应商', width: 80,sortable:true },
                 { field: 'InvCode', title: '库房', width: 80,sortable:true },
                 //{ field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
                 { field: 'ReturnQty', title: '应退货数量', width: 80,sortable:true },
@@ -167,9 +167,15 @@
         });
         $("#btnReport").click(function() {
             var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + row.ReturnOrderNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+            if (row != null) 
+            {
+                //$.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + row.ReturnOrderNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+                $.modalWindow("单据打印", '@Url.Action("Print")?returnOrderNum=' + row.ReturnOrderNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+            }
+            else
+            {
+                $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords');
+            }
         });
     });
     function ImportData()

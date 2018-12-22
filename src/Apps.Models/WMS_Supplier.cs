@@ -17,6 +17,7 @@ namespace Apps.Models
         public WMS_Supplier()
         {
             this.WMS_PO = new HashSet<WMS_PO>();
+            this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
         }
     
         public int Id { get; set; }
@@ -35,5 +36,6 @@ namespace Apps.Models
         public Nullable<System.DateTime> ModifyTime { get; set; }
     
         public virtual ICollection<WMS_PO> WMS_PO { get; set; }
+        public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
     }
 }

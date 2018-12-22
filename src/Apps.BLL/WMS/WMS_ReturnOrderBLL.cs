@@ -48,8 +48,8 @@ namespace Apps.BLL.WMS
 
                                                   ArrivalBillNum = r.WMS_AI.ArrivalBillNum,
                                                   InspectBillNum = r.WMS_AI.InspectBillNum,
-                                                  SupplierShortName = r.WMS_AI.WMS_PO.WMS_Supplier.SupplierShortName,
-                                                  PartCode = r.WMS_AI.WMS_PO.WMS_Part.PartCode,
+                                                  SupplierShortName = r.WMS_Supplier.SupplierShortName,
+                                                  PartCode = r.WMS_Part.PartCode,
                                                   InvCode = r.WMS_InvInfo.InvCode,
                                                   ArrivalQty = r.WMS_AI.ArrivalQty,
                                                   QualifyNum = r.WMS_AI.QualifyQty,
@@ -248,6 +248,30 @@ namespace Apps.BLL.WMS
             return m_Rep.CreateBatchReturnOrder(opt, jsonReturnOrder);
         }
 
+        public string CreateReturnOrder(string opt, int? partId, int? supplierId, int? invId, decimal? qty, string remark)
+        {
+            return m_Rep.CreateReturnOrder(opt, partId, supplierId, invId, qty, remark);
+        }
+
+        public bool PrintReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum)
+        {
+            try
+            {
+                var rtn = m_Rep.PrintReturnOrder(opt, returnOrderNum);
+                if (!String.IsNullOrEmpty(rtn))
+                {
+                    errors.Add(rtn);
+                    return false;
+                }
+                else
+                    return true;
+            }
+            catch(Exception ex)
+            {
+                errors.Add(ex.Message);
+                return false;
+            }
+        }
     }
 }
 

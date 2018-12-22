@@ -2285,6 +2285,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_ReturnOrder_WMS_Part">
+          <End Role="WMS_Part" Type="Self.WMS_Part" Multiplicity="0..1" />
+          <End Role="WMS_ReturnOrder" Type="Self.WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="PartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WMS_ReturnOrder_WMS_SubInvInfo">
           <End Role="WMS_SubInvInfo" Type="Self.WMS_SubInvInfo" Multiplicity="0..1" />
           <End Role="WMS_ReturnOrder" Type="Self.WMS_ReturnOrder" Multiplicity="*" />
@@ -2294,6 +2306,18 @@
             </Principal>
             <Dependent Role="WMS_ReturnOrder">
               <PropertyRef Name="SubInvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_ReturnOrder_WMS_Supplier">
+          <End Role="WMS_Supplier" Type="Self.WMS_Supplier" Multiplicity="0..1" />
+          <End Role="WMS_ReturnOrder" Type="Self.WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Supplier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="SupplierId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2491,6 +2515,21 @@
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="ArrivalBillNum" Type="varchar" Mode="In" />
           <Parameter Name="InspectBillNum" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="P_WMS_CreateReturnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="PartId" Type="int" Mode="In" />
+          <Parameter Name="SupplierId" Type="int" Mode="In" />
+          <Parameter Name="InvId" Type="int" Mode="In" />
+          <Parameter Name="Qty" Type="decimal" Mode="In" />
+          <Parameter Name="Remark" Type="nvarchar" Mode="In" />
+          <Parameter Name="ReturnOrderNum" Type="varchar" Mode="InOut" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="P_WMS_PrintReturnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="ReturnOrderNum" Type="varchar" Mode="In" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="P_WMS_ProcessInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
@@ -2915,8 +2954,16 @@
             <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
           </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Part" Association="Self.FK_WMS_ReturnOrder_WMS_Part">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
           <AssociationSet Name="FK_WMS_ReturnOrder_WMS_SubInvInfo" Association="Self.FK_WMS_ReturnOrder_WMS_SubInvInfo">
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Supplier" Association="Self.FK_WMS_ReturnOrder_WMS_Supplier">
+            <End Role="WMS_Supplier" EntitySet="WMS_Supplier" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
           </AssociationSet>
           <AssociationSet Name="FK_WMS_SubInvInfo_WMS_InvInfo" Association="Self.FK_WMS_SubInvInfo_WMS_InvInfo">
@@ -3522,6 +3569,29 @@
             <Parameter Name="UserId" Mode="In" Type="String" />
             <Parameter Name="JsonReturnOrder" Mode="In" Type="String" />
             <Parameter Name="ReturnOrderNum" Mode="InOut" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Part" Association="DB.FK_WMS_ReturnOrder_WMS_Part">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Supplier" Association="DB.FK_WMS_ReturnOrder_WMS_Supplier">
+            <End Role="WMS_Supplier" EntitySet="WMS_Supplier" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <FunctionImport Name="P_WMS_CreateReturnOrder">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="PartId" Mode="In" Type="Int32" />
+            <Parameter Name="SupplierId" Mode="In" Type="Int32" />
+            <Parameter Name="InvId" Mode="In" Type="Int32" />
+            <Parameter Name="Qty" Mode="In" Type="Decimal" />
+            <Parameter Name="Remark" Mode="In" Type="String" />
+            <Parameter Name="ReturnOrderNum" Mode="InOut" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="P_WMS_PrintReturnOrder">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="ReturnOrderNum" Mode="In" Type="String" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
           </EntityContainer>
@@ -5910,6 +5980,7 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="WMS_PO" Relationship="DB.FK_WMS_PO_WMS_Part" FromRole="WMS_Part" ToRole="WMS_PO" />
+          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_Part" ToRole="WMS_ReturnOrder" />
         </EntityType>
         <EntityType Name="WMS_Supplier">
           <Key>
@@ -5930,6 +6001,7 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="WMS_PO" Relationship="DB.FK_WMS_PO_WMS_Supplier" FromRole="WMS_Supplier" ToRole="WMS_PO" />
+          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_Supplier" FromRole="WMS_Supplier" ToRole="WMS_ReturnOrder" />
         </EntityType>
         <EntityType Name="WMS_PO">
           <Key>
@@ -6135,6 +6207,8 @@
           <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_ReturnOrder_WMS_InvInfo" FromRole="WMS_ReturnOrder" ToRole="WMS_InvInfo" />
           <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" FromRole="WMS_ReturnOrder" ToRole="WMS_SubInvInfo" />
           <Property Name="BatchId" Type="Int32" />
+          <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_ReturnOrder" ToRole="WMS_Part" />
+          <NavigationProperty Name="WMS_Supplier" Relationship="DB.FK_WMS_ReturnOrder_WMS_Supplier" FromRole="WMS_ReturnOrder" ToRole="WMS_Supplier" />
         </EntityType>
         <Association Name="FK_WMS_ReturnOrder_WMS_AI">
           <End Type="DB.WMS_AI" Role="WMS_AI" Multiplicity="0..1" />
@@ -6169,6 +6243,30 @@
             </Principal>
             <Dependent Role="WMS_ReturnOrder">
               <PropertyRef Name="SubInvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_ReturnOrder_WMS_Part">
+          <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="0..1" />
+          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="PartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_ReturnOrder_WMS_Supplier">
+          <End Type="DB.WMS_Supplier" Role="WMS_Supplier" Multiplicity="0..1" />
+          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Supplier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="SupplierId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7774,6 +7872,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="P_WMS_CreateBatchReturnOrder" FunctionName="DB.Store.P_WMS_CreateBatchReturnOrder" />
+          <FunctionImportMapping FunctionImportName="P_WMS_CreateReturnOrder" FunctionName="DB.Store.P_WMS_CreateReturnOrder" />
+          <FunctionImportMapping FunctionImportName="P_WMS_PrintReturnOrder" FunctionName="DB.Store.P_WMS_PrintReturnOrder" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

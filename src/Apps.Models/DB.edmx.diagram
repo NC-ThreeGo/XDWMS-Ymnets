@@ -165,6 +165,8 @@
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_AI" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Part" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Supplier" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

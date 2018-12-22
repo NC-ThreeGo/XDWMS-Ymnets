@@ -17,7 +17,8 @@
         $("#btnLoadSupplier").click(function ()
         {
             var supplierId = $("#SupplierId").val();
-            $("#List").datagrid("load", { supplierId: supplierId });
+            var supplierShortName = $("#Supplier").val();
+            $("#List").datagrid("load", { supplierId: supplierId, supplierShortName: supplierShortName });
         });
 
         $("#btnSave").click(function ()
@@ -81,7 +82,7 @@
     $(function ()
     {
         $('#List').datagrid({
-            url: '@Url.Action("GetReturnOrderList")?supplierId=""',
+            url: '@Url.Action("GetReturnOrderList")?supplierId=""&supplierShortName=""',
             width: SetGridWidthSub(10),
             methord: 'post',
             height: SetGridHeightSub(202),
@@ -240,7 +241,7 @@
                     <script type="text/javascript">
                         function showSelSupplier()
                         {
-                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Supplier/SupplierLookUp'></iframe>");
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/ReturnOrder/SupplierLookUp'></iframe>");
                             $("#modalwindow").window({ title: '选择供应商', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
                         }
 

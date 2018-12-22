@@ -56,7 +56,7 @@ $.messageBox5s(Lang.Tip, mes);
              <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
  <table class="formtable">
     <tbody>
-        <tr>
+        @*<tr>
             <th>
                 @Html.LabelFor(model => model.ReturnOrderNum)：
             </th>
@@ -73,13 +73,32 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.EditorFor(model => model.AIID)
             </td>
             <td>@Html.ValidationMessageFor(model => model.AIID)</td>
-        </tr>
+        </tr>*@
         <tr>
             <th>
                 @Html.LabelFor(model => model.PartID)：
             </th>
             <td>
-                @Html.EditorFor(model => model.PartID)
+                @*@Html.EditorFor(model => model.PartID)*@
+                <div style="height:0;width:0;overflow:hidden">
+                    @Html.EditorFor(model => model.PartID)
+                </div>
+                <input id="PartList" name="PartList" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
+                <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelPart()"></a>
+                <script type="text/javascript">
+                    function showSelPart()
+                    {
+                        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Part/PartLookUp'></iframe>");
+                        $("#modalwindow").window({ title: '选择物料', width: SetGridWidthSub(20), height: SetGridHeightSub(45), iconCls: 'fa fa-plus' }).window('open');
+                    }
+
+                    function SetSelResultForPart(result, resultName)
+                    {
+                        $("#PartID").val(result);
+                        $("#PartList").val(resultName);
+                    }
+
+                </script>
             </td>
             <td>@Html.ValidationMessageFor(model => model.PartID)</td>
         </tr>
@@ -88,7 +107,26 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.SupplierId)：
             </th>
             <td>
-                @Html.EditorFor(model => model.SupplierId)
+                @*@Html.EditorFor(model => model.SupplierId)*@
+                <div style="height:0;width:0;overflow:hidden">
+                    @Html.EditorFor(model => model.SupplierId)
+                </div>
+                <input id="SupplierList" name="SupplierList" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
+                <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelSupplier()"></a>
+                <script type="text/javascript">
+                    function showSelSupplier()
+                    {
+                        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Supplier/SupplierLookUp'></iframe>");
+                        $("#modalwindow").window({ title: '选择供应商', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                    }
+
+                    function SetSelResult(result, resultName)
+                    {
+                        $("#SupplierId").val(result);
+                        $("#SupplierList").val(resultName);
+                    }
+
+                </script>
             </td>
             <td>@Html.ValidationMessageFor(model => model.SupplierId)</td>
         </tr>
@@ -97,11 +135,12 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.LabelFor(model => model.InvId)：
             </th>
             <td>
-                @Html.EditorFor(model => model.InvId)
+                @*@Html.EditorFor(model => model.InvId)*@
+                @Html.DropDownListFor(model => model.InvId, ViewBag.Inv as SelectList)
             </td>
             <td>@Html.ValidationMessageFor(model => model.InvId)</td>
         </tr>
-        <tr>
+        @*<tr>
             <th>
                 @Html.LabelFor(model => model.SubInvId)：
             </th>
@@ -109,8 +148,8 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.EditorFor(model => model.SubInvId)
             </td>
             <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
-        </tr>
-        <tr>
+        </tr>*@
+        @*<tr>
             <th>
                 @Html.LabelFor(model => model.ReturnQty)：
             </th>
@@ -118,7 +157,7 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.EditorFor(model => model.ReturnQty)
             </td>
             <td>@Html.ValidationMessageFor(model => model.ReturnQty)</td>
-        </tr>
+        </tr>*@
         <tr>
             <th>
                 @Html.LabelFor(model => model.AdjustQty)：
@@ -137,7 +176,7 @@ $.messageBox5s(Lang.Tip, mes);
             </td>
             <td>@Html.ValidationMessageFor(model => model.Remark)</td>
         </tr>
-        <tr>
+        @*<tr>
             <th>
                 @Html.LabelFor(model => model.PrintStaus)：
             </th>
@@ -262,7 +301,7 @@ $.messageBox5s(Lang.Tip, mes);
                @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
             </td>
             <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
-        </tr>
+        </tr>*@
     </tbody>
 </table>
 }
