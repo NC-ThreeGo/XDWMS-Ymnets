@@ -235,12 +235,19 @@ namespace Apps.BLL.WMS
 
 		public List<WMS_ReturnOrderModel> GetListByWhere(ref GridPager pager, string where)
 		{
-			IQueryable<WMS_ReturnOrder> queryData = null;
-			queryData = m_Rep.GetList().Where(where);
-			pager.totalRows = queryData.Count();
-			//排序
-			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
-			return CreateModelList(ref queryData);
+            try
+            {
+                IQueryable<WMS_ReturnOrder> queryData = null;
+                queryData = m_Rep.GetList().Where(where);
+                pager.totalRows = queryData.Count();
+                //排序
+                queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+                return CreateModelList(ref queryData);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
 		}
 
         //public string CreateBatchReturnOrder(string opt, string jsonReturnOrder)

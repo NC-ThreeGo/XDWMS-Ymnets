@@ -37,7 +37,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
-            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "(ReturnOrderNum != null && AIID != null) || (AIID == null)");
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "1 == 1");
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
