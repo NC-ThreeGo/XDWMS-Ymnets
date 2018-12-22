@@ -320,7 +320,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult InspectBillGetList(GridPager pager, string queryStr)
         {
             //TODO:显示有效且已打印的送检单。
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已检验\" and InStoreStatus == \"未入库\"")
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已送验\" and InStoreStatus == \"未入库\"")
                 .OrderBy(p => p.InspectBillNum).ToList();
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
