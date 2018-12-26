@@ -65,15 +65,15 @@ $.messageBox5s(Lang.Tip, mes);
             </td>
             <td>@Html.ValidationMessageFor(model => model.ArrivalBillNum)</td>
         </tr>
-        <tr>
+        @*<tr>
             <th>
-                @Html.LabelFor(model => model.POId)：
+                @Html.LabelFor(model => model.PO)：
             </th>
-            <td >
-                @Html.EditorFor(model => model.POId)
+            <td>                
+                @Html.ReadOnlyTextBoxFor(model => model.PO, true)
             </td>
-            <td>@Html.ValidationMessageFor(model => model.POId)</td>
-        </tr>
+            <td>@Html.ValidationMessageFor(model => model.PO)</td>
+        </tr>*@
         <tr>
             <th>
                 @Html.LabelFor(model => model.BoxQty)：

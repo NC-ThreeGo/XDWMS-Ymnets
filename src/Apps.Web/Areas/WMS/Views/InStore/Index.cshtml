@@ -120,22 +120,34 @@
                 { field: 'ArrivalBillNum', title: '到货单号', width: 105,sortable:true },
                 { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
                 { field: 'PartName', title: '物料名称', width: 80, sortable: true },
-                { field: 'BoxQty', title: '到货箱数', width: 80, sortable: true, align: 'right' },
-                { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
-                { field: 'InspectStatus', title: '送检状态', width: 80, sortable: true },
+                { field: 'BoxQty', title: '到货箱数', width: 60, sortable: true, align: 'right' },
+                { field: 'ArrivalQty', title: '到货数量', width: 60, sortable: true, align: 'right' },
                 //{ field: 'InspectMan', title: '送检人', width: 80,sortable:true },
-                //{ field: 'InspectDate', title: '送检日期', width: 80,sortable:true },
-                //{ field: 'CheckOutDate', title: '检验日期', width: 80,sortable:true },
-                { field: 'CheckOutResult', title: '检验结果', width: 80,sortable:true },
+                //{ field: 'InspectDate', title: '送检日期', width: 80, sortable: true },
+                {
+                    field: 'InspectDate', title: '送检日期', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
+                //{ field: 'CheckOutDate', title: '检验日期', width: 80,sortable:true }, 
+                {
+                    field: 'CheckOutDate', title: '检验日期', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 { field: 'QualifyQty', title: '合格数量', width: 80, sortable: true, align: 'right' },
                 { field: 'NoQualifyQty', title: '不合格数量', width: 80, sortable: true, align: 'right' },
-                { field: 'CheckOutRemark', title: '检验说明', width: 80,sortable:true },
-                { field: 'InvId', title: '入库仓库', width: 80,sortable:true },
+                { field: 'CheckOutResult', title: '检验结果', width: 80, sortable: true },
+                { field: 'CheckOutRemark', title: '检验说明', width: 180, sortable: true },
+                { field: 'InvId', title: '入库仓库', width: 60,sortable:true },
                 //{ field: 'ReInspectBillNum', title: '重新送检单', width: 80,sortable:true },
                 //{ field: 'InStoreBillNum', title: '入库单号', width: 80,sortable:true },
                 //{ field: 'InStoreMan', title: '入库员', width: 80,sortable:true },
                 //{ field: 'InvCode', title: '入库仓库', width: 80,sortable:true },
-                //{ field: 'InStoreStatus', title: '入库状态', width: 80,sortable:true },
+                //{ field: 'InspectStatus', title: '送检状态', width: 80, sortable: true },
+                { field: 'InStoreStatus', title: '入库状态', width: 80, sortable: true },
                 //{ field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
                 //{ field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
                 //{ field: 'Attr3', title: 'Attr3', width: 80,sortable:true },

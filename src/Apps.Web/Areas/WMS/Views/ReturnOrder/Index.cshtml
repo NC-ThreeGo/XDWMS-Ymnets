@@ -82,11 +82,23 @@
                 { field: 'AdjustQty', title: '实际退货数量', width: 80,sortable:true },
                 { field: 'Remark', title: '退货说明', width: 80,sortable:true },
                 { field: 'PrintStaus', title: '打印状态', width: 80,sortable:true },
-                { field: 'PrintDate', title: '打印时间', width: 80,sortable:true },
+                { field: 'PrintDate', title: '打印时间', width: 80, sortable: true },
+                {
+                    field: 'PrintDate', title: '打印时间', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 { field: 'PrintMan', title: '打印人', width: 80,sortable:true },
                 { field: 'ConfirmStatus', title: '确认状态', width: 80,sortable:true },
                 { field: 'ConfirmMan', title: '确认人', width: 80,sortable:true },
-                { field: 'ConfirmDate', title: '确认时间', width: 80,sortable:true },
+                { field: 'ConfirmDate', title: '确认时间', width: 80, sortable: true },
+                {
+                    field: 'ConfirmDate', title: '确认时间', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 //{ field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
                 //{ field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
                 //{ field: 'Attr3', title: 'Attr3', width: 80,sortable:true },

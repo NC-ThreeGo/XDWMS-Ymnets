@@ -77,13 +77,25 @@
             columns: [[
                 { field: 'Id', title: '采购订单ID', width: 80,hidden:true },
                 { field: 'PO', title: '采购订单', width: 80,sortable:true },
-                { field: 'PODate', title: '采购日期', width: 80,sortable:true },
+                //{ field: 'PODate', title: '采购日期', width: 80, sortable: true },
+                {
+                    field: 'PODate', title: '采购日期', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 //{ field: 'SupplierId', title: '供应商编码', width: 80, sortable: true },
                 { field: 'SupplierShortName', title: '供应商简称', width: 80, sortable: true },
                 //{ field: 'PartId', title: '物料ID', width: 80, sortable: true },
                 { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
                 { field: 'QTY', title: '数量', width: 80,sortable:true },
-                { field: 'PlanDate', title: '计划到货日期', width: 80,sortable:true },
+                //{ field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true },
+                {
+                    field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 { field: 'POType', title: '采购订单类型', width: 80, sortable: true },
                 //{ field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true },
                 { field: 'Status', title: '状态', width: 80,sortable:true },
