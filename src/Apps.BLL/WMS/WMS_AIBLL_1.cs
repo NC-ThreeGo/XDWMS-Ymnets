@@ -54,7 +54,7 @@ namespace Apps.BLL.WMS
                 if (entity == null)
                 {
                     //errors.Add(Resource.Disable);
-                    errors.Add(" :已入库不能删除");
+                    errors.Add(" :单据已入库不能删除");
                     return false;
                 }
                 //entity.Id = aiId;               
