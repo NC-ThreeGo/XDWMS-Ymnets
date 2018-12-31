@@ -15,10 +15,13 @@ using System.Data;
 
 namespace Apps.Web.Areas.WMS.Controllers
 {
-    public class Product_EntryController : BaseController
+    public class ProductEntryController : BaseController
     {
         [Dependency]
         public IWMS_Product_EntryBLL m_BLL { get; set; }
+        [Dependency]
+        public IWMS_InvInfoBLL _InvInfoBll { get; set; }
+
         ValidationErrors errors = new ValidationErrors();
         
         [SupportFilter]
@@ -36,11 +39,18 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
         #region 创建
         [SupportFilter]
         public ActionResult Create()
         {
-            return View();
+            ViewBag.Inv = new SelectList(_InvInfoBll.GetList(ref setNoPagerAscById, ""), "Id", "InvName");
+            WMS_Product_EntryModel model = new WMS_Product_EntryModel()
+            {
+                ProductBillNum = "RK" + DateTime.Now.ToString("yyyyMMddHHmmssff"),
+
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -48,10 +58,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_Product_EntryModel model)
         {
             model.Id = 0;
+            model.CreatePerson = GetUserId();
             model.CreateTime = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {
-
                 if (m_BLL.Create(ref errors, model))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ProductBillNum" + model.ProductBillNum, "成功", "创建", "WMS_Product_Entry");

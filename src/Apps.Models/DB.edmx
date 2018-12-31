@@ -2626,6 +2626,11 @@
           <Parameter Name="JsonInspectBill" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
+        <Function Name="P_WMS_ProcessProductEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="ProductBillNum" Type="nvarchar" Mode="In" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
         <EntityContainer Name="DBStoreContainer">
           <EntitySet Name="Flow_External" EntityType="Self.Flow_External" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Flow_Form" EntityType="Self.Flow_Form" Schema="dbo" store:Type="Tables" />
@@ -3728,6 +3733,11 @@
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
           </AssociationSet>
+          <FunctionImport Name="P_WMS_ProcessProductEntry">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="ProductBillNum" Mode="In" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -8140,6 +8150,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="P_WMS_ProcessProductEntry" FunctionName="DB.Store.P_WMS_ProcessProductEntry" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

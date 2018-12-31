@@ -8,6 +8,7 @@ using System.IO;
 using LinqToExcel;
 using ClosedXML.Excel;
 using Apps.Models.WMS;
+using System.Data.Entity.Core.Objects;
 
 namespace Apps.BLL.WMS
 {
@@ -205,6 +206,41 @@ namespace Apps.BLL.WMS
 			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
 			return CreateModelList(ref queryData);
 		}
+
+        public override bool Create(ref ValidationErrors errors, WMS_Product_EntryModel model)
+        {
+            try
+            {
+                //开启事务
+                using (DBContainer db = new DBContainer())
+                {
+                    var tran = db.Database.BeginTransaction();  //开启事务
+
+                    if (base.Create(ref errors, model))
+                    {
+                        ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
+                        db.P_WMS_ProcessProductEntry(model.CreatePerson, model.ProductBillNum, returnValue);
+                        if (returnValue.Value == DBNull.Value)
+                        {
+                            tran.Commit();
+                            return true;
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                            errors.Add((string)returnValue.Value);
+                            return false;
+                        }
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+                return false;
+            }
+        }
     }
  }
 

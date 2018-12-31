@@ -741,5 +741,18 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_PrintReturnOrder", userIdParameter, jsonReturnOrderParameter, returnOrderNum, returnValue);
         }
+    
+        public virtual int P_WMS_ProcessProductEntry(string userId, string productBillNum, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var productBillNumParameter = productBillNum != null ?
+                new ObjectParameter("ProductBillNum", productBillNum) :
+                new ObjectParameter("ProductBillNum", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ProcessProductEntry", userIdParameter, productBillNumParameter, returnValue);
+        }
     }
 }

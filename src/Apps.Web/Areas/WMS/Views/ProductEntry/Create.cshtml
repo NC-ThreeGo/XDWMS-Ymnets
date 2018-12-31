@@ -47,160 +47,98 @@ $.messageBox5s(Lang.Tip, mes);
 </script>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
-@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
-@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
 </div>
 @using (Html.BeginForm())
 {
-             @Html.HiddenFor(model => model.Id, new { @Value = 0})
-             <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
- <table class="formtable">
-    <tbody>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ProductBillNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ProductBillNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ProductBillNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.EntryBillNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.EntryBillNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.EntryBillNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Department)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Department)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Department)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Partid)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Partid)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Partid)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ProductQty)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ProductQty)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ProductQty)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InvId)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InvId)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InvId)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.SubInvId)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.SubInvId)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Remark)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Remark)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Remark)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr1)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr1)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr1)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr2)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr2)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr2)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr3)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr3)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr3)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr4)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr4)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr4)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr5)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr5)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr5)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CreatePerson)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.CreatePerson)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CreatePerson)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ModifyPerson)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ModifyPerson)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ModifyPerson)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ModifyTime)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
-        </tr>
-    </tbody>
-</table>
+    @Html.HiddenFor(model => model.Id, new { @Value = 0 })
+    @Html.HiddenFor(model => model.ProductBillNum)
+    <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ProductBillNum)：
+                </th>
+                <td>
+                    @Model.ProductBillNum（自动生成）
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ProductBillNum)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Department)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Department)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Department)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Partid)：
+                </th>
+                <td>
+                    <div style="height:0;width:0;overflow:hidden">
+                        @Html.EditorFor(model => model.Partid)
+                    </div>
+                    <input id="PartList" name="PartList" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
+                    <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelPart()"></a>
+                    <script type="text/javascript">
+                        function showSelPart()
+                        {
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Part/PartLookUp'></iframe>");
+                            $("#modalwindow").window({ title: '选择物料', width: SetGridWidthSub(20), height: SetGridHeightSub(45), iconCls: 'fa fa-plus' }).window('open');
+                        }
+
+                        function SetSelResultForPart(result, resultName)
+                        {
+                            $("#Partid").val(result);
+                            $("#PartList").val(resultName);
+                        }
+
+                    </script>
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Partid)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.InvId)：
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.InvId, ViewBag.Inv as SelectList)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.InvId)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ProductQty)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.ProductQty)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ProductQty)</td>
+            </tr>
+            @*<tr>
+                    <th>
+                        @Html.LabelFor(model => model.SubInvId)：
+                    </th>
+                    <td>
+                        @Html.EditorFor(model => model.SubInvId)
+                    </td>
+                    <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
+                </tr>*@
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Remark)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Remark)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+            </tr>
+        </tbody>
+    </table>
 }
 
