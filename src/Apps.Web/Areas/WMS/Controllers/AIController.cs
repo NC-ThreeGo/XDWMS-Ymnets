@@ -114,34 +114,43 @@ namespace Apps.Web.Areas.WMS.Controllers
             //给关联字段物料编码赋值
             WMS_PartModel entity_p = m_PartBLL.GetById(entity.PartId);
             entity.PartCode = entity_p.PartCode;
-            return View(entity);            
+            return View(entity);
         }
 
         [HttpPost]
         [SupportFilter]
         public JsonResult Edit(WMS_AIModel model)
         {
-            model.ModifyTime = ResultHelper.NowTime;
-            model.ModifyPerson = GetUserId();
-            if (model != null && ModelState.IsValid)
+            //List<WMS_AIModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Id = " + id + " &&InspectStatus = \"已送检\"");
+            if (model.InspectStatus == "已送检")
             {
-
-                if (m_BLL.Edit(ref errors, model))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ArrivalBillNum" + model.ArrivalBillNum, "成功", "修改", "WMS_AI");
-                    return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
-                }
-                else
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ArrivalBillNum" + model.ArrivalBillNum + "," + ErrorCol, "失败", "修改", "WMS_AI");
-                    return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
-                }
+                return Json(JsonHandler.CreateMessage(0, "已送检单据不能修改"));
             }
             else
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
+                model.ModifyTime = ResultHelper.NowTime;
+                model.ModifyPerson = GetUserId();
+                if (model != null && ModelState.IsValid)
+                {
+
+                    if (m_BLL.Edit(ref errors, model))
+                    {
+                        LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ArrivalBillNum" + model.ArrivalBillNum, "成功", "修改", "WMS_AI");
+                        return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
+                    }
+                    else
+                    {
+                        string ErrorCol = errors.Error;
+                        LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ArrivalBillNum" + model.ArrivalBillNum + "," + ErrorCol, "失败", "修改", "WMS_AI");
+                        return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
+                    }
+                }
+                else
+                {
+                    return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
+                }
             }
+            
         }
         #endregion
 
@@ -160,24 +169,33 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Delete(long id)
         {
-            if(id!=0)
+            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Id = " + id + " &&InspectStatus = \"已送检\"");
+            if (list.Count() > 0)
             {
-                if (m_BLL.Delete(ref errors, id))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_AI");
-                    return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
-                }
-                else
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_AI");
-                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
-                }
+                return Json(JsonHandler.CreateMessage(0, "已送检单据不能删除"));
             }
             else
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+                if (id != 0)
+                {
+                    if (m_BLL.Delete(ref errors, id))
+                    {
+                        LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_AI");
+                        return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+                    }
+                    else
+                    {
+                        string ErrorCol = errors.Error;
+                        LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_AI");
+                        return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                    }
+                }
+                else
+                {
+                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+                }
             }
+            
         }
         #endregion
 

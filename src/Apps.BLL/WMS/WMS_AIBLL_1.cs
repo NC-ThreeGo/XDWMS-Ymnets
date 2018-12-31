@@ -11,6 +11,7 @@ using Apps.Models.WMS;
 using System.Dynamic;
 using Apps.Locale;
 using Apps.BLL.Core;
+using System.Linq.Expressions;
 
 namespace Apps.BLL.WMS
 {
@@ -46,10 +47,14 @@ namespace Apps.BLL.WMS
         {
             try
             {
-                WMS_AI entity = m_Rep.GetById(aiId);
+                //WMS_AI entity = m_Rep.GetById(aiId);
+                //var customer = model.CustomerType;
+                Expression<Func<WMS_AI, bool>> exp = x => x.Id == aiId && x.InStoreStatus == "未入库";
+                WMS_AI entity = m_Rep.GetSingleWhere(exp);
                 if (entity == null)
                 {
-                    errors.Add(Resource.Disable);
+                    //errors.Add(Resource.Disable);
+                    errors.Add(" :单据已入库不能删除");
                     return false;
                 }
                 //entity.Id = aiId;               

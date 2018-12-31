@@ -148,7 +148,7 @@
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                if (row.InspectStatus == "已送验") {            
+                if (row.InspectStatus == "已送检") {            
                 $.messager.confirm(index_lang_tip, "单据已送检不能被修改")
             }
             else { $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');

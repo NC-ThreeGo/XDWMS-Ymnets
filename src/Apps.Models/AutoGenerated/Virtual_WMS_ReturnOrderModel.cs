@@ -34,9 +34,9 @@ namespace Apps.Models.WMS
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> SubInvId { get; set; }
 		[Display(Name = "应退货数量")]
-		public virtual Nullable<decimal> ReturnQty { get; set; }
+		public virtual decimal ReturnQty { get; set; }
 		[Display(Name = "实际退货数量")]
-		public virtual Nullable<decimal> AdjustQty { get; set; }
+		public virtual decimal AdjustQty { get; set; }
 		[Display(Name = "退货说明")]
 		public virtual string Remark { get; set; }
 		[Display(Name = "打印状态")]
