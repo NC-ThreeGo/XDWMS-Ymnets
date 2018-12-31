@@ -218,7 +218,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                 jo.Add("检验结果", item.CheckOutResult);
                 jo.Add("检验说明", item.CheckOutRemark);
                 //jo.Add("送检状态", item.InspectStatus);
-                jo.Add("入库仓库", item.InvId);
+                jo.Add("入库仓库", item.InvName);
                 jo.Add("入库状态", item.InStoreStatus);
 
                 //jo.Add("到货日期", item.ArrivalDate);

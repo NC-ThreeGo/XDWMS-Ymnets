@@ -18,6 +18,7 @@ namespace Apps.Models
         {
             this.WMS_PO = new HashSet<WMS_PO>();
             this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
+            this.WMS_AI = new HashSet<WMS_AI>();
         }
     
         public int Id { get; set; }
@@ -37,5 +38,6 @@ namespace Apps.Models
     
         public virtual ICollection<WMS_PO> WMS_PO { get; set; }
         public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
+        public virtual ICollection<WMS_AI> WMS_AI { get; set; }
     }
 }

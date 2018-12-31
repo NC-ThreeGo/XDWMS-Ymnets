@@ -59,6 +59,8 @@ namespace Apps.BLL.WMS
                                                SupplierShortName = r.WMS_PO.WMS_Supplier.SupplierShortName,
                                                PO = r.WMS_PO.PO,
                                                PlanDate = r.WMS_PO.PlanDate,
+                                               InvName = r.WMS_InvInfo.InvName,
+                                               SubInvName = r.WMS_SubInvInfo.SubInvName,
                                            }).ToList();
             return modelList;
         }

@@ -10,6 +10,8 @@ namespace Apps.Models.WMS
         public string PO { get; set; }
         public string SupplierShortName { get; set; }
         public DateTime? PlanDate { get; set; }
+        public string InvName { get; set; }
+        public string SubInvName { get; set; }
     }
 }
 

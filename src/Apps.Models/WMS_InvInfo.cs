@@ -18,6 +18,7 @@ namespace Apps.Models
         {
             this.WMS_SubInvInfo = new HashSet<WMS_SubInvInfo>();
             this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
+            this.WMS_AI = new HashSet<WMS_AI>();
         }
     
         public int Id { get; set; }
@@ -33,5 +34,6 @@ namespace Apps.Models
     
         public virtual ICollection<WMS_SubInvInfo> WMS_SubInvInfo { get; set; }
         public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
+        public virtual ICollection<WMS_AI> WMS_AI { get; set; }
     }
 }

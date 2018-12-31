@@ -17,6 +17,7 @@ namespace Apps.Models
         public WMS_SubInvInfo()
         {
             this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
+            this.WMS_AI = new HashSet<WMS_AI>();
         }
     
         public int Id { get; set; }
@@ -29,8 +30,10 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+        public Nullable<bool> IsDefault { get; set; }
     
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
         public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
+        public virtual ICollection<WMS_AI> WMS_AI { get; set; }
     }
 }
