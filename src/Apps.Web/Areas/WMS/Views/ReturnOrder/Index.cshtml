@@ -177,10 +177,10 @@
           window.location = "@Url.Action("ExportTemplate")";
         });
         $("#btnPrint").click(function() {
-            $.modalWindow("单据打印", '@Url.Action("Print")?returnOrderNum=' + row.ReturnOrderNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+            $.modalWindow("单据打印", '@Url.Action("Print")', 1000, 600, 'fa fa-pencil');
         });
         $("#btnConfirm").click(function () {
-            $.modalWindow(Lang.Confirm, '@Url.Action("Confirm")', 700, 400, 'fa fa-plus');
+            $.modalWindow(Lang.Confirm, '@Url.Action("Confirm")', 1000, 600, 'fa fa-plus');
         });
     });
     function ImportData()

@@ -2,7 +2,7 @@
 //返回一个只包括日期格式的日期（不包含时分秒）
 formatterDateNoHour = function (date)
 {
-    if (date != '')
+    if (date)
     {
         return date.substring(0, 10);
         //var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
