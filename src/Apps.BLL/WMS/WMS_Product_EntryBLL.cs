@@ -39,6 +39,9 @@ namespace Apps.BLL.WMS
                                                           ProductQty = r.ProductQty,
                                                           Remark = r.Remark,
                                                           SubInvId = r.SubInvId,
+
+                                                          PartCode = r.WMS_Part.PartCode,
+                                                          InvCode = r.WMS_InvInfo.InvCode
                                                       }).ToList();
             return modelList;
         }
@@ -195,7 +198,7 @@ namespace Apps.BLL.WMS
                                 errors.Add((string)returnValue.Value);
                             }
 
-                            tran.Commit();  //必须调用Commit()，不然数据不会保存
+                            //tran.Commit();  //必须调用Commit()，不然数据不会保存
                         }
                         else
                         {
@@ -232,7 +235,20 @@ namespace Apps.BLL.WMS
                 {
                     var tran = db.Database.BeginTransaction();  //开启事务
 
-                    if (base.Create(ref errors, model))
+                    WMS_Product_Entry entity = new WMS_Product_Entry();
+                    entity.ProductBillNum = model.ProductBillNum;
+                    entity.Department = model.Department;
+                    entity.Partid = model.Partid;
+                    entity.ProductQty = model.ProductQty;
+                    entity.InvId = model.InvId;
+                    entity.SubInvId = model.SubInvId;
+                    entity.Remark = model.Remark;
+                    entity.CreatePerson = model.CreatePerson;
+                    entity.CreateTime = model.CreateTime;
+
+                    db.WMS_Product_Entry.Add(entity);
+
+                    if (db.SaveChanges() == 1)
                     {
                         ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
                         db.P_WMS_ProcessProductEntry(model.CreatePerson, model.ProductBillNum, returnValue);

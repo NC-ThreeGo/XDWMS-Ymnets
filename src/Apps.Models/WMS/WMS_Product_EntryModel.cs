@@ -5,6 +5,9 @@ namespace Apps.Models.WMS
 {
     public partial class WMS_Product_EntryModel
     {
-     }
+        public string PartCode { get; set; }
+
+        public string InvCode { get; set; }
+    }
 }
 
