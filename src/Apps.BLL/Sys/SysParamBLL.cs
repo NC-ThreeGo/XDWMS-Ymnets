@@ -172,7 +172,7 @@ namespace Apps.BLL.Sys
 		public List<SysParamModel> GetListByWhere(ref GridPager pager, string where)
 		{
 			IQueryable<SysParam> queryData = null;
-			queryData = m_Rep.GetList().Where(where);
+			queryData = m_Rep.GetList().Where(where).OrderBy(p=>p.TypeCode);
 			pager.totalRows = queryData.Count();
 			//排序
 			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);

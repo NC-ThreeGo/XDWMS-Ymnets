@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/22/2018 12:19:07" ReportInfo.Modified="12/22/2018 12:56:23" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/22/2018 12:19:07" ReportInfo.Modified="12/31/2018 17:42:57" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEi7pWdBCbNDVvA+SexSzysuA==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEi7xRgcClIklxMCGq0REMH2A==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_InspectBill where InspectBillNum=@InspectBillNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="ArrivalBillNum" DataType="System.String"/>
@@ -54,11 +54,11 @@
       <TextObject Name="Text4" Left="9.45" Top="94.5" Width="113.4" Height="18.9" Text="发货单位：" Font="Arial, 12pt"/>
       <TextObject Name="Text5" Left="463.05" Top="94.5" Width="122.85" Height="28.35" Text="采购订单号：" Font="Arial, 12pt"/>
       <TextObject Name="Text6" Left="9.45" Top="122.85" Width="113.4" Height="18.9" Text="送检日期：" Font="Arial, 12pt"/>
-      <TextObject Name="Text27" Left="567" Top="94.5" Width="151.2" Height="18.9" Text="[Table.PO]"/>
-      <TextObject Name="Text28" Left="103.95" Top="94.5" Width="198.45" Height="18.9" Text="[Table.SupplierShortName]"/>
-      <TextObject Name="Text29" Left="103.95" Top="122.85" Width="198.45" Height="18.9" Text="[Table.InspectDate]"/>
+      <TextObject Name="Text27" Left="567" Top="94.5" Width="151.2" Height="18.9" Text="[Table.PO]" Font="宋体, 12pt"/>
+      <TextObject Name="Text28" Left="103.95" Top="94.5" Width="198.45" Height="18.9" Text="[Table.SupplierShortName]" Font="宋体, 12pt"/>
+      <TextObject Name="Text29" Left="103.95" Top="122.85" Width="198.45" Height="18.9" Text="[FormatDateTime([Table.InspectDate],&quot;yyyy/MM/dd&quot;)]" Font="宋体, 12pt"/>
       <TextObject Name="Text30" Left="463.05" Top="122.85" Width="103.95" Height="18.9" Text="填单日期：" Font="Arial, 12pt"/>
-      <TextObject Name="Text8" Left="567" Top="66.15" Width="151.2" Height="18.9" Text="[Table.InspectBillNum]"/>
+      <TextObject Name="Text8" Left="567" Top="66.15" Width="151.2" Height="18.9" Text="[Table.InspectBillNum]" Font="宋体, 12pt"/>
     </PageHeaderBand>
     <ColumnHeaderBand Name="ColumnHeader1" Top="168.63" Width="718.2" Height="28.35">
       <TextObject Name="Text18" Width="85.05" Height="28.35" Border.Lines="All" Text="物流号" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
@@ -70,17 +70,17 @@
       <TextObject Name="Text25" Left="633.05" Width="85.05" Height="28.35" Border.Lines="All" Text="保管员" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
     </ColumnHeaderBand>
     <DataBand Name="Data1" Top="200.98" Width="718.2" Height="28.35" DataSource="Table">
-      <TextObject Name="Text7" Width="85.05" Height="28.35" Border.Lines="All" Text="[Table.LogisticsCode]"/>
-      <TextObject Name="Text9" Left="85.05" Width="160.65" Height="28.35" Border.Lines="All" Text="[Table.PartName]"/>
-      <TextObject Name="Text10" Left="245.7" Width="122.85" Height="28.35" Border.Lines="All" Text="[Table.PartCode]"/>
-      <TextObject Name="Text11" Left="368.55" Width="56.7" Height="28.35" Border.Lines="All" Text="[Table.BoxQty]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text12" Left="425.25" Width="94.5" Height="28.35" Border.Lines="All" Text="[Table.ArrivalQty]" Format="Currency" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text7" Width="85.05" Height="28.35" Border.Lines="All" Text="[Table.LogisticsCode]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="85.05" Width="160.65" Height="28.35" Border.Lines="All" Text="[Table.PartName]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text10" Left="245.7" Width="122.85" Height="28.35" Border.Lines="All" Text="[Table.PartCode]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text11" Left="368.55" Width="56.7" Height="28.35" Border.Lines="All" Text="[Table.BoxQty]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="425.25" Width="94.5" Height="28.35" Border.Lines="All" Text="[Table.ArrivalQty]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text13" Left="519.75" Width="113.4" Height="28.35" Border.Lines="All"/>
       <TextObject Name="Text14" Left="633.15" Width="85.05" Height="28.35" Border.Lines="All"/>
     </DataBand>
     <PageFooterBand Name="PageFooter1" Top="233.33" Width="718.2" Height="18.9" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
-      <TextObject Name="Text16" Left="462.97" Width="66.15" Height="18.9" Text="送检人：" VertAlign="Center"/>
-      <TextObject Name="Text15" Left="529.2" Width="94.5" Height="18.9" Text="[Table.InspectMan]"/>
+      <TextObject Name="Text16" Left="462.97" Width="85.05" Height="18.9" Text="送检人：" VertAlign="Center" Font="宋体, 12pt"/>
+      <TextObject Name="Text15" Left="548.1" Width="94.5" Height="18.9" Text="[Table.InspectMan]" Font="宋体, 12pt"/>
     </PageFooterBand>
   </ReportPage>
 </Report>
