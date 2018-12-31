@@ -40,9 +40,10 @@ namespace Apps.Web.Areas.WMS.Controllers
             //grs.rows = list;
             //grs.total = pager.totalRows;
             //return Json(grs);
+
             List<WMS_POModel> list = m_BLL.GetListByWhere(ref pager, "PO.Contains(\"" + po + "\") && WMS_Supplier.SupplierShortName.Contains(\""
                 + supplierShortName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
-                + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")");
+                + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
             GridRows<WMS_POModel> grs = new GridRows<WMS_POModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -213,7 +214,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             //List<WMS_POModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
             List<WMS_POModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "PO.Contains(\"" + po + "\") && WMS_Supplier.SupplierShortName.Contains(\""
               + supplierShortName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
-              + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")");
+              + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
@@ -310,7 +311,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             //TODO:显示有效且未关闭的采购订单。是否需要显示PO的物料信息（还是只显示PO的头信息）？？？
             List<WMS_POModel> list = m_BLL.GetListByWhere(ref pager, "PO.Contains(\"" + po + "\") && Status == \"有效\"")
-                .OrderBy(p => p.PO).ToList();
+                .OrderBy(p => p.PODate).ToList();
             GridRows<WMS_POModel> grs = new GridRows<WMS_POModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
