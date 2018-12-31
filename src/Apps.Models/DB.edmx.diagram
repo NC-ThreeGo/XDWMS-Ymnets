@@ -147,9 +147,7 @@
         <AssociationConnector Association="DB.FK_WMS_Line_WMS_Header1" />
         <EntityTypeShape EntityType="DB.WMS_Customer" Width="1.5" PointX="17.375" PointY="12.75" />
         <EntityTypeShape EntityType="DB.SysImportExcelLog" Width="1.5" PointX="10.375" PointY="17.75" />
-        <EntityTypeShape EntityType="DB.WMS_SubInvInfo" Width="1.5" PointX="14.625" PointY="26.625" />
         <EntityTypeShape EntityType="DB.WMS_InvInfo" Width="1.5" PointX="12.375" PointY="21.75" />
-        <AssociationConnector Association="DB.FK_WMS_SubInvInfo_WMS_InvInfo" />
         <EntityTypeShape EntityType="DB.WMS_Part" Width="1.5" PointX="0.75" PointY="20.625" />
         <EntityTypeShape EntityType="DB.WMS_Supplier" Width="1.5" PointX="0.75" PointY="25.625" />
         <EntityTypeShape EntityType="DB.WMS_PO" Width="1.5" PointX="3" PointY="20.625" />
@@ -164,16 +162,18 @@
         <EntityTypeShape EntityType="DB.WMS_ReturnOrder" Width="1.5" PointX="16.875" PointY="31.75" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_AI" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_InvInfo" />
-        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Supplier" />
         <AssociationConnector Association="DB.FK_WMS_AI_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_WMS_AI_WMS_Part" />
-        <AssociationConnector Association="DB.FK_WMS_AI_WMS_SubInvInfo" />
         <EntityTypeShape EntityType="DB.WMS_Product_Entry" Width="1.5" PointX="18.875" PointY="20.875" />
         <AssociationConnector Association="DB.FK_WMS_Product_Entry_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_WMS_Product_Entry_WMS_Part" />
+        <EntityTypeShape EntityType="DB.WMS_SubInvInfo" Width="1.5" PointX="14.625" PointY="26.625" />
+        <AssociationConnector Association="DB.FK_WMS_AI_WMS_SubInvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_SubInvInfo_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_WMS_Product_Entry_WMS_SubInvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

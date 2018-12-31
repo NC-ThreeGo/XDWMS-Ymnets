@@ -39,5 +39,7 @@ namespace Apps.Models
     
         public virtual ICollection<WMS_PO> WMS_PO { get; set; }
         public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
+        public virtual ICollection<WMS_AI> WMS_AI { get; set; }
+        public virtual ICollection<WMS_Product_Entry> WMS_Product_Entry { get; set; }
     }
 }
