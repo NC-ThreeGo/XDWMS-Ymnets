@@ -7,17 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using Apps.Models;
-using Apps.Models.WMS;
-using Apps.IDAL.WMS;
 using System;
-namespace Apps.DAL.WMS
+using Apps.Common;
+using System.Collections.Generic;
+using Apps.Models.WMS;
+namespace Apps.IBLL.WMS
 {
-	public partial class WMS_ReturnOrderRepository:BaseRepository<WMS_ReturnOrder>,IWMS_ReturnOrderRepository,IDisposable
+	public partial interface IWMS_Product_EntryBLL:IBaseBLL<WMS_Product_EntryModel>
 	{
-	    public WMS_ReturnOrderRepository(DBContainer db):base(db)
-        {
-        
-        }
+      
 	}
 }

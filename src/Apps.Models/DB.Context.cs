@@ -107,6 +107,7 @@ namespace Apps.Models
         public virtual DbSet<WMS_Report> WMS_Report { get; set; }
         public virtual DbSet<WMS_ReportParam> WMS_ReportParam { get; set; }
         public virtual DbSet<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
+        public virtual DbSet<WMS_Product_Entry> WMS_Product_Entry { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {

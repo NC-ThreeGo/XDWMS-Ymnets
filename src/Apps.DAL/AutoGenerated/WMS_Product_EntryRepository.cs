@@ -13,9 +13,9 @@ using Apps.IDAL.WMS;
 using System;
 namespace Apps.DAL.WMS
 {
-	public partial class WMS_ReturnOrderRepository:BaseRepository<WMS_ReturnOrder>,IWMS_ReturnOrderRepository,IDisposable
+	public partial class WMS_Product_EntryRepository:BaseRepository<WMS_Product_Entry>,IWMS_Product_EntryRepository,IDisposable
 	{
-	    public WMS_ReturnOrderRepository(DBContainer db):base(db)
+	    public WMS_Product_EntryRepository(DBContainer db):base(db)
         {
         
         }

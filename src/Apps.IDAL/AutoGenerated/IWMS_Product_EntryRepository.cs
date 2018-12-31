@@ -8,16 +8,11 @@
 //------------------------------------------------------------------------------
 
 using Apps.Models;
-using Apps.Models.WMS;
-using Apps.IDAL.WMS;
 using System;
-namespace Apps.DAL.WMS
+namespace Apps.IDAL.WMS
 {
-	public partial class WMS_ReturnOrderRepository:BaseRepository<WMS_ReturnOrder>,IWMS_ReturnOrderRepository,IDisposable
+	public partial interface IWMS_Product_EntryRepository:IBaseRepository<WMS_Product_Entry>
 	{
-	    public WMS_ReturnOrderRepository(DBContainer db):base(db)
-        {
-        
-        }
+	
 	}
 }
