@@ -197,7 +197,7 @@ namespace Apps.BLL.WMS
             }
             else
             {
-                throw new Exception("客户编码不能为空！");
+                throw new Exception("供应商编码不能为空！");
             }
             //获取物料类型
             if (!String.IsNullOrEmpty(model.SupplierType))
