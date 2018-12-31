@@ -37,9 +37,9 @@ namespace Apps.Models.Sys
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "排序")]
 		public virtual Nullable<int> Sort { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "是否启用")]
 		public virtual bool Enable { get; set; }
 		}
 }

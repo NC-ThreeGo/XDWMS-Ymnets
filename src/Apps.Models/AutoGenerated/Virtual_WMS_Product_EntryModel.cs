@@ -13,44 +13,30 @@ using System.ComponentModel.DataAnnotations;
 namespace Apps.Models.WMS
 {
 
-	public partial class WMS_ReturnOrderModel:Virtual_WMS_ReturnOrderModel
+	public partial class WMS_Product_EntryModel:Virtual_WMS_Product_EntryModel
 	{
 		
 	}
-	public class Virtual_WMS_ReturnOrderModel
+	public class Virtual_WMS_Product_EntryModel
 	{
-		[Display(Name = "退货单ID")]
-		public virtual int Id { get; set; }
-		[Display(Name = "退货单号")]
-		public virtual string ReturnOrderNum { get; set; }
-		[Display(Name = "到货检验单ID")]
-		public virtual Nullable<int> AIID { get; set; }
-		[Display(Name = "物料编码")]
-		public virtual Nullable<int> PartID { get; set; }
-		[Display(Name = "代理商编码")]
-		public virtual Nullable<int> SupplierId { get; set; }
-		[Display(Name = "库存编码")]
-		public virtual Nullable<int> InvId { get; set; }
 		[Display(Name = "未设置")]
+		public virtual int Id { get; set; }
+		[Display(Name = "入库单号（业务）")]
+		public virtual string ProductBillNum { get; set; }
+		[Display(Name = "入库单号（系统）")]
+		public virtual string EntryBillNum { get; set; }
+		[Display(Name = "本货部门")]
+		public virtual string Department { get; set; }
+		[Display(Name = "物料")]
+		public virtual int Partid { get; set; }
+		[Display(Name = "数量")]
+		public virtual decimal ProductQty { get; set; }
+		[Display(Name = "库存")]
+		public virtual Nullable<int> InvId { get; set; }
+		[Display(Name = "子库存")]
 		public virtual Nullable<int> SubInvId { get; set; }
-		[Display(Name = "应退货数量")]
-		public virtual Nullable<decimal> ReturnQty { get; set; }
-		[Display(Name = "实际退货数量")]
-		public virtual Nullable<decimal> AdjustQty { get; set; }
-		[Display(Name = "退货说明")]
+		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }
-		[Display(Name = "打印状态")]
-		public virtual string PrintStaus { get; set; }
-		[Display(Name = "打印时间")]
-		public virtual Nullable<System.DateTime> PrintDate { get; set; }
-		[Display(Name = "打印人")]
-		public virtual string PrintMan { get; set; }
-		[Display(Name = "确认状态")]
-		public virtual string ConfirmStatus { get; set; }
-		[Display(Name = "确认人")]
-		public virtual string ConfirmMan { get; set; }
-		[Display(Name = "确认时间")]
-		public virtual Nullable<System.DateTime> ConfirmDate { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string Attr1 { get; set; }
 		[Display(Name = "未设置")]
@@ -69,7 +55,5 @@ namespace Apps.Models.WMS
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
-		[Display(Name = "未设置")]
-		public virtual Nullable<int> BatchId { get; set; }
 		}
 }

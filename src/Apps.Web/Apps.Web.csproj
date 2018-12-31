@@ -369,6 +369,7 @@
     <Compile Include="Areas\WMS\Controllers\ReturnOrderController.cs" />
     <Compile Include="Areas\WMS\Controllers\SubInvInfoController.cs" />
     <Compile Include="Areas\WMS\Controllers\SupplierController.cs" />
+    <Compile Include="Areas\WMS\Controllers\ProductEntryController.cs" />
     <Compile Include="Areas\WMS\WMSAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -816,6 +817,9 @@
     <Content Include="Areas\WMS\Views\ReturnOrder\Print.cshtml" />
     <Content Include="Areas\WMS\Views\InStore\Index1.cshtml" />
     <Content Include="Areas\WMS\Views\ReturnOrder\SupplierLookUp.cshtml" />
+    <Content Include="Areas\WMS\Views\ProductEntry\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\ProductEntry\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\ProductEntry\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

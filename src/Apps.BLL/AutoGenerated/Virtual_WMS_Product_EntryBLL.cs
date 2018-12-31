@@ -24,39 +24,32 @@ using Apps.Models.WMS;
 using Apps.IBLL.WMS;
 namespace Apps.BLL.WMS
 {
-	public partial class WMS_ReturnOrderBLL: Virtual_WMS_ReturnOrderBLL,IWMS_ReturnOrderBLL
+	public partial class WMS_Product_EntryBLL: Virtual_WMS_Product_EntryBLL,IWMS_Product_EntryBLL
 	{
         
 
 	}
-	public class Virtual_WMS_ReturnOrderBLL
+	public class Virtual_WMS_Product_EntryBLL
 	{
         [Dependency]
-        public IWMS_ReturnOrderRepository m_Rep { get; set; }
+        public IWMS_Product_EntryRepository m_Rep { get; set; }
 
-		public virtual List<WMS_ReturnOrderModel> GetList(ref GridPager pager, string queryStr)
+		public virtual List<WMS_Product_EntryModel> GetList(ref GridPager pager, string queryStr)
         {
 
-            IQueryable<WMS_ReturnOrder> queryData = null;
+            IQueryable<WMS_Product_Entry> queryData = null;
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
 								
-								a=>a.ReturnOrderNum.Contains(queryStr)
-								
-								
-								
+								a=>a.ProductBillNum.Contains(queryStr)
+								|| a.EntryBillNum.Contains(queryStr)
+								|| a.Department.Contains(queryStr)
 								
 								
 								
 								
 								|| a.Remark.Contains(queryStr)
-								|| a.PrintStaus.Contains(queryStr)
-								
-								|| a.PrintMan.Contains(queryStr)
-								|| a.ConfirmStatus.Contains(queryStr)
-								|| a.ConfirmMan.Contains(queryStr)
-								
 								|| a.Attr1.Contains(queryStr)
 								|| a.Attr2.Contains(queryStr)
 								|| a.Attr3.Contains(queryStr)
@@ -65,7 +58,6 @@ namespace Apps.BLL.WMS
 								|| a.CreatePerson.Contains(queryStr)
 								
 								|| a.ModifyPerson.Contains(queryStr)
-								
 								
 								);
             }
@@ -79,38 +71,31 @@ namespace Apps.BLL.WMS
             return CreateModelList(ref queryData);
         }
 
-		public virtual List<WMS_ReturnOrderModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
+		public virtual List<WMS_Product_EntryModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
 		{
-			return new List<WMS_ReturnOrderModel>();
+			return new List<WMS_Product_EntryModel>();
 		}
 		
-		public virtual List<WMS_ReturnOrderModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
+		public virtual List<WMS_Product_EntryModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
         {
-			return new List<WMS_ReturnOrderModel>();
+			return new List<WMS_Product_EntryModel>();
 		}
 
-        public virtual List<WMS_ReturnOrderModel> CreateModelList(ref IQueryable<WMS_ReturnOrder> queryData)
+        public virtual List<WMS_Product_EntryModel> CreateModelList(ref IQueryable<WMS_Product_Entry> queryData)
         {
 
-            List<WMS_ReturnOrderModel> modelList = (from r in queryData
-                                              select new WMS_ReturnOrderModel
+            List<WMS_Product_EntryModel> modelList = (from r in queryData
+                                              select new WMS_Product_EntryModel
                                               {
 													Id = r.Id,
-													ReturnOrderNum = r.ReturnOrderNum,
-													AIID = r.AIID,
-													PartID = r.PartID,
-													SupplierId = r.SupplierId,
+													ProductBillNum = r.ProductBillNum,
+													EntryBillNum = r.EntryBillNum,
+													Department = r.Department,
+													Partid = r.Partid,
+													ProductQty = r.ProductQty,
 													InvId = r.InvId,
 													SubInvId = r.SubInvId,
-													ReturnQty = r.ReturnQty,
-													AdjustQty = r.AdjustQty,
 													Remark = r.Remark,
-													PrintStaus = r.PrintStaus,
-													PrintDate = r.PrintDate,
-													PrintMan = r.PrintMan,
-													ConfirmStatus = r.ConfirmStatus,
-													ConfirmMan = r.ConfirmMan,
-													ConfirmDate = r.ConfirmDate,
 													Attr1 = r.Attr1,
 													Attr2 = r.Attr2,
 													Attr3 = r.Attr3,
@@ -120,40 +105,32 @@ namespace Apps.BLL.WMS
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
-													BatchId = r.BatchId,
           
                                               }).ToList();
 
             return modelList;
         }
 
-        public virtual bool Create(ref ValidationErrors errors, WMS_ReturnOrderModel model)
+        public virtual bool Create(ref ValidationErrors errors, WMS_Product_EntryModel model)
         {
             try
             {
-                WMS_ReturnOrder entity = m_Rep.GetById(model.Id);
+                WMS_Product_Entry entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
-                entity = new WMS_ReturnOrder();
+                entity = new WMS_Product_Entry();
                				entity.Id = model.Id;
-				entity.ReturnOrderNum = model.ReturnOrderNum;
-				entity.AIID = model.AIID;
-				entity.PartID = model.PartID;
-				entity.SupplierId = model.SupplierId;
+				entity.ProductBillNum = model.ProductBillNum;
+				entity.EntryBillNum = model.EntryBillNum;
+				entity.Department = model.Department;
+				entity.Partid = model.Partid;
+				entity.ProductQty = model.ProductQty;
 				entity.InvId = model.InvId;
 				entity.SubInvId = model.SubInvId;
-				entity.ReturnQty = model.ReturnQty;
-				entity.AdjustQty = model.AdjustQty;
 				entity.Remark = model.Remark;
-				entity.PrintStaus = model.PrintStaus;
-				entity.PrintDate = model.PrintDate;
-				entity.PrintMan = model.PrintMan;
-				entity.ConfirmStatus = model.ConfirmStatus;
-				entity.ConfirmMan = model.ConfirmMan;
-				entity.ConfirmDate = model.ConfirmDate;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
 				entity.Attr3 = model.Attr3;
@@ -163,7 +140,6 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
-				entity.BatchId = model.BatchId;
   
 
                 if (m_Rep.Create(entity))
@@ -240,32 +216,25 @@ namespace Apps.BLL.WMS
 		
        
 
-        public virtual bool Edit(ref ValidationErrors errors, WMS_ReturnOrderModel model)
+        public virtual bool Edit(ref ValidationErrors errors, WMS_Product_EntryModel model)
         {
             try
             {
-                WMS_ReturnOrder entity = m_Rep.GetById(model.Id);
+                WMS_Product_Entry entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
                               				entity.Id = model.Id;
-				entity.ReturnOrderNum = model.ReturnOrderNum;
-				entity.AIID = model.AIID;
-				entity.PartID = model.PartID;
-				entity.SupplierId = model.SupplierId;
+				entity.ProductBillNum = model.ProductBillNum;
+				entity.EntryBillNum = model.EntryBillNum;
+				entity.Department = model.Department;
+				entity.Partid = model.Partid;
+				entity.ProductQty = model.ProductQty;
 				entity.InvId = model.InvId;
 				entity.SubInvId = model.SubInvId;
-				entity.ReturnQty = model.ReturnQty;
-				entity.AdjustQty = model.AdjustQty;
 				entity.Remark = model.Remark;
-				entity.PrintStaus = model.PrintStaus;
-				entity.PrintDate = model.PrintDate;
-				entity.PrintMan = model.PrintMan;
-				entity.ConfirmStatus = model.ConfirmStatus;
-				entity.ConfirmMan = model.ConfirmMan;
-				entity.ConfirmDate = model.ConfirmDate;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
 				entity.Attr3 = model.Attr3;
@@ -275,7 +244,6 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
-				entity.BatchId = model.BatchId;
  
 
 
@@ -300,28 +268,21 @@ namespace Apps.BLL.WMS
 
       
 
-        public virtual WMS_ReturnOrderModel GetById(object id)
+        public virtual WMS_Product_EntryModel GetById(object id)
         {
             if (IsExists(id))
             {
-                WMS_ReturnOrder entity = m_Rep.GetById(id);
-                WMS_ReturnOrderModel model = new WMS_ReturnOrderModel();
+                WMS_Product_Entry entity = m_Rep.GetById(id);
+                WMS_Product_EntryModel model = new WMS_Product_EntryModel();
                               				model.Id = entity.Id;
-				model.ReturnOrderNum = entity.ReturnOrderNum;
-				model.AIID = entity.AIID;
-				model.PartID = entity.PartID;
-				model.SupplierId = entity.SupplierId;
+				model.ProductBillNum = entity.ProductBillNum;
+				model.EntryBillNum = entity.EntryBillNum;
+				model.Department = entity.Department;
+				model.Partid = entity.Partid;
+				model.ProductQty = entity.ProductQty;
 				model.InvId = entity.InvId;
 				model.SubInvId = entity.SubInvId;
-				model.ReturnQty = entity.ReturnQty;
-				model.AdjustQty = entity.AdjustQty;
 				model.Remark = entity.Remark;
-				model.PrintStaus = entity.PrintStaus;
-				model.PrintDate = entity.PrintDate;
-				model.PrintMan = entity.PrintMan;
-				model.ConfirmStatus = entity.ConfirmStatus;
-				model.ConfirmMan = entity.ConfirmMan;
-				model.ConfirmDate = entity.ConfirmDate;
 				model.Attr1 = entity.Attr1;
 				model.Attr2 = entity.Attr2;
 				model.Attr3 = entity.Attr3;
@@ -331,7 +292,6 @@ namespace Apps.BLL.WMS
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
-				model.BatchId = entity.BatchId;
  
                 return model;
             }
@@ -345,7 +305,7 @@ namespace Apps.BLL.WMS
 		 /// <summary>
         /// 校验Excel数据,这个方法一般用于重写校验逻辑
         /// </summary>
-        public virtual bool CheckImportData(string fileName, List<WMS_ReturnOrderModel> list,ref ValidationErrors errors )
+        public virtual bool CheckImportData(string fileName, List<WMS_Product_EntryModel> list,ref ValidationErrors errors )
         {
           
             var targetFile = new FileInfo(fileName);
@@ -360,56 +320,41 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ReturnOrderNum, "退货单号");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.AIID, "到货检验单ID");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.PartID, "物料编码");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.SupplierId, "代理商编码");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.InvId, "库存编码");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.SubInvId, "SubInvId");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ReturnQty, "应退货数量");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.AdjustQty, "实际退货数量");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Remark, "退货说明");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.PrintStaus, "打印状态");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.PrintDate, "打印时间");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.PrintMan, "打印人");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ConfirmStatus, "确认状态");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ConfirmMan, "确认人");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ConfirmDate, "确认时间");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Attr1, "Attr1");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Attr2, "Attr2");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Attr3, "Attr3");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Attr4, "Attr4");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Attr5, "Attr5");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.CreatePerson, "创建人");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.CreateTime, "创建时间");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ModifyPerson, "修改人");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.BatchId, "BatchId");
+			 				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ProductBillNum, "入库单号（业务）");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.EntryBillNum, "入库单号（系统）");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Department, "本货部门");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Partid, "物料");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ProductQty, "数量");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvId, "库存");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.SubInvId, "子库存");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Remark, "备注");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr1, "Attr1");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr2, "Attr2");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr3, "Attr3");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr4, "Attr4");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr5, "Attr5");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.CreatePerson, "创建人");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ModifyPerson, "修改人");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ModifyTime, "修改时间");
  
             //SheetName
-            var excelContent = excelFile.Worksheet<WMS_ReturnOrderModel>(0);
+            var excelContent = excelFile.Worksheet<WMS_Product_EntryModel>(0);
             int rowIndex = 1;
             //检查数据正确性
             foreach (var row in excelContent)
             {
                 var errorMessage = new StringBuilder();
-                var entity = new WMS_ReturnOrderModel();
+                var entity = new WMS_Product_EntryModel();
 						 				  entity.Id = row.Id;
-				  entity.ReturnOrderNum = row.ReturnOrderNum;
-				  entity.AIID = row.AIID;
-				  entity.PartID = row.PartID;
-				  entity.SupplierId = row.SupplierId;
+				  entity.ProductBillNum = row.ProductBillNum;
+				  entity.EntryBillNum = row.EntryBillNum;
+				  entity.Department = row.Department;
+				  entity.Partid = row.Partid;
+				  entity.ProductQty = row.ProductQty;
 				  entity.InvId = row.InvId;
 				  entity.SubInvId = row.SubInvId;
-				  entity.ReturnQty = row.ReturnQty;
-				  entity.AdjustQty = row.AdjustQty;
 				  entity.Remark = row.Remark;
-				  entity.PrintStaus = row.PrintStaus;
-				  entity.PrintDate = row.PrintDate;
-				  entity.PrintMan = row.PrintMan;
-				  entity.ConfirmStatus = row.ConfirmStatus;
-				  entity.ConfirmMan = row.ConfirmMan;
-				  entity.ConfirmDate = row.ConfirmDate;
 				  entity.Attr1 = row.Attr1;
 				  entity.Attr2 = row.Attr2;
 				  entity.Attr3 = row.Attr3;
@@ -419,7 +364,6 @@ namespace Apps.BLL.WMS
 				  entity.CreateTime = row.CreateTime;
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
-				  entity.BatchId = row.BatchId;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -443,7 +387,7 @@ namespace Apps.BLL.WMS
         /// <summary>
         /// 保存数据
         /// </summary>
-        public virtual void SaveImportData(IEnumerable<WMS_ReturnOrderModel> list)
+        public virtual void SaveImportData(IEnumerable<WMS_Product_EntryModel> list)
         {
             try
             {
@@ -451,23 +395,16 @@ namespace Apps.BLL.WMS
                 {
                     foreach (var model in list)
                     {
-                        WMS_ReturnOrder entity = new WMS_ReturnOrder();
+                        WMS_Product_Entry entity = new WMS_Product_Entry();
                        						entity.Id = 0;
-						entity.ReturnOrderNum = model.ReturnOrderNum;
-						entity.AIID = model.AIID;
-						entity.PartID = model.PartID;
-						entity.SupplierId = model.SupplierId;
+						entity.ProductBillNum = model.ProductBillNum;
+						entity.EntryBillNum = model.EntryBillNum;
+						entity.Department = model.Department;
+						entity.Partid = model.Partid;
+						entity.ProductQty = model.ProductQty;
 						entity.InvId = model.InvId;
 						entity.SubInvId = model.SubInvId;
-						entity.ReturnQty = model.ReturnQty;
-						entity.AdjustQty = model.AdjustQty;
 						entity.Remark = model.Remark;
-						entity.PrintStaus = model.PrintStaus;
-						entity.PrintDate = model.PrintDate;
-						entity.PrintMan = model.PrintMan;
-						entity.ConfirmStatus = model.ConfirmStatus;
-						entity.ConfirmMan = model.ConfirmMan;
-						entity.ConfirmDate = model.ConfirmDate;
 						entity.Attr1 = model.Attr1;
 						entity.Attr2 = model.Attr2;
 						entity.Attr3 = model.Attr3;
@@ -477,9 +414,8 @@ namespace Apps.BLL.WMS
 						entity.CreateTime = ResultHelper.NowTime;
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
-						entity.BatchId = model.BatchId;
  
-                        db.WMS_ReturnOrder.Add(entity);
+                        db.WMS_Product_Entry.Add(entity);
                     }
                     db.SaveChanges();
                 }

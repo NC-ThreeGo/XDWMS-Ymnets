@@ -12,30 +12,29 @@ namespace Apps.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class WMS_SubInvInfo
+    public partial class WMS_Product_Entry
     {
-        public WMS_SubInvInfo()
-        {
-            this.WMS_AI = new HashSet<WMS_AI>();
-            this.WMS_Product_Entry = new HashSet<WMS_Product_Entry>();
-            this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
-        }
-    
         public int Id { get; set; }
-        public string SubInvCode { get; set; }
-        public string SubInvName { get; set; }
-        public int InvId { get; set; }
-        public string Status { get; set; }
+        public string ProductBillNum { get; set; }
+        public string EntryBillNum { get; set; }
+        public string Department { get; set; }
+        public int Partid { get; set; }
+        public decimal ProductQty { get; set; }
+        public Nullable<int> InvId { get; set; }
+        public Nullable<int> SubInvId { get; set; }
         public string Remark { get; set; }
+        public string Attr1 { get; set; }
+        public string Attr2 { get; set; }
+        public string Attr3 { get; set; }
+        public string Attr4 { get; set; }
+        public string Attr5 { get; set; }
         public string CreatePerson { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
-        public Nullable<bool> IsDefault { get; set; }
     
-        public virtual ICollection<WMS_AI> WMS_AI { get; set; }
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
-        public virtual ICollection<WMS_Product_Entry> WMS_Product_Entry { get; set; }
-        public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
+        public virtual WMS_Part WMS_Part { get; set; }
+        public virtual WMS_SubInvInfo WMS_SubInvInfo { get; set; }
     }
 }
