@@ -293,6 +293,20 @@ namespace Apps.BLL.WMS
                 return null;
             }
         }
+
+        public bool ConfirmReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum)
+        {
+            try
+            {
+                m_Rep.ConfirmReturnOrder(opt, returnOrderNum);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+                return false;
+            }
+        }
     }
 }
 

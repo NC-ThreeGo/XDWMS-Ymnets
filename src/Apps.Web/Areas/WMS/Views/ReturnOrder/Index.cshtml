@@ -37,14 +37,15 @@
 <div class="mvctool">
     <input id="txtQuery" type="text" class="searchText" />
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", "手动新建", ref perm, "Create", true)
-    @Html.ToolButton("btnCreateBatch", "fa fa-plus", "批量确认", ref perm, "Create", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @*@Html.ToolButton("btnCreateBatch", "fa fa-plus", "批量确认", ref perm, "Create", true)*@
     @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
     @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
     @Html.ToolButton("btnReport", "fa fa-search", Resource.Print, ref perm, "Create", true)
+    @Html.ToolButton("btnConfirm", "fa fa-search", Resource.Confirm, ref perm, "Edit", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -188,6 +189,9 @@
             {
                 $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords');
             }
+        });
+        $("#btnConfirm").click(function () {
+            $.modalWindow(Lang.Confirm, '@Url.Action("Confirm")', 700, 400, 'fa fa-plus');
         });
     });
     function ImportData()

@@ -9,8 +9,8 @@
     List<permModel> perm = null;
 }
 <div class="mvctool">
-    <input id="txtSupplierCode" placeholder="代理商代码:" type="text" class="searchText" />
-    <input id="txtSupplierShortName" placeholder="代理商简称:" type="text" class="searchText" />
+    @*<input id="txtSupplierCode" placeholder="代理商代码:" type="text" class="searchText" />
+    <input id="txtSupplierShortName" placeholder="代理商简称:" type="text" class="searchText" />*@
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
     @Html.ToolButton("btnSave", "fa fa-plus", Resource.Select, ref perm, "Create", true)
 </div>
@@ -27,7 +27,7 @@
 <script type="text/javascript">
     $(function () {
         $('#List').datagrid({
-            url: '@(Url.Action("SupplierGetList"))',
+            url: '@(Url.Action("RetunOrderForPrintedGetList"))',
             width: SetGridWidthSub(30),
             methord: 'post',
             height: SetGridHeightSub(47),
@@ -51,7 +51,7 @@
             },
             columns: [[
                 { field: 'ck', checkbox: true },
-                { field: 'Id', title: 'ID', width: 80, hidden: true },
+                { field: 'ReturnOrderNum', title: '退货单号', width: 110, sortable: true },
                 { field: 'SupplierId', title: '供应商ID', width: 80 },
                 //{ field: 'SupplierCode', title: '供应商编码', width: 120, sortable: true },
                 { field: 'SupplierShortName', title: '供应商简称', width: 150, sortable: true },
@@ -96,7 +96,7 @@
             var rows = $('#List').datagrid('getSelections');
             if (rows.length > 0) {
                 //返回到上一层处理
-                window.parent.SetSelResult(rows[0].SupplierId, rows[0].SupplierShortName);
+                window.parent.SetSelResult(rows[0].ReturnOrderNum, rows[0].ReturnOrderNum);
                 window.parent.frameReturnByClose();
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });

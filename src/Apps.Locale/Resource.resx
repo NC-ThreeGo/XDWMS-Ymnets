@@ -157,6 +157,9 @@
     <value>两次密码不一致</value>
     <comment>数据注解验证</comment>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
   <data name="ContainExpression" xml:space="preserve">
     <value>{0}必须包含字符串：{1}</value>
     <comment>数据注解验证</comment>

@@ -820,6 +820,8 @@
     <Content Include="Areas\WMS\Views\ProductEntry\Create.cshtml" />
     <Content Include="Areas\WMS\Views\ProductEntry\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\ProductEntry\Index.cshtml" />
+    <Content Include="Areas\WMS\Views\ReturnOrder\Confirm.cshtml" />
+    <Content Include="Areas\WMS\Views\ReturnOrder\RetunOrderForPrintedLookUp.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

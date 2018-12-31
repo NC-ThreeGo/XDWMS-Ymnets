@@ -55,5 +55,13 @@ namespace Apps.IBLL.WMS
         /// <param name="returnOrderNum"></param>
         /// <returns></returns>
         string PrintReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
+
+        /// <summary>
+        /// 确认指定单号的退货单
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="opt"></param>
+        /// <param name="returnOrderNum"></param>
+        bool ConfirmReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
     }
 }

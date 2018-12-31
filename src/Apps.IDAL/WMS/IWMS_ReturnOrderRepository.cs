@@ -33,5 +33,12 @@ namespace Apps.IDAL.WMS
         /// <param name="jsonReturnOrder">所选择的退货单行</param>
         /// <returns></returns>
         string PrintReturnOrder(string opt, string jsonReturnOrder);
+
+        /// <summary>
+        /// 确认指定单号的退货单
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="returnOrderNum"></param>
+        void ConfirmReturnOrder(string opt, string returnOrderNum);
     }
 }
