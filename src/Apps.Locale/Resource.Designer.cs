@@ -160,6 +160,15 @@ namespace Apps.Locale {
         }
         
         /// <summary>
+        ///   查找类似 确认 的本地化字符串。
+        /// </summary>
+        public static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 {0}必须包含字符串：{1} 的本地化字符串。
         /// </summary>
         public static string ContainExpression {

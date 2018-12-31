@@ -13,7 +13,8 @@ var Lang = {
     Tip: '提示',
     Edit: '修改',
     Create: '创建',
-    Delete: '删除'
+    Delete: '删除',
+    Confirm: '确认',
 };
 //首页
 var index_lang_desktop = "我的桌面";
