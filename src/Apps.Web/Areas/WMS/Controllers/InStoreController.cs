@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
 using System.Data;
+using Apps.BLL.Sys;
 
 namespace Apps.Web.Areas.WMS.Controllers
 {
@@ -317,6 +318,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
+        #region 加载检验结果
+        [HttpPost]
+        public JsonResult GetCheckOutResult()
+        {
+            var list = SysParamBLL.GetSysParamByType("CheckOutResult");
+            return Json(list);
+        }
+        #endregion
     }
 }
 
