@@ -41,6 +41,8 @@ namespace Apps.BLL.WMS
                                                           SubInvId = r.SubInvId,
 
                                                           PartCode = r.WMS_Part.PartCode,
+                                                          PartName = r.WMS_Part.PartName,
+                                                          InvName = r.WMS_InvInfo.InvName,
                                                           InvCode = r.WMS_InvInfo.InvCode
                                                       }).ToList();
             return modelList;
