@@ -85,7 +85,7 @@
             url: '@Url.Action("GetReturnOrderListBySupplier")?supplierId=&supplierShortName=',
             width: SetGridWidthSub(10),
             methord: 'post',
-            height: SetGridHeightSub(202),
+            height: SetGridHeightSub(100),
             fitColumns: true,
             idField: 'Id',
             pageSize: 15,
@@ -98,8 +98,14 @@
             onClickCell: onClickCell,
             onEndEdit: onEndEdit,
             onBeginEdit: onBeginEdit,
+
+            onCheck: onCheck,
+            onUncheck: onUncheck,
+            onCheckAll: onCheckAll,
+            onUncheckAll: onUncheckAll,
+
             remotesort: false,
-            showFooter: false,
+            showFooter: true,
             columns: [[
                 {
                     field: 'ck', checkbox: true,
@@ -118,6 +124,42 @@
             ]]
         });
     })
+
+    //所选择行的退货数求和
+    var sum_AdjustQty = 0;
+    function onCheck(index, row)
+    {
+        sum_AdjustQty = sum_AdjustQty + row.AdjustQty;
+        setFooter();
+    }
+    function onUncheck(index, row)
+    {
+        sum_AdjustQty = sum_AdjustQty - row.AdjustQty;
+        setFooter();
+    }
+    function onCheckAll(rows)
+    {
+        sum_AdjustQty = 0;
+        for (var i = 0; i < rows.length; i++)
+        {
+            sum_AdjustQty = sum_AdjustQty + rows[i]['AdjustQty'];
+        }
+        setFooter();
+    }
+    function onUncheckAll(rows)
+    {
+        sum_AdjustQty = 0;
+        setFooter();
+    }
+    function setFooter()
+    {
+        $('#List').datagrid('reloadFooter',
+            [
+                { SupplierShortName: '合计：', AdjustQty: sum_AdjustQty },
+            ]
+        );
+    }
+
 
     //编辑的行
     var editIndex = undefined;
