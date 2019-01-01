@@ -55,7 +55,7 @@ namespace Apps.BLL.WMS
                                                   QualifyNum = r.WMS_AI.QualifyQty,
                                                   NoQualifyNum = r.WMS_AI.NoQualifyQty,
                                                   SupplierCode = r.WMS_Supplier.SupplierCode,
-                                                  SupplierName = r.WMS_Supplier.SupplierName,
+                                                  SupplierName = r.WMS_Supplier.SupplierName
                                               }).ToList();
             return modelList;
         }

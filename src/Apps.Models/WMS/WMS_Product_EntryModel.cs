@@ -7,7 +7,11 @@ namespace Apps.Models.WMS
     {
         public string PartCode { get; set; }
 
+        public string PartName { get; set; }
+
         public string InvCode { get; set; }
+
+        public string InvName { get; set; }
     }
 }
 
