@@ -54,6 +54,8 @@ namespace Apps.BLL.WMS
                                                   ArrivalQty = r.WMS_AI.ArrivalQty,
                                                   QualifyNum = r.WMS_AI.QualifyQty,
                                                   NoQualifyNum = r.WMS_AI.NoQualifyQty,
+                                                  SupplierCode = r.WMS_Supplier.SupplierCode,
+                                                  SupplierName = r.WMS_Supplier.SupplierName,
                                               }).ToList();
             return modelList;
         }

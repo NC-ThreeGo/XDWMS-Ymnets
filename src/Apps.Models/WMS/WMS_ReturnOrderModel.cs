@@ -14,8 +14,14 @@ namespace Apps.Models.WMS
         [Display(Name = "物料编码")]
         public string PartCode { get; set; }
 
-        [Display(Name = "供应商")]
+        [Display(Name = "供应商简称")]
         public string SupplierShortName { get; set; }
+
+        [Display(Name = "供应商编码")]
+        public string SupplierCode { get; set; }
+
+        [Display(Name = "供应商全称")]
+        public string SupplierName { get; set; }
 
         [Display(Name = "库房")]
         public string InvCode { get; set; }

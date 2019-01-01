@@ -31,13 +31,23 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Index()
         {
+            //定义送货状态下拉框的值
+            List<ReportType> ROTypes = new List<ReportType>();
+            ROTypes.Add(new ReportType() { Type = 0, Name = "" });
+            ROTypes.Add(new ReportType() { Type = 2, Name = "已退货" });
+            ROTypes.Add(new ReportType() { Type = 1, Name = "未退货" });            
+            ViewBag.ReturnOrderStatus = new SelectList(ROTypes, "Name", "Name");
+
             return View();
         }
         [HttpPost]
         [SupportFilter(ActionName = "Index")]
-        public JsonResult GetList(GridPager pager, string queryStr)
+        public JsonResult GetList(GridPager pager, string inspectBillNum, string supplierShortName, string returnOrderNum, string partCode, DateTime beginDate, DateTime endDate,string returnOrderStatus)
         {
-            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "1 == 1");
+            //List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "1 == 1");
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")&&WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\") && WMS_AI.WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
+              + supplierShortName + "\")&& WMS_AI.WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& PrintStaus.Contains(\"" + returnOrderStatus + "\")&& PrintDate>=(\""
+              + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")");
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -353,7 +363,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Create")]
         public JsonResult SupplierGetList(GridPager pager, string supplierCode, string supplierShortName)
         {
-            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum == null");
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum == null")
+            .GroupBy(p => new { p.ReturnOrderNum, p.SupplierId, p.SupplierShortName })
+            .Select(g => g.First())
+            .ToList(); 
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

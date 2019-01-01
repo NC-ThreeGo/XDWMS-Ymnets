@@ -8,6 +8,7 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
 <div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
 <form name = "form1" method="post" id="form1">
     <table>
@@ -35,17 +36,27 @@
 </form>
 </div>
 <div class="mvctool">
-    <input id="txtQuery" type="text" class="searchText" />
+    @*<input id="txtQuery" type="text" class="searchText" />*@
+    <input id="txtReturnOrderNum" type="text" placeholder="退货单号:" class="searchText" />
+    <input id="txtInspectBillNum" type="text" placeholder="送检单号:" class="searchText" />
+    <input id="txtsupplierShortName" placeholder="供应商简称:" type="text" class="searchText" />
+    <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
+    退货状态：@Html.DropDownList("txtReturnOrderStatus", ViewBag.ReturnOrderStatus as SelectList, new { @style = "width:70px;" })
+    退货日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    <br>
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
     @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
     @*@Html.ToolButton("btnCreateBatch", "fa fa-plus", "批量确认", ref perm, "Create", true)*@
     @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
     @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+    @*@Html.ToolButton("btnPrint", "fa fa-search", Resource.Print, ref perm, "Create", true)*@
+    @Html.ToolButton("btnPrint", "fa fa-search", "退货单生成", ref perm, "Create", true)
+    @Html.ToolButton("btnConfirm", "fa fa-search", Resource.Confirm, ref perm, "Edit", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
-    @Html.ToolButton("btnPrint", "fa fa-search", Resource.Print, ref perm, "Create", true)
-    @Html.ToolButton("btnConfirm", "fa fa-search", Resource.Confirm, ref perm, "Edit", true)
+
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -82,14 +93,14 @@
                 { field: 'ReturnQty', title: '应退货数量', width: 80,sortable:true },
                 { field: 'AdjustQty', title: '实际退货数量', width: 80,sortable:true },
                 { field: 'Remark', title: '退货说明', width: 80,sortable:true },
-                { field: 'PrintStaus', title: '打印状态', width: 80,sortable:true },
+                { field: 'PrintStaus', title: '退货状态', width: 80,sortable:true },
                 {
-                    field: 'PrintDate', title: '打印时间', width: 80, sortable: true,
+                    field: 'PrintDate', title: '退货时间', width: 80, sortable: true,
                     formatter: function (value, row, index) {
                         return formatterDateNoHour(value);
                     }
                 },
-                { field: 'PrintMan', title: '打印人', width: 80,sortable:true },
+                { field: 'PrintMan', title: '退货人', width: 80,sortable:true },
                 { field: 'ConfirmStatus', title: '确认状态', width: 80,sortable:true },
                 { field: 'ConfirmMan', title: '确认人', width: 80,sortable:true },
                 {
@@ -143,11 +154,26 @@
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            var inspectBillNum = $("#txtInspectBillNum").val();
+            var supplierShortName = $("#txtsupplierShortName").val();
+            var partCode = $("#txtpartCode").val();
+            var returnOrderNum = $("#txtReturnOrderNum").val();
+            var returnOrderStatus = $("#txtReturnOrderStatus").val();
+            if (returnOrderNum == null) {
+                returnOrderNum = "";
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
+            if (supplierShortName == null) {
+                supplierShortName = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (inspectBillNum == null) {
+                inspectBillNum = "";
+            }
+            $("#List").datagrid("load", {
+                returnOrderNum: returnOrderNum, inspectBillNum: inspectBillNum, supplierShortName: supplierShortName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val(), returnOrderStatus: returnOrderStatus
+            });
 
         });
         $("#btnDelete").click(function () {
@@ -158,7 +184,7 @@
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
+            @*var queryStr = $("#txtQuery").val();
             if (queryStr == null) {
                 queryStr = "%";
             }
@@ -166,6 +192,37 @@
                 if (data.type == 1)
                 {
                     window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                }
+                else
+                {
+                $.messageBox5s(Lang.Tip, data.message);
+                }
+            }, "json");*@
+            var inspectBillNum = $("#txtInspectBillNum").val();
+            var supplierShortName = $("#txtsupplierShortName").val(); 
+            var partCode = $("#txtpartCode").val();
+            var returnOrderNum = $("#txtReturnOrderNum").val();           
+            var returnOrderStatus = $("#txtReturnOrderStatus").val();
+            if (supplierShortName == null) {
+                supplierShortName = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (inspectBillNum == null) {
+                inspectBillNum = "";
+            }
+            if (returnOrderNum == null) {
+                returnOrderNum = "";
+            }
+            $.post("@Url.Action("CheckExportData")?returnOrderNum=" + returnOrderNum + "&inspectBillNum=" + inspectBillNum +"&supplierShortName=" + supplierShortName
+                + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
+                + "&endDate= " + $("#endDate").val(), function(data) {
+                if (data.type == 1)
+                {
+                    window.location = "@Url.Action("Export")?inspectBillNum=" + inspectBillNum + "&returnOrderNum=" + returnOrderNum + "&returnOrderStatus=" + returnOrderStatus + "&supplierShortName=" + supplierShortName
+                        + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
+                        + "&endDate= " + $("#endDate").val();
                 }
                 else
                 {
