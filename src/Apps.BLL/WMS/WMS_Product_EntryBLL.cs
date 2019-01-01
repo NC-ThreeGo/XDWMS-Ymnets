@@ -9,11 +9,23 @@ using LinqToExcel;
 using ClosedXML.Excel;
 using Apps.Models.WMS;
 using System.Data.Entity.Core.Objects;
+using System.Linq.Expressions;
+using System.Linq.Dynamic.Core;
+using Apps.IDAL.WMS;
+using Unity.Attributes;
 
 namespace Apps.BLL.WMS
 {
     public partial class WMS_Product_EntryBLL
     {
+        [Dependency]
+        public IWMS_PartRepository m_PartRep { get; set; }
+
+        [Dependency]
+        public IWMS_InvInfoRepository m_InvInfoRep { get; set; }
+
+        [Dependency]
+        public IWMS_Product_EntryRepository m_ProductRep { get; set; }
 
         public override List<WMS_Product_EntryModel> CreateModelList(ref IQueryable<WMS_Product_Entry> queryData)
         {
@@ -69,22 +81,24 @@ namespace Apps.BLL.WMS
                 {
                     //对应列头
                     excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ProductBillNum, "入库单号（业务）");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.EntryBillNum, "入库单号（系统）");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.EntryBillNum, "入库单号（系统）");
                     excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Department, "本货部门");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Partid, "物料");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Partid, "物料");
+                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.PartCode, "物料编码");
                     excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ProductQty, "数量");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvId, "库存");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.SubInvId, "子库存");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Remark, "备注");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr1, "");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr2, "");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr3, "");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr4, "");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr5, "");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.CreatePerson, "创建人");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.CreateTime, "创建时间");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ModifyPerson, "修改人");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ModifyTime, "修改时间");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvId, "库存");
+                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvName, "库房");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.SubInvId, "子库存");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Remark, "备注");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr1, "");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr2, "");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr3, "");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr4, "");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr5, "");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.CreatePerson, "创建人");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.CreateTime, "创建时间");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ModifyPerson, "修改人");
+                    //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ModifyTime, "修改时间");
 
                     //SheetName，第一个Sheet
                     var excelContent = excelFile.Worksheet<WMS_Product_EntryModel>(0);
@@ -107,10 +121,12 @@ namespace Apps.BLL.WMS
                             productBillNum = row.ProductBillNum;
                             model.EntryBillNum = row.EntryBillNum;
                             model.Department = row.Department;
-                            model.Partid = row.Partid;
+                            //model.Partid = row.Partid;
+                            model.PartCode = row.PartCode;
                             model.ProductQty = row.ProductQty;
-                            model.InvId = row.InvId;
-                            model.SubInvId = row.SubInvId;
+                            //model.InvId = row.InvId;
+                            model.InvName = row.InvName;
+                            //model.SubInvId = row.SubInvId;
                             model.Remark = row.Remark;
                             model.Attr1 = row.Attr1;
                             model.Attr2 = row.Attr2;
@@ -148,18 +164,19 @@ namespace Apps.BLL.WMS
                             WMS_Product_Entry entity = new WMS_Product_Entry();
                             entity.Id = model.Id;
                             entity.ProductBillNum = model.ProductBillNum;
-                            entity.EntryBillNum = model.EntryBillNum;
+                            //entity.EntryBillNum = model.EntryBillNum;
+                            entity.EntryBillNum = "ZZJ" + DateTime.Now.ToString("yyyyMMddHHmmssff");
                             entity.Department = model.Department;
                             entity.Partid = model.Partid;
                             entity.ProductQty = model.ProductQty;
                             entity.InvId = model.InvId;
-                            entity.SubInvId = model.SubInvId;
+                            //entity.SubInvId = model.SubInvId;
                             entity.Remark = model.Remark;
-                            entity.Attr1 = model.Attr1;
-                            entity.Attr2 = model.Attr2;
-                            entity.Attr3 = model.Attr3;
-                            entity.Attr4 = model.Attr4;
-                            entity.Attr5 = model.Attr5;
+                            //entity.Attr1 = model.Attr1;
+                            //entity.Attr2 = model.Attr2;
+                            //entity.Attr3 = model.Attr3;
+                            //entity.Attr4 = model.Attr4;
+                            //entity.Attr5 = model.Attr5;
                             entity.CreatePerson = model.CreatePerson;
                             entity.CreateTime = model.CreateTime;
                             entity.ModifyPerson = model.ModifyPerson;
@@ -216,6 +233,65 @@ namespace Apps.BLL.WMS
 
         public void AdditionalCheckExcelData(ref WMS_Product_EntryModel model)
         {
+            //获取物料ID
+            if (!String.IsNullOrEmpty(model.PartCode))
+            {
+                var partCode = model.PartCode;
+                Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
+
+                var part = m_PartRep.GetSingleWhere(exp);
+                if (part == null)
+                {
+                    throw new Exception("物料编码不存在！");
+                }
+                else
+                {
+                    model.Partid = part.Id;
+                }
+            }
+            else
+            {
+                throw new Exception("物料编码不能为空！");
+            }
+
+            //获取仓库ID
+            if (!String.IsNullOrEmpty(model.InvName))
+            {
+                var invName = model.InvName;
+                Expression<Func<WMS_InvInfo, bool>> exp = x => x.InvName == invName;
+
+                var inv = m_InvInfoRep.GetSingleWhere(exp);
+                if (inv == null)
+                {
+                    throw new Exception("库房不存在！");
+                }
+                else
+                {
+                    model.InvId = inv.Id;
+                }
+            }
+            else
+            {
+                throw new Exception("库房不能为空！");
+            }
+
+            //校验入库单号与物料
+            if (!String.IsNullOrEmpty(model.ProductBillNum))
+            {
+                var partcode = model.PartCode;
+                var productBillNum = model.ProductBillNum;
+                Expression<Func<WMS_Product_Entry, bool>> exp = x => x.WMS_Part.PartCode == partcode && x.ProductBillNum == productBillNum;
+
+                var part = m_ProductRep.GetSingleWhere(exp);
+                if (part != null)
+                {
+                    throw new Exception("入库单号与物料编码重复！");
+                }
+            }
+            else
+            {
+                throw new Exception("入库单号不能为空！");
+            }           
         }
 
         public List<WMS_Product_EntryModel> GetListByWhere(ref GridPager pager, string where)
