@@ -45,10 +45,26 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult GetList(GridPager pager, string inspectBillNum, string supplierShortName, string returnOrderNum, string partCode, DateTime beginDate, DateTime endDate,string returnOrderStatus)
         {
             //List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "1 == 1");
-            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")&&WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\") && WMS_Supplier.SupplierShortName.Contains(\""
-              + supplierShortName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& PrintStaus.Contains(\"" + returnOrderStatus + "\")&& PrintDate>=(\""
-              + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")");
-            GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
+            //List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")&&WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\") && WMS_AI.WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
+            //  + supplierShortName + "\")&& WMS_AI.WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& PrintStaus.Contains(\"" + returnOrderStatus + "\")&& PrintDate>=(\""
+            //  + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")");
+
+            string query = "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")";
+            if (!String.IsNullOrEmpty(inspectBillNum))
+                query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+            if (!String.IsNullOrEmpty(supplierShortName))
+                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+            if (!String.IsNullOrEmpty(partCode))
+                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            if (!String.IsNullOrEmpty(returnOrderStatus))
+                query += " && PrintStaus.Contains(\"" + returnOrderStatus + "\")";
+            if (returnOrderStatus != "未退货")
+            {
+                query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
+            }
+
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, query);
+            GridRows <WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
