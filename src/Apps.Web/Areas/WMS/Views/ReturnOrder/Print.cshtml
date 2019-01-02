@@ -129,25 +129,29 @@
     var sum_AdjustQty = 0;
     function onCheck(index, row)
     {
-        sum_AdjustQty = sum_AdjustQty + row.AdjustQty;
+        endEditing();
+        sum_AdjustQty = sum_AdjustQty + Number(row.AdjustQty);
         setFooter();
     }
     function onUncheck(index, row)
     {
-        sum_AdjustQty = sum_AdjustQty - row.AdjustQty;
+        //endEditing();
+        sum_AdjustQty = sum_AdjustQty - Number(row.AdjustQty);
         setFooter();
     }
     function onCheckAll(rows)
     {
+        endEditing();
         sum_AdjustQty = 0;
         for (var i = 0; i < rows.length; i++)
         {
-            sum_AdjustQty = sum_AdjustQty + rows[i]['AdjustQty'];
+            sum_AdjustQty = sum_AdjustQty + Number(rows[i]['AdjustQty']);
         }
         setFooter();
     }
     function onUncheckAll(rows)
     {
+        //endEditing();
         sum_AdjustQty = 0;
         setFooter();
     }
