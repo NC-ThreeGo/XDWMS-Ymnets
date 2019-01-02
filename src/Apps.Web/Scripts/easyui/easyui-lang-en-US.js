@@ -21,7 +21,8 @@ var index_NoTabsOnTheLeft = "No tabs on the left";
 var index_NoTabsOnTheRight = "No tabs on the right";
 //通用
 var CommonLang = {
-    PleaseSelectTheOperatingRecord: 'Please select the operating record！'
+    PleaseSelectTheOperatingRecord: 'Please select the operating record！',
+    YouWantToDeleteTheSelectedRecords: 'You want to delete The selected records!'
 };
 //EasyUI自带
 if ($.fn.pagination) {

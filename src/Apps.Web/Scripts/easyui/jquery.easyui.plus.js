@@ -21,7 +21,7 @@ formatterDateNoHour = function (date)
 function dataDelete(url, datagrid) {
     var row = $('#' + datagrid).datagrid('getSelected');
     if (row != null) {
-        $.messager.confirm(index_lang_tip, CommonLang.PleaseSelectTheOperatingRecord, function (r) {
+        $.messager.confirm(index_lang_tip, CommonLang.YouWantToDeleteTheSelectedRecords, function (r) {
             if (r) {
                 $.post(url, row, function (data) {
                     if (data.type == 1)

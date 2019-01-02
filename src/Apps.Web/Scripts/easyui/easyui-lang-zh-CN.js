@@ -26,7 +26,8 @@ var index_NoTabsOnTheLeft = "左边没有标签页了";
 var index_NoTabsOnTheRight = "右边没有标签页了";
 //通用
 var CommonLang = {
-    PleaseSelectTheOperatingRecord: '请选择要操作的数据！'
+    PleaseSelectTheOperatingRecord: '请选择要操作的数据！',
+    YouWantToDeleteTheSelectedRecords: '你要删除所选择的记录吗？',
 };
 //EasyUI自带
 if ($.fn.pagination) {
