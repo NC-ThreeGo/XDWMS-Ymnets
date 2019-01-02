@@ -46,13 +46,13 @@
     至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
     <br>
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @Html.ToolButton("btnPrint", "fa fa-search", "退货单生成", ref perm, "Create", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", "库存退货", ref perm, "Create", true)
     @*@Html.ToolButton("btnCreateBatch", "fa fa-plus", "批量确认", ref perm, "Create", true)*@
     @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
     @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
     @*@Html.ToolButton("btnPrint", "fa fa-search", Resource.Print, ref perm, "Create", true)*@
-    @Html.ToolButton("btnPrint", "fa fa-search", "退货单生成", ref perm, "Create", true)
-    @Html.ToolButton("btnConfirm", "fa fa-search", Resource.Confirm, ref perm, "Edit", true)
+    @Html.ToolButton("btnConfirm", "fa fa-search", "退货单确认", ref perm, "Edit", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)

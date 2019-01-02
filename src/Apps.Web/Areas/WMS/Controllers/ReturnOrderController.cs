@@ -33,7 +33,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             //定义送货状态下拉框的值
             List<ReportType> ROTypes = new List<ReportType>();
-            ROTypes.Add(new ReportType() { Type = 0, Name = "" });
+            //ROTypes.Add(new ReportType() { Type = 0, Name = "" });
             ROTypes.Add(new ReportType() { Type = 2, Name = "已退货" });
             ROTypes.Add(new ReportType() { Type = 1, Name = "未退货" });            
             ViewBag.ReturnOrderStatus = new SelectList(ROTypes, "Name", "Name");
@@ -49,20 +49,35 @@ namespace Apps.Web.Areas.WMS.Controllers
             //  + supplierShortName + "\")&& WMS_AI.WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& PrintStaus.Contains(\"" + returnOrderStatus + "\")&& PrintDate>=(\""
             //  + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")");
 
-            string query = "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")";
-            if (!String.IsNullOrEmpty(inspectBillNum))
-                query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
-            if (!String.IsNullOrEmpty(supplierShortName))
-                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
-            if (!String.IsNullOrEmpty(partCode))
-                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
-            if (!String.IsNullOrEmpty(returnOrderStatus))
-                query += " && PrintStaus.Contains(\"" + returnOrderStatus + "\")";
-            if (returnOrderStatus != "未退货")
+            string query="";
+            if (returnOrderStatus == "未退货")
             {
-                query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
+                query += " 1=1 ";
+                if (!String.IsNullOrEmpty(inspectBillNum))
+                    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
             }
 
+            //if (!String.IsNullOrEmpty(inspectBillNum))
+            //    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+            //if (!String.IsNullOrEmpty(supplierShortName))
+            //    query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+            //if (!String.IsNullOrEmpty(partCode))
+            //    query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            //if (!String.IsNullOrEmpty(returnOrderStatus))
+            //    query += " && PrintStaus.Contains(\"" + returnOrderStatus + "\")";
+            
+            if (returnOrderStatus == "已退货")
+            {
+                query = "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")";
+                if (!String.IsNullOrEmpty(inspectBillNum))
+                    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+                query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
+            }
+            query += " && PrintStaus.Contains(\"" + returnOrderStatus + "\")";
             List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, query);
             GridRows <WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
