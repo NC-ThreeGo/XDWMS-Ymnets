@@ -24,6 +24,9 @@ namespace Apps.Web.Areas.WMS.Controllers
         [Dependency]
         public IWMS_PartBLL m_PartBLL { get; set; }
 
+        [Dependency]
+        public IWMS_AIBLL m_AIBLL { get; set; }
+
         ValidationErrors errors = new ValidationErrors();
 
         [SupportFilter]
@@ -154,8 +157,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Delete(long id)
         {
-            if(id!=0)
+            List<WMS_AIModel> list = m_AIBLL.GetListByWhere(ref setNoPagerAscById, "POId = " + id);
+            if (id!=0 && list.Count().Equals(0))
             {
+                
                 if (m_BLL.Delete(ref errors, id))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_PO");
@@ -170,7 +175,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
             else
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+                return Json(JsonHandler.CreateMessage(0, "删除失败：订单已入库"));
             }
         }
         #endregion

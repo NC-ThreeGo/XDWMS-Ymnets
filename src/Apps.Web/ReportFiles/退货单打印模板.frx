@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="01/02/2019 09:03:49" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="01/02/2019 09:15:19" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlq+rW0RkboK+/8CKGGYUID3ctBV8q9SvKYxl3iiE7vBnh7Tgou0+4WFf3NfmPSvHVFYU2j0ovJMJNon6eYuVhYfH4WQPzYcllku2JaMuL5gqMe74InHXe/HqtHWPyY9jx4qyBC/AovYA8HnPDkwQsfxdhp8FBTLRQC+CvAlx+VSGLNOiXKRDxNztoB3VTa+stn">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlq+rW0RkboK+/8CKGGYUID3ctBV8q9SvKYxl3iiE7vBnh7Tgou0+4WFf3NfmPSvHVFYU2j0ovJMJNon6eYuVhYfH4WQPzYcllku2JaMuL5gqMe74InHXe/HqtHWPyY9jx4qyBC/AovYA8HnPDkwQsfxdhp8FBTLRQC+CvAlx+VSGJGfUshEHf9OEk6R9/czLUL">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_InspectBill where InspectBillNum=@InspectBillNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="ArrivalBillNum" DataType="System.String"/>
@@ -51,7 +51,7 @@
     <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="9.45" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true"/>
     <PageHeaderBand Name="PageHeader1" Top="13.45" Width="718.2" Height="151.18">
       <TextObject Name="Text1" Left="132.2" Top="-0.54" Width="396.9" Height="37.8" Text="江西新电汽车空调有限公司" HorzAlign="Center" VertAlign="Center" Font="Arial, 20pt, style=Bold"/>
-      <TextObject Name="Text2" Left="302.4" Top="37.8" Width="75.6" Height="18.9" Text="退货单" Font="Arial, 16pt"/>
+      <TextObject Name="Text2" Left="302.4" Top="37.8" Width="85.05" Height="18.9" Text="退货单" Font="Arial, 16pt"/>
       <TextObject Name="Text3" Left="463.05" Top="66.15" Width="94.5" Height="18.9" Text="退货单号：" Font="Arial, 12pt"/>
       <TextObject Name="Text4" Left="9.45" Top="94.5" Width="94.5" Height="18.9" Text="供应商：" Font="Arial, 12pt"/>
       <TextObject Name="Text5" Left="463.04" Top="94.5" Width="94.5" Height="18.9" Text="联系人：" Font="Arial, 12pt"/>
@@ -78,10 +78,10 @@
       <TextObject Name="Text9" Left="75.6" Width="132.3" Height="28.35" Border.Lines="All" Text="[Table.PartName]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text10" Left="207.9" Width="94.5" Height="28.35" Border.Lines="All" Text="[Table.PartCode]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text11" Left="302.38" Width="85.05" Height="28.35" Border.Lines="All" Text="[Table.PO]" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text12" Left="387.43" Width="75.6" Height="28.35" Border.Lines="All" Text="[Table.ArrivalQty]" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="387.43" Width="75.6" Height="28.35" Border.Lines="All" Text="[Table.ArrivalQty]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text13" Left="538.63" Width="94.5" Height="28.35" Border.Lines="All"/>
       <TextObject Name="Text14" Left="633.15" Width="85.05" Height="28.35" Border.Lines="All"/>
-      <TextObject Name="Text40" Left="463.04" Width="75.6" Height="28.35" Border.Lines="All" Text="[Table.AdjustQty]" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text40" Left="463.04" Width="75.6" Height="28.35" Border.Lines="All" Text="[Table.AdjustQty]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
     <PageFooterBand Name="PageFooter1" Top="233.33" Width="718.2" Height="18.9" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
       <TextObject Name="Text16" Left="462.96" Width="94.5" Height="18.9" Text="退货人：" VertAlign="Center" Font="宋体, 12pt"/>
