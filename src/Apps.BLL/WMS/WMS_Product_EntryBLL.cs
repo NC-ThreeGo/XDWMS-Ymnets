@@ -164,8 +164,8 @@ namespace Apps.BLL.WMS
                             WMS_Product_Entry entity = new WMS_Product_Entry();
                             entity.Id = model.Id;
                             entity.ProductBillNum = model.ProductBillNum;
-                            //entity.EntryBillNum = model.EntryBillNum;
-                            entity.EntryBillNum = "ZZJ" + DateTime.Now.ToString("yyyyMMddHHmmssff");
+                            entity.EntryBillNum = model.EntryBillNum;
+                            //entity.EntryBillNum = "ZZJ" + DateTime.Now.ToString("yyyyMMddHHmmssff");
                             entity.Department = model.Department;
                             entity.Partid = model.Partid;
                             entity.ProductQty = model.ProductQty;
@@ -177,10 +177,6 @@ namespace Apps.BLL.WMS
                             //entity.Attr3 = model.Attr3;
                             //entity.Attr4 = model.Attr4;
                             //entity.Attr5 = model.Attr5;
-                            entity.CreatePerson = model.CreatePerson;
-                            entity.CreateTime = model.CreateTime;
-                            entity.ModifyPerson = model.ModifyPerson;
-                            entity.ModifyTime = model.ModifyTime;
                             entity.CreatePerson = oper;
                             entity.CreateTime = DateTime.Now;
                             entity.ModifyPerson = oper;

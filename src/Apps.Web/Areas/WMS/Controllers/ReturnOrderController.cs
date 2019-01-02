@@ -45,8 +45,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult GetList(GridPager pager, string inspectBillNum, string supplierShortName, string returnOrderNum, string partCode, DateTime beginDate, DateTime endDate,string returnOrderStatus)
         {
             //List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "1 == 1");
-            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")&&WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\") && WMS_AI.WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
-              + supplierShortName + "\")&& WMS_AI.WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& PrintStaus.Contains(\"" + returnOrderStatus + "\")&& PrintDate>=(\""
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")&&WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\") && WMS_Supplier.SupplierShortName.Contains(\""
+              + supplierShortName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& PrintStaus.Contains(\"" + returnOrderStatus + "\")&& PrintDate>=(\""
               + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")");
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
