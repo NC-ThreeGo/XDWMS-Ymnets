@@ -24,32 +24,26 @@ using Apps.Models.WMS;
 using Apps.IBLL.WMS;
 namespace Apps.BLL.WMS
 {
-	public partial class WMS_SubInvInfoBLL: Virtual_WMS_SubInvInfoBLL,IWMS_SubInvInfoBLL
+	public partial class WMS_InvBLL: Virtual_WMS_InvBLL,IWMS_InvBLL
 	{
         
 
 	}
-	public class Virtual_WMS_SubInvInfoBLL
+	public class Virtual_WMS_InvBLL
 	{
         [Dependency]
-        public IWMS_SubInvInfoRepository m_Rep { get; set; }
+        public IWMS_InvRepository m_Rep { get; set; }
 
-		public virtual List<WMS_SubInvInfoModel> GetList(ref GridPager pager, string queryStr)
+		public virtual List<WMS_InvModel> GetList(ref GridPager pager, string queryStr)
         {
 
-            IQueryable<WMS_SubInvInfo> queryData = null;
+            IQueryable<WMS_Inv> queryData = null;
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
 								
-								a=>a.SubInvCode.Contains(queryStr)
-								|| a.SubInvName.Contains(queryStr)
 								
-								|| a.Status.Contains(queryStr)
-								|| a.Remark.Contains(queryStr)
-								|| a.CreatePerson.Contains(queryStr)
 								
-								|| a.ModifyPerson.Contains(queryStr)
 								
 								
 								);
@@ -64,61 +58,49 @@ namespace Apps.BLL.WMS
             return CreateModelList(ref queryData);
         }
 
-		public virtual List<WMS_SubInvInfoModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
+		public virtual List<WMS_InvModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
 		{
-			return new List<WMS_SubInvInfoModel>();
+			return new List<WMS_InvModel>();
 		}
 		
-		public virtual List<WMS_SubInvInfoModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
+		public virtual List<WMS_InvModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
         {
-			return new List<WMS_SubInvInfoModel>();
+			return new List<WMS_InvModel>();
 		}
 
-        public virtual List<WMS_SubInvInfoModel> CreateModelList(ref IQueryable<WMS_SubInvInfo> queryData)
+        public virtual List<WMS_InvModel> CreateModelList(ref IQueryable<WMS_Inv> queryData)
         {
 
-            List<WMS_SubInvInfoModel> modelList = (from r in queryData
-                                              select new WMS_SubInvInfoModel
+            List<WMS_InvModel> modelList = (from r in queryData
+                                              select new WMS_InvModel
                                               {
 													Id = r.Id,
-													SubInvCode = r.SubInvCode,
-													SubInvName = r.SubInvName,
 													InvId = r.InvId,
-													Status = r.Status,
-													Remark = r.Remark,
-													CreatePerson = r.CreatePerson,
-													CreateTime = r.CreateTime,
-													ModifyPerson = r.ModifyPerson,
-													ModifyTime = r.ModifyTime,
-													IsDefault = r.IsDefault,
+													SubInvId = r.SubInvId,
+													PartId = r.PartId,
+													Qty = r.Qty,
           
                                               }).ToList();
 
             return modelList;
         }
 
-        public virtual bool Create(ref ValidationErrors errors, WMS_SubInvInfoModel model)
+        public virtual bool Create(ref ValidationErrors errors, WMS_InvModel model)
         {
             try
             {
-                WMS_SubInvInfo entity = m_Rep.GetById(model.Id);
+                WMS_Inv entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
-                entity = new WMS_SubInvInfo();
+                entity = new WMS_Inv();
                				entity.Id = model.Id;
-				entity.SubInvCode = model.SubInvCode;
-				entity.SubInvName = model.SubInvName;
 				entity.InvId = model.InvId;
-				entity.Status = model.Status;
-				entity.Remark = model.Remark;
-				entity.CreatePerson = model.CreatePerson;
-				entity.CreateTime = model.CreateTime;
-				entity.ModifyPerson = model.ModifyPerson;
-				entity.ModifyTime = model.ModifyTime;
-				entity.IsDefault = model.IsDefault;
+				entity.SubInvId = model.SubInvId;
+				entity.PartId = model.PartId;
+				entity.Qty = model.Qty;
   
 
                 if (m_Rep.Create(entity))
@@ -195,27 +177,21 @@ namespace Apps.BLL.WMS
 		
        
 
-        public virtual bool Edit(ref ValidationErrors errors, WMS_SubInvInfoModel model)
+        public virtual bool Edit(ref ValidationErrors errors, WMS_InvModel model)
         {
             try
             {
-                WMS_SubInvInfo entity = m_Rep.GetById(model.Id);
+                WMS_Inv entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
                               				entity.Id = model.Id;
-				entity.SubInvCode = model.SubInvCode;
-				entity.SubInvName = model.SubInvName;
 				entity.InvId = model.InvId;
-				entity.Status = model.Status;
-				entity.Remark = model.Remark;
-				entity.CreatePerson = model.CreatePerson;
-				entity.CreateTime = model.CreateTime;
-				entity.ModifyPerson = model.ModifyPerson;
-				entity.ModifyTime = model.ModifyTime;
-				entity.IsDefault = model.IsDefault;
+				entity.SubInvId = model.SubInvId;
+				entity.PartId = model.PartId;
+				entity.Qty = model.Qty;
  
 
 
@@ -240,23 +216,17 @@ namespace Apps.BLL.WMS
 
       
 
-        public virtual WMS_SubInvInfoModel GetById(object id)
+        public virtual WMS_InvModel GetById(object id)
         {
             if (IsExists(id))
             {
-                WMS_SubInvInfo entity = m_Rep.GetById(id);
-                WMS_SubInvInfoModel model = new WMS_SubInvInfoModel();
+                WMS_Inv entity = m_Rep.GetById(id);
+                WMS_InvModel model = new WMS_InvModel();
                               				model.Id = entity.Id;
-				model.SubInvCode = entity.SubInvCode;
-				model.SubInvName = entity.SubInvName;
 				model.InvId = entity.InvId;
-				model.Status = entity.Status;
-				model.Remark = entity.Remark;
-				model.CreatePerson = entity.CreatePerson;
-				model.CreateTime = entity.CreateTime;
-				model.ModifyPerson = entity.ModifyPerson;
-				model.ModifyTime = entity.ModifyTime;
-				model.IsDefault = entity.IsDefault;
+				model.SubInvId = entity.SubInvId;
+				model.PartId = entity.PartId;
+				model.Qty = entity.Qty;
  
                 return model;
             }
@@ -270,7 +240,7 @@ namespace Apps.BLL.WMS
 		 /// <summary>
         /// 校验Excel数据,这个方法一般用于重写校验逻辑
         /// </summary>
-        public virtual bool CheckImportData(string fileName, List<WMS_SubInvInfoModel> list,ref ValidationErrors errors )
+        public virtual bool CheckImportData(string fileName, List<WMS_InvModel> list,ref ValidationErrors errors )
         {
           
             var targetFile = new FileInfo(fileName);
@@ -285,36 +255,24 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvCode, "库位编码");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvName, "库位名称");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.InvId, "库房编码");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Status, "状态");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Remark, "说明");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreatePerson, "创建人");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreateTime, "创建时间");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.ModifyPerson, "修改人");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.IsDefault, "是否是默认库房");
+			 				 excelFile.AddMapping<WMS_InvModel>(x => x.InvId, "InvId");
+				 excelFile.AddMapping<WMS_InvModel>(x => x.SubInvId, "SubInvId");
+				 excelFile.AddMapping<WMS_InvModel>(x => x.PartId, "PartId");
+				 excelFile.AddMapping<WMS_InvModel>(x => x.Qty, "Qty");
  
             //SheetName
-            var excelContent = excelFile.Worksheet<WMS_SubInvInfoModel>(0);
+            var excelContent = excelFile.Worksheet<WMS_InvModel>(0);
             int rowIndex = 1;
             //检查数据正确性
             foreach (var row in excelContent)
             {
                 var errorMessage = new StringBuilder();
-                var entity = new WMS_SubInvInfoModel();
+                var entity = new WMS_InvModel();
 						 				  entity.Id = row.Id;
-				  entity.SubInvCode = row.SubInvCode;
-				  entity.SubInvName = row.SubInvName;
 				  entity.InvId = row.InvId;
-				  entity.Status = row.Status;
-				  entity.Remark = row.Remark;
-				  entity.CreatePerson = row.CreatePerson;
-				  entity.CreateTime = row.CreateTime;
-				  entity.ModifyPerson = row.ModifyPerson;
-				  entity.ModifyTime = row.ModifyTime;
-				  entity.IsDefault = row.IsDefault;
+				  entity.SubInvId = row.SubInvId;
+				  entity.PartId = row.PartId;
+				  entity.Qty = row.Qty;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -338,7 +296,7 @@ namespace Apps.BLL.WMS
         /// <summary>
         /// 保存数据
         /// </summary>
-        public virtual void SaveImportData(IEnumerable<WMS_SubInvInfoModel> list)
+        public virtual void SaveImportData(IEnumerable<WMS_InvModel> list)
         {
             try
             {
@@ -346,20 +304,14 @@ namespace Apps.BLL.WMS
                 {
                     foreach (var model in list)
                     {
-                        WMS_SubInvInfo entity = new WMS_SubInvInfo();
+                        WMS_Inv entity = new WMS_Inv();
                        						entity.Id = 0;
-						entity.SubInvCode = model.SubInvCode;
-						entity.SubInvName = model.SubInvName;
 						entity.InvId = model.InvId;
-						entity.Status = model.Status;
-						entity.Remark = model.Remark;
-						entity.CreatePerson = model.CreatePerson;
-						entity.CreateTime = ResultHelper.NowTime;
-						entity.ModifyPerson = model.ModifyPerson;
-						entity.ModifyTime = model.ModifyTime;
-						entity.IsDefault = model.IsDefault;
+						entity.SubInvId = model.SubInvId;
+						entity.PartId = model.PartId;
+						entity.Qty = model.Qty;
  
-                        db.WMS_SubInvInfo.Add(entity);
+                        db.WMS_Inv.Add(entity);
                     }
                     db.SaveChanges();
                 }

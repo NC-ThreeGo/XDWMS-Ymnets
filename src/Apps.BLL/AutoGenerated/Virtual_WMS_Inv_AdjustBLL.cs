@@ -24,33 +24,39 @@ using Apps.Models.WMS;
 using Apps.IBLL.WMS;
 namespace Apps.BLL.WMS
 {
-	public partial class WMS_SubInvInfoBLL: Virtual_WMS_SubInvInfoBLL,IWMS_SubInvInfoBLL
+	public partial class WMS_Inv_AdjustBLL: Virtual_WMS_Inv_AdjustBLL,IWMS_Inv_AdjustBLL
 	{
         
 
 	}
-	public class Virtual_WMS_SubInvInfoBLL
+	public class Virtual_WMS_Inv_AdjustBLL
 	{
         [Dependency]
-        public IWMS_SubInvInfoRepository m_Rep { get; set; }
+        public IWMS_Inv_AdjustRepository m_Rep { get; set; }
 
-		public virtual List<WMS_SubInvInfoModel> GetList(ref GridPager pager, string queryStr)
+		public virtual List<WMS_Inv_AdjustModel> GetList(ref GridPager pager, string queryStr)
         {
 
-            IQueryable<WMS_SubInvInfo> queryData = null;
+            IQueryable<WMS_Inv_Adjust> queryData = null;
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
 								
-								a=>a.SubInvCode.Contains(queryStr)
-								|| a.SubInvName.Contains(queryStr)
+								a=>a.InvAdjustBillNum.Contains(queryStr)
 								
-								|| a.Status.Contains(queryStr)
+								
+								|| a.AdjustType.Contains(queryStr)
+								
+								
 								|| a.Remark.Contains(queryStr)
+								|| a.Attr1.Contains(queryStr)
+								|| a.Attr2.Contains(queryStr)
+								|| a.Attr3.Contains(queryStr)
+								|| a.Attr4.Contains(queryStr)
+								|| a.Attr5.Contains(queryStr)
 								|| a.CreatePerson.Contains(queryStr)
 								
 								|| a.ModifyPerson.Contains(queryStr)
-								
 								
 								);
             }
@@ -64,61 +70,73 @@ namespace Apps.BLL.WMS
             return CreateModelList(ref queryData);
         }
 
-		public virtual List<WMS_SubInvInfoModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
+		public virtual List<WMS_Inv_AdjustModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
 		{
-			return new List<WMS_SubInvInfoModel>();
+			return new List<WMS_Inv_AdjustModel>();
 		}
 		
-		public virtual List<WMS_SubInvInfoModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
+		public virtual List<WMS_Inv_AdjustModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
         {
-			return new List<WMS_SubInvInfoModel>();
+			return new List<WMS_Inv_AdjustModel>();
 		}
 
-        public virtual List<WMS_SubInvInfoModel> CreateModelList(ref IQueryable<WMS_SubInvInfo> queryData)
+        public virtual List<WMS_Inv_AdjustModel> CreateModelList(ref IQueryable<WMS_Inv_Adjust> queryData)
         {
 
-            List<WMS_SubInvInfoModel> modelList = (from r in queryData
-                                              select new WMS_SubInvInfoModel
+            List<WMS_Inv_AdjustModel> modelList = (from r in queryData
+                                              select new WMS_Inv_AdjustModel
                                               {
 													Id = r.Id,
-													SubInvCode = r.SubInvCode,
-													SubInvName = r.SubInvName,
+													InvAdjustBillNum = r.InvAdjustBillNum,
+													PartId = r.PartId,
+													AdjustQty = r.AdjustQty,
+													AdjustType = r.AdjustType,
 													InvId = r.InvId,
-													Status = r.Status,
+													SubInvId = r.SubInvId,
 													Remark = r.Remark,
+													Attr1 = r.Attr1,
+													Attr2 = r.Attr2,
+													Attr3 = r.Attr3,
+													Attr4 = r.Attr4,
+													Attr5 = r.Attr5,
 													CreatePerson = r.CreatePerson,
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
-													IsDefault = r.IsDefault,
           
                                               }).ToList();
 
             return modelList;
         }
 
-        public virtual bool Create(ref ValidationErrors errors, WMS_SubInvInfoModel model)
+        public virtual bool Create(ref ValidationErrors errors, WMS_Inv_AdjustModel model)
         {
             try
             {
-                WMS_SubInvInfo entity = m_Rep.GetById(model.Id);
+                WMS_Inv_Adjust entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
-                entity = new WMS_SubInvInfo();
+                entity = new WMS_Inv_Adjust();
                				entity.Id = model.Id;
-				entity.SubInvCode = model.SubInvCode;
-				entity.SubInvName = model.SubInvName;
+				entity.InvAdjustBillNum = model.InvAdjustBillNum;
+				entity.PartId = model.PartId;
+				entity.AdjustQty = model.AdjustQty;
+				entity.AdjustType = model.AdjustType;
 				entity.InvId = model.InvId;
-				entity.Status = model.Status;
+				entity.SubInvId = model.SubInvId;
 				entity.Remark = model.Remark;
+				entity.Attr1 = model.Attr1;
+				entity.Attr2 = model.Attr2;
+				entity.Attr3 = model.Attr3;
+				entity.Attr4 = model.Attr4;
+				entity.Attr5 = model.Attr5;
 				entity.CreatePerson = model.CreatePerson;
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
-				entity.IsDefault = model.IsDefault;
   
 
                 if (m_Rep.Create(entity))
@@ -195,27 +213,33 @@ namespace Apps.BLL.WMS
 		
        
 
-        public virtual bool Edit(ref ValidationErrors errors, WMS_SubInvInfoModel model)
+        public virtual bool Edit(ref ValidationErrors errors, WMS_Inv_AdjustModel model)
         {
             try
             {
-                WMS_SubInvInfo entity = m_Rep.GetById(model.Id);
+                WMS_Inv_Adjust entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
                               				entity.Id = model.Id;
-				entity.SubInvCode = model.SubInvCode;
-				entity.SubInvName = model.SubInvName;
+				entity.InvAdjustBillNum = model.InvAdjustBillNum;
+				entity.PartId = model.PartId;
+				entity.AdjustQty = model.AdjustQty;
+				entity.AdjustType = model.AdjustType;
 				entity.InvId = model.InvId;
-				entity.Status = model.Status;
+				entity.SubInvId = model.SubInvId;
 				entity.Remark = model.Remark;
+				entity.Attr1 = model.Attr1;
+				entity.Attr2 = model.Attr2;
+				entity.Attr3 = model.Attr3;
+				entity.Attr4 = model.Attr4;
+				entity.Attr5 = model.Attr5;
 				entity.CreatePerson = model.CreatePerson;
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
-				entity.IsDefault = model.IsDefault;
  
 
 
@@ -240,23 +264,29 @@ namespace Apps.BLL.WMS
 
       
 
-        public virtual WMS_SubInvInfoModel GetById(object id)
+        public virtual WMS_Inv_AdjustModel GetById(object id)
         {
             if (IsExists(id))
             {
-                WMS_SubInvInfo entity = m_Rep.GetById(id);
-                WMS_SubInvInfoModel model = new WMS_SubInvInfoModel();
+                WMS_Inv_Adjust entity = m_Rep.GetById(id);
+                WMS_Inv_AdjustModel model = new WMS_Inv_AdjustModel();
                               				model.Id = entity.Id;
-				model.SubInvCode = entity.SubInvCode;
-				model.SubInvName = entity.SubInvName;
+				model.InvAdjustBillNum = entity.InvAdjustBillNum;
+				model.PartId = entity.PartId;
+				model.AdjustQty = entity.AdjustQty;
+				model.AdjustType = entity.AdjustType;
 				model.InvId = entity.InvId;
-				model.Status = entity.Status;
+				model.SubInvId = entity.SubInvId;
 				model.Remark = entity.Remark;
+				model.Attr1 = entity.Attr1;
+				model.Attr2 = entity.Attr2;
+				model.Attr3 = entity.Attr3;
+				model.Attr4 = entity.Attr4;
+				model.Attr5 = entity.Attr5;
 				model.CreatePerson = entity.CreatePerson;
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
-				model.IsDefault = entity.IsDefault;
  
                 return model;
             }
@@ -270,7 +300,7 @@ namespace Apps.BLL.WMS
 		 /// <summary>
         /// 校验Excel数据,这个方法一般用于重写校验逻辑
         /// </summary>
-        public virtual bool CheckImportData(string fileName, List<WMS_SubInvInfoModel> list,ref ValidationErrors errors )
+        public virtual bool CheckImportData(string fileName, List<WMS_Inv_AdjustModel> list,ref ValidationErrors errors )
         {
           
             var targetFile = new FileInfo(fileName);
@@ -285,36 +315,48 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvCode, "库位编码");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvName, "库位名称");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.InvId, "库房编码");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Status, "状态");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Remark, "说明");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreatePerson, "创建人");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreateTime, "创建时间");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.ModifyPerson, "修改人");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.IsDefault, "是否是默认库房");
+			 				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.InvAdjustBillNum, "调帐单据号");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.PartId, "物料");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.AdjustQty, "调整数量");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.AdjustType, "调整类型");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.InvId, "库存");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.SubInvId, "子库存");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Remark, "备注");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Attr1, "Attr1");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Attr2, "Attr2");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Attr3, "Attr3");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Attr4, "Attr4");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Attr5, "Attr5");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.CreatePerson, "创建人");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.ModifyPerson, "修改人");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.ModifyTime, "修改时间");
  
             //SheetName
-            var excelContent = excelFile.Worksheet<WMS_SubInvInfoModel>(0);
+            var excelContent = excelFile.Worksheet<WMS_Inv_AdjustModel>(0);
             int rowIndex = 1;
             //检查数据正确性
             foreach (var row in excelContent)
             {
                 var errorMessage = new StringBuilder();
-                var entity = new WMS_SubInvInfoModel();
+                var entity = new WMS_Inv_AdjustModel();
 						 				  entity.Id = row.Id;
-				  entity.SubInvCode = row.SubInvCode;
-				  entity.SubInvName = row.SubInvName;
+				  entity.InvAdjustBillNum = row.InvAdjustBillNum;
+				  entity.PartId = row.PartId;
+				  entity.AdjustQty = row.AdjustQty;
+				  entity.AdjustType = row.AdjustType;
 				  entity.InvId = row.InvId;
-				  entity.Status = row.Status;
+				  entity.SubInvId = row.SubInvId;
 				  entity.Remark = row.Remark;
+				  entity.Attr1 = row.Attr1;
+				  entity.Attr2 = row.Attr2;
+				  entity.Attr3 = row.Attr3;
+				  entity.Attr4 = row.Attr4;
+				  entity.Attr5 = row.Attr5;
 				  entity.CreatePerson = row.CreatePerson;
 				  entity.CreateTime = row.CreateTime;
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
-				  entity.IsDefault = row.IsDefault;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -338,7 +380,7 @@ namespace Apps.BLL.WMS
         /// <summary>
         /// 保存数据
         /// </summary>
-        public virtual void SaveImportData(IEnumerable<WMS_SubInvInfoModel> list)
+        public virtual void SaveImportData(IEnumerable<WMS_Inv_AdjustModel> list)
         {
             try
             {
@@ -346,20 +388,26 @@ namespace Apps.BLL.WMS
                 {
                     foreach (var model in list)
                     {
-                        WMS_SubInvInfo entity = new WMS_SubInvInfo();
+                        WMS_Inv_Adjust entity = new WMS_Inv_Adjust();
                        						entity.Id = 0;
-						entity.SubInvCode = model.SubInvCode;
-						entity.SubInvName = model.SubInvName;
+						entity.InvAdjustBillNum = model.InvAdjustBillNum;
+						entity.PartId = model.PartId;
+						entity.AdjustQty = model.AdjustQty;
+						entity.AdjustType = model.AdjustType;
 						entity.InvId = model.InvId;
-						entity.Status = model.Status;
+						entity.SubInvId = model.SubInvId;
 						entity.Remark = model.Remark;
+						entity.Attr1 = model.Attr1;
+						entity.Attr2 = model.Attr2;
+						entity.Attr3 = model.Attr3;
+						entity.Attr4 = model.Attr4;
+						entity.Attr5 = model.Attr5;
 						entity.CreatePerson = model.CreatePerson;
 						entity.CreateTime = ResultHelper.NowTime;
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
-						entity.IsDefault = model.IsDefault;
  
-                        db.WMS_SubInvInfo.Add(entity);
+                        db.WMS_Inv_Adjust.Add(entity);
                     }
                     db.SaveChanges();
                 }

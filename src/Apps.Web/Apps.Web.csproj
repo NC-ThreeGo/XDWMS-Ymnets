@@ -362,6 +362,8 @@
     <Compile Include="Areas\WMS\Controllers\AIController.cs" />
     <Compile Include="Areas\WMS\Controllers\CustomerController.cs" />
     <Compile Include="Areas\WMS\Controllers\HeaderController.cs" />
+    <Compile Include="Areas\WMS\Controllers\InvAdjustController.cs" />
+    <Compile Include="Areas\WMS\Controllers\InvController.cs" />
     <Compile Include="Areas\WMS\Controllers\InvInfoController.cs" />
     <Compile Include="Areas\WMS\Controllers\LineController.cs" />
     <Compile Include="Areas\WMS\Controllers\PartController.cs" />
@@ -822,6 +824,12 @@
     <Content Include="Areas\WMS\Views\ProductEntry\Index.cshtml" />
     <Content Include="Areas\WMS\Views\ReturnOrder\Confirm.cshtml" />
     <Content Include="Areas\WMS\Views\ReturnOrder\RetunOrderForPrintedLookUp.cshtml" />
+    <Content Include="Areas\WMS\Views\InvAdjust\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\InvAdjust\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\InvAdjust\Index.cshtml" />
+    <Content Include="Areas\WMS\Views\Inv\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\Inv\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\Inv\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

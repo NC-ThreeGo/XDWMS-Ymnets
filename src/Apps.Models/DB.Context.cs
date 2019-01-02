@@ -108,6 +108,8 @@ namespace Apps.Models
         public virtual DbSet<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
         public virtual DbSet<WMS_Product_Entry> WMS_Product_Entry { get; set; }
         public virtual DbSet<WMS_SubInvInfo> WMS_SubInvInfo { get; set; }
+        public virtual DbSet<WMS_Inv> WMS_Inv { get; set; }
+        public virtual DbSet<WMS_Inv_Adjust> WMS_Inv_Adjust { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {
@@ -753,6 +755,35 @@ namespace Apps.Models
                 new ObjectParameter("ProductBillNum", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ProcessProductEntry", userIdParameter, productBillNumParameter, returnValue);
+        }
+    
+        public virtual int P_WMS_InvAdjust(string userId, Nullable<int> partId, Nullable<int> invId, Nullable<decimal> adjustQty, string adjustType, string remark, ObjectParameter invAdjustBillNum, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var partIdParameter = partId.HasValue ?
+                new ObjectParameter("PartId", partId) :
+                new ObjectParameter("PartId", typeof(int));
+    
+            var invIdParameter = invId.HasValue ?
+                new ObjectParameter("InvId", invId) :
+                new ObjectParameter("InvId", typeof(int));
+    
+            var adjustQtyParameter = adjustQty.HasValue ?
+                new ObjectParameter("AdjustQty", adjustQty) :
+                new ObjectParameter("AdjustQty", typeof(decimal));
+    
+            var adjustTypeParameter = adjustType != null ?
+                new ObjectParameter("AdjustType", adjustType) :
+                new ObjectParameter("AdjustType", typeof(string));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("Remark", remark) :
+                new ObjectParameter("Remark", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_InvAdjust", userIdParameter, partIdParameter, invIdParameter, adjustQtyParameter, adjustTypeParameter, remarkParameter, invAdjustBillNum, returnValue);
         }
     }
 }

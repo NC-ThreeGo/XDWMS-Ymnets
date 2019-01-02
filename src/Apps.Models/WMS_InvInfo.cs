@@ -20,6 +20,8 @@ namespace Apps.Models
             this.WMS_AI = new HashSet<WMS_AI>();
             this.WMS_Product_Entry = new HashSet<WMS_Product_Entry>();
             this.WMS_SubInvInfo = new HashSet<WMS_SubInvInfo>();
+            this.WMS_Inv = new HashSet<WMS_Inv>();
+            this.WMS_Inv_Adjust = new HashSet<WMS_Inv_Adjust>();
         }
     
         public int Id { get; set; }
@@ -37,5 +39,7 @@ namespace Apps.Models
         public virtual ICollection<WMS_AI> WMS_AI { get; set; }
         public virtual ICollection<WMS_Product_Entry> WMS_Product_Entry { get; set; }
         public virtual ICollection<WMS_SubInvInfo> WMS_SubInvInfo { get; set; }
+        public virtual ICollection<WMS_Inv> WMS_Inv { get; set; }
+        public virtual ICollection<WMS_Inv_Adjust> WMS_Inv_Adjust { get; set; }
     }
 }
