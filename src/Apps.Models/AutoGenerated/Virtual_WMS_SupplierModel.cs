@@ -37,6 +37,8 @@ namespace Apps.Models.WMS
 		public virtual string LinkManAddress { get; set; }
 		[Display(Name = "状态")]
 		public virtual string Status { get; set; }
+		[Display(Name = "允许超量接收")]
+		public virtual string MoreAccept { get; set; }
 		[Display(Name = "说明")]
 		public virtual string Remark { get; set; }
 		[Display(Name = "创建人")]

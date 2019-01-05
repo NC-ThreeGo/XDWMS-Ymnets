@@ -25,9 +25,9 @@ namespace Apps.Models.WMS
 		public virtual string PO { get; set; }
 		[Display(Name = "采购日期")]
 		public virtual Nullable<System.DateTime> PODate { get; set; }
-		[Display(Name = "供应商编码")]
+		[Display(Name = "供应商ID")]
 		public virtual int SupplierId { get; set; }
-		[Display(Name = "物料编码")]
+		[Display(Name = "物料ID")]
 		public virtual int PartId { get; set; }
 		[Display(Name = "数量")]
 		public virtual decimal QTY { get; set; }
@@ -35,7 +35,9 @@ namespace Apps.Models.WMS
 		public virtual Nullable<System.DateTime> PlanDate { get; set; }
 		[Display(Name = "采购订单类型")]
 		public virtual string POType { get; set; }
-		[Display(Name = "状态")]
+        [Display(Name = "允许超量接收")]
+        public virtual string MoreAccept { get; set; }
+        [Display(Name = "状态")]
 		public virtual string Status { get; set; }
 		[Display(Name = "说明")]
 		public virtual string Remark { get; set; }

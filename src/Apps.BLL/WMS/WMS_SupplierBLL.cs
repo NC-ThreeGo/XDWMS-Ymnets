@@ -42,6 +42,7 @@ namespace Apps.BLL.WMS
                                                   SupplierName = r.SupplierName,
                                                   SupplierShortName = r.SupplierShortName,
                                                   SupplierType = r.SupplierType,
+                                                  MoreAccept = r.MoreAccept,
                                               }).ToList();
             return modelList;
         }
@@ -141,6 +142,7 @@ namespace Apps.BLL.WMS
 									entity.LinkMan = model.LinkMan;
 									entity.LinkManTel = model.LinkManTel;
 									entity.LinkManAddress = model.LinkManAddress;
+                                    entity.MoreAccept = "允许";
 									entity.Status = "有效";
 									entity.Remark = model.Remark;
 									entity.CreatePerson = oper;

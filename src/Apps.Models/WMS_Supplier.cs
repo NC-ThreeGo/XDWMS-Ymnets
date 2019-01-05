@@ -29,6 +29,7 @@ namespace Apps.Models
         public string LinkManTel { get; set; }
         public string LinkManAddress { get; set; }
         public string Status { get; set; }
+        public string MoreAccept { get; set; }
         public string Remark { get; set; }
         public string CreatePerson { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
