@@ -283,8 +283,6 @@ namespace Apps.BLL.WMS
                 Expression<Func<WMS_PO, bool>> exp = x => x.PO == po && x.SupplierId != supplierId;
 
                 //var result = m_PORep.GetSingleWhere(exp);
-                var result = db.WMS_PO.FirstOrDefault(exp);
-                if (result != null && supplierId != result.SupplierId)
                 var result = m_PORep.GetSingleWhere(exp);
                 if (result != null)
                 {
