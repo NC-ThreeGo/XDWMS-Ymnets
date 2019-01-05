@@ -280,11 +280,13 @@ namespace Apps.BLL.WMS
             {
                 var supplierId = model.SupplierId;
                 var po = model.PO;
-                Expression<Func<WMS_PO, bool>> exp = x => x.PO == po;
+                Expression<Func<WMS_PO, bool>> exp = x => x.PO == po && x.SupplierId != supplierId;
 
                 //var result = m_PORep.GetSingleWhere(exp);
                 var result = db.WMS_PO.FirstOrDefault(exp);
                 if (result != null && supplierId != result.SupplierId)
+                var result = m_PORep.GetSingleWhere(exp);
+                if (result != null)
                 {
                     throw new Exception("同订单存在不同供应商！");
                 }
