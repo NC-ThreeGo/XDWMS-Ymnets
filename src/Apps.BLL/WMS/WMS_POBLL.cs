@@ -16,7 +16,7 @@ using System.Linq.Dynamic.Core;
 
 namespace Apps.BLL.WMS
 {
-    public  partial class WMS_POBLL
+    public partial class WMS_POBLL
     {
         [Dependency]
         public IWMS_PartRepository m_PartRep { get; set; }
@@ -57,168 +57,170 @@ namespace Apps.BLL.WMS
                                                PartCode = r.WMS_Part.PartCode,
                                                SupplierShortName = r.WMS_Supplier.SupplierShortName,
                                                //ArrivalQty = r.WMS_AI_NEW.ArrivalQty,
-                                              }).ToList();
+                                           }).ToList();
             return modelList;
         }
 
-		public bool ImportExcelData(string oper, string filePath, ref ValidationErrors errors)
-		{
-			bool rtn = true;
+        public bool ImportExcelData(string oper, string filePath, ref ValidationErrors errors)
+        {
+            bool rtn = true;
 
-			var targetFile = new FileInfo(filePath);
+            var targetFile = new FileInfo(filePath);
 
-			if (!targetFile.Exists)
-			{
-				errors.Add("导入的数据文件不存在");
-				return false;
-			}
+            if (!targetFile.Exists)
+            {
+                errors.Add("导入的数据文件不存在");
+                return false;
+            }
 
-			var excelFile = new ExcelQueryFactory(filePath);
+            var excelFile = new ExcelQueryFactory(filePath);
 
-			using (XLWorkbook wb = new XLWorkbook(filePath))
-			{
-				//第一个Sheet
-				using (IXLWorksheet wws = wb.Worksheets.First())
-				{
-					//对应列头
-					excelFile.AddMapping<WMS_POModel>(x => x.PO, "采购订单");
-					excelFile.AddMapping<WMS_POModel>(x => x.PODate, "采购日期");
-					excelFile.AddMapping<WMS_POModel>(x => x.SupplierShortName, "供应商简称");
-					excelFile.AddMapping<WMS_POModel>(x => x.PartCode, "物料编码");
-					excelFile.AddMapping<WMS_POModel>(x => x.QTY, "数量");
-					excelFile.AddMapping<WMS_POModel>(x => x.PlanDate, "计划到货日期");
-					excelFile.AddMapping<WMS_POModel>(x => x.POType, "采购订单类型");
-					//excelFile.AddMapping<WMS_POModel>(x => x.Status, "状态");
-					excelFile.AddMapping<WMS_POModel>(x => x.Remark, "说明");
-					//excelFile.AddMapping<WMS_POModel>(x => x.Attr1, "");
-					//excelFile.AddMapping<WMS_POModel>(x => x.Attr2, "");
-					//excelFile.AddMapping<WMS_POModel>(x => x.Attr3, "");
-					//excelFile.AddMapping<WMS_POModel>(x => x.Attr4, "");
-					//excelFile.AddMapping<WMS_POModel>(x => x.Attr5, "");
-					//excelFile.AddMapping<WMS_POModel>(x => x.CreatePerson, "创建人");
-					//excelFile.AddMapping<WMS_POModel>(x => x.CreateTime, "创建时间");
-					//excelFile.AddMapping<WMS_POModel>(x => x.ModifyPerson, "修改人");
-					//excelFile.AddMapping<WMS_POModel>(x => x.ModifyTime, "修改时间");
+            using (XLWorkbook wb = new XLWorkbook(filePath))
+            {
+                //第一个Sheet
+                using (IXLWorksheet wws = wb.Worksheets.First())
+                {
+                    //对应列头
+                    excelFile.AddMapping<WMS_POModel>(x => x.PO, "采购订单");
+                    excelFile.AddMapping<WMS_POModel>(x => x.PODate, "采购日期");
+                    excelFile.AddMapping<WMS_POModel>(x => x.SupplierShortName, "供应商简称");
+                    excelFile.AddMapping<WMS_POModel>(x => x.PartCode, "物料编码");
+                    excelFile.AddMapping<WMS_POModel>(x => x.QTY, "数量");
+                    excelFile.AddMapping<WMS_POModel>(x => x.PlanDate, "计划到货日期");
+                    excelFile.AddMapping<WMS_POModel>(x => x.POType, "采购订单类型");
+                    //excelFile.AddMapping<WMS_POModel>(x => x.Status, "状态");
+                    excelFile.AddMapping<WMS_POModel>(x => x.Remark, "说明");
+                    //excelFile.AddMapping<WMS_POModel>(x => x.Attr1, "");
+                    //excelFile.AddMapping<WMS_POModel>(x => x.Attr2, "");
+                    //excelFile.AddMapping<WMS_POModel>(x => x.Attr3, "");
+                    //excelFile.AddMapping<WMS_POModel>(x => x.Attr4, "");
+                    //excelFile.AddMapping<WMS_POModel>(x => x.Attr5, "");
+                    //excelFile.AddMapping<WMS_POModel>(x => x.CreatePerson, "创建人");
+                    //excelFile.AddMapping<WMS_POModel>(x => x.CreateTime, "创建时间");
+                    //excelFile.AddMapping<WMS_POModel>(x => x.ModifyPerson, "修改人");
+                    //excelFile.AddMapping<WMS_POModel>(x => x.ModifyTime, "修改时间");
 
-					//SheetName，第一个Sheet
-					var excelContent = excelFile.Worksheet<WMS_POModel>(0);
+                    //SheetName，第一个Sheet
+                    var excelContent = excelFile.Worksheet<WMS_POModel>(0);
 
-					//开启事务
-					using (DBContainer db = new DBContainer())
-					{
-						var tran = db.Database.BeginTransaction();  //开启事务
-						int rowIndex = 0;
+                    //开启事务
+                    using (DBContainer db = new DBContainer())
+                    {
+                        var tran = db.Database.BeginTransaction();  //开启事务
+                        int rowIndex = 0;
 
-						//检查数据正确性
-						foreach (var row in excelContent)
-							{
-								rowIndex += 1;
-								string errorMessage = String.Empty;
-								var model = new WMS_POModel();
-								model.Id = row.Id;
-								model.PO = row.PO;
-								model.PODate = row.PODate;
-								model.SupplierShortName = row.SupplierShortName;
-								model.PartCode = row.PartCode;
-								model.QTY = row.QTY;
-								model.PlanDate = row.PlanDate;
-								model.POType = row.POType;
-								model.Status = "有效";
-								model.Remark = row.Remark;
-								//model.Attr1 = row.Attr1;
-								//model.Attr2 = row.Attr2;
-								//model.Attr3 = row.Attr3;
-								//model.Attr4 = row.Attr4;
-								//model.Attr5 = row.Attr5;
-								//model.CreatePerson = row.CreatePerson;
-								//model.CreateTime = row.CreateTime;
-								//model.ModifyPerson = row.ModifyPerson;
-								//model.ModifyTime = row.ModifyTime;
+                        //检查数据正确性
+                        foreach (var row in excelContent)
+                        {
+                            rowIndex += 1;
+                            string errorMessage = String.Empty;
+                            var model = new WMS_POModel();
+                            model.Id = row.Id;
+                            model.PO = row.PO;
+                            model.PODate = row.PODate;
+                            model.SupplierShortName = row.SupplierShortName;
+                            model.PartCode = row.PartCode;
+                            model.QTY = row.QTY;
+                            model.PlanDate = row.PlanDate;
+                            model.POType = row.POType;
+                            model.Status = "有效";
+                            model.Remark = row.Remark;
+                            //model.Attr1 = row.Attr1;
+                            //model.Attr2 = row.Attr2;
+                            //model.Attr3 = row.Attr3;
+                            //model.Attr4 = row.Attr4;
+                            //model.Attr5 = row.Attr5;
+                            //model.CreatePerson = row.CreatePerson;
+                            //model.CreateTime = row.CreateTime;
+                            //model.ModifyPerson = row.ModifyPerson;
+                            //model.ModifyTime = row.ModifyTime;
 
-								if (!String.IsNullOrEmpty(errorMessage))
-								{
-									rtn = false;
-									errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-									wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
-									continue;								}
-								
-								//执行额外的数据校验
-								try
-								{
-									AdditionalCheckExcelData(ref model);
-								}
-								catch (Exception ex)
-								{
-									rtn = false;
-									errorMessage = ex.Message;
-									errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-									wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
-									continue;
-								}
-								
-									//写入数据库
-									WMS_PO entity = new WMS_PO();
-									entity.Id = model.Id;
-									entity.PO = model.PO;
-									entity.PODate = model.PODate;
-									entity.SupplierId = model.SupplierId;
-									entity.PartId = model.PartId;
-									entity.QTY = model.QTY;
-									entity.PlanDate = model.PlanDate;
-									entity.POType = model.POType;
-									entity.Status = "有效";
-									entity.Remark = model.Remark;
-									entity.Attr1 = model.Attr1;
-									entity.Attr2 = model.Attr2;
-									entity.Attr3 = model.Attr3;
-									entity.Attr4 = model.Attr4;
-									entity.Attr5 = model.Attr5;
-									entity.CreatePerson = oper;
-									entity.CreateTime = DateTime.Now;
-									entity.ModifyPerson = oper;
-									entity.ModifyTime = DateTime.Now;
+                            if (!String.IsNullOrEmpty(errorMessage))
+                            {
+                                rtn = false;
+                                errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
+                                wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                                continue;
+                            }
 
-									db.WMS_PO.Add(entity);
-									try
-									{
-										db.SaveChanges();
-									}
-									catch (Exception ex)
-									{
-										rtn = false;
-										//将当前报错的entity状态改为分离，类似EF的回滚（忽略之前的Add操作）
-										db.Entry(entity).State = System.Data.Entity.EntityState.Detached;
-										errorMessage = ex.InnerException.InnerException.Message;
-										errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-										wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
-								}
-							}
+                            //执行额外的数据校验
+                            try
+                            {
+                                AdditionalCheckExcelData(db, ref model);
+                            }
+                            catch (Exception ex)
+                            {
+                                rtn = false;
+                                errorMessage = ex.Message;
+                                errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
+                                wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                                continue;
+                            }
 
-							if (rtn)
-							{
-								tran.Commit();  //必须调用Commit()，不然数据不会保存
-							}
-							else
-							{
-								tran.Rollback();    //出错就回滚       
-							}
-						}
-					}
-					wb.Save();
-				}
+                            //写入数据库
+                            WMS_PO entity = new WMS_PO();
+                            entity.Id = model.Id;
+                            entity.PO = model.PO;
+                            entity.PODate = model.PODate;
+                            entity.SupplierId = model.SupplierId;
+                            entity.PartId = model.PartId;
+                            entity.QTY = model.QTY;
+                            entity.PlanDate = model.PlanDate;
+                            entity.POType = model.POType;
+                            entity.Status = "有效";
+                            entity.Remark = model.Remark;
+                            entity.Attr1 = model.Attr1;
+                            entity.Attr2 = model.Attr2;
+                            entity.Attr3 = model.Attr3;
+                            entity.Attr4 = model.Attr4;
+                            entity.Attr5 = model.Attr5;
+                            entity.CreatePerson = oper;
+                            entity.CreateTime = DateTime.Now;
+                            entity.ModifyPerson = oper;
+                            entity.ModifyTime = DateTime.Now;
 
-				return rtn;
-			}
+                            db.WMS_PO.Add(entity);
+                            try
+                            {
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                rtn = false;
+                                //将当前报错的entity状态改为分离，类似EF的回滚（忽略之前的Add操作）
+                                db.Entry(entity).State = System.Data.Entity.EntityState.Detached;
+                                errorMessage = ex.InnerException.InnerException.Message;
+                                errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
+                                wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                            }
+                        }
 
-		public void AdditionalCheckExcelData(ref WMS_POModel model)
-		{
+                        if (rtn)
+                        {
+                            tran.Commit();  //必须调用Commit()，不然数据不会保存
+                        }
+                        else
+                        {
+                            tran.Rollback();    //出错就回滚       
+                        }
+                    }
+                }
+                wb.Save();
+            }
+
+            return rtn;
+        }
+
+        private void AdditionalCheckExcelData(DBContainer db, ref WMS_POModel model)
+        {
             //获取物料ID
             if (!String.IsNullOrEmpty(model.PartCode))
             {
                 var partCode = model.PartCode;
                 Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
 
-                var part = m_PartRep.GetSingleWhere(exp);
+                //var part = m_PartRep.GetSingleWhere(exp);
+                var part = db.WMS_Part.FirstOrDefault(exp);
                 if (part == null)
                 {
                     throw new Exception("物料编码不存在！");
@@ -238,8 +240,9 @@ namespace Apps.BLL.WMS
             {
                 var supplierShortName = model.SupplierShortName;
                 Expression<Func<WMS_Supplier, bool>> exp = x => x.SupplierShortName == supplierShortName;
-                                
-                var supplier = m_SupplierRep.GetSingleWhere(exp);
+
+                //var supplier = m_SupplierRep.GetSingleWhere(exp);
+                var supplier = db.WMS_Supplier.FirstOrDefault(exp);
                 if (supplier == null)
                 {
                     throw new Exception("供应商简称不存在！");
@@ -247,7 +250,7 @@ namespace Apps.BLL.WMS
                 else
                 {
                     model.SupplierId = supplier.Id;
-                }                
+                }
             }
             else
             {
@@ -261,11 +264,12 @@ namespace Apps.BLL.WMS
                 var po = model.PO;
                 Expression<Func<WMS_PO, bool>> exp = x => x.PartId == partId && x.PO == po;
 
-                var part = m_PORep.GetSingleWhere(exp);
+                //var part = m_PORep.GetSingleWhere(exp);
+                var part = db.WMS_PO.FirstOrDefault(exp);
                 if (part != null)
                 {
                     throw new Exception("订单号与物料编码重复！");
-                }               
+                }
             }
             else
             {
@@ -278,13 +282,14 @@ namespace Apps.BLL.WMS
                 var po = model.PO;
                 Expression<Func<WMS_PO, bool>> exp = x => x.PO == po;
 
-                var result = m_PORep.GetSingleWhere(exp);
-                if (result != null && supplierId!= result.SupplierId)
+                //var result = m_PORep.GetSingleWhere(exp);
+                var result = db.WMS_PO.FirstOrDefault(exp);
+                if (result != null && supplierId != result.SupplierId)
                 {
                     throw new Exception("同订单存在不同供应商！");
                 }
             }
-            
+
 
         }
         public List<WMS_POModel> GetListByWhere(ref GridPager pager, string where)
@@ -297,5 +302,5 @@ namespace Apps.BLL.WMS
             return CreateModelList(ref queryData);
         }
     }
- }
+}
 
