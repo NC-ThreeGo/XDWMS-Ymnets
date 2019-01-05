@@ -25,7 +25,14 @@ namespace Apps.BLL.WMS
                                                   PartId = r.PartId,
                                                   Qty = r.Qty,
                                                   SubInvId = r.SubInvId,
-                                              }).ToList();
+
+                                                  PartCode = r.WMS_Part.PartCode,
+                                                  PartName = r.WMS_Part.PartName,
+                                                  InvCode = r.WMS_InvInfo.InvCode,
+                                                  InvName = r.WMS_InvInfo.InvName,
+                                                  SubInvName = r.WMS_SubInvInfo.SubInvName,
+                                              }).OrderBy("InvId asc, SubInvId asc, PartId asc")
+                                              .ToList();
             return modelList;
         }
 
