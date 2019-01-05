@@ -14,6 +14,9 @@ namespace Apps.Models.WMS
         [Display(Name = "物料编码")]
         public string PartCode { get; set; }
 
+        [Display(Name = "物料编码")]
+        public string PartName { get; set; }
+
         [Display(Name = "供应商简称")]
         public string SupplierShortName { get; set; }
 
@@ -23,8 +26,11 @@ namespace Apps.Models.WMS
         [Display(Name = "供应商全称")]
         public string SupplierName { get; set; }
 
-        [Display(Name = "库房")]
+        [Display(Name = "库房编码")]
         public string InvCode { get; set; }
+
+        [Display(Name = "库房")]
+        public string InvName { get; set; }
 
         [Display(Name = "到货数量")]
         public decimal? ArrivalQty { get; set; }

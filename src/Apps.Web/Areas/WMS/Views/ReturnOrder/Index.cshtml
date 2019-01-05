@@ -85,11 +85,12 @@
             columns: [[
                 { field: 'Id', title: '退货单ID', width: 80,hidden:true },
                 { field: 'ReturnOrderNum', title: '退货单号', width: 110,sortable:true },
-                { field: 'ArrivalBillNum', title: '到货单号', width: 140,sortable:true },
+                //{ field: 'ArrivalBillNum', title: '到货单号', width: 140,sortable:true },
                 { field: 'InspectBillNum', title: '检验单号', width: 110, sortable: true },
-                { field: 'PartCode', title: '物料编码', width: 60,sortable:true },
+                { field: 'PartCode', title: '物料编码', width: 60, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 60, sortable: true },
                 { field: 'SupplierShortName', title: '供应商', width: 80,sortable:true },
-                { field: 'InvCode', title: '库房', width: 80,sortable:true },
+                { field: 'InvName', title: '库房', width: 80,sortable:true },
                 //{ field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
                 { field: 'ReturnQty', title: '应退货数量', width: 80,sortable:true },
                 { field: 'AdjustQty', title: '实际退货数量', width: 80,sortable:true },
@@ -143,10 +144,20 @@
             $.modalWindow(Lang.Create, '@Url.Action("CreateBatch")', 700, 400, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
-            var row = $('#List').datagrid('getSelected');
+            @*var row = $('#List').datagrid('getSelected');
             if (row != null) {
                 $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }*@
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                if (row.ConfirmStatus == "已确认") {
+                    $.messager.confirm(index_lang_tip, "单据已确认不能被修改")
+                }
+                else {
+                    $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
+                }
+
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }  
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
@@ -178,8 +189,16 @@
 
         });
         $("#btnDelete").click(function () {
-	            dataDelete("@Url.Action("Delete")", "List");
-	        });
+	            @*dataDelete("@Url.Action("Delete")", "List");*@
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                if (row.ConfirmStatus == "已确认") {                
+                    $.messager.confirm(index_lang_tip, "单据已确认不能被删除")
+                }
+                else { dataDelete("@Url.Action("Delete")", "List");
+                } 
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+	     });
         $("#btnImport").click(function() {
              $("#txtExcelPath").val("");
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
