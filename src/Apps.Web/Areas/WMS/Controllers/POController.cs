@@ -234,7 +234,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("数量", item.QTY);
                     jo.Add("计划到货日期", item.PlanDate);
                     jo.Add("采购订单类型", item.POType);
-                    jo.Add("允许超量接收", item.MoreAccept);
+                    //jo.Add("允许超量接收", item.MoreAccept);
                     jo.Add("状态", item.Status);
                     jo.Add("说明", item.Remark);
                     //jo.Add("Attr1", item.Attr1);

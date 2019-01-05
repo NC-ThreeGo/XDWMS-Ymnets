@@ -110,6 +110,7 @@ namespace Apps.Models
         public virtual DbSet<WMS_Inv> WMS_Inv { get; set; }
         public virtual DbSet<WMS_Inv_Adjust> WMS_Inv_Adjust { get; set; }
         public virtual DbSet<WMS_Supplier> WMS_Supplier { get; set; }
+        public virtual DbSet<WMS_ReInspect> WMS_ReInspect { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {
@@ -784,6 +785,43 @@ namespace Apps.Models
                 new ObjectParameter("Remark", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_InvAdjust", userIdParameter, partIdParameter, invIdParameter, adjustQtyParameter, adjustTypeParameter, remarkParameter, invAdjustBillNum, returnValue);
+        }
+    
+        public virtual int P_WMS_CreateReInspect(string userId, Nullable<int> aIID, string nCheckOutResult, Nullable<decimal> nQualifyQty, Nullable<decimal> nNoQualifyQty, string nCheckOutRemark, Nullable<System.DateTime> nCheckOutDate, string remark, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var aIIDParameter = aIID.HasValue ?
+                new ObjectParameter("AIID", aIID) :
+                new ObjectParameter("AIID", typeof(int));
+    
+            var nCheckOutResultParameter = nCheckOutResult != null ?
+                new ObjectParameter("NCheckOutResult", nCheckOutResult) :
+                new ObjectParameter("NCheckOutResult", typeof(string));
+    
+            var nQualifyQtyParameter = nQualifyQty.HasValue ?
+                new ObjectParameter("NQualifyQty", nQualifyQty) :
+                new ObjectParameter("NQualifyQty", typeof(decimal));
+    
+            var nNoQualifyQtyParameter = nNoQualifyQty.HasValue ?
+                new ObjectParameter("NNoQualifyQty", nNoQualifyQty) :
+                new ObjectParameter("NNoQualifyQty", typeof(decimal));
+    
+            var nCheckOutRemarkParameter = nCheckOutRemark != null ?
+                new ObjectParameter("NCheckOutRemark", nCheckOutRemark) :
+                new ObjectParameter("NCheckOutRemark", typeof(string));
+    
+            var nCheckOutDateParameter = nCheckOutDate.HasValue ?
+                new ObjectParameter("NCheckOutDate", nCheckOutDate) :
+                new ObjectParameter("NCheckOutDate", typeof(System.DateTime));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("Remark", remark) :
+                new ObjectParameter("Remark", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateReInspect", userIdParameter, aIIDParameter, nCheckOutResultParameter, nQualifyQtyParameter, nNoQualifyQtyParameter, nCheckOutRemarkParameter, nCheckOutDateParameter, remarkParameter, returnValue);
         }
     }
 }

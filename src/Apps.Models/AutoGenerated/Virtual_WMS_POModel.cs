@@ -35,9 +35,7 @@ namespace Apps.Models.WMS
 		public virtual Nullable<System.DateTime> PlanDate { get; set; }
 		[Display(Name = "采购订单类型")]
 		public virtual string POType { get; set; }
-        [Display(Name = "允许超量接收")]
-        public virtual string MoreAccept { get; set; }
-        [Display(Name = "状态")]
+		[Display(Name = "状态")]
 		public virtual string Status { get; set; }
 		[Display(Name = "说明")]
 		public virtual string Remark { get; set; }

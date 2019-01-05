@@ -71,5 +71,7 @@ namespace Apps.Models.WMS
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> BatchId { get; set; }
+		[Display(Name = "退货单类型")]
+		public virtual string ReturnOderType { get; set; }
 		}
 }

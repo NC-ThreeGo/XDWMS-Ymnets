@@ -17,6 +17,7 @@ namespace Apps.Models
         public WMS_AI()
         {
             this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
+            this.WMS_ReInspect = new HashSet<WMS_ReInspect>();
         }
     
         public int Id { get; set; }
@@ -58,5 +59,6 @@ namespace Apps.Models
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
         public virtual WMS_Part WMS_Part { get; set; }
         public virtual WMS_SubInvInfo WMS_SubInvInfo { get; set; }
+        public virtual ICollection<WMS_ReInspect> WMS_ReInspect { get; set; }
     }
 }

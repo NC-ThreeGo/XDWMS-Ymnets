@@ -182,6 +182,8 @@
         <EntityTypeShape EntityType="DB.WMS_Supplier" Width="1.5" PointX="19.375" PointY="8" />
         <AssociationConnector Association="DB.FK_WMS_PO_WMS_Supplier" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Supplier" />
+        <EntityTypeShape EntityType="DB.WMS_ReInspect" Width="1.5" PointX="7.5" PointY="58.75" />
+        <AssociationConnector Association="DB.FK_WMS_ReInspect_WMS_AI" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

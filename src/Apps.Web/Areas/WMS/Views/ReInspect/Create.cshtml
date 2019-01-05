@@ -1,0 +1,172 @@
+﻿@model Apps.Models.WMS.WMS_ReInspectModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WMS;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Create")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+function frameReturnByClose() {
+$("#modalwindow").window('close');
+}
+function frameReturnByMes(mes) {
+$.messageBox5s(Lang.Tip, mes);
+}
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id, new { @Value = 0 })
+    @Html.HiddenFor(model => model.AIId)
+    <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    送检单号：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.InspectBillNum)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.InspectBillNum)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OCheckOutResult)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OCheckOutResult)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OCheckOutResult)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OQualifyQty)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OQualifyQty)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OQualifyQty)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ONoQualifyQty)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.ONoQualifyQty)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ONoQualifyQty)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OCheckOutRemark)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OCheckOutRemark)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OCheckOutRemark)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OCheckOutDate)：
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.OCheckOutDate, new { @onClick = "WdatePicker()", @style = "width: 105px" })
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OCheckOutDate)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.NCheckOutResult)：
+                </th>
+                <td>
+                    @*@Html.EditorFor(model => model.NCheckOutResult)*@
+                    @Html.DropDownListFor(model => model.NCheckOutResult, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("CheckOutResult"))
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.NCheckOutResult)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.NQualifyQty)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.NQualifyQty)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.NQualifyQty)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.NNoQualifyQty)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.NNoQualifyQty)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.NNoQualifyQty)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.NCheckOutRemark)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.NCheckOutRemark)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.NCheckOutRemark)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.NCheckOutDate)：
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.NCheckOutDate, new { @onClick = "WdatePicker()", @style = "width: 105px" })
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.NCheckOutDate)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Remark)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Remark)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
