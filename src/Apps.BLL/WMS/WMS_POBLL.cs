@@ -56,6 +56,7 @@ namespace Apps.BLL.WMS
                                                SupplierId = r.SupplierId,
                                                PartCode = r.WMS_Part.PartCode,
                                                SupplierShortName = r.WMS_Supplier.SupplierShortName,
+                                               MoreAccept = r.WMS_Supplier.MoreAccept,
                                                //ArrivalQty = r.WMS_AI_NEW.ArrivalQty,
                                            }).ToList();
             return modelList;

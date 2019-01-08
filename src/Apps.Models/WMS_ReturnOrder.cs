@@ -21,8 +21,8 @@ namespace Apps.Models
         public Nullable<int> SupplierId { get; set; }
         public Nullable<int> InvId { get; set; }
         public Nullable<int> SubInvId { get; set; }
-        public decimal ReturnQty { get; set; }
-        public decimal AdjustQty { get; set; }
+        public Nullable<decimal> ReturnQty { get; set; }
+        public Nullable<decimal> AdjustQty { get; set; }
         public string Remark { get; set; }
         public string PrintStaus { get; set; }
         public Nullable<System.DateTime> PrintDate { get; set; }
@@ -41,6 +41,7 @@ namespace Apps.Models
         public Nullable<System.DateTime> ModifyTime { get; set; }
         public Nullable<int> BatchId { get; set; }
         public string ReturnOderType { get; set; }
+        public string Lot { get; set; }
     
         public virtual WMS_AI WMS_AI { get; set; }
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }

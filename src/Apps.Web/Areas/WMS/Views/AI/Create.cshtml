@@ -134,7 +134,7 @@
                 { field: 'PO', title: '采购订单', width: 80,  hidden: true },
                 { field: 'PartId', title: '物料ID', width: 80,  hidden: true },
                 { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
-                { field: 'CurrentQty', title: '本次到货数量', width: 80, editor: { type: ['textevent'] }, align: 'right' },
+                { field: 'CurrentQty', title: '本次到货数量', width: 80, editor: { type: 'numberbox', options: { required: true, min: 0 } }, align: 'right' },
                 { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
                 {
                     field: 'ArrivalDate', title: '到货日期', width: 80, sortable: true,
@@ -158,13 +158,23 @@
         });
     });
     //输入到货数量（<>0）后自动选择当前行
-    function setKeyUpValue()
+    function setKeyUpValue(sender)
     {
         var row = $('#List').datagrid('getSelected');
         var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
         var thisTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'CurrentQty' }).target;
         thisTarget.val(thisTarget.val().replace(/[^\d]/g, ''));
         var thisValue = thisTarget.val();
+
+        //如果当前供应商不允许超量接收，则判断当前到货数量+已到货数量是否>订单数量，如大于则为0
+        if ($("#MoreAccept").val() == "不允许")
+        {
+            if (thisValue + row.SumAIQty > row.QTY)
+            {
+                thisValue = 0;
+            }
+        }
+
         if (thisValue == "")
             thisValue = 0;
         if (thisValue != 0)
@@ -183,16 +193,6 @@
         {
             dateTarget.datebox('setValue', formatterDate(new Date()));
         }
-
-        //当前到货数量+已到货数量>订单数量，则改变行的背景颜色
-        //if (thisValue + row.SumAIQty > row.QTY)
-        //{
-        //    $(thisTarget).closest('td[field]').parent().addClass('overbalance');
-        //}
-        //else
-        //{
-        //    $(thisTarget).closest('td[field]').parent().removeClass('overbalance');
-        //}
     }
 
     //得到当前日期
@@ -221,6 +221,23 @@
             if (endEditing()) {
                 $('#List').datagrid('selectRow', index)
                         .datagrid('beginEdit', index);
+
+                //给numberbox增加keyup事件，以便自动计算合格数量和不合格数量
+                var eds = $('#List').datagrid('getEditors', index);
+                for (var i = 0; i < eds.length; i++)
+                {
+                    var ed = eds[i];
+                    if (ed.field == 'CurrentQty')
+                    {
+                        var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                        target.attr("field", ed.field)
+                        target.bind("keyup", function ()
+                        {
+                            return setKeyUpValue($(this));
+                        });
+                    }
+                }
+
                 var ed = $('#List').datagrid('getEditor', { index: index, field: field });
                 if (ed) {
                     ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
@@ -329,10 +346,11 @@
                             $("#modalwindow").window({ title: '选择采购订单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
                         }
 
-                        function SetSelResult(result, resultName)
+                        function SetSelResult(result, resultName, moreAccept)
                         {
                             //$("#POId").val(result);
                             $("#PONo").val(resultName);
+                            $("#MoreAccept").val(moreAccept);
                         }
 
                     </script>
@@ -344,6 +362,12 @@
                 <td>
                     <input id="arrivalBillNum" type="hidden" name="arrivalBillNum" value="@ViewBag.ArrivalBillNum" />
                     @Html.TextBox("arrivalBillNum", (string)ViewBag.ArrivalBillNum, new { @disabled = "disabled" })
+                </td>
+                <th>
+                    是否允许超量接收：
+                </th>
+                <td>
+                    <input id="MoreAccept" name="MoreAccept" type="text" style="width: 200px; display: inline;">
                 </td>
             </tr>
 

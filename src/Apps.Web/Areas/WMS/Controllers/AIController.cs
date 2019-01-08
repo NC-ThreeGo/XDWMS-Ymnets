@@ -74,6 +74,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                 WMS_AIModel aiModel = new WMS_AIModel();
                 aiModel.Id = 0;
                 aiModel.ArrivalBillNum = arrivalBillNum;
+                //到货批次：年+月（系统日期）
+                aiModel.Lot = DateTime.Now.ToString("yyyyMM");
                 aiModel.ReceiveMan = GetUserId();
                 aiModel.ReceiveStatus = "已到货";
                 aiModel.CreateTime = ResultHelper.NowTime;

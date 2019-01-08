@@ -34,9 +34,9 @@ namespace Apps.Models.WMS
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> SubInvId { get; set; }
 		[Display(Name = "应退货数量")]
-		public virtual decimal ReturnQty { get; set; }
+		public virtual Nullable<decimal> ReturnQty { get; set; }
 		[Display(Name = "实际退货数量")]
-		public virtual decimal AdjustQty { get; set; }
+		public virtual Nullable<decimal> AdjustQty { get; set; }
 		[Display(Name = "退货说明")]
 		public virtual string Remark { get; set; }
 		[Display(Name = "打印状态")]
@@ -71,7 +71,9 @@ namespace Apps.Models.WMS
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> BatchId { get; set; }
-		[Display(Name = "退货单类型")]
+		[Display(Name = "未设置")]
 		public virtual string ReturnOderType { get; set; }
+		[Display(Name = "批次号：YYYYMM")]
+		public virtual string Lot { get; set; }
 		}
 }
