@@ -157,6 +157,7 @@ namespace Apps.BLL.WMS
 				entity.POId = model.POId;
 				entity.PartId = model.PartId;
 				entity.BoxQty = model.BoxQty;
+                entity.Lot = model.Lot;
 				entity.ArrivalQty = model.ArrivalQty;
 				entity.ArrivalDate = model.ArrivalDate;
 				entity.ReceiveMan = model.ReceiveMan;

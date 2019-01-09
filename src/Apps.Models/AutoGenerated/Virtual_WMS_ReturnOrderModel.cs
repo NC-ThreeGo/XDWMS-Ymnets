@@ -33,6 +33,8 @@ namespace Apps.Models.WMS
 		public virtual Nullable<int> InvId { get; set; }
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> SubInvId { get; set; }
+		[Display(Name = "批次号：YYYYMM")]
+		public virtual string Lot { get; set; }
 		[Display(Name = "应退货数量")]
 		public virtual Nullable<decimal> ReturnQty { get; set; }
 		[Display(Name = "实际退货数量")]
@@ -73,7 +75,5 @@ namespace Apps.Models.WMS
 		public virtual Nullable<int> BatchId { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string ReturnOderType { get; set; }
-		[Display(Name = "批次号：YYYYMM")]
-		public virtual string Lot { get; set; }
 		}
 }

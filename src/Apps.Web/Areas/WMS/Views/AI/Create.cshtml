@@ -163,21 +163,21 @@
         var row = $('#List').datagrid('getSelected');
         var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
         var thisTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'CurrentQty' }).target;
-        thisTarget.val(thisTarget.val().replace(/[^\d]/g, ''));
-        var thisValue = thisTarget.val();
+        var thisTarget_Input = $(thisTarget).data('numberbox') ? $(thisTarget).numberbox('textbox') : $(thisTarget);
 
         //如果当前供应商不允许超量接收，则判断当前到货数量+已到货数量是否>订单数量，如大于则为0
         if ($("#MoreAccept").val() == "不允许")
         {
-            if (thisValue + row.SumAIQty > row.QTY)
+            if (Number(thisTarget_Input.val()) + Number(row.SumAIQty) > Number(row.QTY))
             {
-                thisValue = 0;
+                thisTarget_Input.val(0);
+                alert("当前供应商不允许超量接收！");
             }
         }
 
-        if (thisValue == "")
-            thisValue = 0;
-        if (thisValue != 0)
+        if (thisTarget_Input.val() == "")
+            thisTarget_Input.val(0);
+        if (thisTarget_Input.val() != 0)
         {
             $('#List').datagrid('checkRow', rowIndex);
         }

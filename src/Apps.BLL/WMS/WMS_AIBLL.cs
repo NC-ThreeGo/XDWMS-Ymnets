@@ -49,6 +49,7 @@ namespace Apps.BLL.WMS
                                                NoQualifyQty = r.NoQualifyQty,
                                                POId = r.POId,
                                                PartId = r.PartId,
+                                               Lot = r.Lot,
                                                QualifyQty = r.QualifyQty,
                                                ReceiveMan = r.ReceiveMan,
                                                ReceiveStatus = r.ReceiveStatus,

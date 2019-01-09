@@ -34,6 +34,7 @@ namespace Apps.BLL.WMS
                                                   CreateTime = r.CreateTime,
                                                   Id = r.Id,
                                                   InvId = r.InvId,
+                                                  Lot = r.Lot,
                                                   ModifyPerson = r.ModifyPerson,
                                                   ModifyTime = r.ModifyTime,
                                                   PartID = r.PartID,
@@ -259,11 +260,11 @@ namespace Apps.BLL.WMS
         //    return m_Rep.CreateBatchReturnOrder(opt, jsonReturnOrder);
         //}
 
-        public bool CreateReturnOrder(ref ValidationErrors errors, string opt, int? partId, int? supplierId, int? invId, decimal? qty, string remark)
+        public bool CreateReturnOrder(ref ValidationErrors errors, string opt, WMS_ReturnOrderModel model)
         {
             try
             {
-                var message = m_Rep.CreateReturnOrder(opt, partId, supplierId, invId, qty, remark);
+                var message = m_Rep.CreateReturnOrder(opt, model.PartID, model.SupplierId, model.InvId, model.Lot, model.AdjustQty, model.Remark);
                 if (String.IsNullOrEmpty(message))
                     return true;
                 else

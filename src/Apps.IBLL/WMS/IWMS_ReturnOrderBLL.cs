@@ -46,7 +46,7 @@ namespace Apps.IBLL.WMS
         /// <param name="qty"></param>
         /// <param name="remark"></param>
         /// <returns></returns>
-        bool CreateReturnOrder(ref ValidationErrors errors, string opt, int? partId, int? supplierId, int? invId, decimal? qty, string remark);
+        bool CreateReturnOrder(ref ValidationErrors errors, string opt, WMS_ReturnOrderModel model);
 
         /// <summary>
         /// 打印退货单
