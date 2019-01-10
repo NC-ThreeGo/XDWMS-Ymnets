@@ -16,12 +16,6 @@ namespace Apps.IBLL.WMS
          bool ImportExcelData(string oper, string filePath, ref ValidationErrors errors);
     
          /// <summary>
-         /// 对导入进行附加的校验，例如物料编码是否存在等。
-         /// </summary>
-         /// <param name="model"></param>
-         void AdditionalCheckExcelData(ref WMS_Product_EntryModel model);
-    
-         /// <summary>
          /// 根据where字符串获取列表数据。
          /// </summary>
          /// <param name="pager"></param>

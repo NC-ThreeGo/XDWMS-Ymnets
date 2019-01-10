@@ -10,7 +10,6 @@ using ClosedXML.Excel;
 using Apps.Models.WMS;
 using System.Data.Entity.Core.Objects;
 using System.Linq.Expressions;
-using System.Linq.Dynamic.Core;
 using Apps.IDAL.WMS;
 using Unity.Attributes;
 
@@ -149,7 +148,7 @@ namespace Apps.BLL.WMS
                             //执行额外的数据校验
                             try
                             {
-                                AdditionalCheckExcelData(ref model);
+                                AdditionalCheckExcelData(db, ref model);
                             }
                             catch (Exception ex)
                             {
@@ -227,7 +226,7 @@ namespace Apps.BLL.WMS
             return rtn;
         }
 
-        public void AdditionalCheckExcelData(ref WMS_Product_EntryModel model)
+        private void AdditionalCheckExcelData(DBContainer db, ref WMS_Product_EntryModel model)
         {
             //获取物料ID
             if (!String.IsNullOrEmpty(model.PartCode))
@@ -235,7 +234,7 @@ namespace Apps.BLL.WMS
                 var partCode = model.PartCode;
                 Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
 
-                var part = m_PartRep.GetSingleWhere(exp);
+                var part = db.WMS_Part.FirstOrDefault(exp);
                 if (part == null)
                 {
                     throw new Exception("物料编码不存在！");
@@ -256,7 +255,7 @@ namespace Apps.BLL.WMS
                 var invName = model.InvName;
                 Expression<Func<WMS_InvInfo, bool>> exp = x => x.InvName == invName;
 
-                var inv = m_InvInfoRep.GetSingleWhere(exp);
+                var inv = db.WMS_InvInfo.FirstOrDefault(exp);
                 if (inv == null)
                 {
                     throw new Exception("库房不存在！");
@@ -278,7 +277,7 @@ namespace Apps.BLL.WMS
                 var productBillNum = model.ProductBillNum;
                 Expression<Func<WMS_Product_Entry, bool>> exp = x => x.WMS_Part.PartCode == partcode && x.ProductBillNum == productBillNum;
 
-                var part = m_ProductRep.GetSingleWhere(exp);
+                var part = db.WMS_Product_Entry.FirstOrDefault(exp);
                 if (part != null)
                 {
                     throw new Exception("入库单号与物料编码重复！");
