@@ -12,6 +12,7 @@ namespace Apps.IBLL.WMS
         /// <param name="pager"></param>
         /// <param name="whereStr"></param>
         IQueryable<WMS_POForAIModel> GetPOListForAI(ref GridPager pager, string poNo);
+        IQueryable<WMS_POForAIModel> GetPOListForAI(ref GridPager pager, string poNo, int partId);
 
         /// <summary>
         /// 获取某个到货单的信息

@@ -353,6 +353,27 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetPODetailsListByPartCode(string poNo, string partCode)
+        {
+            var partList = m_PartBLL.GetListByWhere(ref setNoPagerAscById, "PartCode == \"" + partCode + "\"");
+            if (partList == null)
+            {
+                return Json(JsonHandler.CreateMessage(0, "物料编码不存在！"));
+            }
+
+            var poLines = m_BLL.GetPOListForAI(ref setNoPagerAscById, poNo, partList[0].Id);
+            if (poLines.Count() > 0)
+            {
+                return Json(JsonHandler.CreateMessage(1, Resource.CheckSucceed, JsonHandler.SerializeObject(poLines.First())));
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(0, "当前订单不存在输入的物料！"));
+            }
+        }
         #endregion
 
 

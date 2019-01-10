@@ -51,10 +51,12 @@ namespace Apps.DAL.WMS
 
         public void ConfirmReturnOrder(string opt, string returnOrderNum)
         {
-            string sql = "update WMS_ReturnOrder set ConfirmStatus = '已确认', ConfirmMan = '" + opt + "', ConfirmDate = getdate(), "
-                + " ModifyPerson = '" + opt + "', ModifyTime = getdate() "
-                + " where ReturnOrderNum = '" + returnOrderNum + "'";
-            Context.Database.ExecuteSqlCommand(sql);
+            //string sql = "update WMS_ReturnOrder set ConfirmStatus = '已确认', ConfirmMan = '" + opt + "', ConfirmDate = getdate(), "
+            //    + " ModifyPerson = '" + opt + "', ModifyTime = getdate() "
+            //    + " where ReturnOrderNum = '" + returnOrderNum + "'";
+            //Context.Database.ExecuteSqlCommand(sql);
+            ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
+            Context.P_WMS_ConfirmReturnOrder(opt, returnOrderNum, returnValue);
         }
     }
 }

@@ -326,6 +326,29 @@ namespace Apps.Web.Areas.WMS.Controllers
            
         }
         #endregion
+
+        #region 获取指定PO指定物料的行信息
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult GetPOLineByPartId(string po, string partCode)
+        {
+            var part = m_PartBLL.GetListByWhere(ref setNoPagerAscById, "PartCode == \"" + partCode + "\"").First();
+            if (part == null)
+            {
+                return Json(JsonHandler.CreateMessage(0, "物料编码不存在！"));
+            }
+
+            var line = m_BLL.GetListByWhere(ref setNoPagerAscById, "PO == \"" + po + "\" && PartId == " + part.Id + "").First();
+            if (line != null)
+            {
+                return Json(JsonHandler.CreateMessage(1, Resource.CheckSucceed, JsonHandler.SerializeObject(line)));
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(0, Resource.CheckFail));
+            }
+        }
+        #endregion
     }
 }
 

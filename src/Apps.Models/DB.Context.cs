@@ -831,5 +831,18 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateReInspect", userIdParameter, aIIDParameter, nCheckOutResultParameter, nQualifyQtyParameter, nNoQualifyQtyParameter, nCheckOutRemarkParameter, nCheckOutDateParameter, remarkParameter, returnValue);
         }
+    
+        public virtual int P_WMS_ConfirmReturnOrder(string userId, string returnOrderNum, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var returnOrderNumParameter = returnOrderNum != null ?
+                new ObjectParameter("ReturnOrderNum", returnOrderNum) :
+                new ObjectParameter("ReturnOrderNum", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ConfirmReturnOrder", userIdParameter, returnOrderNumParameter, returnValue);
+        }
     }
 }

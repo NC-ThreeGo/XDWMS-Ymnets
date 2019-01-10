@@ -2741,6 +2741,11 @@
           <Parameter Name="Rows" Type="int" Mode="In" />
           <Parameter Name="UserId" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="P_WMS_ConfirmReturnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="ReturnOrderNum" Type="varchar" Mode="In" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
         <Function Name="P_WMS_CreateInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="ArrivalBillNum" Type="varchar" Mode="In" />
@@ -3982,6 +3987,11 @@
             <End Role="WMS_Supplier" EntitySet="WMS_Supplier" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
           </AssociationSet>
+          <FunctionImport Name="P_WMS_ConfirmReturnOrder">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="ReturnOrderNum" Mode="In" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -8634,6 +8644,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="P_WMS_ConfirmReturnOrder" FunctionName="DB.Store.P_WMS_ConfirmReturnOrder" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

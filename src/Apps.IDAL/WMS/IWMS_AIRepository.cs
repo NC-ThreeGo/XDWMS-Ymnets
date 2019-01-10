@@ -7,6 +7,7 @@ namespace Apps.IDAL.WMS
     public partial interface IWMS_AIRepository
     {
         IQueryable<WMS_POForAIModel> GetPOListForAI(string poNo);
+        IQueryable<WMS_POForAIModel> GetPOListForAI(string poNo, int partId);
 
         /// <summary>
         /// 创建送检单，并返回送检单号，以便打印

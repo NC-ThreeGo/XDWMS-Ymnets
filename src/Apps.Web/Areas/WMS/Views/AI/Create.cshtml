@@ -14,11 +14,22 @@
 <script type="text/javascript">
     $(function ()
     {
-        //加载PO
+        //自动加载PO
         $("#btnLoadPO").click(function ()
         {
-            var poNo = $("#PONo").val();
-            $("#List").datagrid("load", { poNo: poNo });
+            if ($("#isAutoLoad")[0].checked)
+            {
+                $('#pAutoLoad').panel('open')
+                $('#pManualLoad').panel('close')
+                var poNo = $("#PONo").val();
+                $("#List").datagrid("load", { poNo: poNo });
+            }
+            else
+            {
+                $('#pAutoLoad').panel('close')
+                $('#pManualLoad').panel('open')
+                $("#mList").datagrid("load");
+            }
         });
 
         $("#btnSave").click(function ()
@@ -27,10 +38,21 @@
                 $.messageBox5s('提示', $("#ErrMesList").html());
                 return;
             }
-            if ($("form").valid()) {
-                endEditing();
-                var $dg = $('#List');
-                var rows = $dg.datagrid('getChecked');  //获取CheckBox为选中的行
+            if ($("form").valid())
+            {
+                if ($("#isAutoLoad")[0].checked)
+                {
+                    endEditing();
+                    var $dg = $('#List');
+                    var rows = $dg.datagrid('getChecked');  //获取CheckBox为选中的行
+                }
+                else
+                {
+                    endEditing_mList();
+                    var $dg = $('#mList');
+                    var rows = $dg.datagrid('getRows');  //获取所有的行
+                }
+
                 //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
                 $("#inserted").val(JSON.stringify(rows));
                 if (rows.length) {
@@ -76,7 +98,29 @@
         });
 
     });
-    $(function () {
+    $(function ()
+    {
+        $('#isAutoLoad').switchbutton({
+            checked: true,
+            onText: '自动加载',
+            offText: '手动加载',
+            width: 100,
+            onChange: function (checked)
+            {
+                if (checked)
+                {
+                    $('#pAutoLoad').panel('open')
+                    $('#pManualLoad').panel('close')
+                }
+                else
+                {
+                    $('#pAutoLoad').panel('close')
+                    $('#pManualLoad').panel('open')
+                }
+            },
+        });
+
+        //自动加载的datagrid
         $('#List').datagrid({
             url: '@Url.Action("GetPODetailsList")?poNo=""',
             width: SetGridWidthSub(10),
@@ -123,7 +167,7 @@
                 else
                 {
                     if ($("#PONo").val() != '')
-                        alert('没有需要处理的数据！'); 
+                        alert('没有需要处理的数据！');
                 }
             },
             columns: [[
@@ -153,16 +197,88 @@
                 },
                 { field: 'QTY', title: '订单数量', width: 80, sortable: true, align: 'right' },
                 { field: 'SumAIQty', title: '已到货数量', width: 80, sortable: true, align: 'right'/*, formatter: function (value) { return CheckFormatter(value) }*/},
-                
+
+            ]]
+        });
+
+        //手动加载的datagrid
+        $('#mList').datagrid({
+            url: '@Url.Action("GetPODetailsList")?poNo=""',
+            methord: 'post',
+            width: SetGridWidthSub(10),
+            height: SetGridHeightSub(202),
+            fitColumns: true,
+            idField: 'Id',
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            selectOnCheck: false,
+            checkOnSelect: false,
+            onClickCell: onClickCell_mList,
+            onEndEdit: onEndEdit_mList,
+            onBeginEdit: onBeginEdit_mList,
+            remotesort: false,
+            showFooter: false,
+            rowStyler: function (index, row)
+            {
+                if (Number(row.SumAIQty) >= Number(row.QTY))
+                {
+                    return 'background: #D24D57; color: #fff';
+                }
+                if (Number(row.SumAIQty) < Number(row.QTY) && Number(row.SumAIQty) > 0) {
+                    return 'background: #26A65B; color: #fff';
+                }
+            },
+            onLoadSuccess: function (data)
+            {
+                append();
+            },
+            columns: [[
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
+                { field: 'PO', title: '采购订单', width: 80, hidden: true },
+                {
+                    field: 'oper', title: '操作', width: 50, formatter: function (value)
+                    {
+                        if (value == null)
+                            return "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-red' href='javascript:removeit()'><a>";
+                        else
+                            return value;
+                    }
+                },
+                { field: 'PartId', title: '物料ID', width: 80, hidden: true },
+                {
+                    field: 'PartCode', title: '物料编码', width: 100,
+                    editor: { type: 'textbox', options: { required: true } }
+                },
+                { field: 'CurrentQty', title: '本次到货数量', width: 80, editor: { type: 'numberbox', options: { required: true, min: 0 } }, align: 'right' },
+                { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
+                {
+                    field: 'ArrivalDate', title: '到货日期', width: 80, sortable: true,
+                    formatter: function (value, row, index)
+                    {
+                        return formatterDateNoHour(value);
+                    },
+                    editor: { type: 'datebox' }
+                },
+                {
+                    field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true,
+                    formatter: function (value, row, index)
+                    {
+                        return formatterDateNoHour(value);
+                    }
+                },
+                { field: 'QTY', title: '订单数量', width: 80, sortable: true, align: 'right' },
+                { field: 'SumAIQty', title: '已到货数量', width: 80, sortable: true, align: 'right'/*, formatter: function (value) { return CheckFormatter(value) }*/},
+
             ]]
         });
     });
     //输入到货数量（<>0）后自动选择当前行
-    function setKeyUpValue(sender)
+    function setKeyUpValue(sender, datagrid)
     {
-        var row = $('#List').datagrid('getSelected');
-        var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
-        var thisTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'CurrentQty' }).target;
+        var row = datagrid.datagrid('getSelected');
+        var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
+        var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'CurrentQty' }).target;
         var thisTarget_Input = $(thisTarget).data('numberbox') ? $(thisTarget).numberbox('textbox') : $(thisTarget);
 
         //如果当前供应商不允许超量接收，则判断当前到货数量+已到货数量是否>订单数量，如大于则为0
@@ -177,18 +293,22 @@
 
         if (thisTarget_Input.val() == "")
             thisTarget_Input.val(0);
-        if (thisTarget_Input.val() != 0)
+
+        if ($("#isAutoLoad")[0].checked)
         {
-            $('#List').datagrid('checkRow', rowIndex);
+            if (thisTarget_Input.val() != 0)
+            {
+                datagrid.datagrid('checkRow', rowIndex);
+            }
+            else
+            {
+                datagrid.datagrid('uncheckRow', rowIndex);
+            }
+            $("input[type='checkbox']")[rowIndex + 1].disabled = true;
         }
-        else
-        {
-            $('#List').datagrid('uncheckRow', rowIndex);
-        }
-        $("input[type='checkbox']")[rowIndex + 1].disabled = true;
 
         //如果到货日期为空，则给到货日期赋值当前日期
-        var dateTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'ArrivalDate' }).target;
+        var dateTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'ArrivalDate' }).target;
         if (dateTarget.datebox('getValue') == "")
         {
             dateTarget.datebox('setValue', formatterDate(new Date()));
@@ -227,13 +347,14 @@
                 for (var i = 0; i < eds.length; i++)
                 {
                     var ed = eds[i];
+                    //给字段CurrentQty增加setKeyUpValue事件
                     if (ed.field == 'CurrentQty')
                     {
                         var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
                         target.attr("field", ed.field)
                         target.bind("keyup", function ()
                         {
-                            return setKeyUpValue($(this));
+                            return setKeyUpValue($(this), $('#List'));
                         });
                     }
                 }
@@ -259,6 +380,172 @@
 
     }
 
+    //#region 手动加载DataGrid的事件
+    //编辑的行
+    var editIndex_mList = undefined;
+    function endEditing_mList()
+    {
+        if (editIndex_mList == undefined) { return true }
+        $('#mList').datagrid('endEdit', editIndex_mList);
+
+        editIndex_mList = undefined;
+        return true;
+    }
+
+    //添加空行—手动加载
+    function append()
+    {
+        var index = $('#mList').datagrid('getRowIndex', $('#mList').datagrid('getSelected'));
+        if (index == -1)
+            index = 0;
+        $("#mList").datagrid("insertRow", {
+            index: index + 1,
+            row: {
+                oper: "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-red' href='javascript:removeit()'><a>",
+                PO: $("#PONo").val(),
+                CurrentQty: 0,
+            }
+        });
+    }
+
+    //删除一行—手动加载
+    function removeit()
+    {
+        if (editIndex_mList == undefined) { return }
+        $('#mList').datagrid('selectRow', editIndex_mList);
+
+        $('#mList').datagrid('cancelEdit', editIndex_mList)
+            .datagrid('deleteRow', editIndex_mList);
+        editIndex_mList = undefined;
+    }
+
+    function onEndEdit_mList(index, row)
+    {
+
+    }
+    //进入编辑前设置
+    function onBeginEdit_mList(index, row)
+    {
+
+    }
+
+    function onClickCell_mList(index, field)
+    {
+        if (editIndex_mList != index)
+        {
+            if (endEditing_mList())
+            {
+                $('#mList').datagrid('selectRow', index)
+                    .datagrid('beginEdit', index);
+
+                //给numberbox增加keyup事件，以便自动计算合格数量和不合格数量
+                var eds = $('#mList').datagrid('getEditors', index);
+                for (var i = 0; i < eds.length; i++)
+                {
+                    var ed = eds[i];
+                    //给字段PartCode增加setKeyUpValue事件
+                    if (ed.field == 'PartCode')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForPartCode(e, $(this), $('#mList'));
+                        });
+                    }
+
+                    //给字段CurrentQty增加setKeyUpValue事件
+                    if (ed.field == 'CurrentQty')
+                    {
+                        var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                        target.attr("field", ed.field)
+                        target.bind("keyup", function ()
+                        {
+                            return setKeyUpValue($(this), $('#mList'));
+                        });
+                    }
+                }
+
+                var ed = $('#mList').datagrid('getEditor', { index: index, field: field });
+                if (ed)
+                {
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).select();
+                }
+                editIndex_mList = index;
+            } else
+            {
+                setTimeout(function ()
+                {
+                    $('#mList').datagrid('selectRow', editIndex);
+                }, 0);
+            }
+        }
+    }
+
+    function setKeyUpValueForPartCode(e, sender, datagrid)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            var row = datagrid.datagrid('getSelected');
+            var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
+            var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'PartCode' }).target;
+            var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
+
+            //向后台申请当前PO+物料的行信息
+            $.ajax({
+                url: "@Url.Action("GetPODetailsListByPartCode")",
+                type: "Post",
+                data: { poNo: $("#PONo").val(), partCode: thisTarget_Input.val()},
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1)
+                    {
+                        //alert(JSON.parse(data.value));
+                        getRow = JSON.parse(data.value);
+                        row.Id = getRow.Id;
+                        row.PO = getRow.PO;
+                        row.PartId = getRow.PartId;
+                        row.PartCode = getRow.PartCode;
+                        row.CurrentQty = getRow.CurrentQty;
+                        row.BoxNum = getRow.BoxNum;
+                        row.ArrivalDate = getRow.ArrivalDate;
+                        row.PlanDate = getRow.PlanDate;
+                        row.QTY = getRow.QTY;
+                        row.SumAIQty = getRow.SumAIQty;
+
+                        datagrid.datagrid('updateRow', {
+                            index: rowIndex,
+                            row: row,
+                        });
+                        endEditing_mList();
+                        onClickCell_mList(rowIndex, "CurrentQty");
+                    } else
+                    {
+                        alert(data.message);
+                        row.Id = "";
+                        row.PO = "";
+                        row.PartId = "";
+                        row.PartCode = "";
+                        row.CurrentQty = 0;
+                        row.BoxNum = 0;
+                        row.ArrivalDate = "";
+                        row.PlanDate = "";
+                        row.QTY = "";
+                        row.SumAIQty = "";
+
+                        datagrid.datagrid('updateRow', {
+                            index: rowIndex,
+                            row: row,
+                        });
+                        endEditing_mList();
+                    }
+                }
+            });
+        }
+
+    }
+    //#endregion
 
     //关闭模式窗口
     function frameReturnByClose() {
@@ -266,14 +553,14 @@
     }
 
 
-    function removeit() {
-        if (editIndex == undefined) { return }
-        $('#List').datagrid('selectRow', editIndex);
+    //function removeit() {
+    //    if (editIndex == undefined) { return }
+    //    $('#List').datagrid('selectRow', editIndex);
 
-        $('#List').datagrid('cancelEdit', editIndex)
-           .datagrid('deleteRow', editIndex);
-        editIndex = undefined;
-    }
+    //    $('#List').datagrid('cancelEdit', editIndex)
+    //       .datagrid('deleteRow', editIndex);
+    //    editIndex = undefined;
+    //}
 
     function reject() {
         $('#List').datagrid('rejectChanges');
@@ -355,6 +642,7 @@
 
                     </script>
                     @Html.ToolButton("btnLoadPO", "fa fa-reply", Resource.Load, false)
+                    <input id="isAutoLoad" style="width:200px;height:30px">
                 </td>
                 <th>
                     @Html.LabelFor(model => model.ArrivalBillNum) （自动生成）：
@@ -374,11 +662,23 @@
         </tbody>
     </table>
 }
-<table>
-    <tr>
-        <td colspan="7" style="padding:4px;">
-            <table id="List"></table>
-        </td>
-    </tr>
+<div id="pAutoLoad" class="easyui-panel" title="自动加载">
+    <table>
+        <tr>
+            <td colspan="7" style="padding:4px;">
+                <table id="List"></table>
+            </td>
+        </tr>
 
-</table>
+    </table>
+</div>
+<div id="pManualLoad" class="easyui-panel" title="手动加载">
+    <table>
+        <tr>
+            <td colspan="7" style="padding:4px;">
+                <table id="mList"></table>
+            </td>
+        </tr>
+
+    </table>
+</div>
