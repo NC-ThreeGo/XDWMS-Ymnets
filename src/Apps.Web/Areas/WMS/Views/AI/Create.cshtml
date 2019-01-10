@@ -51,10 +51,27 @@
                     endEditing_mList();
                     var $dg = $('#mList');
                     var rows = $dg.datagrid('getRows');  //获取所有的行
+                    for (var i = 0; i < rows.length; i++)
+                    {
+                        if (!rows[i]['Id'])
+                        {
+                            alert("存在无效的物料，请确认！");
+                            return;
+                        }
+                    }
+                    //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
+                    //$("#inserted").val(JSON.stringify(rows, function (key, value)
+                    //{
+                    //    if(key == 'oper'){
+                    //        return undefined;
+                    //    }
+                    //    return value;
+                    //}));
                 }
 
                 //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
                 $("#inserted").val(JSON.stringify(rows));
+
                 if (rows.length) {
                     showLoading();
                     $.ajax({
@@ -503,20 +520,9 @@
                     {
                         //alert(JSON.parse(data.value));
                         getRow = JSON.parse(data.value);
-                        row.Id = getRow.Id;
-                        row.PO = getRow.PO;
-                        row.PartId = getRow.PartId;
-                        row.PartCode = getRow.PartCode;
-                        row.CurrentQty = getRow.CurrentQty;
-                        row.BoxNum = getRow.BoxNum;
-                        row.ArrivalDate = getRow.ArrivalDate;
-                        row.PlanDate = getRow.PlanDate;
-                        row.QTY = getRow.QTY;
-                        row.SumAIQty = getRow.SumAIQty;
-
                         datagrid.datagrid('updateRow', {
                             index: rowIndex,
-                            row: row,
+                            row: getRow,
                         });
                         endEditing_mList();
                         onClickCell_mList(rowIndex, "CurrentQty");
