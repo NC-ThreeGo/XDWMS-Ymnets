@@ -126,7 +126,7 @@ namespace Apps.BLL.WMS
 								//执行额外的数据校验
 								try
 								{
-									AdditionalCheckExcelData(model);
+									AdditionalCheckExcelData(db, ref model);
 								}
 								catch (Exception ex)
 								{
@@ -188,7 +188,7 @@ namespace Apps.BLL.WMS
 				return rtn;
 			}
 
-		public void AdditionalCheckExcelData(WMS_CustomerModel model)
+		public void AdditionalCheckExcelData(DBContainer db, ref WMS_CustomerModel model)
 		{
             //获取客户编码
             if (!String.IsNullOrEmpty(model.CustomerCode))
@@ -196,7 +196,8 @@ namespace Apps.BLL.WMS
                 var customerCode = model.CustomerCode;
                 Expression<Func<WMS_Customer, bool>> exp = x => x.CustomerCode == customerCode;
 
-                var customer = m_CustomerRep.GetSingleWhere(exp);
+                //var customer = m_CustomerRep.GetSingleWhere(exp);
+                var customer = db.WMS_Customer.FirstOrDefault(exp);
                 if (customer != null)
                 {
                     throw new Exception("客户编码重复！");
