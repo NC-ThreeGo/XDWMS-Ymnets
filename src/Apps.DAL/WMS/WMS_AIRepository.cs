@@ -38,6 +38,36 @@ namespace Apps.DAL.WMS
             return queryData;
         }
 
+        public IQueryable<WMS_POForAIModel> GetPOListForAI(string poNo, int partId)
+        {
+            var aiQty = from ai in Context.WMS_AI
+                        group ai by ai.POId into g
+                        select new { g.Key, sumqty = g.Sum(p => p.ArrivalQty) };
+            //ai.ToArray();
+
+            var queryData = from po in Context.WMS_PO
+                            where po.Status == "有效" && po.PO == poNo && po.PartId == partId
+                            join ai in aiQty on po.Id equals ai.Key into poai
+                            from t in poai.DefaultIfEmpty()
+                            select new WMS_POForAIModel()
+                            {
+                                Id = po.Id,
+                                PO = po.PO,
+                                PODate = po.PODate,
+                                SupplierId = po.SupplierId,
+                                SupplierShortName = po.WMS_Supplier.SupplierShortName,
+                                PartId = po.PartId,
+                                PartCode = po.WMS_Part.PartCode,
+                                QTY = po.QTY,
+                                PlanDate = po.PlanDate,
+                                POType = po.POType,
+                                SumAIQty = t.sumqty,
+                                ArrivalDate = DateTime.Now
+                            };
+
+            return queryData;
+        }
+
         public string CreateInspectBill(string opt, string arrivalBillNum)
         {
             ObjectParameter inspectBillNum = new ObjectParameter("InspectBillNum", typeof(string));

@@ -24,7 +24,7 @@ namespace Apps.IDAL.WMS
         /// <param name="qty"></param>
         /// <param name="remark"></param>
         /// <returns></returns>
-        string CreateReturnOrder(string opt, int? partId, int? supplierId, int? invId, decimal? qty, string remark);
+        string CreateReturnOrder(string opt, int? partId, int? supplierId, int? invId, string lot, decimal? qty, string remark);
 
         /// <summary>
         /// 将所选择的退货单行生成退货单号，以便打印

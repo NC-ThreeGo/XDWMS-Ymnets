@@ -27,5 +27,14 @@ namespace Apps.IBLL.WMS
          /// <param name="pager"></param>
          /// <param name="whereStr"></param>
          List<WMS_InvModel> GetListByWhere(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 获取指定库房、物料的现有批次号
+        /// </summary>
+        /// <param name="invId"></param>
+        /// <param name="subInvId"></param>
+        /// <param name="partId"></param>
+        /// <returns></returns>
+        List<WMS_InvModel> GetLotsByPart(int invId, int? subInvId, int partId);
     }
 }

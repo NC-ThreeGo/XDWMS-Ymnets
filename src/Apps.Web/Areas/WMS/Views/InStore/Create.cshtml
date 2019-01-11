@@ -189,27 +189,27 @@
             //qualifyQtyTarget_Input.val()：当前按键按下后的值，如果使用qualifyQtyTarget.numberbox('getValue')，取的是按键按下前的值
             //noQualifyQtyTarget.numberbox('setValue', xxx):设置numberbox的值
             //如果输入的值>到货数量，则修改成到货数量
-            if (qualifyQtyTarget_Input.val() > arrivalQty)
+            if (Number(qualifyQtyTarget_Input.val()) > Number(arrivalQty))
             {
                 qualifyQtyTarget_Input.val(arrivalQty);
             }
-            noQualifyQtyTarget.numberbox('setValue', arrivalQty - qualifyQtyTarget_Input.val());
+            noQualifyQtyTarget.numberbox('setValue', Number(arrivalQty) - Number(qualifyQtyTarget_Input.val()));
 
             qualifyQty = qualifyQtyTarget_Input.val();
-            noQualifyQty = arrivalQty - qualifyQtyTarget_Input.val();
+            noQualifyQty = Number(arrivalQty) - Number(qualifyQtyTarget_Input.val());
         }
         if ($(sender).attr("field") == "NoQualifyQty")
         {
             //qualifyQtyTarget.val(arrivalQty - noQualifyQtyTarget.val());
             //如果输入的值>到货数量，则修改成到货数量
-            if (noQualifyQtyTarget_Input.val() > arrivalQty)
+            if (Number(noQualifyQtyTarget_Input.val()) > Number(arrivalQty))
             {
                 noQualifyQtyTarget_Input.val(arrivalQty);
             }
-            qualifyQtyTarget.numberbox('setValue', arrivalQty - noQualifyQtyTarget_Input.val());
+            qualifyQtyTarget.numberbox('setValue', Number(arrivalQty) - Number(noQualifyQtyTarget_Input.val()));
 
             noQualifyQty = noQualifyQtyTarget_Input.val();
-            qualifyQty = arrivalQty - noQualifyQtyTarget_Input.val();
+            qualifyQty = Number(arrivalQty) - Number(noQualifyQtyTarget_Input.val());
         }
 
         //根据合格数量和不合格数量设置检验结果的值

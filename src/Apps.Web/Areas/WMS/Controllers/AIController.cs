@@ -74,6 +74,9 @@ namespace Apps.Web.Areas.WMS.Controllers
                 WMS_AIModel aiModel = new WMS_AIModel();
                 aiModel.Id = 0;
                 aiModel.ArrivalBillNum = arrivalBillNum;
+                aiModel.ArrivalDate = model.ArrivalDate;
+                //到货批次：年+月（根据到货日期）
+                aiModel.Lot = model.ArrivalDate.ToString("yyyyMM");
                 aiModel.ReceiveMan = GetUserId();
                 aiModel.ReceiveStatus = "已到货";
                 aiModel.CreateTime = ResultHelper.NowTime;
@@ -82,7 +85,6 @@ namespace Apps.Web.Areas.WMS.Controllers
                 aiModel.PartId = model.PartId;
                 aiModel.BoxQty = model.BoxNum;
                 aiModel.ArrivalQty = model.CurrentQty;
-                aiModel.ArrivalDate = model.ArrivalDate;
                 aiModel.ReceiveMan = GetUserId();                
                 aiModel.InspectStatus = "未送检";
                 aiModel.InStoreStatus = "未入库";
@@ -350,6 +352,27 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetPODetailsListByPartCode(string poNo, string partCode)
+        {
+            var partList = m_PartBLL.GetListByWhere(ref setNoPagerAscById, "PartCode == \"" + partCode + "\"");
+            if (partList == null)
+            {
+                return Json(JsonHandler.CreateMessage(0, "物料编码不存在！"));
+            }
+
+            var poLines = m_BLL.GetPOListForAI(ref setNoPagerAscById, poNo, partList[0].Id);
+            if (poLines.Count() > 0)
+            {
+                return Json(JsonHandler.CreateMessage(1, Resource.CheckSucceed, JsonHandler.SerializeObject(poLines.First())));
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(0, "当前订单不存在输入的物料！"));
+            }
         }
         #endregion
 

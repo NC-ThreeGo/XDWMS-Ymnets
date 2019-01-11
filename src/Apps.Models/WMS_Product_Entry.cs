@@ -32,6 +32,7 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+        public string Lot { get; set; }
     
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
         public virtual WMS_Part WMS_Part { get; set; }

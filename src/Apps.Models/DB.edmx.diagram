@@ -157,10 +157,6 @@
         <EntityTypeShape EntityType="DB.WMS_Report" Width="1.5" PointX="22.375" PointY="1.25" />
         <EntityTypeShape EntityType="DB.WMS_ReportParam" Width="1.5" PointX="24.625" PointY="1" />
         <AssociationConnector Association="DB.FK_WMS_ReportParam_WMS_Report" />
-        <EntityTypeShape EntityType="DB.WMS_ReturnOrder" Width="1.5" PointX="16.875" PointY="31.75" />
-        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_AI" />
-        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_InvInfo" />
-        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_AI_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_WMS_AI_WMS_Part" />
         <EntityTypeShape EntityType="DB.WMS_Product_Entry" Width="1.5" PointX="18.875" PointY="20.875" />
@@ -170,7 +166,6 @@
         <AssociationConnector Association="DB.FK_WMS_AI_WMS_SubInvInfo" />
         <AssociationConnector Association="DB.FK_WMS_SubInvInfo_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_WMS_Product_Entry_WMS_SubInvInfo" />
-        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" />
         <EntityTypeShape EntityType="DB.WMS_Inv" Width="1.5" PointX="21.875" PointY="23.5" />
         <AssociationConnector Association="DB.FK_Inv_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_Inv_WMS_Part" />
@@ -181,9 +176,14 @@
         <AssociationConnector Association="DB.FK_WMS_Inv_Adjust_WMS_SubInvInfo" />
         <EntityTypeShape EntityType="DB.WMS_Supplier" Width="1.5" PointX="19.375" PointY="8" />
         <AssociationConnector Association="DB.FK_WMS_PO_WMS_Supplier" />
-        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Supplier" />
         <EntityTypeShape EntityType="DB.WMS_ReInspect" Width="1.5" PointX="7.5" PointY="58.75" />
         <AssociationConnector Association="DB.FK_WMS_ReInspect_WMS_AI" />
+        <EntityTypeShape EntityType="DB.WMS_ReturnOrder" Width="1.5" PointX="28.625" PointY="29.875" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_AI" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_InvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Part" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Supplier" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

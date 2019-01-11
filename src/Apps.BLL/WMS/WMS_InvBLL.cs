@@ -25,6 +25,7 @@ namespace Apps.BLL.WMS
                                                   PartId = r.PartId,
                                                   Qty = r.Qty,
                                                   SubInvId = r.SubInvId,
+                                                  Lot = r.Lot,
 
                                                   PartCode = r.WMS_Part.PartCode,
                                                   PartName = r.WMS_Part.PartName,
@@ -156,6 +157,15 @@ namespace Apps.BLL.WMS
 			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
 			return CreateModelList(ref queryData);
 		}
+
+        public List<WMS_InvModel> GetLotsByPart(int invId, int? subInvId, int partId)
+        {
+            IQueryable<WMS_Inv> queryData = null;
+            queryData = m_Rep.GetList().Where(p => p.InvId == invId && p.SubInvId == subInvId && p.PartId == partId
+                                            && p.Qty > 0)
+                                      .OrderBy(p => p.Lot);
+            return CreateModelList(ref queryData);
+        }
     }
  }
 

@@ -12,7 +12,7 @@ namespace Apps.DAL.WMS
         {
             ObjectParameter invAdjustBillNumP = new ObjectParameter("InvAdjustBillNum", typeof(string));
             ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
-            Context.P_WMS_InvAdjust(opt, partId, invId, adjustQty, adjustType, remark, invAdjustBillNumP, returnValue);
+            Context.P_WMS_InvAdjust(opt, partId, invId, "", adjustQty, adjustType, remark, invAdjustBillNumP, returnValue);
 
             if (returnValue.Value == DBNull.Value)
             {

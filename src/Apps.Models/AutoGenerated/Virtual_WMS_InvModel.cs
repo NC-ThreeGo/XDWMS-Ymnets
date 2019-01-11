@@ -29,5 +29,7 @@ namespace Apps.Models.WMS
 		public virtual int PartId { get; set; }
 		[Display(Name = "未设置")]
 		public virtual decimal Qty { get; set; }
+		[Display(Name = "批次号：YYYYMM")]
+		public virtual string Lot { get; set; }
 		}
 }

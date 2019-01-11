@@ -102,7 +102,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.CreateTime = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {
-                if (m_BLL.CreateReturnOrder(ref errors, GetUserId(), model.PartID, model.SupplierId, model.InvId, model.AdjustQty, model.Remark))
+                if (m_BLL.CreateReturnOrder(ref errors, GetUserId(), model))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum, "成功", "创建", "WMS_ReturnOrder");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));

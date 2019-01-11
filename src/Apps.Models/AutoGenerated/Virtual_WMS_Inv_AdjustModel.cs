@@ -53,5 +53,7 @@ namespace Apps.Models.WMS
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
+		[Display(Name = "批次号：YYYYMM")]
+		public virtual string Lot { get; set; }
 		}
 }

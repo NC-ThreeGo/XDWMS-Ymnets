@@ -20,7 +20,7 @@ namespace Apps.DAL.WMS
         //        return null;
         //}
 
-        public string CreateReturnOrder(string opt, int? partId, int? supplierId, int? invId, decimal? qty, string remark)
+        public string CreateReturnOrder(string opt, int? partId, int? supplierId, int? invId, string lot, decimal? qty, string remark)
         {
             //ObjectParameter paramUserId = new ObjectParameter("UserId", opt);
             //ObjectParameter paramPartId = new ObjectParameter("PartId", partId);
@@ -29,7 +29,7 @@ namespace Apps.DAL.WMS
             //ObjectParameter paramQty = new ObjectParameter("Qty", qty);
             //ObjectParameter paramRemark = new ObjectParameter("Remark", remark);
             ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
-            Context.P_WMS_CreateReturnOrder(opt, partId, supplierId, invId, qty, remark, returnValue);
+            Context.P_WMS_CreateReturnOrder(opt, partId, supplierId, invId, lot, qty, remark, returnValue);
 
             if (returnValue.Value == DBNull.Value)
                 return null;
@@ -51,10 +51,12 @@ namespace Apps.DAL.WMS
 
         public void ConfirmReturnOrder(string opt, string returnOrderNum)
         {
-            string sql = "update WMS_ReturnOrder set ConfirmStatus = '已确认', ConfirmMan = '" + opt + "', ConfirmDate = getdate(), "
-                + " ModifyPerson = '" + opt + "', ModifyTime = getdate() "
-                + " where ReturnOrderNum = '" + returnOrderNum + "'";
-            Context.Database.ExecuteSqlCommand(sql);
+            //string sql = "update WMS_ReturnOrder set ConfirmStatus = '已确认', ConfirmMan = '" + opt + "', ConfirmDate = getdate(), "
+            //    + " ModifyPerson = '" + opt + "', ModifyTime = getdate() "
+            //    + " where ReturnOrderNum = '" + returnOrderNum + "'";
+            //Context.Database.ExecuteSqlCommand(sql);
+            ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
+            Context.P_WMS_ConfirmReturnOrder(opt, returnOrderNum, returnValue);
         }
     }
 }
