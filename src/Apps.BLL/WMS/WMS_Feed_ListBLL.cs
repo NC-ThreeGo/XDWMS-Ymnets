@@ -258,13 +258,17 @@ namespace Apps.BLL.WMS
         {
             try
             {
-                var rtn = m_Rep.PrintFeedList(opt, feedBillNum);
+                string releaseBillNum = null;
+                var rtn = m_Rep.PrintFeedList(opt, feedBillNum, ref releaseBillNum);
                 if (!String.IsNullOrEmpty(rtn))
                 {
-                    return rtn;
+                    errors.Add(rtn);
+                    return null;
                 }
                 else
-                    return null;
+                {
+                    return releaseBillNum;
+                }
             }
             catch (Exception ex)
             {

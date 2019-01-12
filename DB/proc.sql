@@ -1,4 +1,4 @@
-CREATE   PROCEDURE [dbo].[P_WMS_ConfirmFeedList]
+ALTER   PROCEDURE [dbo].[P_WMS_ConfirmFeedList]
 	@UserId varchar(50),
 	@ReleaseBillNum	varchar(50),
 	@ReturnValue	varchar(50) OUTPUT
@@ -8,51 +8,68 @@ BEGIN
 	set xact_abort on   
 
 	DECLARE @now datetime = getdate()
-	DECLARE @PartId int;
+	DECLARE @SubAssemblyPartId int;
 	DECLARE @InvId int;
 	DECLARE @SubInvId int;
 	DECLARE @Lot varchar(50);
 	DECLARE @Qty decimal(10, 3);
 	DECLARE @rowId int;
+	DECLARE @countOK int = 0;
+	DECLARE @countError int = 0;
 
-
-	BEGIN TRAN
-
-	--修改退货单状态
-	update WMS_ReturnOrder set ConfirmStatus = '已确认', ConfirmMan = @UserId, ConfirmDate = @now,
-                ModifyPerson = @UserId, ModifyTime = @now
-          where ReturnOrderNum = @ReleaseBillNum;
-	IF (@@ERROR <> 0)
-	BEGIN
-		;
-		THROW 51000, '修改退货单状态时出错！', 1;
-		RETURN
-	END
-
-	--修改库存：只对InvId不为空的记录修改库存（手工创建的库存退货单），根据不合格数量生成的退货单是没有进入库存的。
-	DECLARE cur_ReturnOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, AdjustQty * -1
-											from WMS_ReturnOrder
-											where ReturnOrderNum = @ReleaseBillNum
-											  and InvId is not null);
+	--修改库存
+	DECLARE cur_FeedList cursor for (select Id, SubAssemblyPartId, InvId, SubInvId, Lot, FeedQty * -1
+											from WMS_Feed_List
+											where ReleaseBillNum = @ReleaseBillNum
+											  and ConfirmStatus = '未确认');
     --打开游标--
-    open cur_ReturnOrder;
+    open cur_FeedList;
     --开始循环游标变量--
-    fetch next from cur_ReturnOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;
+    fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;
     while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
-    begin            
-		exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, null, @Lot, 0, @Qty, @now, '退货', @rowId, @ReleaseBillNum
-		--转到下一个游标，没有会死循环
-        fetch next from cur_ReturnOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;  
-    end    
-    close cur_ReturnOrder  --关闭游标
-    deallocate cur_ReturnOrder   --释放游标
+    begin         
+		BEGIN TRY   
+			BEGIN TRAN
 
-	COMMIT TRAN
-	RETURN
+			exec P_WMS_UpdateInvQty @UserId, @SubAssemblyPartId, @InvId, null, @Lot, 0, 1, @Qty, @now, '投料', @rowId, @ReleaseBillNum;
+
+			--修改投料单行的确认状态
+			update WMS_Feed_List set ConfirmStatus = '已确认', ConfirmMan = @UserId, ConfirmDate = @now,
+					ConfirmMessage = '',
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+
+			set @countOK = @countOK + 1;
+			COMMIT TRAN;
+ 		END TRY
+		BEGIN CATCH
+			IF @@TRANCOUNT > 0
+				ROLLBACK TRAN ;
+
+			--报错确认的错误信息
+			set @countError = @countError + 1;
+			update WMS_Feed_List set ConfirmMessage = ERROR_MESSAGE(),
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+		END CATCH
+
+		--转到下一个游标，没有会死循环
+        fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;  
+    end    
+    close cur_FeedList  --关闭游标
+    deallocate cur_FeedList   --释放游标
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRAN ;
+
+	IF (@countError > 0)
+	BEGIN
+		set @ReturnValue = '投料单确认成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
+		RETURN;
+	END
 END
 
 GO
-
 
 ALTER   PROCEDURE [dbo].[P_WMS_ConfirmReturnOrder]
 	@UserId varchar(50),
@@ -96,7 +113,7 @@ BEGIN
     fetch next from cur_ReturnOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;
     while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
     begin            
-		exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, null, @Lot, 0, @Qty, @now, '退货', @rowId, @ReturnOrderNum
+		exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, null, @Lot, 0, 0, @Qty, @now, '退货', @rowId, @ReturnOrderNum
 		--转到下一个游标，没有会死循环
         fetch next from cur_ReturnOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;  
     end    
@@ -106,7 +123,6 @@ BEGIN
 	COMMIT TRAN
 	RETURN
 END
-
 GO
 
 ALTER   PROCEDURE [dbo].[P_WMS_CreateInspectBill]
@@ -246,14 +262,13 @@ BEGIN
 
 	--修改库存：调整数量=新数量-旧数量
 	set @qty = @NQualifyQty - @OQualifyQty;
-	exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, @SubInvId, @Lot, 0, @qty, @now, '重新送检', @rowId, null
+	exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, @SubInvId, @Lot, 0, 1, @qty, @now, '重新送检', @rowId, null
 
 	COMMIT TRAN
 	RETURN
 END
 
 GO
-
 
 --手工创建退货单
 ALTER PROCEDURE [dbo].[P_WMS_CreateReturnOrder]
@@ -429,7 +444,7 @@ BEGIN
 	set @rowId = @@IDENTITY
 
 	--修改库存：
-	exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, null, @Lot, 0,
+	exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, null, @Lot, 0, 0,
 		@AdjustQty, @now, '调账', @rowId, @InvAdjustBillNum
 
 	COMMIT TRAN
@@ -439,7 +454,278 @@ END
 
 GO
 
-CREATE   PROCEDURE [dbo].[P_WMS_PrintFeedList]
+ALTER       PROCEDURE [dbo].[P_WMS_InvStock]	--库存备料
+	@UserId varchar(50),
+	@PartId int,
+	@InvId int,
+	@SubInvId int,
+	@Lot varchar(50),
+	@Qty decimal(10, 3),
+	@now datetime,
+	@type varchar(50),
+	@BillId int,
+	@SourceBill varchar(50)
+AS
+BEGIN
+	DECLARE @AllowNegativeInv bit = 0; --是否允许负库存，默认否
+	DECLARE @Count int;
+	DECLARE @rowId int;
+	DECLARE @InvQty decimal(10, 3) = 0;
+	DECLARE @StockQty decimal(10, 3) = 0;
+	DECLARE @CurrentQty decimal(10, 3) = 0;	--当前扣除数量
+	DECLARE @ResidueQty decimal(10, 3) = 0; --剩余数量
+
+	IF (@Qty = 0)
+	BEGIN
+		;
+		THROW 51000, '库存备料数量为0，请确认！', 1;
+		RETURN;
+	END;
+	
+	--修改库存备料数
+	IF (@Qty > 0)
+	BEGIN
+		;
+		THROW 51000, '入库业务不能进行备料操作，请确认！', 1;
+		RETURN;
+	END
+
+
+	--减少库存：当批次为空，则按先进先出的原则进行备料；当批次非空时，只对指定批次进行备料
+	IF (@Qty < 0)
+	BEGIN
+		IF (@Lot IS NOT NULL) --批次不为空
+		BEGIN
+			SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
+				WHERE InvId = @InvId
+					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+					AND PartId = @PartId
+					AND Isnull(Lot, 0) = Isnull(@Lot, 0);
+			IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+			BEGIN
+				;
+				THROW 51000, '当前批次的库存现有量不足，请确认！', 1;
+				RETURN;
+			END
+		END
+
+		IF (@Lot IS NULL) --批次为空
+		BEGIN
+			SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
+				WHERE InvId = @InvId
+					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+					AND PartId = @PartId;
+			IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+			BEGIN
+				;
+				THROW 51000, '库存现有量不足，请确认！', 1;
+				RETURN;
+			END
+		END
+
+		--使用游标，按先进先出的原则备料
+		DECLARE cur_Inv cursor for select Id, Qty, Isnull(StockQty, 0)
+												from WMS_Inv
+												where InvId = @InvId
+													AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+													AND PartId = @PartId
+													AND Isnull(Lot, 0) = Isnull(@Lot, Isnull(Lot, 0))
+													AND Qty > 0
+											Order By Lot;
+		set @ResidueQty = ABS(@Qty);
+		--打开游标--
+		open cur_Inv;
+		--开始循环游标变量--
+		fetch next from cur_Inv into @rowId, @InvQty, @StockQty;
+		while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+		begin         
+			IF (@InvQty - @StockQty < @ResidueQty)
+			BEGIN
+				set @CurrentQty = @InvQty - @StockQty;
+				set @ResidueQty = @ResidueQty - @CurrentQty;
+			END
+			ELSE
+			BEGIN
+				set @CurrentQty = @ResidueQty;
+			END;
+
+			--修改库存备料数
+			UPDATE WMS_Inv SET StockQty = Isnull(StockQty, 0) + @CurrentQty
+				WHERE Id = @rowId;
+			--插入库存记录表
+			INSERT INTO WMS_InvRecord (PartId,
+										Lot,
+										QTY,
+										InvId,
+										SubInvId,
+										BillId,
+										SourceBill,
+										OperateDate,
+										Type,
+										OperateMan,
+										Stock_InvId
+										)
+								VALUES (@PartId,
+										@Lot,
+										@CurrentQty,
+										@InvId,
+										@SubInvId,	
+										@BillId,
+										@SourceBill,
+										@now,
+										@type,
+										@UserId,
+										@rowId);
+
+
+			IF (@InvQty - @StockQty < @ResidueQty)
+			BEGIN
+				--转到下一个游标，没有会死循环
+				fetch next from cur_Inv into @rowId, @InvQty, @StockQty; 
+			END
+			ELSE
+			BEGIN
+				BREAK;
+			END;
+		end    
+		close cur_Inv  --关闭游标
+		deallocate cur_Inv   --释放游标
+	END
+END
+
+GO
+
+CREATE     PROCEDURE [dbo].[P_WMS_InvStock_BatchUpdate]	--库存备料
+	@UserId varchar(50),
+	@PartId int,
+	@InvId int,
+	@SubInvId int,
+	@Lot varchar(50),
+	@Qty decimal(10, 3)
+AS
+BEGIN
+	DECLARE @AllowNegativeInv bit = 0; --是否允许负库存，默认否
+	DECLARE @Count int;
+	DECLARE @InvQty decimal(10, 3);
+
+	IF (@Qty = 0)
+	BEGIN
+		;
+		THROW 51000, '库存备料数量为0，请确认！', 1;
+		RETURN;
+	END;
+	
+	--修改库存备料数
+	IF (@Qty > 0)
+	BEGIN
+		;
+		THROW 51000, '入库业务不能进行备料操作，请确认！', 1;
+		RETURN;
+	END
+
+
+	--减少库存：当批次为空，则按先进先出的原则进行备料；当批次非空时，只对指定批次进行备料
+	IF (@Qty < 0)
+	BEGIN
+		IF (@Lot IS NOT NULL) --批次不为空
+		BEGIN
+			SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
+				WHERE InvId = @InvId
+					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+					AND PartId = @PartId
+					AND Isnull(Lot, 0) = Isnull(@Lot, 0);
+			IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+			BEGIN
+				;
+				THROW 51000, '当前批次的库存现有量不足，请确认！', 1;
+				RETURN;
+			END
+
+			--增加备料数
+			UPDATE WMS_Inv SET StockQty = Isnull(StockQty, 0) + ABS(@Qty)
+				WHERE InvId = @InvId
+					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+					AND PartId = @PartId
+					AND Isnull(Lot, 0) = Isnull(@Lot, 0);
+		END
+
+		IF (@Lot IS NULL) --批次为空
+		BEGIN
+			SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
+				WHERE InvId = @InvId
+					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+					AND PartId = @PartId;
+			IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+			BEGIN
+				;
+				THROW 51000, '库存现有量不足，请确认！', 1;
+				RETURN;
+			END
+
+			--扣减库存：先进先出
+			UPDATE WMS_Inv SET StockQty = StockQty +
+					CASE WHEN (SELECT ABS(@Qty) - Isnull(SUM(t.Qty - Isnull(t.StockQty, 0)), 0) 
+								FROM WMS_Inv t
+								WHERE t.InvId = @InvId
+									AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+									AND t.PartId = @PartId
+									AND Isnull(t.Lot, 0) <= Isnull(inv.Lot, 0)
+									AND t.Qty > 0) >= 0
+						THEN Qty - Isnull(StockQty, 0)
+						ELSE CASE WHEN (SELECT ABS(@Qty) - Isnull(SUM(t.Qty - Isnull(t.StockQty, 0)), 0) 
+										FROM WMS_Inv t
+										WHERE t.InvId = @InvId
+											AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+											AND t.PartId = @PartId
+											AND Isnull(t.Lot, 0) < Isnull(inv.Lot, 0)
+											AND t.Qty > 0) < 0
+								THEN 0
+								ELSE (SELECT ABS(@Qty) - Isnull(SUM(t.Qty - Isnull(t.StockQty, 0)), 0) 
+										FROM WMS_Inv t
+										WHERE t.InvId = @InvId
+											AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+											AND t.PartId = @PartId
+											AND Isnull(t.Lot, 0) < Isnull(inv.Lot, 0)
+											AND t.Qty > 0)
+								END
+						END,
+					OutQty = 
+					CASE WHEN (SELECT ABS(@Qty) - Isnull(SUM(t.Qty - Isnull(t.StockQty, 0)), 0) 
+								FROM WMS_Inv t
+								WHERE t.InvId = @InvId
+									AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+									AND t.PartId = @PartId
+									AND Isnull(t.Lot, 0) <= Isnull(inv.Lot, 0)
+									AND t.Qty > 0) >= 0
+						THEN Qty - Isnull(StockQty, 0)
+						ELSE CASE WHEN (SELECT ABS(@Qty) - Isnull(SUM(t.Qty - Isnull(t.StockQty, 0)), 0) 
+										FROM WMS_Inv t
+										WHERE t.InvId = @InvId
+											AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+											AND t.PartId = @PartId
+											AND Isnull(t.Lot, 0) < Isnull(inv.Lot, 0)
+											AND t.Qty > 0) < 0
+								THEN 0
+								ELSE (SELECT ABS(@Qty) - Isnull(SUM(t.Qty - Isnull(t.StockQty, 0)), 0) 
+										FROM WMS_Inv t
+										WHERE t.InvId = @InvId
+											AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+											AND t.PartId = @PartId
+											AND Isnull(t.Lot, 0) < Isnull(inv.Lot, 0)
+											AND t.Qty > 0)
+								END
+						END
+				FROM WMS_Inv inv
+				WHERE inv.InvId = @InvId
+					AND Isnull(inv.SubInvId, 0) = Isnull(@SubInvId, 0)
+					AND inv.PartId = @PartId;
+		END
+	END
+END
+
+GO
+
+ALTER   PROCEDURE [dbo].[P_WMS_PrintFeedList]
 	@UserId varchar(50),
 	@FeedBillNum nvarchar(50),
 	@ReleaseBillNum	varchar(50) OUTPUT,
@@ -450,33 +736,72 @@ BEGIN
 	set xact_abort on   
 
 	DECLARE @now date = getdate()
+	DECLARE @SubAssemblyPartId int;
+	DECLARE @InvId int;
+	DECLARE @SubInvId int;
+	DECLARE @Lot varchar(50);
+	DECLARE @Qty decimal(10, 3);
+	DECLARE @rowId int;
+	DECLARE @countOK int = 0;
+	DECLARE @countError int = 0;
 
 	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
-	exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
-
-	BEGIN TRAN
+	--exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
 
 	--获取当前的单据编号
 	exec P_WMS_GetMaxNum 'TL', 'WMS_Feed_List', @now, @ReleaseBillNum output
 
-	update WMS_Feed_List set ReleaseBillNum = @ReleaseBillNum,
-								PrintStaus = '已打印',
-								PrintDate = @now,
-								PrintMan = @UserId,
-								ModifyPerson = @UserId,
-								ModifyTime = @now
-			FROM WMS_ReturnOrder ro
-			WHERE FeedBillNum = @FeedBillNum;
-	IF (@@ERROR <> 0)
+	--进行库存备料
+	DECLARE cur_FeedList cursor for (select Id, SubAssemblyPartId, InvId, SubInvId, Lot, FeedQty * -1
+											from WMS_Feed_List
+											where FeedBillNum = @FeedBillNum
+											  and PrintStaus = '未打印');
+    --打开游标--
+    open cur_FeedList;
+    --开始循环游标变量--
+    fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;
+    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+    begin         
+		BEGIN TRY   
+			BEGIN TRAN
+
+			exec P_WMS_InvStock @UserId, @SubAssemblyPartId, @InvId, null, @Lot, @Qty, @now, '投料', @rowId, @ReleaseBillNum;
+
+			--修改投料单行的打印状态
+			update WMS_Feed_List set ReleaseBillNum = @ReleaseBillNum,
+					PrintStaus = '已打印', PrintMan = @UserId, PrintDate = @now,
+					ConfirmMessage = '',
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+
+			set @countOK = @countOK + 1;
+			COMMIT TRAN;
+ 		END TRY
+		BEGIN CATCH
+			IF @@TRANCOUNT > 0
+				ROLLBACK TRAN ;
+
+			--报错确认的错误信息
+			set @countError = @countError + 1;
+			update WMS_Feed_List set ConfirmMessage = ERROR_MESSAGE(),
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+		END CATCH
+
+		--转到下一个游标，没有会死循环
+        fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;  
+    end    
+    close cur_FeedList  --关闭游标
+    deallocate cur_FeedList   --释放游标
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRAN ;
+
+	IF (@countError > 0)
 	BEGIN
-		set @ReturnValue = '保存投料单记录时出错！'
-		RETURN
+		set @ReturnValue = '投料单备料成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
+		RETURN;
 	END
-
-
-	COMMIT TRAN
-	RETURN
-
 END
 
 GO
@@ -556,7 +881,6 @@ END
 
 GO
 
-
 ALTER   PROCEDURE [dbo].[P_WMS_ProcessInspectBill]
 	@UserId varchar(50),
 	@JsonInspectBill NVARCHAR(MAX), --检验结果
@@ -603,12 +927,14 @@ BEGIN
 						SubInvId,
 						PartId,
 						Lot,
-						Qty
+						Qty,
+						StockQty
 						)
 			SELECT	ib.InvId,	
 					ib.SubInvId,	
 					ib.PartId,
 					ib.Lot,
+					0,
 					0
 					FROM #InspectBill ib
 					WHERE ib.QualifyQty <> 0
@@ -753,7 +1079,6 @@ END
 
 GO
 
-
 ALTER   PROCEDURE [dbo].[P_WMS_ProcessProductEntry]
 	@UserId varchar(50),
 	@ProductBillNum nvarchar(100), --自制件入库单号（业务）
@@ -787,12 +1112,14 @@ BEGIN
 						SubInvId,
 						PartId,
 						Lot,
-						Qty
+						Qty,
+						StockQty
 						)
 			SELECT	pe.InvId,	
 					pe.SubInvId,	
 					pe.PartId,
 					pe.Lot,
+					0,
 					0
 					FROM WMS_Product_Entry pe
 					WHERE pe.ProductQty <> 0
@@ -884,14 +1211,14 @@ END
 
 GO
 
-
-ALTER   PROCEDURE [dbo].[P_WMS_UpdateInvQty]
+CREATE   PROCEDURE [dbo].[P_WMS_UpdateInvQty_BatchUpdate]
 	@UserId varchar(50),
 	@PartId int,
 	@InvId int,
 	@SubInvId int,
 	@Lot varchar(50),
 	@AllowAddLot bit,	--在增加库存时，是否允许新增批次
+	@HasStockQty bit,	--在减少库存时，是否已进行过备料
 	@Qty decimal(10, 3),
 	@now datetime,
 	@type varchar(50),
@@ -987,72 +1314,110 @@ BEGIN
 	--减少库存：当批次为空，则按先进先出的原则扣减库存；当批次非空时，只扣减指定批次的库存
 	IF (@Qty < 0)
 	BEGIN
-		IF (@Lot IS NOT NULL) --批次不为空
+		IF (@HasStockQty = 1)	--已经备料过，直接扣减库存，不用判断库存现有量
 		BEGIN
-			SELECT @Count = count(*), @InvQty = SUM(Qty) FROM WMS_Inv
-				WHERE InvId = @InvId
-					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
-					AND PartId = @PartId
-					AND Isnull(Lot, 0) = Isnull(@Lot, 0);
-			IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
-			BEGIN
-				;
-				THROW 51000, '当前批次的库存现有量不足，请确认！', 1;
-				RETURN;
-			END
-
-			--扣减库存
-			UPDATE WMS_Inv SET Qty = Qty + @Qty
+			UPDATE WMS_Inv SET Qty = Qty + @Qty, 
+								StockQty = StockQty + @Qty
 				WHERE InvId = @InvId
 					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
 					AND PartId = @PartId
 					AND Isnull(Lot, 0) = Isnull(@Lot, 0);
 		END
-
-		IF (@Lot IS NULL) --批次为空
+		ELSE
 		BEGIN
-			SELECT @Count = count(*), @InvQty = SUM(Qty) FROM WMS_Inv
-				WHERE InvId = @InvId
-					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
-					AND PartId = @PartId;
-			IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+			IF (@Lot IS NOT NULL) --批次不为空
 			BEGIN
-				;
-				THROW 51000, '库存现有量不足，请确认！', 1;
-				RETURN;
+				SELECT @Count = count(*), @InvQty = SUM(Qty - StockQty) FROM WMS_Inv
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId
+						AND Isnull(Lot, 0) = Isnull(@Lot, 0);
+				IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+				BEGIN
+					;
+					THROW 51000, '当前批次的库存现有量不足，请确认！', 1;
+					RETURN;
+				END
+
+				--扣减库存
+				UPDATE WMS_Inv SET Qty = Qty + @Qty
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId
+						AND Isnull(Lot, 0) = Isnull(@Lot, 0);
 			END
 
-			--扣减库存：先进先出
-			UPDATE WMS_Inv SET Qty = Qty -
-					CASE WHEN (SELECT ABS(@Qty) - Isnull(SUM(t.Qty), 0) 
-								FROM WMS_Inv t
-								WHERE t.InvId = @InvId
-									AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
-									AND t.PartId = @PartId
-									AND t.Lot <= inv.Lot
-									AND t.Qty > 0) >= 0
-						THEN Qty
-						ELSE CASE WHEN (SELECT ABS(@Qty) - Isnull(SUM(t.Qty), 0) 
-										FROM WMS_Inv t
-										WHERE t.InvId = @InvId
-											AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
-											AND t.PartId = @PartId
-											AND t.Lot < inv.Lot
-											AND t.Qty > 0) < 0
-								THEN 0
-								ELSE (SELECT ABS(@Qty) - Isnull(SUM(t.Qty), 0) 
-										FROM WMS_Inv t
-										WHERE t.InvId = @InvId
-											AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
-											AND t.PartId = @PartId
-											AND t.Lot < inv.Lot
-											AND t.Qty > 0)
-								END
-						END
-				FROM WMS_Inv inv
-				WHERE inv.InvId = @InvId
-					AND Isnull(inv.SubInvId, 0) = Isnull(@SubInvId, 0)
-					AND inv.PartId = @PartId;
+			IF (@Lot IS NULL) --批次为空
+			BEGIN
+				SELECT @Count = count(*), @InvQty = SUM(Qty - StockQty) FROM WMS_Inv
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId;
+				IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+				BEGIN
+					;
+					THROW 51000, '库存现有量不足，请确认！', 1;
+					RETURN;
+				END
+
+				--扣减库存：先进先出
+				UPDATE WMS_Inv SET Qty = Qty -
+						CASE WHEN (SELECT ABS(@Qty) - Isnull(SUM(t.Qty), 0) 
+									FROM WMS_Inv t
+									WHERE t.InvId = @InvId
+										AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+										AND t.PartId = @PartId
+										AND Isnull(t.Lot, 0) <= Isnull(inv.Lot, 0)
+										AND t.Qty > 0) >= 0
+							THEN Qty
+							ELSE CASE WHEN (SELECT ABS(@Qty) - Isnull(SUM(t.Qty), 0) 
+											FROM WMS_Inv t
+											WHERE t.InvId = @InvId
+												AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+												AND t.PartId = @PartId
+												AND Isnull(t.Lot, 0) < Isnull(inv.Lot, 0)
+												AND t.Qty > 0) < 0
+									THEN 0
+									ELSE (SELECT ABS(@Qty) - Isnull(SUM(t.Qty), 0) 
+											FROM WMS_Inv t
+											WHERE t.InvId = @InvId
+												AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+												AND t.PartId = @PartId
+												AND Isnull(t.Lot, 0) < Isnull(inv.Lot, 0)
+												AND t.Qty > 0)
+									END
+							END,
+						OutQty = 
+						CASE WHEN (SELECT ABS(@Qty) - Isnull(SUM(t.Qty), 0) 
+									FROM WMS_Inv t
+									WHERE t.InvId = @InvId
+										AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+										AND t.PartId = @PartId
+										AND Isnull(t.Lot, 0) <= Isnull(inv.Lot, 0)
+										AND t.Qty > 0) >= 0
+							THEN Qty
+							ELSE CASE WHEN (SELECT ABS(@Qty) - Isnull(SUM(t.Qty), 0) 
+											FROM WMS_Inv t
+											WHERE t.InvId = @InvId
+												AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+												AND t.PartId = @PartId
+												AND Isnull(t.Lot, 0) < Isnull(inv.Lot, 0)
+												AND t.Qty > 0) < 0
+									THEN 0
+									ELSE (SELECT ABS(@Qty) - Isnull(SUM(t.Qty), 0) 
+											FROM WMS_Inv t
+											WHERE t.InvId = @InvId
+												AND Isnull(t.SubInvId, 0) = Isnull(@SubInvId, 0)
+												AND t.PartId = @PartId
+												AND Isnull(t.Lot, 0) < Isnull(inv.Lot, 0)
+												AND t.Qty > 0)
+									END
+							END
+					FROM WMS_Inv inv
+					WHERE inv.InvId = @InvId
+						AND Isnull(inv.SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND inv.PartId = @PartId;
+			END
 		END
 	END
 

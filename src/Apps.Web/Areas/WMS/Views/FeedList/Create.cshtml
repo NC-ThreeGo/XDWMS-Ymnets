@@ -135,6 +135,34 @@ $.messageBox5s(Lang.Tip, mes);
             </tr>
             <tr>
                 <th>
+                    @Html.LabelFor(model => model.InvId)：
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.InvId, ViewBag.Inv as SelectList)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.InvId)</td>
+            </tr>
+            @*<tr>
+                <th>
+                    @Html.LabelFor(model => model.SubInvId)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.SubInvId)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
+            </tr>*@
+            <tr>
+                <th>
+                    批次号：
+                </th>
+                <td>
+                    <input id="Lot" name="Lot" value="">
+                    <label id="Qty" for="Lot" name="Qty"></label>
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Lot)</td>
+            </tr>
+            <tr>
+                <th>
                     @Html.LabelFor(model => model.FeedQty)：
                 </th>
                 <td>
@@ -160,24 +188,6 @@ $.messageBox5s(Lang.Tip, mes);
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.Capacity)</td>
             </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.InvId)：
-                </th>
-                <td>
-                    @Html.DropDownListFor(model => model.InvId, ViewBag.Inv as SelectList)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.InvId)</td>
-            </tr>
-            @*<tr>
-                    <th>
-                        @Html.LabelFor(model => model.SubInvId)：
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.SubInvId)
-                    </td>
-                    <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
-                </tr>*@
             <tr>
                 <th>
                     @Html.LabelFor(model => model.Remark)：

@@ -10,16 +10,22 @@ namespace Apps.DAL.WMS
 {
     public partial class WMS_Feed_ListRepository
     {
-        public string PrintFeedList(string opt, string feedBillNum)
+        public string PrintFeedList(string opt, string feedBillNum, ref string releaseBillNum)
         {
-            ObjectParameter releaseBillNum = new ObjectParameter("ReleaseBillNum", typeof(string));
+            //由于EF的默认调用会启用事务，导致和存储过程中的事务冲突，所以设置为不启用事务。
+            Context.Configuration.EnsureTransactionsForFunctionsAndCommands = false;
+
+            ObjectParameter paramrReleaseBillNum = new ObjectParameter("ReleaseBillNum", typeof(string));
             ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
-            Context.P_WMS_PrintFeedList(opt, feedBillNum, releaseBillNum, returnValue);
+            Context.P_WMS_PrintFeedList(opt, feedBillNum, paramrReleaseBillNum, returnValue);
 
             if (returnValue.Value == DBNull.Value)
-                return (string)releaseBillNum.Value;
-            else
+            {
+                releaseBillNum = (string)paramrReleaseBillNum.Value;
                 return null;
+            }
+            else
+                return (string)returnValue.Value;
         }
 
         public void ConfirmFeedList(string opt, string releaseBillNum)
