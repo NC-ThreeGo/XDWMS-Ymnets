@@ -837,5 +837,31 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ConfirmReturnOrder", userIdParameter, returnOrderNumParameter, returnValue);
         }
+    
+        public virtual int P_WMS_PrintFeedList(string userId, string feedBillNum, ObjectParameter releaseBillNum, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var feedBillNumParameter = feedBillNum != null ?
+                new ObjectParameter("FeedBillNum", feedBillNum) :
+                new ObjectParameter("FeedBillNum", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_PrintFeedList", userIdParameter, feedBillNumParameter, releaseBillNum, returnValue);
+        }
+    
+        public virtual int P_WMS_ConfirmFeedList(string userId, string releaseBillNum, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var releaseBillNumParameter = releaseBillNum != null ?
+                new ObjectParameter("ReleaseBillNum", releaseBillNum) :
+                new ObjectParameter("ReleaseBillNum", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ConfirmFeedList", userIdParameter, releaseBillNumParameter, returnValue);
+        }
     }
 }

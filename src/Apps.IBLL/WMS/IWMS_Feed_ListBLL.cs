@@ -27,5 +27,23 @@ namespace Apps.IBLL.WMS
          /// <param name="pager"></param>
          /// <param name="whereStr"></param>
          List<WMS_Feed_ListModel> GetListByWhere(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 打印投料单
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="opt"></param>
+        /// <param name="feedBillNum"></param>
+        /// <returns></returns>
+        string PrintFeedList(ref ValidationErrors errors, string opt, string feedBillNum);
+
+        /// <summary>
+        /// 确认投料单
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="opt"></param>
+        /// <param name="releaseBillNum"></param>
+        /// <returns></returns>
+        bool ConfirmFeedList(ref ValidationErrors errors, string opt, string releaseBillNum);
     }
 }

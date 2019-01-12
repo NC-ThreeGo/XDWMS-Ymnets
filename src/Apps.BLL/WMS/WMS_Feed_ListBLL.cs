@@ -47,6 +47,13 @@ namespace Apps.BLL.WMS
                                                   Remark = r.Remark,
                                                   SubAssemblyPartId = r.SubAssemblyPartId,
                                                   SubInvId = r.SubInvId,
+
+                                                  AssemblyPartCode = r.WMS_Part.PartCode,
+                                                  AssemblyPartName = r.WMS_Part.PartName,
+                                                  SubAssemblyPartCode = r.WMS_Part1.PartCode,
+                                                  SubAssemblyPartName = r.WMS_Part1.PartName,
+                                                  InvCode = r.WMS_InvInfo.InvCode,
+                                                  InvName = r.WMS_InvInfo.InvName,
                                               }).ToList();
             return modelList;
         }
@@ -241,6 +248,39 @@ namespace Apps.BLL.WMS
 			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
 			return CreateModelList(ref queryData);
 		}
+
+        public string PrintFeedList(ref ValidationErrors errors, string opt, string feedBillNum)
+        {
+            try
+            {
+                var rtn = m_Rep.PrintFeedList(opt, feedBillNum);
+                if (!String.IsNullOrEmpty(rtn))
+                {
+                    return rtn;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+                return null;
+            }
+        }
+
+        public bool ConfirmFeedList(ref ValidationErrors errors, string opt, string releaseBillNum)
+        {
+            try
+            {
+                m_Rep.ConfirmFeedList(opt, releaseBillNum);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+                return false;
+            }
+        }
     }
- }
+}
 

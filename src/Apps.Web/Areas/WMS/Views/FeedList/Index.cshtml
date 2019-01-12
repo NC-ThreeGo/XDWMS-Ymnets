@@ -36,13 +36,16 @@
 </div>
 <div class="mvctool">
     <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
+    @Html.ToolButton("btnPrint", "fa fa-level-up", Resource.Print, ref perm, "Create", true)
+    @Html.ToolButton("btnConfirm", "fa fa-search", "确认", ref perm, "Edit", true)
+    @Html.ToolButton("btnReport", "fa fa-search", "查看单据", ref perm, "Query", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -72,13 +75,13 @@
                 { field: 'FeedBillNum', title: '投料单号（业务）', width: 80,sortable:true },
                 { field: 'ReleaseBillNum', title: '投料单号（系统）', width: 80,sortable:true },
                 { field: 'Department', title: '投料部门', width: 80,sortable:true },
-                { field: 'AssemblyPartId', title: '总成物料', width: 80,sortable:true },
-                { field: 'SubAssemblyPartId', title: '投料物料', width: 80,sortable:true },
-                { field: 'FeedQty', title: '投料数量', width: 80,sortable:true },
-                { field: 'BoxQty', title: '箱数', width: 80,sortable:true },
+                { field: 'AssemblyPartCode', title: '总成物料', width: 80,sortable:true },
+                { field: 'SubAssemblyPartCode', title: '投料物料', width: 80,sortable:true },
+                { field: 'FeedQty', title: '投料数量', width: 80, sortable: true, align: 'right' },
+                { field: 'BoxQty', title: '箱数', width: 80, sortable: true, align: 'right' },
                 { field: 'Capacity', title: '体积', width: 80,sortable:true },
-                { field: 'InvId', title: '库存', width: 80,sortable:true },
-                { field: 'SubInvId', title: '子库存', width: 80,sortable:true },
+                { field: 'InvCode', title: '库房', width: 80,sortable:true },
+                //{ field: 'SubInvId', title: '子库存', width: 80,sortable:true },
                 { field: 'Remark', title: '备注', width: 80,sortable:true },
                 { field: 'PrintStaus', title: '打印状态', width: 80,sortable:true },
                 { field: 'PrintDate', title: '打印时间', width: 80,sortable:true },
@@ -86,15 +89,7 @@
                 { field: 'ConfirmStatus', title: '确认状态', width: 80,sortable:true },
                 { field: 'ConfirmMan', title: '确认人', width: 80,sortable:true },
                 { field: 'ConfirmDate', title: '确认时间', width: 80,sortable:true },
-                { field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
-                { field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
-                { field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
-                { field: 'Attr4', title: 'Attr4', width: 80,sortable:true },
-                { field: 'Attr5', title: 'Attr5', width: 80,sortable:true },
-                { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
-                { field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
-                { field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
-                { field: 'ModifyTime', title: '修改时间', width: 80,sortable:true }
+                { field: 'ConfirmMessage', title: '确认信息', width: 80, sortable: true },
             ]]
         });
     });
@@ -160,6 +155,18 @@
         });
         $("#btnExportTemplate").click(function() {
           window.location = "@Url.Action("ExportTemplate")";
+        });
+        $("#btnPrint").click(function() {
+            $.modalWindow("单据打印", '@Url.Action("Print")', 1000, 600, 'fa fa-pencil');
+        });
+        $("#btnConfirm").click(function () {
+            $.modalWindow(Lang.Confirm, '@Url.Action("Confirm")', 1000, 600, 'fa fa-plus');
+        });
+        $("#btnReport").click(function() {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + row.ReturnOrderNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
     });
     function ImportData()

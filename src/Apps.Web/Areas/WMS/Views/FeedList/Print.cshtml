@@ -1,0 +1,176 @@
+﻿@model Apps.Models.WMS.WMS_Feed_ListModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WMS;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "打印投料单";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script type="text/javascript">
+    $(function ()
+    {
+        //加载到货单
+        $("#btnLoadFeedList").click(function ()
+        {
+            var feedBillNum = $("#FeedBillNum").val();
+            $("#List").datagrid("load", { feedBillNum: feedBillNum });
+        });
+
+        $("#btnSave").click(function ()
+        {
+            if (!$("form").valid()) {
+                $.messageBox5s('提示', $("#ErrMesList").html());
+                return;
+            }
+            if ($("form").valid())
+            {
+                endEditing();
+                var $dg = $('#List');
+                var rows = $dg.datagrid('getRows');  
+                if (rows.length)
+                {
+                    showLoading();
+                    $.ajax({
+                        url: "@Url.Action("Print")",
+                        type: "Post",
+                        data: { feedBillNum: $("#FeedBillNum").val() },
+                        dataType: "json",
+                        success: function (data)
+                        {
+                            if (data.type == 1)
+                            {
+                                hideLoading();
+                                //打开报表打印的窗口
+                                self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=FeedList&billNum=' + data.value;
+                            } else
+                            {
+                                window.parent.frameReturnByMes(data.message);
+                                hideLoading();
+
+                            }
+                        }
+                    })
+                }
+            }
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(30),
+                height: SetGridHeightSub(50)
+            });
+        });
+
+    });
+    $(function ()
+    {
+        $('#List').datagrid({
+            url: '@Url.Action("GetFeedListByFeedBillNum")?feedBillNum=""',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(100),
+            fitColumns: true,
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: false,//单选模式
+            selectOnCheck: false,
+            checkOnSelect: false,
+            remotesort: false,
+            showFooter: true,
+            columns: [[
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
+                { field: 'FeedBillNum', title: '投料单号（业务）', width: 80, sortable: true },
+                { field: 'ReleaseBillNum', title: '投料单号（系统）', width: 80, sortable: true },
+                { field: 'Department', title: '投料部门', width: 80, sortable: true },
+                { field: 'AssemblyPartCode', title: '总成物料', width: 80, sortable: true },
+                { field: 'SubAssemblyPartCode', title: '投料物料', width: 80, sortable: true },
+                { field: 'FeedQty', title: '投料数量', width: 80, sortable: true, align: 'right' },
+                { field: 'BoxQty', title: '箱数', width: 80, sortable: true, align: 'right' },
+                { field: 'Capacity', title: '体积', width: 80, sortable: true },
+                { field: 'InvCode', title: '库房', width: 80, sortable: true },
+            ]]
+        });
+    })
+
+
+    //关闭模式窗口
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s('提示', mes);
+    }
+</script>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Print, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+    @*@Html.HiddenFor(model => model.Id)*@
+    <input id="inserted" type="hidden" name="inserted" value="" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.FeedBillNum)：
+                </th>
+                <td>
+                    <div style="height:0;width:0;overflow:hidden">
+                        @Html.TextBoxFor(model => model.FeedBillNum)
+                    </div>
+                    <input id="FeedBillNum" name="Supplier" type="text" style="width: 200px; display: inline;">
+                    <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelFeedBillNum()"></a>
+                    <script type="text/javascript">
+                        function showSelFeedBillNum()
+                        {
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/FeedList/FeedListLookUp'></iframe>");
+                            $("#modalwindow").window({ title: '选择投料单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                        }
+
+                        function SetSelResult(result, resultName)
+                        {
+                            $("#FeedBillNum").val(result);
+                        }
+
+                    </script>
+                    @Html.ToolButton("btnLoadFeedList", "fa fa-reply", Resource.Load, false)
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+}
+<table>
+    <tr>
+        <td colspan="7" style="padding:4px;">
+            <table id="List"></table>
+        </td>
+    </tr>
+
+</table>
