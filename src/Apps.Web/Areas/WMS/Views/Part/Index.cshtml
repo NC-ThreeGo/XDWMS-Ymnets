@@ -105,12 +105,12 @@
     }
     $(function () {
         $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 500, 330, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', 400, 440, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 330, 'fa fa-pencil');
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 440, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {
