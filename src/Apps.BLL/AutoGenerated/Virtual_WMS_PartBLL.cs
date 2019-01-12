@@ -97,6 +97,9 @@ namespace Apps.BLL.WMS
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
+                                                    Unit = r.Unit,
+                                                  Volume = r.Volume,
+                                                  Remark = r.Remark,
           
                                               }).ToList();
 
@@ -128,7 +131,10 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
-  
+                entity.Unit = model.Unit;
+                entity.Volume = model.Volume;
+                entity.Remark = model.Remark;
+
 
                 if (m_Rep.Create(entity))
                 {
@@ -228,7 +234,10 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
- 
+                entity.Unit = model.Unit;
+                entity.Volume = model.Volume;
+                entity.Remark = model.Remark;
+
 
 
                 if (m_Rep.Edit(entity))
@@ -272,6 +281,9 @@ namespace Apps.BLL.WMS
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
+                model.Unit = entity.Unit;
+                model.Volume = entity.Volume;
+                model.Remark = entity.Remark;
  
                 return model;
             }
@@ -308,7 +320,10 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_PartModel>(x => x.OtherCode, "额外信息编码");
 				 excelFile.AddMapping<WMS_PartModel>(x => x.PCS, "每箱数量");
 				 excelFile.AddMapping<WMS_PartModel>(x => x.StoreMan, "保管员");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.Status, "物料状态");
+                 excelFile.AddMapping<WMS_PartModel>(x => x.Unit, "单位");
+                 excelFile.AddMapping<WMS_PartModel>(x => x.Volume, "每箱体积");
+            excelFile.AddMapping<WMS_PartModel>(x => x.Remark, "说明");
+            excelFile.AddMapping<WMS_PartModel>(x => x.Status, "物料状态");
 				 excelFile.AddMapping<WMS_PartModel>(x => x.CreatePerson, "创建人");
 				 excelFile.AddMapping<WMS_PartModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_PartModel>(x => x.ModifyPerson, "修改人");
@@ -336,6 +351,9 @@ namespace Apps.BLL.WMS
 				  entity.CreateTime = row.CreateTime;
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
+                entity.Unit = row.Unit;
+                entity.Volume = row.Volume;
+                entity.Remark = row.Remark;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -382,6 +400,9 @@ namespace Apps.BLL.WMS
 						entity.CreateTime = ResultHelper.NowTime;
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
+                        entity.Unit = model.Unit;
+                        entity.Volume = model.Volume;
+                        entity.Remark = model.Remark;
  
                         db.WMS_Part.Add(entity);
                     }
