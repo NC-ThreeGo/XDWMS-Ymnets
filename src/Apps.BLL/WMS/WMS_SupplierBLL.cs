@@ -121,7 +121,7 @@ namespace Apps.BLL.WMS
 								//执行额外的数据校验
 								try
 								{
-									AdditionalCheckExcelData(model);
+									AdditionalCheckExcelData(db, ref model);
 								}
 								catch (Exception ex)
 								{
@@ -182,15 +182,16 @@ namespace Apps.BLL.WMS
 				return rtn;
 			}
 
-		public void AdditionalCheckExcelData(WMS_SupplierModel model)
+		public void AdditionalCheckExcelData(DBContainer db, ref WMS_SupplierModel model)
 		{
-            //获取客户编码
+            //获取供应商编码
             if (!String.IsNullOrEmpty(model.SupplierCode))
             {
                 var supplierCode = model.SupplierCode;
                 Expression<Func<WMS_Supplier, bool>> exp = x => x.SupplierCode == supplierCode;
 
-                var supplier = m_SupplierRep.GetSingleWhere(exp);
+                //var supplier = m_SupplierRep.GetSingleWhere(exp);
+                var supplier = db.WMS_Supplier.FirstOrDefault(exp);
                 if (supplier != null)
                 {
                     throw new Exception("供应商编码重复！");

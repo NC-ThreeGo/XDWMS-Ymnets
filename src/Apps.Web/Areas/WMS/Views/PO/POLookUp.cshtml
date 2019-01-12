@@ -9,7 +9,8 @@
     List<permModel> perm = null;
 }
 <div class="mvctool">
-    <input id="txtQuery" placeholder="请输入采购订单号" type="text" class="searchText" />
+    <input id="txtPO" placeholder="请输入采购订单号" type="text" class="searchText" />
+    <input id="txtSupplierShortName" placeholder="请输入供应商简称" type="text" class="searchText" />
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
     @Html.ToolButton("btnSave", "fa fa-plus", Resource.Select, ref perm, "Create", true)
 </div>
@@ -86,11 +87,15 @@
     }
     $(function () {
         $("#btnQuery").click(function () {
-            var po = $("#txtQuery").val();
+            var po = $("#txtPO").val();
+            var supplierShortName = $("#txtSupplierShortName").val();
             if (po == null) {
                 po = "%";
             }
-            $("#List").datagrid("load", { po: po });
+            if (supplierShortName == null) {
+                supplierShortName = "%";
+            }
+            $("#List").datagrid("load", { po: po, supplierShortName: supplierShortName });
 
         });
         //取得所选择的行

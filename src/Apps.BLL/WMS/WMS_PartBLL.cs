@@ -117,7 +117,7 @@ namespace Apps.BLL.WMS
                             //执行额外的数据校验
                             try
                             {
-                                AdditionalCheckExcelData(model);
+                                AdditionalCheckExcelData(db,ref model);
                             }
                             catch (Exception ex)
                             {
@@ -177,7 +177,7 @@ namespace Apps.BLL.WMS
             return rtn;
         }
 
-        public void AdditionalCheckExcelData(WMS_PartModel model)
+        public void AdditionalCheckExcelData(DBContainer db, ref WMS_PartModel model)
         {
             //获取物料ID
             if (!String.IsNullOrEmpty(model.PartCode))
@@ -185,7 +185,8 @@ namespace Apps.BLL.WMS
                 var partCode = model.PartCode;
                 Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
 
-                var part = m_PartRep.GetSingleWhere(exp);
+                //var part = m_PartRep.GetSingleWhere(exp);
+                var part = db.WMS_Part.FirstOrDefault(exp);
                 if (part != null)
                 {
                     throw new Exception("物料编码重复！");

@@ -18,7 +18,7 @@ namespace Apps.IBLL.WMS
          /// 对导入进行附加的校验，例如物料编码是否存在等。
          /// </summary>
          /// <param name="model"></param>
-         void AdditionalCheckExcelData(WMS_SupplierModel model);
+         //void AdditionalCheckExcelData(WMS_SupplierModel model);
         /// <summary>
         /// 根据where字符串获取列表数据
         /// </summary>
