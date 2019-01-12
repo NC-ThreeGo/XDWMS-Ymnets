@@ -19,6 +19,9 @@ namespace Apps.Web.Areas.WMS.Controllers
     {
         [Dependency]
         public IWMS_Feed_ListBLL m_BLL { get; set; }
+        [Dependency]
+        public IWMS_InvInfoBLL _InvInfoBll { get; set; }
+
         ValidationErrors errors = new ValidationErrors();
         
         [SupportFilter]
@@ -36,11 +39,18 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
         #region 创建
         [SupportFilter]
         public ActionResult Create()
         {
-            return View();
+            ViewBag.Inv = new SelectList(_InvInfoBll.GetList(ref setNoPagerAscById, ""), "Id", "InvName");
+            WMS_Feed_ListModel model = new WMS_Feed_ListModel()
+            {
+                FeedBillNum = "TL" + DateTime.Now.ToString("yyyyMMddHHmmssff"),
+
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -48,7 +58,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_Feed_ListModel model)
         {
             model.Id = 0;
+            model.CreatePerson = GetUserId();
             model.CreateTime = ResultHelper.NowTime;
+            model.PrintStaus = "未打印";
+            model.ConfirmStatus = "未确认";
             if (model != null && ModelState.IsValid)
             {
 
@@ -67,6 +80,76 @@ namespace Apps.Web.Areas.WMS.Controllers
             else
             {
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail));
+            }
+        }
+        #endregion
+
+        #region 打印
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult Print()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        [ValidateInput(false)]
+        public JsonResult Print(string feedBillNum)
+        {
+            try
+            {
+                var releaseBillNum = m_BLL.PrintFeedList(ref errors, GetUserId(), feedBillNum);
+                if (!String.IsNullOrEmpty(releaseBillNum))
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功", "成功", "打印", "WMS_Feed_List");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNum));
+                    //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
+                }
+                else
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), errors.Error, "失败", "打印", "WMS_Feed_List");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "打印", "WMS_Feed_List");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+            }
+        }
+        #endregion
+
+        #region 确认
+        [SupportFilter(ActionName = "Edit")]
+        public ActionResult Confirm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Edit")]
+        [ValidateInput(false)]
+        public JsonResult Confirm(string releaseBillNum)
+        {
+            try
+            {
+                if (m_BLL.ConfirmFeedList(ref errors, GetUserId(), releaseBillNum))
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), "ReleaseBillNum" + releaseBillNum, "成功", "确认", "WMS_Feed_List");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNum));
+                }
+                else
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), "ReleaseBillNum" + releaseBillNum + ", " + errors.Error, "失败", "确认", "WMS_Feed_List");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserId(), "ReturnOrderNum" + releaseBillNum + ", " + ex.Message, "失败", "确认", "WMS_ReturnOrder");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }
         #endregion
@@ -265,6 +348,45 @@ namespace Apps.Web.Areas.WMS.Controllers
                     ExportData = dt
                 };
             }
+        #endregion
+
+        #region 选择投料单
+        /// <summary>
+        /// 弹出选择送检单
+        /// </summary>
+        /// <param name="mulSelect">是否多选</param>
+        /// <returns></returns>
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult FeedListLookUp(bool mulSelect = false)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult FeedListGetList(GridPager pager, string queryStr)
+        {
+            //TODO:显示未打印的投料单。
+            List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"未打印\"")
+                .GroupBy(p => new { p.FeedBillNum })
+                .Select(g => g.First())
+                .OrderBy(p => p.FeedBillNum).ToList();
+            GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult GetFeedListByFeedBillNum(GridPager pager, string FeedBillNum)
+        {
+            List<WMS_Feed_ListModel> list = m_BLL.GetList(ref pager, "FeedBillNum = \"" + FeedBillNum + "\"");
+            GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
         #endregion
     }
 }

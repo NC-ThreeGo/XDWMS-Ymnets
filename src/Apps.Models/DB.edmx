@@ -1080,8 +1080,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FeedBillNum" Type="nvarchar" MaxLength="50" />
-          <Property Name="ReleaseBillNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FeedBillNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ReleaseBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="Department" Type="nvarchar" MaxLength="50" />
           <Property Name="AssemblyPartId" Type="int" Nullable="false" />
           <Property Name="SubAssemblyPartId" Type="int" Nullable="false" />
@@ -1106,6 +1106,7 @@
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
+          <Property Name="ConfirmMessage" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="WMS_Header">
           <Key>
@@ -2821,6 +2822,11 @@
           <Parameter Name="Rows" Type="int" Mode="In" />
           <Parameter Name="UserId" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="P_WMS_ConfirmFeedList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="ReleaseBillNum" Type="varchar" Mode="In" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
         <Function Name="P_WMS_ConfirmReturnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="ReturnOrderNum" Type="varchar" Mode="In" />
@@ -2861,6 +2867,12 @@
           <Parameter Name="AdjustType" Type="nvarchar" Mode="In" />
           <Parameter Name="Remark" Type="nvarchar" Mode="In" />
           <Parameter Name="InvAdjustBillNum" Type="varchar" Mode="InOut" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="P_WMS_PrintFeedList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="FeedBillNum" Type="nvarchar" Mode="In" />
+          <Parameter Name="ReleaseBillNum" Type="varchar" Mode="InOut" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="P_WMS_PrintReturnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -4106,6 +4118,17 @@
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
             <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
           </AssociationSet>
+          <FunctionImport Name="P_WMS_PrintFeedList">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="FeedBillNum" Mode="In" Type="String" />
+            <Parameter Name="ReleaseBillNum" Mode="InOut" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="P_WMS_ConfirmFeedList">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="ReleaseBillNum" Mode="In" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -6475,7 +6498,7 @@
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_Part" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Feed_List" Relationship="DB.FK_WMS_Feed_List_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Feed_List" />
           <NavigationProperty Name="WMS_Feed_List1" Relationship="DB.FK_WMS_Feed_List_WMS_Part1" FromRole="WMS_Part" ToRole="WMS_Feed_List" />
-        </EntityType>
+          </EntityType>
         <EntityType Name="WMS_PO">
           <Key>
             <PropertyRef Name="Id" />
@@ -7065,8 +7088,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FeedBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReleaseBillNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FeedBillNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReleaseBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AssemblyPartId" Type="Int32" Nullable="false" />
           <Property Name="SubAssemblyPartId" Type="Int32" Nullable="false" />
@@ -7091,6 +7114,7 @@
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmMessage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_Feed_List_WMS_InvInfo" FromRole="WMS_Feed_List" ToRole="WMS_InvInfo" />
           <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_Feed_List_WMS_Part" FromRole="WMS_Feed_List" ToRole="WMS_Part" />
           <NavigationProperty Name="WMS_Part1" Relationship="DB.FK_WMS_Feed_List_WMS_Part1" FromRole="WMS_Feed_List" ToRole="WMS_Part" />
@@ -8850,6 +8874,7 @@
           <EntitySetMapping Name="WMS_Feed_List">
             <EntityTypeMapping TypeName="DB.WMS_Feed_List">
               <MappingFragment StoreEntitySet="WMS_Feed_List">
+                <ScalarProperty Name="ConfirmMessage" ColumnName="ConfirmMessage" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
@@ -8880,6 +8905,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="P_WMS_PrintFeedList" FunctionName="DB.Store.P_WMS_PrintFeedList" />
+          <FunctionImportMapping FunctionImportName="P_WMS_ConfirmFeedList" FunctionName="DB.Store.P_WMS_ConfirmFeedList" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

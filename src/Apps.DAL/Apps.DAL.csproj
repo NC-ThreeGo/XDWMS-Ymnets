@@ -358,6 +358,7 @@
     <Compile Include="WebpartRepository.cs" />
     <Compile Include="WMS\WMS_ReInspectRepository.cs" />
     <Compile Include="WMS\WMS_Inv_AdjustRepository.cs" />
+    <Compile Include="WMS\WMS_FeedListRepository.cs" />
     <Compile Include="WMS\WMS_ReturnOrderRepository.cs" />
     <Compile Include="WMS\WMS_ReportRepository.cs" />
     <Compile Include="WMS\WMS_AIRepository.cs" />

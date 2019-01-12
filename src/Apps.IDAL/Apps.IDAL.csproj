@@ -354,6 +354,7 @@
     <Compile Include="WC\IWC_OfficalAccountsRepository.cs" />
     <Compile Include="WMS\IWMS_ReInspectRepository.cs" />
     <Compile Include="WMS\IWMS_Inv_AdjustRepository.cs" />
+    <Compile Include="WMS\IWMS_FeedListRepository.cs" />
     <Compile Include="WMS\IWMS_ReturnOrderRepository.cs" />
     <Compile Include="WMS\IWMS_ReportRepository.cs" />
     <Compile Include="WMS\IWMS_AIRepository.cs" />

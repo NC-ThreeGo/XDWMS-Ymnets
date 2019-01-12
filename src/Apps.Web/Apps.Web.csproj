@@ -838,6 +838,8 @@
     <Content Include="Areas\WMS\Views\FeedList\Create.cshtml" />
     <Content Include="Areas\WMS\Views\FeedList\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\FeedList\Index.cshtml" />
+    <Content Include="Areas\WMS\Views\FeedList\Print.cshtml" />
+    <Content Include="Areas\WMS\Views\FeedList\FeedListLookUp.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
