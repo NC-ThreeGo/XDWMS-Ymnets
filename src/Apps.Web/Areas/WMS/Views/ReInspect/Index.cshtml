@@ -35,11 +35,13 @@
 </form>
 </div>
 <div class="mvctool">
-    <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+    @*<input id="txtQuery" type="text" class="searchText" />*@
+    <input id="txtpo" type="text" placeholder="采购订单号:" class="searchText" />
+    <input id="txtInspectBillNum" type="text" placeholder="送检单号:" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
@@ -69,29 +71,49 @@
             },
             columns: [[
                 { field: 'Id', title: '重新送检单ID', width: 80,hidden:true },
-                { field: 'AIId', title: '到货送检单ID', width: 80,sortable:true },
+                //{ field: 'AIId', title: '到货送检单ID', width: 80, sortable: true },
+                { field: 'PO', title: '采购单号', width: 110, sortable: true },
+                { field: 'InspectBillNum', title: '原送检单号', width: 80, sortable: true },
                 { field: 'OCheckOutResult', title: '原送检单结果', width: 80,sortable:true },
-                { field: 'OQualifyQty', title: '原送检单合格数量', width: 80,sortable:true },
-                { field: 'ONoQualifyQty', title: '原送检单不合格数量', width: 80,sortable:true },
+                { field: 'OQualifyQty', title: '原送检单合格数', width: 80,sortable:true },
+                { field: 'ONoQualifyQty', title: '原送检单不合格数', width: 80,sortable:true },
                 { field: 'OCheckOutRemark', title: '原送检单说明', width: 80,sortable:true },
-                { field: 'OCheckOutDate', title: '原送检单检验日期', width: 80,sortable:true },
+                //{ field: 'OCheckOutDate', title: '原送检单检验日期', width: 80, sortable: true },
+                {
+                    field: 'OCheckOutDate', title: '原送检单检验日期', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 { field: 'NCheckOutResult', title: '新送检单结果', width: 80,sortable:true },
-                { field: 'NQualifyQty', title: '新送检单合格数量', width: 80,sortable:true },
-                { field: 'NNoQualifyQty', title: '新送检单不合格数量', width: 80,sortable:true },
-                { field: 'NCheckOutRemark', title: '新送检单检验结果', width: 80,sortable:true },
-                { field: 'NCheckOutDate', title: '新送检单检验日期', width: 80,sortable:true },
+                { field: 'NQualifyQty', title: '新送检单合格数', width: 80,sortable:true },
+                { field: 'NNoQualifyQty', title: '新送检单不合格数', width: 80,sortable:true },
+                { field: 'NCheckOutRemark', title: '新送检单说明', width: 80,sortable:true },
+                //{ field: 'NCheckOutDate', title: '新送检单检验日期', width: 80, sortable: true },
+                {
+                    field: 'NCheckOutDate', title: '新送检单检验日期', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 { field: 'Remark', title: '调整说明', width: 80,sortable:true },
                 { field: 'AdjustMan', title: '调整人', width: 80,sortable:true },
-                { field: 'AdjustDate', title: '调整时间', width: 80,sortable:true },
-                { field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
-                { field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
-                { field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
-                { field: 'Attr4', title: 'Attr4', width: 80,sortable:true },
-                { field: 'Attr5', title: 'Attr5', width: 80,sortable:true },
-                { field: 'CreatePerson', title: '创建时间', width: 80,sortable:true },
-                { field: 'CreateTime', title: '创建人', width: 80,sortable:true },
-                { field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
-                { field: 'ModifyTime', title: '修改人', width: 80,sortable:true }
+                //{ field: 'AdjustDate', title: '调整时间', width: 80, sortable: true },
+                {
+                    field: 'AdjustDate', title: '调整时间', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
+                //{ field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
+                //{ field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
+                //{ field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
+                //{ field: 'Attr4', title: 'Attr4', width: 80,sortable:true },
+                //{ field: 'Attr5', title: 'Attr5', width: 80,sortable:true },
+                //{ field: 'CreatePerson', title: '创建时间', width: 80,sortable:true },
+                //{ field: 'CreateTime', title: '创建人', width: 80,sortable:true },
+                //{ field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
+                //{ field: 'ModifyTime', title: '修改人', width: 80,sortable:true }
             ]]
         });
     });
@@ -125,11 +147,15 @@
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            var inspectBillNum = $("#txtInspectBillNum").val();
+            var po = $("#txtpo").val();
+            if (inspectBillNum == null) {
+                inspectBillNum = "%";
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
+            if (po == null) {
+                po = "%";
+            }
+            $("#List").datagrid("load", { inspectBillNum: inspectBillNum, po: po });
 
         });
         $("#btnDelete").click(function () {
@@ -139,15 +165,20 @@
              $("#txtExcelPath").val("");
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
-        $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+        $("#btnExport").click(function () {
+            var po = $("#txtpo").val();
+            var inspectBillNum = $("#txtInspectBillNum").val();
+           
+            if (po == null) {
+                po = "";
             }
-          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
+            if (inspectBillNum == null) {
+                inspectBillNum = "";
+            }
+            $.post("@Url.Action("CheckExportData")?po=" + po + "&inspectBillNum=" + inspectBillNum, function(data) {
                 if (data.type == 1)
                 {
-                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                    window.location = "@Url.Action("Export")?po=" + po + "&inspectBillNum=" + inspectBillNum;
                 }
                 else
                 {

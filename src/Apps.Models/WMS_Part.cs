@@ -40,6 +40,8 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+        public string unit { get; set; }
+        public Nullable<decimal> volume { get; set; }
     
         public virtual ICollection<WMS_PO> WMS_PO { get; set; }
         public virtual ICollection<WMS_AI> WMS_AI { get; set; }

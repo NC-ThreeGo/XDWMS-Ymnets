@@ -758,9 +758,9 @@
           <Property Name="TypeCode" Type="nvarchar" MaxLength="20" />
           <Property Name="TypeName" Type="nvarchar" MaxLength="50" />
           <Property Name="ParamCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
           <Property Name="Sort" Type="int" />
           <Property Name="Enable" Type="bit" Nullable="false" />
+          <Property Name="ParamName" Type="nvarchar" MaxLength="50" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
@@ -911,7 +911,7 @@
           <Property Name="IsSecretary" Type="bit" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
-警告 6002: 表/视图“XDWMS-Ymnets.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+警告 6002: 表/视图“XDWMS.dbo.SysUserConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SysUserConfig">
           <Key>
             <PropertyRef Name="Id" />
@@ -1025,7 +1025,6 @@
           <Property Name="ArrivalBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="POId" Type="int" Nullable="false" />
           <Property Name="PartId" Type="int" />
-          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="BoxQty" Type="numeric" Precision="10" Scale="3" />
           <Property Name="ArrivalQty" Type="decimal" Precision="10" Scale="3" />
           <Property Name="ArrivalDate" Type="datetime" />
@@ -1046,6 +1045,7 @@
           <Property Name="InvId" Type="int" />
           <Property Name="SubInvId" Type="int" />
           <Property Name="InStoreStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr3" Type="nvarchar" MaxLength="50" />
@@ -1075,9 +1075,15 @@
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“XDWMS.dbo.WMS_Feed_List”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="WMS_Feed_List">
           <Key>
             <PropertyRef Name="Id" />
+            
+            
+            
+            
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FeedBillNum" Type="nvarchar" MaxLength="50" />
@@ -1123,8 +1129,8 @@
           <Property Name="InvId" Type="int" Nullable="false" />
           <Property Name="SubInvId" Type="int" />
           <Property Name="PartId" Type="int" Nullable="false" />
-          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="Qty" Type="numeric" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="WMS_Inv_Adjust">
           <Key>
@@ -1133,12 +1139,12 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="InvAdjustBillNum" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PartId" Type="int" Nullable="false" />
-          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="AdjustQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="AdjustType" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="InvId" Type="int" />
           <Property Name="SubInvId" Type="int" />
           <Property Name="Remark" Type="nvarchar" MaxLength="100" />
+          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr3" Type="nvarchar" MaxLength="50" />
@@ -1157,12 +1163,12 @@
           <Property Name="InvCode" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="InvName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="50" />
-          <Property Name="Status" Type="nchar" MaxLength="10" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDefault" Type="bit" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
-          <Property Name="IsDefault" Type="bit" />
         </EntityType>
         <EntityType Name="WMS_Line">
           <Key>
@@ -1185,6 +1191,8 @@
           <Property Name="OtherCode" Type="nvarchar" MaxLength="50" />
           <Property Name="PCS" Type="decimal" Precision="10" Scale="3" />
           <Property Name="StoreMan" Type="nvarchar" MaxLength="30" />
+          <Property Name="unit" Type="nvarchar" MaxLength="50" />
+          <Property Name="volume" Type="decimal" Precision="10" Scale="3" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
@@ -1224,10 +1232,10 @@
           <Property Name="EntryBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="Department" Type="nvarchar" MaxLength="50" />
           <Property Name="Partid" Type="int" Nullable="false" />
-          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="ProductQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="InvId" Type="int" />
           <Property Name="SubInvId" Type="int" />
+          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="Remark" Type="nvarchar" MaxLength="100" />
           <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
@@ -1317,9 +1325,9 @@
           <Property Name="SupplierId" Type="int" />
           <Property Name="InvId" Type="int" />
           <Property Name="SubInvId" Type="int" />
-          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
-          <Property Name="ReturnQty" Type="decimal" Precision="10" Scale="3" />
-          <Property Name="AdjustQty" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="ReturnQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="AdjustQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="ReturnOderType" Type="nvarchar" MaxLength="20" />
           <Property Name="Remark" Type="nvarchar" MaxLength="200" />
           <Property Name="PrintStaus" Type="nvarchar" MaxLength="10" />
           <Property Name="PrintDate" Type="datetime" />
@@ -1327,6 +1335,7 @@
           <Property Name="ConfirmStatus" Type="nvarchar" MaxLength="10" />
           <Property Name="ConfirmMan" Type="nvarchar" MaxLength="10" />
           <Property Name="ConfirmDate" Type="datetime" />
+          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr3" Type="nvarchar" MaxLength="50" />
@@ -1337,7 +1346,6 @@
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
           <Property Name="BatchId" Type="int" />
-          <Property Name="ReturnOderType" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="WMS_SubInvInfo">
           <Key>
@@ -1348,12 +1356,12 @@
           <Property Name="SubInvName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="InvId" Type="int" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="IsDefault" Type="bit" />
           <Property Name="Remark" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
-          <Property Name="IsDefault" Type="bit" />
         </EntityType>
         <EntityType Name="WMS_Supplier">
           <Key>
@@ -1368,12 +1376,12 @@
           <Property Name="LinkManTel" Type="nvarchar" MaxLength="20" />
           <Property Name="LinkManAddress" Type="nvarchar" MaxLength="100" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="MoreAccept" Type="nvarchar" MaxLength="10" />
           <Property Name="Remark" Type="nvarchar" MaxLength="500" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
-          <Property Name="MoreAccept" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <Association Name="FK_Flow_Form_Flow_Type">
           <End Role="Flow_Type" Type="Self.Flow_Type" Multiplicity="1" />
@@ -2565,6 +2573,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_ReInspect_WMS_AI">
+          <End Role="WMS_AI" Type="Self.WMS_AI" Multiplicity="1" />
+          <End Role="WMS_ReInspect" Type="Self.WMS_ReInspect" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_AI">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReInspect">
+              <PropertyRef Name="AIId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WMS_ReportParam_WMS_Report">
           <End Role="WMS_Report" Type="Self.WMS_Report" Multiplicity="1" />
           <End Role="WMS_ReportParam" Type="Self.WMS_ReportParam" Multiplicity="*" />
@@ -2821,11 +2841,6 @@
           <Parameter Name="Rows" Type="int" Mode="In" />
           <Parameter Name="UserId" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="P_WMS_ConfirmReturnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="UserId" Type="varchar" Mode="In" />
-          <Parameter Name="ReturnOrderNum" Type="varchar" Mode="In" />
-          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
-        </Function>
         <Function Name="P_WMS_CreateInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="ArrivalBillNum" Type="varchar" Mode="In" />
@@ -2847,7 +2862,6 @@
           <Parameter Name="PartId" Type="int" Mode="In" />
           <Parameter Name="SupplierId" Type="int" Mode="In" />
           <Parameter Name="InvId" Type="int" Mode="In" />
-          <Parameter Name="Lot" Type="varchar" Mode="In" />
           <Parameter Name="Qty" Type="decimal" Mode="In" />
           <Parameter Name="Remark" Type="nvarchar" Mode="In" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
@@ -2856,7 +2870,6 @@
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="PartId" Type="int" Mode="In" />
           <Parameter Name="InvId" Type="int" Mode="In" />
-          <Parameter Name="Lot" Type="nvarchar" Mode="In" />
           <Parameter Name="AdjustQty" Type="decimal" Mode="In" />
           <Parameter Name="AdjustType" Type="nvarchar" Mode="In" />
           <Parameter Name="Remark" Type="nvarchar" Mode="In" />
@@ -2949,7 +2962,6 @@
           <EntitySet Name="WC_User" EntityType="Self.WC_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_AI" EntityType="Self.WMS_AI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Customer" EntityType="Self.WMS_Customer" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="WMS_Feed_List" EntityType="Self.WMS_Feed_List" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Header" EntityType="Self.WMS_Header" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Inv" EntityType="Self.WMS_Inv" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Inv_Adjust" EntityType="Self.WMS_Inv_Adjust" Schema="dbo" store:Type="Tables" />
@@ -2973,6 +2985,37 @@
     [SysUserConfig].[State] AS [State], 
     [SysUserConfig].[UserId] AS [UserId]
     FROM [dbo].[SysUserConfig] AS [SysUserConfig]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="WMS_Feed_List" EntityType="Self.WMS_Feed_List" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [WMS_Feed_List].[Id] AS [Id], 
+    [WMS_Feed_List].[FeedBillNum] AS [FeedBillNum], 
+    [WMS_Feed_List].[ReleaseBillNum] AS [ReleaseBillNum], 
+    [WMS_Feed_List].[Department] AS [Department], 
+    [WMS_Feed_List].[AssemblyPartId] AS [AssemblyPartId], 
+    [WMS_Feed_List].[SubAssemblyPartId] AS [SubAssemblyPartId], 
+    [WMS_Feed_List].[FeedQty] AS [FeedQty], 
+    [WMS_Feed_List].[BoxQty] AS [BoxQty], 
+    [WMS_Feed_List].[Capacity] AS [Capacity], 
+    [WMS_Feed_List].[InvId] AS [InvId], 
+    [WMS_Feed_List].[SubInvId] AS [SubInvId], 
+    [WMS_Feed_List].[Remark] AS [Remark], 
+    [WMS_Feed_List].[PrintStaus] AS [PrintStaus], 
+    [WMS_Feed_List].[PrintDate] AS [PrintDate], 
+    [WMS_Feed_List].[PrintMan] AS [PrintMan], 
+    [WMS_Feed_List].[ConfirmStatus] AS [ConfirmStatus], 
+    [WMS_Feed_List].[ConfirmMan] AS [ConfirmMan], 
+    [WMS_Feed_List].[ConfirmDate] AS [ConfirmDate], 
+    [WMS_Feed_List].[Attr1] AS [Attr1], 
+    [WMS_Feed_List].[Attr2] AS [Attr2], 
+    [WMS_Feed_List].[Attr3] AS [Attr3], 
+    [WMS_Feed_List].[Attr4] AS [Attr4], 
+    [WMS_Feed_List].[Attr5] AS [Attr5], 
+    [WMS_Feed_List].[CreatePerson] AS [CreatePerson], 
+    [WMS_Feed_List].[CreateTime] AS [CreateTime], 
+    [WMS_Feed_List].[ModifyPerson] AS [ModifyPerson], 
+    [WMS_Feed_List].[ModifyTime] AS [ModifyTime]
+    FROM [dbo].[WMS_Feed_List] AS [WMS_Feed_List]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Flow_Form_Flow_Type" Association="Self.FK_Flow_Form_Flow_Type">
             <End Role="Flow_Type" EntitySet="Flow_Type" />
@@ -3353,6 +3396,10 @@
           <AssociationSet Name="FK_WMS_Product_Entry_WMS_SubInvInfo" Association="Self.FK_WMS_Product_Entry_WMS_SubInvInfo">
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
             <End Role="WMS_Product_Entry" EntitySet="WMS_Product_Entry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReInspect_WMS_AI" Association="Self.FK_WMS_ReInspect_WMS_AI">
+            <End Role="WMS_AI" EntitySet="WMS_AI" />
+            <End Role="WMS_ReInspect" EntitySet="WMS_ReInspect" />
           </AssociationSet>
           <AssociationSet Name="FK_WMS_ReportParam_WMS_Report" Association="Self.FK_WMS_ReportParam_WMS_Report">
             <End Role="WMS_Report" EntitySet="WMS_Report" />
@@ -3959,7 +4006,6 @@
             <Parameter Name="PartId" Mode="In" Type="Int32" />
             <Parameter Name="SupplierId" Mode="In" Type="Int32" />
             <Parameter Name="InvId" Mode="In" Type="Int32" />
-            <Parameter Name="Lot" Mode="In" Type="String" />
             <Parameter Name="Qty" Mode="In" Type="Decimal" />
             <Parameter Name="Remark" Mode="In" Type="String" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
@@ -4035,7 +4081,6 @@
             <Parameter Name="UserId" Mode="In" Type="String" />
             <Parameter Name="PartId" Mode="In" Type="Int32" />
             <Parameter Name="InvId" Mode="In" Type="Int32" />
-            <Parameter Name="Lot" Mode="In" Type="String" />
             <Parameter Name="AdjustQty" Mode="In" Type="Decimal" />
             <Parameter Name="AdjustType" Mode="In" Type="String" />
             <Parameter Name="Remark" Mode="In" Type="String" />
@@ -6435,7 +6480,7 @@
           <Property Name="InvCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="InvName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Remark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -6475,6 +6520,8 @@
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_Part" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Feed_List" Relationship="DB.FK_WMS_Feed_List_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Feed_List" />
           <NavigationProperty Name="WMS_Feed_List1" Relationship="DB.FK_WMS_Feed_List_WMS_Part1" FromRole="WMS_Part" ToRole="WMS_Feed_List" />
+          <Property Name="unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="volume" Type="Decimal" Precision="10" Scale="3" />
         </EntityType>
         <EntityType Name="WMS_PO">
           <Key>
@@ -6974,8 +7021,8 @@
           <Property Name="InvId" Type="Int32" />
           <Property Name="SubInvId" Type="Int32" />
           <Property Name="Lot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReturnQty" Type="Decimal" Precision="10" Scale="3" />
-          <Property Name="AdjustQty" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="ReturnQty" Type="Decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="AdjustQty" Type="Decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="PrintStaus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="PrintDate" Type="DateTime" Precision="3" />
@@ -6993,7 +7040,7 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <Property Name="BatchId" Type="Int32" />
-          <Property Name="ReturnOderType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReturnOderType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="WMS_AI" Relationship="DB.FK_WMS_ReturnOrder_WMS_AI" FromRole="WMS_ReturnOrder" ToRole="WMS_AI" />
           <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_ReturnOrder_WMS_InvInfo" FromRole="WMS_ReturnOrder" ToRole="WMS_InvInfo" />
           <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_ReturnOrder" ToRole="WMS_Part" />
@@ -8537,6 +8584,8 @@
           <EntitySetMapping Name="WMS_Part">
             <EntityTypeMapping TypeName="DB.WMS_Part">
               <MappingFragment StoreEntitySet="WMS_Part">
+                <ScalarProperty Name="volume" ColumnName="volume" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
@@ -8846,7 +8895,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="P_WMS_ConfirmReturnOrder" FunctionName="DB.Store.P_WMS_ConfirmReturnOrder" />
           <EntitySetMapping Name="WMS_Feed_List">
             <EntityTypeMapping TypeName="DB.WMS_Feed_List">
               <MappingFragment StoreEntitySet="WMS_Feed_List">

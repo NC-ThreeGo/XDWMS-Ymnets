@@ -47,5 +47,9 @@ namespace Apps.Models.WMS
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
+		[Display(Name = "单位")]
+		public virtual string unit { get; set; }
+		[Display(Name = "体积")]
+		public virtual Nullable<decimal> volume { get; set; }
 		}
 }

@@ -704,7 +704,7 @@ namespace Apps.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ProcessInspectBill", userIdParameter, jsonInspectBillParameter, returnValue);
         }
     
-        public virtual int P_WMS_CreateReturnOrder(string userId, Nullable<int> partId, Nullable<int> supplierId, Nullable<int> invId, string lot, Nullable<decimal> qty, string remark, ObjectParameter returnValue)
+        public virtual int P_WMS_CreateReturnOrder(string userId, Nullable<int> partId, Nullable<int> supplierId, Nullable<int> invId, Nullable<decimal> qty, string remark, ObjectParameter returnValue)
         {
             var userIdParameter = userId != null ?
                 new ObjectParameter("UserId", userId) :
@@ -722,10 +722,6 @@ namespace Apps.Models
                 new ObjectParameter("InvId", invId) :
                 new ObjectParameter("InvId", typeof(int));
     
-            var lotParameter = lot != null ?
-                new ObjectParameter("Lot", lot) :
-                new ObjectParameter("Lot", typeof(string));
-    
             var qtyParameter = qty.HasValue ?
                 new ObjectParameter("Qty", qty) :
                 new ObjectParameter("Qty", typeof(decimal));
@@ -734,7 +730,7 @@ namespace Apps.Models
                 new ObjectParameter("Remark", remark) :
                 new ObjectParameter("Remark", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateReturnOrder", userIdParameter, partIdParameter, supplierIdParameter, invIdParameter, lotParameter, qtyParameter, remarkParameter, returnValue);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateReturnOrder", userIdParameter, partIdParameter, supplierIdParameter, invIdParameter, qtyParameter, remarkParameter, returnValue);
         }
     
         public virtual int P_WMS_PrintReturnOrder(string userId, string jsonReturnOrder, ObjectParameter returnOrderNum, ObjectParameter returnValue)
@@ -763,7 +759,7 @@ namespace Apps.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ProcessProductEntry", userIdParameter, productBillNumParameter, returnValue);
         }
     
-        public virtual int P_WMS_InvAdjust(string userId, Nullable<int> partId, Nullable<int> invId, string lot, Nullable<decimal> adjustQty, string adjustType, string remark, ObjectParameter invAdjustBillNum, ObjectParameter returnValue)
+        public virtual int P_WMS_InvAdjust(string userId, Nullable<int> partId, Nullable<int> invId, Nullable<decimal> adjustQty, string adjustType, string remark, ObjectParameter invAdjustBillNum, ObjectParameter returnValue)
         {
             var userIdParameter = userId != null ?
                 new ObjectParameter("UserId", userId) :
@@ -777,10 +773,6 @@ namespace Apps.Models
                 new ObjectParameter("InvId", invId) :
                 new ObjectParameter("InvId", typeof(int));
     
-            var lotParameter = lot != null ?
-                new ObjectParameter("Lot", lot) :
-                new ObjectParameter("Lot", typeof(string));
-    
             var adjustQtyParameter = adjustQty.HasValue ?
                 new ObjectParameter("AdjustQty", adjustQty) :
                 new ObjectParameter("AdjustQty", typeof(decimal));
@@ -793,7 +785,7 @@ namespace Apps.Models
                 new ObjectParameter("Remark", remark) :
                 new ObjectParameter("Remark", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_InvAdjust", userIdParameter, partIdParameter, invIdParameter, lotParameter, adjustQtyParameter, adjustTypeParameter, remarkParameter, invAdjustBillNum, returnValue);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_InvAdjust", userIdParameter, partIdParameter, invIdParameter, adjustQtyParameter, adjustTypeParameter, remarkParameter, invAdjustBillNum, returnValue);
         }
     
         public virtual int P_WMS_CreateReInspect(string userId, Nullable<int> aIID, string nCheckOutResult, Nullable<decimal> nQualifyQty, Nullable<decimal> nNoQualifyQty, string nCheckOutRemark, Nullable<System.DateTime> nCheckOutDate, string remark, ObjectParameter returnValue)

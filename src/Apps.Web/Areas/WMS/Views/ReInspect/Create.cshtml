@@ -59,10 +59,11 @@ $.messageBox5s(Lang.Tip, mes);
         <tbody>
             <tr>
                 <th>
-                    送检单号：
+                    原送检单号：
                 </th>
                 <td>
-                    @Html.EditorFor(model => model.InspectBillNum)
+                    @*@Html.EditorFor(model => model.InspectBillNum)*@
+                    @Html.ReadOnlyTextBoxFor(model => model.InspectBillNum, (bool)ViewBag.EditStatus)
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.InspectBillNum)</td>
             </tr>
@@ -71,7 +72,8 @@ $.messageBox5s(Lang.Tip, mes);
                     @Html.LabelFor(model => model.OCheckOutResult)：
                 </th>
                 <td>
-                    @Html.EditorFor(model => model.OCheckOutResult)
+                    @*@Html.EditorFor(model => model.OCheckOutResult)*@
+                    @Html.ReadOnlyTextBoxFor(model => model.OCheckOutResult, (bool)ViewBag.EditStatus)
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.OCheckOutResult)</td>
             </tr>
@@ -79,8 +81,8 @@ $.messageBox5s(Lang.Tip, mes);
                 <th>
                     @Html.LabelFor(model => model.OQualifyQty)：
                 </th>
-                <td>
-                    @Html.EditorFor(model => model.OQualifyQty)
+                <td>                    
+                    @Html.ReadOnlyTextBoxFor(model => model.OQualifyQty, (bool)ViewBag.EditStatus)
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.OQualifyQty)</td>
             </tr>
@@ -88,8 +90,8 @@ $.messageBox5s(Lang.Tip, mes);
                 <th>
                     @Html.LabelFor(model => model.ONoQualifyQty)：
                 </th>
-                <td>
-                    @Html.EditorFor(model => model.ONoQualifyQty)
+                <td>                    
+                    @Html.ReadOnlyTextBoxFor(model => model.ONoQualifyQty, (bool)ViewBag.EditStatus)
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.ONoQualifyQty)</td>
             </tr>
@@ -97,8 +99,8 @@ $.messageBox5s(Lang.Tip, mes);
                 <th>
                     @Html.LabelFor(model => model.OCheckOutRemark)：
                 </th>
-                <td>
-                    @Html.EditorFor(model => model.OCheckOutRemark)
+                <td>                   
+                    @Html.ReadOnlyTextBoxFor(model => model.OCheckOutRemark, (bool)ViewBag.EditStatus)
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.OCheckOutRemark)</td>
             </tr>
@@ -107,7 +109,8 @@ $.messageBox5s(Lang.Tip, mes);
                     @Html.LabelFor(model => model.OCheckOutDate)：
                 </th>
                 <td>
-                    @Html.TextBoxFor(model => model.OCheckOutDate, new { @onClick = "WdatePicker()", @style = "width: 105px" })
+                    @*@Html.TextBoxFor(model => model.OCheckOutDate, new { @onClick = "WdatePicker()", @style = "width: 105px", @readonly = true })*@
+                    @Html.ReadOnlyTextBoxFor(model => model.OCheckOutDate, (bool)ViewBag.EditStatus)
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.OCheckOutDate)</td>
             </tr>

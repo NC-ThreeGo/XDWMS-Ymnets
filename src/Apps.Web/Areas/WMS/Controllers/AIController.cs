@@ -359,7 +359,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult GetPODetailsListByPartCode(string poNo, string partCode)
         {
             var partList = m_PartBLL.GetListByWhere(ref setNoPagerAscById, "PartCode == \"" + partCode + "\"");
-            if (partList == null)
+            if (partList.Count() == 0)
             {
                 return Json(JsonHandler.CreateMessage(0, "物料编码不存在！"));
             }
