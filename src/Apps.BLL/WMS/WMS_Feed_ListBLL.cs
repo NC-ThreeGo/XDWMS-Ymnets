@@ -38,6 +38,7 @@ namespace Apps.BLL.WMS
                                                   FeedQty = r.FeedQty,
                                                   Id = r.Id,
                                                   InvId = r.InvId,
+                                                  Lot = r.Lot,
                                                   ModifyPerson = r.ModifyPerson,
                                                   ModifyTime = r.ModifyTime,
                                                   PrintDate = r.PrintDate,
@@ -47,6 +48,7 @@ namespace Apps.BLL.WMS
                                                   Remark = r.Remark,
                                                   SubAssemblyPartId = r.SubAssemblyPartId,
                                                   SubInvId = r.SubInvId,
+                                                  ConfirmMessage = r.ConfirmMessage,
 
                                                   AssemblyPartCode = r.WMS_Part.PartCode,
                                                   AssemblyPartName = r.WMS_Part.PartName,
@@ -83,7 +85,8 @@ namespace Apps.BLL.WMS
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Department, "投料部门");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.AssemblyPartId, "总成物料");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.SubAssemblyPartId, "投料物料");
-					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.FeedQty, "投料数量");
+                    excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Lot, "批次号");
+                    excelFile.AddMapping<WMS_Feed_ListModel>(x => x.FeedQty, "投料数量");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.BoxQty, "箱数");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Capacity, "体积");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.InvId, "库存");
@@ -130,6 +133,7 @@ namespace Apps.BLL.WMS
 								model.BoxQty = row.BoxQty;
 								model.Capacity = row.Capacity;
 								model.InvId = row.InvId;
+                            model.Lot = row.Lot;
 								model.SubInvId = row.SubInvId;
 								model.Remark = row.Remark;
 								model.PrintStaus = row.PrintStaus;
@@ -181,6 +185,7 @@ namespace Apps.BLL.WMS
 									entity.BoxQty = model.BoxQty;
 									entity.Capacity = model.Capacity;
 									entity.InvId = model.InvId;
+                            entity.Lot = model.Lot;
 									entity.SubInvId = model.SubInvId;
 									entity.Remark = model.Remark;
 									entity.PrintStaus = model.PrintStaus;

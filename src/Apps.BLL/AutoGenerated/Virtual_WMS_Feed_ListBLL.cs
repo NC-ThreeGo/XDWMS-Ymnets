@@ -151,6 +151,7 @@ namespace Apps.BLL.WMS
 				entity.Capacity = model.Capacity;
 				entity.InvId = model.InvId;
 				entity.SubInvId = model.SubInvId;
+                entity.Lot = model.Lot;
 				entity.Remark = model.Remark;
 				entity.PrintStaus = model.PrintStaus;
 				entity.PrintDate = model.PrintDate;

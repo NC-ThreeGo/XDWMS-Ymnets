@@ -31,5 +31,7 @@ namespace Apps.Models.WMS
 		public virtual decimal Qty { get; set; }
 		[Display(Name = "批次号：YYYYMM")]
 		public virtual string Lot { get; set; }
+		[Display(Name = "当前出库数量")]
+		public virtual Nullable<decimal> OutQty { get; set; }
 		}
 }

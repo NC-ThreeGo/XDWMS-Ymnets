@@ -20,6 +20,7 @@ namespace Apps.Models
         public int PartId { get; set; }
         public decimal Qty { get; set; }
         public string Lot { get; set; }
+        public Nullable<decimal> OutQty { get; set; }
     
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
         public virtual WMS_Part WMS_Part { get; set; }

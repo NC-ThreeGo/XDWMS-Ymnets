@@ -1085,6 +1085,7 @@
           <Property Name="Department" Type="nvarchar" MaxLength="50" />
           <Property Name="AssemblyPartId" Type="int" Nullable="false" />
           <Property Name="SubAssemblyPartId" Type="int" Nullable="false" />
+          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="FeedQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="BoxQty" Type="decimal" Precision="10" Scale="3" />
           <Property Name="Capacity" Type="nvarchar" MaxLength="50" />
@@ -1126,6 +1127,7 @@
           <Property Name="PartId" Type="int" Nullable="false" />
           <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="Qty" Type="numeric" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="OutQty" Type="numeric" Precision="10" Scale="3" />
         </EntityType>
         <EntityType Name="WMS_Inv_Adjust">
           <Key>
@@ -4101,6 +4103,17 @@
             <Parameter Name="ReturnOrderNum" Mode="In" Type="String" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="P_WMS_PrintFeedList">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="FeedBillNum" Mode="In" Type="String" />
+            <Parameter Name="ReleaseBillNum" Mode="InOut" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="P_WMS_ConfirmFeedList">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="ReleaseBillNum" Mode="In" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
           <EntitySet Name="WMS_Feed_List" EntityType="DB.WMS_Feed_List" />
           <AssociationSet Name="FK_WMS_Feed_List_WMS_InvInfo" Association="DB.FK_WMS_Feed_List_WMS_InvInfo">
             <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
@@ -4118,17 +4131,6 @@
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
             <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
           </AssociationSet>
-          <FunctionImport Name="P_WMS_PrintFeedList">
-            <Parameter Name="UserId" Mode="In" Type="String" />
-            <Parameter Name="FeedBillNum" Mode="In" Type="String" />
-            <Parameter Name="ReleaseBillNum" Mode="InOut" Type="String" />
-            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="P_WMS_ConfirmFeedList">
-            <Parameter Name="UserId" Mode="In" Type="String" />
-            <Parameter Name="ReleaseBillNum" Mode="In" Type="String" />
-            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
-          </FunctionImport>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -6810,6 +6812,7 @@
           <NavigationProperty Name="WMS_Part" Relationship="DB.FK_Inv_WMS_Part" FromRole="WMS_Inv" ToRole="WMS_Part" />
           <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_Inv_WMS_SubInvInfo" FromRole="WMS_Inv" ToRole="WMS_SubInvInfo" />
           <Property Name="Lot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OutQty" Type="Decimal" Precision="10" Scale="3" />
         </EntityType>
         <Association Name="FK_Inv_WMS_InvInfo">
           <End Type="DB.WMS_InvInfo" Role="WMS_InvInfo" Multiplicity="1" />
@@ -7093,6 +7096,7 @@
           <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AssemblyPartId" Type="Int32" Nullable="false" />
           <Property Name="SubAssemblyPartId" Type="Int32" Nullable="false" />
+          <Property Name="Lot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FeedQty" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
           <Property Name="BoxQty" Type="Decimal" Precision="10" Scale="3" />
           <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -8750,6 +8754,7 @@
           <EntitySetMapping Name="WMS_Inv">
             <EntityTypeMapping TypeName="DB.WMS_Inv">
               <MappingFragment StoreEntitySet="WMS_Inv">
+                <ScalarProperty Name="OutQty" ColumnName="OutQty" />
                 <ScalarProperty Name="Lot" ColumnName="Lot" />
                 <ScalarProperty Name="Qty" ColumnName="Qty" />
                 <ScalarProperty Name="PartId" ColumnName="PartId" />
@@ -8871,6 +8876,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="P_WMS_ConfirmReturnOrder" FunctionName="DB.Store.P_WMS_ConfirmReturnOrder" />
+          <FunctionImportMapping FunctionImportName="P_WMS_PrintFeedList" FunctionName="DB.Store.P_WMS_PrintFeedList" />
+          <FunctionImportMapping FunctionImportName="P_WMS_ConfirmFeedList" FunctionName="DB.Store.P_WMS_ConfirmFeedList" />
           <EntitySetMapping Name="WMS_Feed_List">
             <EntityTypeMapping TypeName="DB.WMS_Feed_List">
               <MappingFragment StoreEntitySet="WMS_Feed_List">
@@ -8896,6 +8903,7 @@
                 <ScalarProperty Name="Capacity" ColumnName="Capacity" />
                 <ScalarProperty Name="BoxQty" ColumnName="BoxQty" />
                 <ScalarProperty Name="FeedQty" ColumnName="FeedQty" />
+                <ScalarProperty Name="Lot" ColumnName="Lot" />
                 <ScalarProperty Name="SubAssemblyPartId" ColumnName="SubAssemblyPartId" />
                 <ScalarProperty Name="AssemblyPartId" ColumnName="AssemblyPartId" />
                 <ScalarProperty Name="Department" ColumnName="Department" />
@@ -8905,8 +8913,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="P_WMS_PrintFeedList" FunctionName="DB.Store.P_WMS_PrintFeedList" />
-          <FunctionImportMapping FunctionImportName="P_WMS_ConfirmFeedList" FunctionName="DB.Store.P_WMS_ConfirmFeedList" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

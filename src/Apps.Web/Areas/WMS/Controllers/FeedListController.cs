@@ -268,7 +268,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("投料部门", item.Department);
                     jo.Add("总成物料", item.AssemblyPartId);
                     jo.Add("投料物料", item.SubAssemblyPartId);
-                    jo.Add("投料数量", item.FeedQty);
+                jo.Add("批次号", item.Lot);
+                jo.Add("投料数量", item.FeedQty);
                     jo.Add("箱数", item.BoxQty);
                     jo.Add("体积", item.Capacity);
                     jo.Add("库存", item.InvId);
@@ -314,7 +315,8 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("投料部门", "");
               jo.Add("总成物料", "");
               jo.Add("投料物料", "");
-              jo.Add("投料数量", "");
+            jo.Add("批次号", "");
+            jo.Add("投料数量", "");
               jo.Add("箱数", "");
               jo.Add("体积", "");
               jo.Add("库存", "");
@@ -357,20 +359,33 @@ namespace Apps.Web.Areas.WMS.Controllers
         /// <param name="mulSelect">是否多选</param>
         /// <returns></returns>
         [SupportFilter(ActionName = "Create")]
-        public ActionResult FeedListLookUp(bool mulSelect = false)
+        public ActionResult FeedListLookUp(string type, bool mulSelect = false)
         {
+            ViewBag.Type = type;
             return View();
         }
 
         [HttpPost]
         [SupportFilter(ActionName = "Create")]
-        public JsonResult FeedListGetList(GridPager pager, string queryStr)
+        public JsonResult FeedListGetList(GridPager pager, string type, string queryStr)
         {
             //TODO:显示未打印的投料单。
-            List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"未打印\"")
-                .GroupBy(p => new { p.FeedBillNum })
-                .Select(g => g.First())
-                .OrderBy(p => p.FeedBillNum).ToList();
+            List<WMS_Feed_ListModel> list;
+
+            if (type == "print")
+            {
+                list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"未打印\"")
+                    .GroupBy(p => new { p.FeedBillNum })
+                    .Select(g => g.First())
+                    .OrderBy(p => p.FeedBillNum).ToList();
+            }
+            else
+            {
+                list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"已打印\" and ConfirmStatus == \"未确认\"")
+                    .GroupBy(p => new { p.ReleaseBillNum })
+                    .Select(g => g.First())
+                    .OrderBy(p => p.FeedBillNum).ToList();
+            }
             GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -379,9 +394,18 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         [HttpPost]
         [SupportFilter(ActionName = "Create")]
-        public JsonResult GetFeedListByFeedBillNum(GridPager pager, string FeedBillNum)
+        public JsonResult GetFeedListByBillNum(GridPager pager, string type, string billNum)
         {
-            List<WMS_Feed_ListModel> list = m_BLL.GetList(ref pager, "FeedBillNum = \"" + FeedBillNum + "\"");
+            List<WMS_Feed_ListModel> list;
+
+            if (type == "print")
+            {
+                list  = m_BLL.GetListByWhere(ref pager, "FeedBillNum = \"" + billNum + "\"");
+            }
+            else
+            {
+                list = m_BLL.GetListByWhere(ref pager, "ReleaseBillNum = \"" + billNum + "\"");
+            }
             GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

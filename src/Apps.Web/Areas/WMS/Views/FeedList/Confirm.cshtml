@@ -16,8 +16,8 @@
         //加载到货单
         $("#btnLoadFeedList").click(function ()
         {
-            var billNum = $("#FeedBillNum").val();
-            $("#List").datagrid("load", { type: "print", billNum: billNum });
+            var billNum = $("#ReleaseBillNum").val();
+            $("#List").datagrid("load", { type: "confirm", billNum: billNum });
         });
 
         $("#btnSave").click(function ()
@@ -32,20 +32,18 @@
                 var rows = $dg.datagrid('getRows');  
                 if (rows.length)
                 {
-                    showLoading();
                     $.ajax({
-                        url: "@Url.Action("Print")",
+                        url: "@Url.Action("Confirm")",
                         type: "Post",
-                        data: { feedBillNum: $("#FeedBillNum").val() },
+                        data: { releaseBillNum: $("#ReleaseBillNum").val() },
                         dataType: "json",
                         success: function (data)
                         {
                             if (data.type == 1)
                             {
-                                hideLoading();
+                                window.parent.frameReturnByMes(data.message);
                                 window.parent.frameReturnByReload(true);
-                                //打开报表打印的窗口
-                                self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=FeedList&billNum=' + data.value;
+                                window.parent.frameReturnByClose()
                             } else
                             {
                                 window.parent.frameReturnByMes(data.message);
@@ -74,7 +72,7 @@
     $(function ()
     {
         $('#List').datagrid({
-            url: '@Url.Action("GetFeedListByBillNum")?type=print&billNum=""',
+            url: '@Url.Action("GetFeedListByBillNum")?type=confirm&billNum=""',
             width: SetGridWidthSub(10),
             methord: 'post',
             height: SetGridHeightSub(100),
@@ -122,7 +120,7 @@
 
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
-    @Html.ToolButton("btnSave", "fa fa-save", Resource.Print, ref perm, "Save", true)
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Confirm, ref perm, "Save", true)
     @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
 </div>
 @using (Html.BeginForm())
@@ -138,21 +136,21 @@
         <tbody>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.FeedBillNum)：
+                    @Html.LabelFor(model => model.ReleaseBillNum)：
                 </th>
                 <td>
-                    <input id="FeedBillNum" name="Supplier" type="text" style="width: 200px; display: inline;">
+                    <input id="ReleaseBillNum" name="Supplier" type="text" style="width: 200px; display: inline;">
                     <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelFeedBillNum()"></a>
                     <script type="text/javascript">
                         function showSelFeedBillNum()
                         {
-                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/FeedList/FeedListLookUp?type=print'></iframe>");
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/FeedList/FeedListLookUp?type=confirm'></iframe>");
                             $("#modalwindow").window({ title: '选择投料单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
                         }
 
                         function SetSelResult(result, resultName)
                         {
-                            $("#FeedBillNum").val(result);
+                            $("#ReleaseBillNum").val(resultName);
                         }
 
                     </script>

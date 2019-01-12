@@ -20,6 +20,7 @@ namespace Apps.Models
         public string Department { get; set; }
         public int AssemblyPartId { get; set; }
         public int SubAssemblyPartId { get; set; }
+        public string Lot { get; set; }
         public decimal FeedQty { get; set; }
         public Nullable<decimal> BoxQty { get; set; }
         public string Capacity { get; set; }
