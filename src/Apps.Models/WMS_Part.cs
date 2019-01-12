@@ -17,10 +17,10 @@ namespace Apps.Models
         public WMS_Part()
         {
             this.WMS_AI = new HashSet<WMS_AI>();
-            this.WMS_Inv = new HashSet<WMS_Inv>();
-            this.WMS_Inv_Adjust = new HashSet<WMS_Inv_Adjust>();
             this.WMS_Feed_List = new HashSet<WMS_Feed_List>();
             this.WMS_Feed_List1 = new HashSet<WMS_Feed_List>();
+            this.WMS_Inv = new HashSet<WMS_Inv>();
+            this.WMS_Inv_Adjust = new HashSet<WMS_Inv_Adjust>();
             this.WMS_PO = new HashSet<WMS_PO>();
             this.WMS_Product_Entry = new HashSet<WMS_Product_Entry>();
             this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
@@ -35,20 +35,20 @@ namespace Apps.Models
         public string OtherCode { get; set; }
         public Nullable<decimal> PCS { get; set; }
         public string StoreMan { get; set; }
-        public string Unit { get; set; }
-        public Nullable<decimal> Volume { get; set; }
         public string Status { get; set; }
-        public string Remark { get; set; }
         public string CreatePerson { get; set; }
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+        public string Unit { get; set; }
+        public Nullable<decimal> Volume { get; set; }
+        public string Remark { get; set; }
     
         public virtual ICollection<WMS_AI> WMS_AI { get; set; }
-        public virtual ICollection<WMS_Inv> WMS_Inv { get; set; }
-        public virtual ICollection<WMS_Inv_Adjust> WMS_Inv_Adjust { get; set; }
         public virtual ICollection<WMS_Feed_List> WMS_Feed_List { get; set; }
         public virtual ICollection<WMS_Feed_List> WMS_Feed_List1 { get; set; }
+        public virtual ICollection<WMS_Inv> WMS_Inv { get; set; }
+        public virtual ICollection<WMS_Inv_Adjust> WMS_Inv_Adjust { get; set; }
         public virtual ICollection<WMS_PO> WMS_PO { get; set; }
         public virtual ICollection<WMS_Product_Entry> WMS_Product_Entry { get; set; }
         public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
