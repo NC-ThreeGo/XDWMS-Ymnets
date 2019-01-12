@@ -37,8 +37,14 @@ namespace Apps.Models.WMS
 		public virtual Nullable<decimal> PCS { get; set; }
 		[Display(Name = "保管员")]
 		public virtual string StoreMan { get; set; }
+		[Display(Name = "单位")]
+		public virtual string Unit { get; set; }
+		[Display(Name = "体积")]
+		public virtual Nullable<decimal> Volume { get; set; }
 		[Display(Name = "物料状态")]
 		public virtual string Status { get; set; }
+		[Display(Name = "说明")]
+		public virtual string Remark { get; set; }
 		[Display(Name = "创建人")]
 		public virtual string CreatePerson { get; set; }
 		[Display(Name = "创建时间")]

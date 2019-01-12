@@ -46,7 +46,8 @@ namespace Apps.BLL.WMS
                                                       OQualifyQty = r.OQualifyQty,
                                                       Remark = r.Remark,
                                                       InspectBillNum = r.WMS_AI.InspectBillNum,
-                                              }).ToList();
+                                                      PO = r.WMS_AI.WMS_PO.PO,
+                                                  }).ToList();
             return modelList;
         }
 

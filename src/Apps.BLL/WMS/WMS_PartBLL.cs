@@ -42,6 +42,9 @@ namespace Apps.BLL.WMS
                                                   PCS = r.PCS,
                                                   Status = r.Status,
                                                   StoreMan = r.StoreMan,
+                                                  Volume = r.Volume,
+                                                  Unit = r.Unit,
+                                                  Remark = r.Remark,
                                               }).ToList();
             return modelList;
         }
@@ -74,7 +77,10 @@ namespace Apps.BLL.WMS
                     excelFile.AddMapping<WMS_PartModel>(x => x.OtherCode, "额外信息编码");
                     excelFile.AddMapping<WMS_PartModel>(x => x.PCS, "每箱数量");
                     excelFile.AddMapping<WMS_PartModel>(x => x.StoreMan, "保管员");
-                   
+                    excelFile.AddMapping<WMS_PartModel>(x => x.Unit, "单位");
+                    excelFile.AddMapping<WMS_PartModel>(x => x.Volume, "每箱体积");
+                    excelFile.AddMapping<WMS_PartModel>(x => x.Remark, "说明");
+
 
                     //SheetName，第一个Sheet
                     var excelContent = excelFile.Worksheet<WMS_PartModel>(0);
@@ -100,6 +106,9 @@ namespace Apps.BLL.WMS
                             model.OtherCode = row.OtherCode;
                             model.PCS = row.PCS;
                             model.StoreMan = row.StoreMan;
+                            model.Unit = row.Unit;
+                            model.Volume = row.Volume;
+                            model.Remark = row.Remark;
 
                             //model.CreatePerson = row.oper;
                             //model.CreateTime = row.CreateTime;
@@ -144,6 +153,9 @@ namespace Apps.BLL.WMS
                             entity.CreateTime = DateTime.Now;
                             entity.ModifyPerson = oper;
                             entity.ModifyTime = DateTime.Now;
+                            entity.Unit = model.Unit;
+                            entity.Volume = model.Volume;
+                            entity.Remark = model.Remark;
 
                             db.WMS_Part.Add(entity);
                             try

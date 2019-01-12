@@ -33,6 +33,7 @@ namespace Apps.Models
         public string ConfirmStatus { get; set; }
         public string ConfirmMan { get; set; }
         public Nullable<System.DateTime> ConfirmDate { get; set; }
+        public string ConfirmMessage { get; set; }
         public string Attr1 { get; set; }
         public string Attr2 { get; set; }
         public string Attr3 { get; set; }
@@ -42,11 +43,10 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
-        public string ConfirmMessage { get; set; }
     
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
+        public virtual WMS_SubInvInfo WMS_SubInvInfo { get; set; }
         public virtual WMS_Part WMS_Part { get; set; }
         public virtual WMS_Part WMS_Part1 { get; set; }
-        public virtual WMS_SubInvInfo WMS_SubInvInfo { get; set; }
     }
 }

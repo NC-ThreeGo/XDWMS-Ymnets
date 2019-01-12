@@ -45,7 +45,7 @@ function frameReturnByMes(mes) {
 $.messageBox5s(Lang.Tip, mes);
 }
 </script>
-<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:440px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
 @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
 @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
@@ -56,91 +56,118 @@ $.messageBox5s(Lang.Tip, mes);
              @Html.HiddenFor(model => model.CreateTime)
              @Html.HiddenFor(model => model.CreatePerson)
  <table class="formtable">
-    <tbody>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.PartCode)：
-            </th>
-            <td>
-                @Html.ReadOnlyTextBoxFor(model => model.PartCode, (bool) ViewBag.EditStatus)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.PartCode)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.PartName)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.PartName)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.PartName)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.PartType)：
-            </th>
-            <td>
-                @*@Html.EditorFor(model => model.PartType)*@
-                @Html.DropDownListFor(model => model.PartType, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("PartType"))
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.PartType)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CustomerCode)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.CustomerCode)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CustomerCode)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.LogisticsCode)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.LogisticsCode)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.LogisticsCode)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.OtherCode)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.OtherCode)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.OtherCode)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.PCS)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.PCS)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.PCS)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.StoreMan)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.StoreMan)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.StoreMan)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Status)：
-            </th>
-            <td>
-                @*@Html.EditorFor(model => model.Status)*@
-                @Html.DropDownListFor(model => model.Status, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("Status"))
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Status)</td>
-        </tr>
-        @*<tr>
+     <tbody>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.PartCode)：
+             </th>
+             <td>
+                 @Html.ReadOnlyTextBoxFor(model => model.PartCode, (bool)ViewBag.EditStatus)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.PartCode)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.PartName)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.PartName)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.PartName)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.PartType)：
+             </th>
+             <td>
+                 @*@Html.EditorFor(model => model.PartType)*@
+                 @Html.DropDownListFor(model => model.PartType, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("PartType"))
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.PartType)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.CustomerCode)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.CustomerCode)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.CustomerCode)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.LogisticsCode)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.LogisticsCode)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.LogisticsCode)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.OtherCode)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.OtherCode)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.OtherCode)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.PCS)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.PCS)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.PCS)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.StoreMan)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.StoreMan)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.StoreMan)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.Unit)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.Unit)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.Unit)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.Volume)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.Volume)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.Volume)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.Remark)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.Remark)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.Status)：
+             </th>
+             <td>
+                 @*@Html.EditorFor(model => model.Status)*@
+                 @Html.DropDownListFor(model => model.Status, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("Status"))
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.Status)</td>
+         </tr>
+         @*<tr>
             <th>
                 @Html.LabelFor(model => model.CreatePerson)：
             </th>
@@ -167,7 +194,7 @@ $.messageBox5s(Lang.Tip, mes);
             </td>
             <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
         </tr>*@
-    </tbody>
+     </tbody>
 </table>
 }
 

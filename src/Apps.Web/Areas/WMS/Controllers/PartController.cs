@@ -222,6 +222,10 @@ namespace Apps.Web.Areas.WMS.Controllers
                 jo.Add("额外信息编码", item.OtherCode);
                 jo.Add("每箱数量", item.PCS);
                 jo.Add("保管员", item.StoreMan);
+                jo.Add("单位", item.Unit);
+                jo.Add("每箱体积", item.Volume);
+                jo.Add("说明", item.Volume);
+
                 //jo.Add("物料状态", item.Status);
                 //jo.Add("创建人", item.CreatePerson);
                 //jo.Add("创建时间", item.CreateTime);
@@ -255,6 +259,9 @@ namespace Apps.Web.Areas.WMS.Controllers
             jo.Add("额外信息编码", "");
             jo.Add("每箱数量", "");
             jo.Add("保管员", "");
+            jo.Add("单位", "");
+            jo.Add("每箱体积", "");
+            jo.Add("说明", "");
             //jo.Add("物料状态", "");
             //jo.Add("创建人", "");
             //jo.Add("创建时间", "");

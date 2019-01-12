@@ -32,9 +32,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         [HttpPost]
         [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr)
+        public JsonResult GetList(GridPager pager, string po, string inspectBillNum)
         {
-            List<WMS_ReInspectModel> list = m_BLL.GetList(ref pager, queryStr);
+           // List<WMS_ReInspectModel> list = m_BLL.GetList(ref pager, queryStr);
+            List<WMS_ReInspectModel> list = m_BLL.GetListByWhere(ref pager, "WMS_AI.WMS_PO.PO.Contains(\"" + po + "\")&&WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")");
             GridRows<WMS_ReInspectModel> grs = new GridRows<WMS_ReInspectModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -44,6 +45,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Create(int AIId)
         {
+            ViewBag.EditStatus = true;
             WMS_ReInspectModel entity = new WMS_ReInspectModel();
             WMS_AIModel entity_AI = m_AIBLL.GetById(AIId);
             entity.OCheckOutDate = entity_AI.CheckOutDate;
@@ -184,37 +186,38 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         }
         [SupportFilter]
-        public ActionResult Export(string queryStr)
+        public ActionResult Export(string po, string inspectBillNum)
         {
-            List<WMS_ReInspectModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            //List<WMS_ReInspectModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            List<WMS_ReInspectModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "WMS_AI.WMS_PO.PO.Contains(\"" + po + "\")&&WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")");
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
                     var jo = new JObject();
-                    jo.Add("重新送检单ID", item.Id);
-                    jo.Add("到货送检单ID", item.AIId);
+                    jo.Add("采购单号", item.PO);
+                    jo.Add("原送检单号", item.InspectBillNum);
                     jo.Add("原送检单结果", item.OCheckOutResult);
-                    jo.Add("原送检单合格数量", item.OQualifyQty);
-                    jo.Add("原送检单不合格数量", item.ONoQualifyQty);
+                    jo.Add("原送检单合格数", item.OQualifyQty);
+                    jo.Add("原送检单不合格数", item.ONoQualifyQty);
                     jo.Add("原送检单说明", item.OCheckOutRemark);
                     jo.Add("原送检单检验日期", item.OCheckOutDate);
                     jo.Add("新送检单结果", item.NCheckOutResult);
-                    jo.Add("新送检单合格数量", item.NQualifyQty);
-                    jo.Add("新送检单不合格数量", item.NNoQualifyQty);
-                    jo.Add("新送检单检验结果", item.NCheckOutRemark);
+                    jo.Add("新送检单合格数", item.NQualifyQty);
+                    jo.Add("新送检单不合格数", item.NNoQualifyQty);
+                    jo.Add("新送检单说明", item.NCheckOutRemark);
                     jo.Add("新送检单检验日期", item.NCheckOutDate);
                     jo.Add("调整说明", item.Remark);
                     jo.Add("调整人", item.AdjustMan);
                     jo.Add("调整时间", item.AdjustDate);
-                    jo.Add("Attr1", item.Attr1);
-                    jo.Add("Attr2", item.Attr2);
-                    jo.Add("Attr3", item.Attr3);
-                    jo.Add("Attr4", item.Attr4);
-                    jo.Add("Attr5", item.Attr5);
-                    jo.Add("创建时间", item.CreatePerson);
-                    jo.Add("创建人", item.CreateTime);
-                    jo.Add("修改人", item.ModifyPerson);
-                    jo.Add("修改人", item.ModifyTime);
+                    //jo.Add("Attr1", item.Attr1);
+                    //jo.Add("Attr2", item.Attr2);
+                    //jo.Add("Attr3", item.Attr3);
+                    //jo.Add("Attr4", item.Attr4);
+                    //jo.Add("Attr5", item.Attr5);
+                    //jo.Add("创建时间", item.CreatePerson);
+                    //jo.Add("创建人", item.CreateTime);
+                    //jo.Add("修改人", item.ModifyPerson);
+                    //jo.Add("修改人", item.ModifyTime);
                     jObjects.Add(jo);
                 }
                 var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());

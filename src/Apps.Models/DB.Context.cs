@@ -98,7 +98,6 @@ namespace Apps.Models
         public virtual DbSet<WMS_Customer> WMS_Customer { get; set; }
         public virtual DbSet<SysImportExcelLog> SysImportExcelLog { get; set; }
         public virtual DbSet<WMS_InvInfo> WMS_InvInfo { get; set; }
-        public virtual DbSet<WMS_Part> WMS_Part { get; set; }
         public virtual DbSet<WMS_PO> WMS_PO { get; set; }
         public virtual DbSet<SysParam> SysParam { get; set; }
         public virtual DbSet<WMS_AI> WMS_AI { get; set; }
@@ -112,6 +111,7 @@ namespace Apps.Models
         public virtual DbSet<WMS_ReInspect> WMS_ReInspect { get; set; }
         public virtual DbSet<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
         public virtual DbSet<WMS_Feed_List> WMS_Feed_List { get; set; }
+        public virtual DbSet<WMS_Part> WMS_Part { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {

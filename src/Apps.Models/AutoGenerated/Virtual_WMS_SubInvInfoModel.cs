@@ -25,7 +25,7 @@ namespace Apps.Models.WMS
 		public virtual string SubInvCode { get; set; }
 		[Display(Name = "库位名称")]
 		public virtual string SubInvName { get; set; }
-		[Display(Name = "库房编码")]
+		[Display(Name = "所属库房")]
 		public virtual int InvId { get; set; }
 		[Display(Name = "状态")]
 		public virtual string Status { get; set; }
@@ -39,7 +39,7 @@ namespace Apps.Models.WMS
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
-		[Display(Name = "是否是默认库房")]
+		[Display(Name = "未设置")]
 		public virtual Nullable<bool> IsDefault { get; set; }
 		}
 }

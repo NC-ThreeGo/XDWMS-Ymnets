@@ -78,7 +78,10 @@
                 { field: 'LogisticsCode', title: '物流号', width: 80,sortable:true },
                 { field: 'OtherCode', title: '额外信息编码', width: 80,sortable:true },
                 { field: 'PCS', title: '每箱数量', width: 80,sortable:true },
-                { field: 'StoreMan', title: '保管员', width: 80,sortable:true },
+                { field: 'StoreMan', title: '保管员', width: 80, sortable: true },
+                { field: 'Unit', title: '单位', width: 80, sortable: true },
+                { field: 'Volume', title: '每箱体积', width: 80, sortable: true },
+                { field: 'Remark', title: '说明', width: 80, sortable: true },
                 { field: 'Status', title: '物料状态', width: 80,sortable:true },
                 { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
                 //{ field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
@@ -102,12 +105,12 @@
     }
     $(function () {
         $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 400, 330, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', 400, 440, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 330, 'fa fa-pencil');
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 440, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {
