@@ -32,6 +32,7 @@ namespace Apps.BLL.WMS
                                                   InvCode = r.WMS_InvInfo.InvCode,
                                                   InvName = r.WMS_InvInfo.InvName,
                                                   SubInvName = r.WMS_SubInvInfo.SubInvName,
+                                                  LotDisp = String.IsNullOrEmpty(r.Lot) ? "[空]" : r.Lot,
                                               }).OrderBy("InvId asc, SubInvId asc, PartId asc")
                                               .ToList();
             return modelList;

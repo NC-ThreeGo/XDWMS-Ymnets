@@ -111,6 +111,7 @@ namespace Apps.Models
         public virtual DbSet<WMS_Supplier> WMS_Supplier { get; set; }
         public virtual DbSet<WMS_ReInspect> WMS_ReInspect { get; set; }
         public virtual DbSet<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
+        public virtual DbSet<WMS_Feed_List> WMS_Feed_List { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {

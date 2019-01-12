@@ -17,6 +17,9 @@ namespace Apps.Models.WMS
 
         [Display(Name = "子库房")]
         public string SubInvName { get; set; }
+
+        [Display(Name = "批次号")]
+        public string LotDisp { get; set; }
     }
 }
 

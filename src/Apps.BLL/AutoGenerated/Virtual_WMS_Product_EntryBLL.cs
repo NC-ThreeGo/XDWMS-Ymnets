@@ -59,6 +59,7 @@ namespace Apps.BLL.WMS
 								
 								|| a.ModifyPerson.Contains(queryStr)
 								
+								|| a.Lot.Contains(queryStr)
 								);
             }
             else
@@ -105,6 +106,7 @@ namespace Apps.BLL.WMS
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
+													Lot = r.Lot,
           
                                               }).ToList();
 
@@ -140,6 +142,7 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
+				entity.Lot = model.Lot;
   
 
                 if (m_Rep.Create(entity))
@@ -244,6 +247,7 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
+				entity.Lot = model.Lot;
  
 
 
@@ -292,6 +296,7 @@ namespace Apps.BLL.WMS
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
+				model.Lot = entity.Lot;
  
                 return model;
             }
@@ -337,6 +342,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ModifyTime, "修改时间");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Lot, "批次号：YYYYMM");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_Product_EntryModel>(0);
@@ -364,6 +370,7 @@ namespace Apps.BLL.WMS
 				  entity.CreateTime = row.CreateTime;
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
+				  entity.Lot = row.Lot;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -414,6 +421,7 @@ namespace Apps.BLL.WMS
 						entity.CreateTime = ResultHelper.NowTime;
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
+						entity.Lot = model.Lot;
  
                         db.WMS_Product_Entry.Add(entity);
                     }

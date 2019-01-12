@@ -1075,6 +1075,38 @@
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="WMS_Feed_List">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FeedBillNum" Type="nvarchar" MaxLength="50" />
+          <Property Name="ReleaseBillNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Department" Type="nvarchar" MaxLength="50" />
+          <Property Name="AssemblyPartId" Type="int" Nullable="false" />
+          <Property Name="SubAssemblyPartId" Type="int" Nullable="false" />
+          <Property Name="FeedQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="BoxQty" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="Capacity" Type="nvarchar" MaxLength="50" />
+          <Property Name="InvId" Type="int" />
+          <Property Name="SubInvId" Type="int" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="100" />
+          <Property Name="PrintStaus" Type="nvarchar" MaxLength="10" />
+          <Property Name="PrintDate" Type="date" />
+          <Property Name="PrintMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="ConfirmStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="ConfirmMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="ConfirmDate" Type="datetime" />
+          <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr3" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr4" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr5" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="WMS_Header">
           <Key>
             <PropertyRef Name="Id" />
@@ -2377,6 +2409,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_Feed_List_WMS_InvInfo">
+          <End Role="WMS_InvInfo" Type="Self.WMS_InvInfo" Multiplicity="0..1" />
+          <End Role="WMS_Feed_List" Type="Self.WMS_Feed_List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_InvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Feed_List">
+              <PropertyRef Name="InvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Feed_List_WMS_Part">
+          <End Role="WMS_Part" Type="Self.WMS_Part" Multiplicity="1" />
+          <End Role="WMS_Feed_List" Type="Self.WMS_Feed_List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Feed_List">
+              <PropertyRef Name="AssemblyPartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Feed_List_WMS_Part1">
+          <End Role="WMS_Part" Type="Self.WMS_Part" Multiplicity="1" />
+          <End Role="WMS_Feed_List" Type="Self.WMS_Feed_List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Feed_List">
+              <PropertyRef Name="SubAssemblyPartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Feed_List_WMS_SubInvInfo">
+          <End Role="WMS_SubInvInfo" Type="Self.WMS_SubInvInfo" Multiplicity="0..1" />
+          <End Role="WMS_Feed_List" Type="Self.WMS_Feed_List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_SubInvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Feed_List">
+              <PropertyRef Name="SubInvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WMS_Inv_Adjust_WMS_InvInfo">
           <End Role="WMS_InvInfo" Type="Self.WMS_InvInfo" Multiplicity="0..1" />
           <End Role="WMS_Inv_Adjust" Type="Self.WMS_Inv_Adjust" Multiplicity="*" />
@@ -2869,6 +2949,7 @@
           <EntitySet Name="WC_User" EntityType="Self.WC_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_AI" EntityType="Self.WMS_AI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Customer" EntityType="Self.WMS_Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_Feed_List" EntityType="Self.WMS_Feed_List" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Header" EntityType="Self.WMS_Header" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Inv" EntityType="Self.WMS_Inv" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Inv_Adjust" EntityType="Self.WMS_Inv_Adjust" Schema="dbo" store:Type="Tables" />
@@ -3220,6 +3301,22 @@
           <AssociationSet Name="FK_WMS_AI_WMS_SubInvInfo" Association="Self.FK_WMS_AI_WMS_SubInvInfo">
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
             <End Role="WMS_AI" EntitySet="WMS_AI" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Feed_List_WMS_InvInfo" Association="Self.FK_WMS_Feed_List_WMS_InvInfo">
+            <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
+            <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Feed_List_WMS_Part" Association="Self.FK_WMS_Feed_List_WMS_Part">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Feed_List_WMS_Part1" Association="Self.FK_WMS_Feed_List_WMS_Part1">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Feed_List_WMS_SubInvInfo" Association="Self.FK_WMS_Feed_List_WMS_SubInvInfo">
+            <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+            <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
           </AssociationSet>
           <AssociationSet Name="FK_WMS_Inv_Adjust_WMS_InvInfo" Association="Self.FK_WMS_Inv_Adjust_WMS_InvInfo">
             <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
@@ -3992,6 +4089,23 @@
             <Parameter Name="ReturnOrderNum" Mode="In" Type="String" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
+          <EntitySet Name="WMS_Feed_List" EntityType="DB.WMS_Feed_List" />
+          <AssociationSet Name="FK_WMS_Feed_List_WMS_InvInfo" Association="DB.FK_WMS_Feed_List_WMS_InvInfo">
+            <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
+            <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Feed_List_WMS_Part" Association="DB.FK_WMS_Feed_List_WMS_Part">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Feed_List_WMS_Part1" Association="DB.FK_WMS_Feed_List_WMS_Part1">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Feed_List_WMS_SubInvInfo" Association="DB.FK_WMS_Feed_List_WMS_SubInvInfo">
+            <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+            <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -6333,6 +6447,7 @@
           <NavigationProperty Name="WMS_Inv" Relationship="DB.FK_Inv_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Inv" />
           <NavigationProperty Name="WMS_Inv_Adjust" Relationship="DB.FK_WMS_Inv_Adjust_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Inv_Adjust" />
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_ReturnOrder" />
+          <NavigationProperty Name="WMS_Feed_List" Relationship="DB.FK_WMS_Feed_List_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Feed_List" />
         </EntityType>
         <EntityType Name="WMS_Part">
           <Key>
@@ -6358,6 +6473,8 @@
           <NavigationProperty Name="WMS_Inv" Relationship="DB.FK_Inv_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Inv" />
           <NavigationProperty Name="WMS_Inv_Adjust" Relationship="DB.FK_WMS_Inv_Adjust_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Inv_Adjust" />
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_Part" ToRole="WMS_ReturnOrder" />
+          <NavigationProperty Name="WMS_Feed_List" Relationship="DB.FK_WMS_Feed_List_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Feed_List" />
+          <NavigationProperty Name="WMS_Feed_List1" Relationship="DB.FK_WMS_Feed_List_WMS_Part1" FromRole="WMS_Part" ToRole="WMS_Feed_List" />
         </EntityType>
         <EntityType Name="WMS_PO">
           <Key>
@@ -6619,6 +6736,7 @@
           <NavigationProperty Name="WMS_Inv" Relationship="DB.FK_Inv_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Inv" />
           <NavigationProperty Name="WMS_Inv_Adjust" Relationship="DB.FK_WMS_Inv_Adjust_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Inv_Adjust" />
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_ReturnOrder" />
+          <NavigationProperty Name="WMS_Feed_List" Relationship="DB.FK_WMS_Feed_List_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Feed_List" />
         </EntityType>
         <Association Name="FK_WMS_AI_WMS_SubInvInfo">
           <End Type="DB.WMS_SubInvInfo" Role="WMS_SubInvInfo" Multiplicity="0..1" />
@@ -6939,6 +7057,90 @@
             </Principal>
             <Dependent Role="WMS_ReturnOrder">
               <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="WMS_Feed_List">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FeedBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReleaseBillNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AssemblyPartId" Type="Int32" Nullable="false" />
+          <Property Name="SubAssemblyPartId" Type="Int32" Nullable="false" />
+          <Property Name="FeedQty" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+          <Property Name="BoxQty" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="Capacity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvId" Type="Int32" />
+          <Property Name="SubInvId" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PrintStaus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PrintDate" Type="DateTime" Precision="0" />
+          <Property Name="PrintMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmDate" Type="DateTime" Precision="3" />
+          <Property Name="Attr1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_Feed_List_WMS_InvInfo" FromRole="WMS_Feed_List" ToRole="WMS_InvInfo" />
+          <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_Feed_List_WMS_Part" FromRole="WMS_Feed_List" ToRole="WMS_Part" />
+          <NavigationProperty Name="WMS_Part1" Relationship="DB.FK_WMS_Feed_List_WMS_Part1" FromRole="WMS_Feed_List" ToRole="WMS_Part" />
+          <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_Feed_List_WMS_SubInvInfo" FromRole="WMS_Feed_List" ToRole="WMS_SubInvInfo" />
+        </EntityType>
+        <Association Name="FK_WMS_Feed_List_WMS_InvInfo">
+          <End Type="DB.WMS_InvInfo" Role="WMS_InvInfo" Multiplicity="0..1" />
+          <End Type="DB.WMS_Feed_List" Role="WMS_Feed_List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_InvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Feed_List">
+              <PropertyRef Name="InvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Feed_List_WMS_Part">
+          <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="1" />
+          <End Type="DB.WMS_Feed_List" Role="WMS_Feed_List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Feed_List">
+              <PropertyRef Name="AssemblyPartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Feed_List_WMS_Part1">
+          <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="1" />
+          <End Type="DB.WMS_Feed_List" Role="WMS_Feed_List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Feed_List">
+              <PropertyRef Name="SubAssemblyPartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Feed_List_WMS_SubInvInfo">
+          <End Type="DB.WMS_SubInvInfo" Role="WMS_SubInvInfo" Multiplicity="0..1" />
+          <End Type="DB.WMS_Feed_List" Role="WMS_Feed_List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_SubInvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Feed_List">
+              <PropertyRef Name="SubInvId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8645,6 +8847,39 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="P_WMS_ConfirmReturnOrder" FunctionName="DB.Store.P_WMS_ConfirmReturnOrder" />
+          <EntitySetMapping Name="WMS_Feed_List">
+            <EntityTypeMapping TypeName="DB.WMS_Feed_List">
+              <MappingFragment StoreEntitySet="WMS_Feed_List">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Attr5" ColumnName="Attr5" />
+                <ScalarProperty Name="Attr4" ColumnName="Attr4" />
+                <ScalarProperty Name="Attr3" ColumnName="Attr3" />
+                <ScalarProperty Name="Attr2" ColumnName="Attr2" />
+                <ScalarProperty Name="Attr1" ColumnName="Attr1" />
+                <ScalarProperty Name="ConfirmDate" ColumnName="ConfirmDate" />
+                <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
+                <ScalarProperty Name="ConfirmStatus" ColumnName="ConfirmStatus" />
+                <ScalarProperty Name="PrintMan" ColumnName="PrintMan" />
+                <ScalarProperty Name="PrintDate" ColumnName="PrintDate" />
+                <ScalarProperty Name="PrintStaus" ColumnName="PrintStaus" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="SubInvId" ColumnName="SubInvId" />
+                <ScalarProperty Name="InvId" ColumnName="InvId" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="BoxQty" ColumnName="BoxQty" />
+                <ScalarProperty Name="FeedQty" ColumnName="FeedQty" />
+                <ScalarProperty Name="SubAssemblyPartId" ColumnName="SubAssemblyPartId" />
+                <ScalarProperty Name="AssemblyPartId" ColumnName="AssemblyPartId" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="ReleaseBillNum" ColumnName="ReleaseBillNum" />
+                <ScalarProperty Name="FeedBillNum" ColumnName="FeedBillNum" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

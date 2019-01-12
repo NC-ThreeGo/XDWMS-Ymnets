@@ -151,6 +151,8 @@ namespace Apps.Core
 			container.RegisterType<Apps.IDAL.WMS.IWMS_AIRepository, Apps.DAL.WMS.WMS_AIRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_CustomerBLL, Apps.BLL.WMS.WMS_CustomerBLL>();
 			container.RegisterType<Apps.IDAL.WMS.IWMS_CustomerRepository, Apps.DAL.WMS.WMS_CustomerRepository>();
+			container.RegisterType<Apps.IBLL.WMS.IWMS_Feed_ListBLL, Apps.BLL.WMS.WMS_Feed_ListBLL>();
+			container.RegisterType<Apps.IDAL.WMS.IWMS_Feed_ListRepository, Apps.DAL.WMS.WMS_Feed_ListRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_HeaderBLL, Apps.BLL.WMS.WMS_HeaderBLL>();
 			container.RegisterType<Apps.IDAL.WMS.IWMS_HeaderRepository, Apps.DAL.WMS.WMS_HeaderRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_InvBLL, Apps.BLL.WMS.WMS_InvBLL>();

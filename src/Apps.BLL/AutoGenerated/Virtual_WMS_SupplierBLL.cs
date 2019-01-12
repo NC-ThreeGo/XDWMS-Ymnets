@@ -50,6 +50,7 @@ namespace Apps.BLL.WMS
 								|| a.LinkManTel.Contains(queryStr)
 								|| a.LinkManAddress.Contains(queryStr)
 								|| a.Status.Contains(queryStr)
+								|| a.MoreAccept.Contains(queryStr)
 								|| a.Remark.Contains(queryStr)
 								|| a.CreatePerson.Contains(queryStr)
 								
@@ -92,8 +93,8 @@ namespace Apps.BLL.WMS
 													LinkManTel = r.LinkManTel,
 													LinkManAddress = r.LinkManAddress,
 													Status = r.Status,
+													MoreAccept = r.MoreAccept,
 													Remark = r.Remark,
-                                                    MoreAccept = r.MoreAccept,
 													CreatePerson = r.CreatePerson,
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
@@ -124,7 +125,7 @@ namespace Apps.BLL.WMS
 				entity.LinkManTel = model.LinkManTel;
 				entity.LinkManAddress = model.LinkManAddress;
 				entity.Status = model.Status;
-                entity.MoreAccept = model.MoreAccept;
+				entity.MoreAccept = model.MoreAccept;
 				entity.Remark = model.Remark;
 				entity.CreatePerson = model.CreatePerson;
 				entity.CreateTime = model.CreateTime;
@@ -225,7 +226,7 @@ namespace Apps.BLL.WMS
 				entity.LinkManTel = model.LinkManTel;
 				entity.LinkManAddress = model.LinkManAddress;
 				entity.Status = model.Status;
-                entity.MoreAccept = model.MoreAccept;
+				entity.MoreAccept = model.MoreAccept;
 				entity.Remark = model.Remark;
 				entity.CreatePerson = model.CreatePerson;
 				entity.CreateTime = model.CreateTime;
@@ -270,8 +271,8 @@ namespace Apps.BLL.WMS
 				model.LinkManTel = entity.LinkManTel;
 				model.LinkManAddress = entity.LinkManAddress;
 				model.Status = entity.Status;
+				model.MoreAccept = entity.MoreAccept;
 				model.Remark = entity.Remark;
-                model.MoreAccept = entity.MoreAccept;
 				model.CreatePerson = entity.CreatePerson;
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
@@ -304,15 +305,16 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 	 excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierCode, "供应商编码");
+			 				 excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierCode, "供应商编码");
 				 excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierShortName, "供应商简称");
 				 excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierName, "供应商名称");
 				 excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierType, "供应商类型");
 				 excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkMan, "联系人");
 				 excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkManTel, "联系人电话");
 				 excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkManAddress, "联系人地址");
-				 excelFile.AddMapping<WMS_SupplierModel>(x => x.Status, "状态");                
-                excelFile.AddMapping<WMS_SupplierModel>(x => x.Remark, "说明");
+				 excelFile.AddMapping<WMS_SupplierModel>(x => x.Status, "状态");
+				 excelFile.AddMapping<WMS_SupplierModel>(x => x.MoreAccept, "允许超量接收");
+				 excelFile.AddMapping<WMS_SupplierModel>(x => x.Remark, "说明");
 				 excelFile.AddMapping<WMS_SupplierModel>(x => x.CreatePerson, "创建人");
 				 excelFile.AddMapping<WMS_SupplierModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_SupplierModel>(x => x.ModifyPerson, "修改人");
@@ -334,8 +336,8 @@ namespace Apps.BLL.WMS
 				  entity.LinkMan = row.LinkMan;
 				  entity.LinkManTel = row.LinkManTel;
 				  entity.LinkManAddress = row.LinkManAddress;
-                  entity.MoreAccept = row.MoreAccept;
 				  entity.Status = row.Status;
+				  entity.MoreAccept = row.MoreAccept;
 				  entity.Remark = row.Remark;
 				  entity.CreatePerson = row.CreatePerson;
 				  entity.CreateTime = row.CreateTime;
@@ -382,7 +384,7 @@ namespace Apps.BLL.WMS
 						entity.LinkManTel = model.LinkManTel;
 						entity.LinkManAddress = model.LinkManAddress;
 						entity.Status = model.Status;
-                        entity.MoreAccept = "不允许";//默认为不允许超量接收
+						entity.MoreAccept = model.MoreAccept;
 						entity.Remark = model.Remark;
 						entity.CreatePerson = model.CreatePerson;
 						entity.CreateTime = ResultHelper.NowTime;

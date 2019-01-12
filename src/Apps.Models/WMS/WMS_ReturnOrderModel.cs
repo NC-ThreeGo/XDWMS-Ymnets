@@ -5,6 +5,13 @@ namespace Apps.Models.WMS
 {
     public partial class WMS_ReturnOrderModel
     {
+        [Display(Name = "物料编码")]
+        [Required]
+        public override Nullable<int> PartID { get; set; }
+        [Display(Name = "代理商编码")]
+        [Required]
+        public override Nullable<int> SupplierId { get; set; }
+
         [Display(Name = "到货单号")]
         public string ArrivalBillNum { get; set; }
 

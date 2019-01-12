@@ -100,6 +100,8 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.Id = 0;
             model.PrintStaus = "未退货";
             model.CreateTime = ResultHelper.NowTime;
+            if (model.Lot == "[空]")
+                model.Lot = "";
             if (model != null && ModelState.IsValid)
             {
                 if (m_BLL.CreateReturnOrder(ref errors, GetUserId(), model))

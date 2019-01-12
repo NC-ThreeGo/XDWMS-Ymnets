@@ -357,6 +357,7 @@
     <Compile Include="Areas\WC\Core\Server.cs" />
     <Compile Include="Areas\WC\Core\WeChatHelper.cs" />
     <Compile Include="Areas\WC\WCAreaRegistration.cs" />
+    <Compile Include="Areas\WMS\Controllers\FeedListController.cs" />
     <Compile Include="Areas\WMS\Controllers\InStoreController.cs" />
     <Compile Include="Areas\WMS\Controllers\InspectController.cs" />
     <Compile Include="Areas\WMS\Controllers\AIController.cs" />
@@ -834,6 +835,9 @@
     <Content Include="Areas\WMS\Views\ReInspect\Create.cshtml" />
     <Content Include="Areas\WMS\Views\ReInspect\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\ReInspect\Index.cshtml" />
+    <Content Include="Areas\WMS\Views\FeedList\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\FeedList\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\FeedList\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

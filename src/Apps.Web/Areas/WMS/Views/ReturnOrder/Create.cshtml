@@ -17,14 +17,17 @@
         $('#Lot').combogrid({
             panelWidth: 300,
             panelHeight: 150,
-            idField: 'Lot',
-            textField: 'Lot',
+            idField: 'LotDisp',
+            textField: 'LotDisp',
             url: '@Url.Action("GetLotsByPart", "Inv")',
             method: 'post',
             editable: false,
             onSelect: onSelect,
             columns: [[
-                {field:'Lot',title:'批次号',width:50},
+                { field: 'Lot', title: '批次号', width: 50, hidden: true },
+                {
+                    field: 'LotDisp', title: '批次号', width: 50
+                },
                 {field:'Qty',title:'现有量',width:50},
             ]],
             fitColumns: true
@@ -60,7 +63,6 @@
     function onSelect(index, row)
     {
         $("#Qty").html(row.Qty);
-        //var aa;
     }
 
     function LoadLot()
