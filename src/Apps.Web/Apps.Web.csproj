@@ -338,6 +338,7 @@
     <Compile Include="Areas\Spl\Controllers\WareUnitConvertController.cs" />
     <Compile Include="Areas\Spl\SplAreaRegistration.cs" />
     <Compile Include="Areas\WC\Controllers\GroupController.cs" />
+    <Compile Include="Areas\WMS\Controllers\InventoryHController.cs" />
     <Compile Include="Areas\WC\Controllers\MenuSettingController.cs" />
     <Compile Include="Areas\WC\Controllers\MessageResponseController.cs" />
     <Compile Include="Areas\WC\Controllers\OAuth2Controller.cs" />
@@ -365,6 +366,7 @@
     <Compile Include="Areas\WMS\Controllers\HeaderController.cs" />
     <Compile Include="Areas\WMS\Controllers\InvAdjustController.cs" />
     <Compile Include="Areas\WMS\Controllers\InvController.cs" />
+    <Compile Include="Areas\WMS\Controllers\InventoryDController.cs" />
     <Compile Include="Areas\WMS\Controllers\InvInfoController.cs" />
     <Compile Include="Areas\WMS\Controllers\LineController.cs" />
     <Compile Include="Areas\WMS\Controllers\PartController.cs" />
@@ -849,6 +851,12 @@
     <Content Include="Areas\WMS\Views\SaleOrder\SaleOrderLookUp.cshtml" />
     <Content Include="Areas\WMS\Views\SaleOrder\Print.cshtml" />
     <Content Include="Areas\WMS\Views\SaleOrder\Confirm.cshtml" />
+    <Content Include="Areas\WMS\Views\InventoryH\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\InventoryH\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\InventoryH\Index.cshtml" />
+    <Content Include="Areas\WMS\Views\InventoryD\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\InventoryD\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\InventoryD\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
