@@ -20,6 +20,7 @@ namespace Apps.Models
         public decimal InventoryQty { get; set; }
         public int InvId { get; set; }
         public Nullable<int> SubInvId { get; set; }
+        public string Lot { get; set; }
         public string Remark { get; set; }
         public string Attr1 { get; set; }
         public string Attr2 { get; set; }

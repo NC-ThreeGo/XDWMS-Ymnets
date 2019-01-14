@@ -31,6 +31,8 @@ namespace Apps.Models.WMS
 		public virtual int InvId { get; set; }
 		[Display(Name = "子库存")]
 		public virtual Nullable<int> SubInvId { get; set; }
+		[Display(Name = "批次号：YYYYMM")]
+		public virtual string Lot { get; set; }
 		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }
 		[Display(Name = "未设置")]

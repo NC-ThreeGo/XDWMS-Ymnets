@@ -36,11 +36,17 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
         #region 创建
         [SupportFilter]
         public ActionResult Create()
         {
-            return View();
+            WMS_Inventory_HModel model = new WMS_Inventory_HModel()
+            {
+                InventoryBillNum = "PD" + DateTime.Now.ToString("yyyyMMddHHmmssff"),
+
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -48,6 +54,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_Inventory_HModel model)
         {
             model.Id = 0;
+            model.InventoryPerson = GetUserId();
+            model.InventoryStatus = "未生成";
             model.CreateTime = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {
