@@ -454,7 +454,7 @@ END
 
 GO
 
-ALTER       PROCEDURE [dbo].[P_WMS_InvStock]	--库存备料
+ALTER  PROCEDURE [dbo].[P_WMS_InvStock]	--库存备料
 	@UserId varchar(50),
 	@PartId int,
 	@InvId int,
@@ -530,7 +530,7 @@ BEGIN
 													AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
 													AND PartId = @PartId
 													AND Isnull(Lot, 0) = Isnull(@Lot, Isnull(Lot, 0))
-													AND Qty > 0
+													AND Qty - Isnull(StockQty, 0) > 0
 											Order By Lot;
 		set @ResidueQty = ABS(@Qty);
 		--打开游标--
@@ -542,12 +542,12 @@ BEGIN
 			IF (@InvQty - @StockQty < @ResidueQty)
 			BEGIN
 				set @CurrentQty = @InvQty - @StockQty;
-				set @ResidueQty = @ResidueQty - @CurrentQty;
 			END
 			ELSE
 			BEGIN
 				set @CurrentQty = @ResidueQty;
 			END;
+			set @ResidueQty = @ResidueQty - @CurrentQty;
 
 			--修改库存备料数
 			UPDATE WMS_Inv SET StockQty = Isnull(StockQty, 0) + @CurrentQty
@@ -578,7 +578,7 @@ BEGIN
 										@rowId);
 
 
-			IF (@InvQty - @StockQty < @ResidueQty)
+			IF (@ResidueQty > 0)
 			BEGIN
 				--转到下一个游标，没有会死循环
 				fetch next from cur_Inv into @rowId, @InvQty, @StockQty; 
@@ -592,7 +592,6 @@ BEGIN
 		deallocate cur_Inv   --释放游标
 	END
 END
-
 GO
 
 CREATE     PROCEDURE [dbo].[P_WMS_InvStock_BatchUpdate]	--库存备料
@@ -1453,3 +1452,252 @@ END
 
 GO
 
+ALTER     PROCEDURE [dbo].[P_WMS_UpdateInvQty]
+	@UserId varchar(50),
+	@PartId int,
+	@InvId int,
+	@SubInvId int,
+	@Lot varchar(50),
+	@AllowAddLot bit,	--在增加库存时，是否允许新增批次
+	@HasStockQty bit,	--在减少库存时，是否已进行过备料
+	@Qty decimal(10, 3),
+	@now datetime,
+	@type varchar(50),
+	@BillId int,
+	@SourceBill varchar(50)
+AS
+BEGIN
+	DECLARE @AllowNegativeInv bit = 0; --是否允许负库存，默认否
+	DECLARE @Count int;
+	DECLARE @rowId int;
+	DECLARE @InvQty decimal(10, 3);
+	DECLARE @StockQty decimal(10, 3) = 0;	--备料数
+	DECLARE @CurrentQty decimal(10, 3) = 0;	--当前扣除数量
+	DECLARE @ResidueQty decimal(10, 3) = 0; --剩余数量
+
+	IF (@Qty = 0)
+	BEGIN
+		;
+		THROW 51000, '库存修改数量为0，请确认！', 1;
+		RETURN;
+	END;
+	
+	--修改库存现有量
+	--增加库存
+	IF (@Qty > 0)
+	BEGIN
+		--查找是否存在同批次的库存
+		SELECT @Count = count(*) FROM WMS_Inv
+			WHERE InvId = @InvId
+				AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+				AND PartId = @PartId
+				AND Isnull(Lot, 0) = Isnull(@Lot, 0);
+		IF (@Count = 1)	--如果找到，则修改库存现有量
+		BEGIN
+			UPDATE WMS_Inv SET Qty = Qty + @Qty
+				WHERE InvId = @InvId
+					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+					AND PartId = @PartId
+					AND Isnull(Lot, 0) = Isnull(@Lot, 0);
+		END
+		ELSE IF (@AllowAddLot = 1)	--新增批次
+		BEGIN
+			--如果批次不为空，则判断已有的库存现有量是否存在空批次（系统不允许存在空批次和非空批次同时存在的情况）
+			IF (@Lot IS NOT NULL)
+			BEGIN
+				SELECT @Count = count(*) FROM WMS_Inv
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId
+						AND Lot IS NULL;
+				IF (@Count > 0)
+				BEGIN
+					;
+					THROW 51000, '入库批次存在问题：当前批次不为空，但库存存在为空的批次，请确认！', 1;
+					RETURN;
+				END
+			END
+			--如果批次为空，则判断已有的库存现有量是否存在不为空批次（系统不允许存在空批次和非空批次同时存在的情况）
+			IF (@Lot IS NULL)
+			BEGIN
+				SELECT @Count = count(*) FROM WMS_Inv
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId
+						AND Lot IS NOT NULL;
+				IF (@Count > 0)
+				BEGIN
+					;
+					THROW 51000, '入库批次存在问题：当前批次为空，但库存存在不为空的批次，请确认！', 1;
+					RETURN;
+				END
+			END
+		
+			--插入库存现有量
+			INSERT INTO WMS_Inv (InvId,
+								SubInvId,
+								PartId,
+								Lot,
+								Qty)
+						VALUES (@InvId,
+								@SubInvId,
+								@PartId,
+								@Lot,
+								@Qty
+								);
+
+		END
+		ELSE  --增加库存时发生无效批次
+		BEGIN
+			;
+			THROW 51000, '入库批次存在问题：当前批次库存不存在且该操作不允许新增批次，请确认！', 1;
+			RETURN;
+		END
+	END
+
+
+	--减少库存：当批次为空，则按先进先出的原则扣减库存；当批次非空时，只扣减指定批次的库存
+	IF (@Qty < 0)
+	BEGIN
+		IF (@HasStockQty = 1)	--已经备料过，直接扣减库存，不用判断库存现有量
+		BEGIN
+			--修改库存现有量
+			UPDATE WMS_Inv SET Qty = inv.Qty - r.QTY, 
+								StockQty = inv.StockQty - r.Qty
+				FROM WMS_Inv inv,
+					 WMS_InvRecord r
+				WHERE r.Type = @type
+				  AND r.BillId = @BillId
+				  AND r.Stock_InvId = inv.Id;
+
+			--插入库存记录表
+			INSERT INTO WMS_InvRecord (PartId,
+										Lot,
+										QTY,
+										InvId,
+										SubInvId,
+										BillId,
+										SourceBill,
+										OperateDate,
+										Type,
+										OperateMan,
+										Stock_InvId
+										)
+								SELECT	r.PartId,
+										r.Lot,
+										r.Qty,
+										r.InvId,
+										r.SubInvId,	
+										r.BillId,
+										r.SourceBill,
+										@now,
+										r.type,
+										@UserId,
+										null
+									FROM WMS_InvRecord r
+									WHERE r.Type = @type
+										AND r.BillId = @BillId
+										AND r.Stock_InvId is not null;
+		END
+		ELSE
+		BEGIN
+			IF (@Lot IS NOT NULL) --批次不为空
+			BEGIN
+				SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId
+						AND Isnull(Lot, 0) = Isnull(@Lot, 0);
+				IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+				BEGIN
+					;
+					THROW 51000, '当前批次的库存现有量不足，请确认！', 1;
+					RETURN;
+				END
+			END
+
+			IF (@Lot IS NULL) --批次为空
+			BEGIN
+				SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId;
+				IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+				BEGIN
+					;
+					THROW 51000, '库存现有量不足，请确认！', 1;
+					RETURN;
+				END
+			END
+
+			--使用游标，按先进先出的原则出库
+			DECLARE cur_Inv cursor for select Id, Qty, Isnull(StockQty, 0)
+											from WMS_Inv
+											where InvId = @InvId
+												AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+												AND PartId = @PartId
+												AND Isnull(Lot, 0) = Isnull(@Lot, Isnull(Lot, 0))
+												AND Qty - Isnull(StockQty, 0) > 0
+											Order By Lot;
+			set @ResidueQty = ABS(@Qty);
+			--打开游标--
+			open cur_Inv;
+			--开始循环游标变量--
+			fetch next from cur_Inv into @rowId, @InvQty, @StockQty;
+			while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+			begin         
+				IF (@InvQty - @StockQty < @ResidueQty)
+				BEGIN
+					set @CurrentQty = @InvQty - @StockQty;
+				END
+				ELSE
+				BEGIN
+					set @CurrentQty = @ResidueQty;
+				END;
+				set @ResidueQty = @ResidueQty - @CurrentQty;
+
+				--修改库存现有量
+				UPDATE WMS_Inv SET Qty = Qty - @CurrentQty
+					WHERE Id = @rowId;
+				--插入库存记录表
+				INSERT INTO WMS_InvRecord (PartId,
+											Lot,
+											QTY,
+											InvId,
+											SubInvId,
+											BillId,
+											SourceBill,
+											OperateDate,
+											Type,
+											OperateMan,
+											Stock_InvId
+											)
+									VALUES (@PartId,
+											@Lot,
+											@CurrentQty,
+											@InvId,
+											@SubInvId,	
+											@BillId,
+											@SourceBill,
+											@now,
+											@type,
+											@UserId,
+											null);
+
+				IF (@ResidueQty > 0)
+				BEGIN
+					--转到下一个游标，没有会死循环
+					fetch next from cur_Inv into @rowId, @InvQty, @StockQty; 
+				END
+				ELSE
+				BEGIN
+					BREAK;
+				END;
+			end    
+			close cur_Inv  --关闭游标
+			deallocate cur_Inv   --释放游标
+
+		END
+	END
+END
+go

@@ -189,6 +189,11 @@
         <AssociationConnector Association="DB.FK_WMS_PO_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_Product_Entry_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Part" />
+        <EntityTypeShape EntityType="DB.WMS_Sale_Order" Width="1.5" PointX="21.625" PointY="9.875" />
+        <AssociationConnector Association="DB.FK_WMS_Sale_Order_WMS_Customer" />
+        <AssociationConnector Association="DB.FK_WMS_Sale_Order_WMS_InvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_Sale_Order_WMS_Part" />
+        <AssociationConnector Association="DB.FK_WMS_Sale_Order_WMS_SubInvInfo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

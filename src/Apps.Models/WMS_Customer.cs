@@ -14,6 +14,11 @@ namespace Apps.Models
     
     public partial class WMS_Customer
     {
+        public WMS_Customer()
+        {
+            this.WMS_Sale_Order = new HashSet<WMS_Sale_Order>();
+        }
+    
         public int Id { get; set; }
         public string CustomerCode { get; set; }
         public string CustomerShortName { get; set; }
@@ -28,5 +33,7 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+    
+        public virtual ICollection<WMS_Sale_Order> WMS_Sale_Order { get; set; }
     }
 }

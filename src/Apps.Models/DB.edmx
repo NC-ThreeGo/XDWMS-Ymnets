@@ -1346,6 +1346,38 @@
           <Property Name="BatchId" Type="int" />
           <Property Name="ReturnOderType" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="WMS_Sale_Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SaleBillNum" Type="nvarchar" MaxLength="50" />
+          <Property Name="SellBillNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PlanDeliveryDate" Type="datetime" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="PartId" Type="int" Nullable="false" />
+          <Property Name="Qty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="BoxQty" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="InvId" Type="int" />
+          <Property Name="SubInvId" Type="int" />
+          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="100" />
+          <Property Name="PrintStaus" Type="nvarchar" MaxLength="10" />
+          <Property Name="PrintDate" Type="datetime" />
+          <Property Name="PrintMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="ConfirmStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="ConfirmMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="ConfirmDate" Type="date" />
+          <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr3" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr4" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr5" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="date" />
+          <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
+        </EntityType>
         <EntityType Name="WMS_SubInvInfo">
           <Key>
             <PropertyRef Name="Id" />
@@ -2644,6 +2676,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_Sale_Order_WMS_Customer">
+          <End Role="WMS_Customer" Type="Self.WMS_Customer" Multiplicity="1" />
+          <End Role="WMS_Sale_Order" Type="Self.WMS_Sale_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Sale_Order">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Sale_Order_WMS_InvInfo">
+          <End Role="WMS_InvInfo" Type="Self.WMS_InvInfo" Multiplicity="0..1" />
+          <End Role="WMS_Sale_Order" Type="Self.WMS_Sale_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_InvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Sale_Order">
+              <PropertyRef Name="InvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Sale_Order_WMS_Part">
+          <End Role="WMS_Part" Type="Self.WMS_Part" Multiplicity="1" />
+          <End Role="WMS_Sale_Order" Type="Self.WMS_Sale_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Sale_Order">
+              <PropertyRef Name="PartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Sale_Order_WMS_SubInvInfo">
+          <End Role="WMS_SubInvInfo" Type="Self.WMS_SubInvInfo" Multiplicity="0..1" />
+          <End Role="WMS_Sale_Order" Type="Self.WMS_Sale_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_SubInvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Sale_Order">
+              <PropertyRef Name="SubInvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WMS_SubInvInfo_WMS_InvInfo">
           <End Role="WMS_InvInfo" Type="Self.WMS_InvInfo" Multiplicity="1" />
           <End Role="WMS_SubInvInfo" Type="Self.WMS_SubInvInfo" Multiplicity="*" />
@@ -2980,6 +3060,7 @@
           <EntitySet Name="WMS_Report" EntityType="Self.WMS_Report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_ReportParam" EntityType="Self.WMS_ReportParam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_ReturnOrder" EntityType="Self.WMS_ReturnOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_Sale_Order" EntityType="Self.WMS_Sale_Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_SubInvInfo" EntityType="Self.WMS_SubInvInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Supplier" EntityType="Self.WMS_Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SysUserConfig" EntityType="Self.SysUserConfig" store:Type="Tables" store:Schema="dbo">
@@ -3395,6 +3476,22 @@
           <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Supplier" Association="Self.FK_WMS_ReturnOrder_WMS_Supplier">
             <End Role="WMS_Supplier" EntitySet="WMS_Supplier" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Sale_Order_WMS_Customer" Association="Self.FK_WMS_Sale_Order_WMS_Customer">
+            <End Role="WMS_Customer" EntitySet="WMS_Customer" />
+            <End Role="WMS_Sale_Order" EntitySet="WMS_Sale_Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Sale_Order_WMS_InvInfo" Association="Self.FK_WMS_Sale_Order_WMS_InvInfo">
+            <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
+            <End Role="WMS_Sale_Order" EntitySet="WMS_Sale_Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Sale_Order_WMS_Part" Association="Self.FK_WMS_Sale_Order_WMS_Part">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_Sale_Order" EntitySet="WMS_Sale_Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Sale_Order_WMS_SubInvInfo" Association="Self.FK_WMS_Sale_Order_WMS_SubInvInfo">
+            <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+            <End Role="WMS_Sale_Order" EntitySet="WMS_Sale_Order" />
           </AssociationSet>
           <AssociationSet Name="FK_WMS_SubInvInfo_WMS_InvInfo" Association="Self.FK_WMS_SubInvInfo_WMS_InvInfo">
             <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
@@ -4134,6 +4231,23 @@
           <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Part" Association="DB.FK_WMS_ReturnOrder_WMS_Part">
             <End Role="WMS_Part" EntitySet="WMS_Part" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <EntitySet Name="WMS_Sale_Order" EntityType="DB.WMS_Sale_Order" />
+          <AssociationSet Name="FK_WMS_Sale_Order_WMS_Customer" Association="DB.FK_WMS_Sale_Order_WMS_Customer">
+            <End Role="WMS_Customer" EntitySet="WMS_Customer" />
+            <End Role="WMS_Sale_Order" EntitySet="WMS_Sale_Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Sale_Order_WMS_InvInfo" Association="DB.FK_WMS_Sale_Order_WMS_InvInfo">
+            <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
+            <End Role="WMS_Sale_Order" EntitySet="WMS_Sale_Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Sale_Order_WMS_Part" Association="DB.FK_WMS_Sale_Order_WMS_Part">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_Sale_Order" EntitySet="WMS_Sale_Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_Sale_Order_WMS_SubInvInfo" Association="DB.FK_WMS_Sale_Order_WMS_SubInvInfo">
+            <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+            <End Role="WMS_Sale_Order" EntitySet="WMS_Sale_Order" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="SysAreas">
@@ -6443,6 +6557,7 @@
           <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WMS_Sale_Order" Relationship="DB.FK_WMS_Sale_Order_WMS_Customer" FromRole="WMS_Customer" ToRole="WMS_Sale_Order" />
         </EntityType>
         <EntityType Name="SysImportExcelLog">
           <Key>
@@ -6477,6 +6592,7 @@
           <NavigationProperty Name="WMS_Inv_Adjust" Relationship="DB.FK_WMS_Inv_Adjust_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Inv_Adjust" />
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Feed_List" Relationship="DB.FK_WMS_Feed_List_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Feed_List" />
+          <NavigationProperty Name="WMS_Sale_Order" Relationship="DB.FK_WMS_Sale_Order_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Sale_Order" />
         </EntityType>
         <EntityType Name="WMS_PO">
           <Key>
@@ -6703,6 +6819,7 @@
           <NavigationProperty Name="WMS_Inv_Adjust" Relationship="DB.FK_WMS_Inv_Adjust_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Inv_Adjust" />
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Feed_List" Relationship="DB.FK_WMS_Feed_List_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Feed_List" />
+          <NavigationProperty Name="WMS_Sale_Order" Relationship="DB.FK_WMS_Sale_Order_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Sale_Order" />
         </EntityType>
         <Association Name="FK_WMS_AI_WMS_SubInvInfo">
           <End Type="DB.WMS_SubInvInfo" Role="WMS_SubInvInfo" Multiplicity="0..1" />
@@ -7082,6 +7199,7 @@
           <NavigationProperty Name="WMS_PO" Relationship="DB.FK_WMS_PO_WMS_Part" FromRole="WMS_Part" ToRole="WMS_PO" />
           <NavigationProperty Name="WMS_Product_Entry" Relationship="DB.FK_WMS_Product_Entry_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Product_Entry" />
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_Part" ToRole="WMS_ReturnOrder" />
+          <NavigationProperty Name="WMS_Sale_Order" Relationship="DB.FK_WMS_Sale_Order_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Sale_Order" />
         </EntityType>
         <Association Name="FK_WMS_AI_WMS_Part">
           <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="0..1" />
@@ -7176,6 +7294,90 @@
             </Principal>
             <Dependent Role="WMS_ReturnOrder">
               <PropertyRef Name="PartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="WMS_Sale_Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SaleBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SellBillNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PlanDeliveryDate" Type="DateTime" Precision="3" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="PartId" Type="Int32" Nullable="false" />
+          <Property Name="Qty" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+          <Property Name="BoxQty" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="InvId" Type="Int32" />
+          <Property Name="SubInvId" Type="Int32" />
+          <Property Name="Lot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PrintStaus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PrintDate" Type="DateTime" Precision="3" />
+          <Property Name="PrintMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmDate" Type="DateTime" Precision="0" />
+          <Property Name="Attr1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="0" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WMS_Customer" Relationship="DB.FK_WMS_Sale_Order_WMS_Customer" FromRole="WMS_Sale_Order" ToRole="WMS_Customer" />
+          <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_Sale_Order_WMS_InvInfo" FromRole="WMS_Sale_Order" ToRole="WMS_InvInfo" />
+          <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_Sale_Order_WMS_Part" FromRole="WMS_Sale_Order" ToRole="WMS_Part" />
+          <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_Sale_Order_WMS_SubInvInfo" FromRole="WMS_Sale_Order" ToRole="WMS_SubInvInfo" />
+        </EntityType>
+        <Association Name="FK_WMS_Sale_Order_WMS_Customer">
+          <End Type="DB.WMS_Customer" Role="WMS_Customer" Multiplicity="1" />
+          <End Type="DB.WMS_Sale_Order" Role="WMS_Sale_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Sale_Order">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Sale_Order_WMS_InvInfo">
+          <End Type="DB.WMS_InvInfo" Role="WMS_InvInfo" Multiplicity="0..1" />
+          <End Type="DB.WMS_Sale_Order" Role="WMS_Sale_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_InvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Sale_Order">
+              <PropertyRef Name="InvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Sale_Order_WMS_Part">
+          <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="1" />
+          <End Type="DB.WMS_Sale_Order" Role="WMS_Sale_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Sale_Order">
+              <PropertyRef Name="PartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_Sale_Order_WMS_SubInvInfo">
+          <End Type="DB.WMS_SubInvInfo" Role="WMS_SubInvInfo" Multiplicity="0..1" />
+          <End Type="DB.WMS_Sale_Order" Role="WMS_Sale_Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_SubInvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_Sale_Order">
+              <PropertyRef Name="SubInvId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8919,6 +9121,39 @@
                 <ScalarProperty Name="PartType" ColumnName="PartType" />
                 <ScalarProperty Name="PartName" ColumnName="PartName" />
                 <ScalarProperty Name="PartCode" ColumnName="PartCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WMS_Sale_Order">
+            <EntityTypeMapping TypeName="DB.WMS_Sale_Order">
+              <MappingFragment StoreEntitySet="WMS_Sale_Order">
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Attr5" ColumnName="Attr5" />
+                <ScalarProperty Name="Attr4" ColumnName="Attr4" />
+                <ScalarProperty Name="Attr3" ColumnName="Attr3" />
+                <ScalarProperty Name="Attr2" ColumnName="Attr2" />
+                <ScalarProperty Name="Attr1" ColumnName="Attr1" />
+                <ScalarProperty Name="ConfirmDate" ColumnName="ConfirmDate" />
+                <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
+                <ScalarProperty Name="ConfirmStatus" ColumnName="ConfirmStatus" />
+                <ScalarProperty Name="PrintMan" ColumnName="PrintMan" />
+                <ScalarProperty Name="PrintDate" ColumnName="PrintDate" />
+                <ScalarProperty Name="PrintStaus" ColumnName="PrintStaus" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Lot" ColumnName="Lot" />
+                <ScalarProperty Name="SubInvId" ColumnName="SubInvId" />
+                <ScalarProperty Name="InvId" ColumnName="InvId" />
+                <ScalarProperty Name="BoxQty" ColumnName="BoxQty" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="PlanDeliveryDate" ColumnName="PlanDeliveryDate" />
+                <ScalarProperty Name="SellBillNum" ColumnName="SellBillNum" />
+                <ScalarProperty Name="SaleBillNum" ColumnName="SaleBillNum" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

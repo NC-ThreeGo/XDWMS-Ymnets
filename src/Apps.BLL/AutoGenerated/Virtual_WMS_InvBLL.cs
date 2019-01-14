@@ -47,6 +47,7 @@ namespace Apps.BLL.WMS
 								
 								
 								a=>a.Lot.Contains(queryStr)
+								
 								);
             }
             else
@@ -81,6 +82,7 @@ namespace Apps.BLL.WMS
 													PartId = r.PartId,
 													Qty = r.Qty,
 													Lot = r.Lot,
+													StockQty = r.StockQty,
           
                                               }).ToList();
 
@@ -104,6 +106,7 @@ namespace Apps.BLL.WMS
 				entity.PartId = model.PartId;
 				entity.Qty = model.Qty;
 				entity.Lot = model.Lot;
+				entity.StockQty = model.StockQty;
   
 
                 if (m_Rep.Create(entity))
@@ -196,6 +199,7 @@ namespace Apps.BLL.WMS
 				entity.PartId = model.PartId;
 				entity.Qty = model.Qty;
 				entity.Lot = model.Lot;
+				entity.StockQty = model.StockQty;
  
 
 
@@ -232,6 +236,7 @@ namespace Apps.BLL.WMS
 				model.PartId = entity.PartId;
 				model.Qty = entity.Qty;
 				model.Lot = entity.Lot;
+				model.StockQty = entity.StockQty;
  
                 return model;
             }
@@ -265,6 +270,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_InvModel>(x => x.PartId, "PartId");
 				 excelFile.AddMapping<WMS_InvModel>(x => x.Qty, "Qty");
 				 excelFile.AddMapping<WMS_InvModel>(x => x.Lot, "批次号：YYYYMM");
+				 excelFile.AddMapping<WMS_InvModel>(x => x.StockQty, "备料数");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_InvModel>(0);
@@ -280,6 +286,7 @@ namespace Apps.BLL.WMS
 				  entity.PartId = row.PartId;
 				  entity.Qty = row.Qty;
 				  entity.Lot = row.Lot;
+				  entity.StockQty = row.StockQty;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -318,6 +325,7 @@ namespace Apps.BLL.WMS
 						entity.PartId = model.PartId;
 						entity.Qty = model.Qty;
 						entity.Lot = model.Lot;
+						entity.StockQty = model.StockQty;
  
                         db.WMS_Inv.Add(entity);
                     }
