@@ -5,6 +5,9 @@ namespace Apps.Models.WMS
 {
     public partial class WMS_InvModel
     {
+        [Display(Name = "可用数量")]
+        public decimal AvailableQty { get; set; }
+
         [Display(Name = "物料编码")]
         public string PartCode { get; set; }
 

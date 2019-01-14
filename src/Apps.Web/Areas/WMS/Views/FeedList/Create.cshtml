@@ -13,6 +13,28 @@
 
 <script type="text/javascript">
 $(function () {
+    $('#Lot').combogrid({
+        panelWidth: 300,
+        panelHeight: 150,
+        sortName: 'Lot',
+        idField: 'LotDisp',
+        textField: 'LotDisp',
+        url: '@Url.Action("GetLotsByPart", "Inv")',
+        method: 'post',
+        editable: false,
+        onSelect: onSelect,
+        columns: [[
+            { field: 'Lot', title: '批次号', width: 50, hidden: true },
+            {
+                field: 'LotDisp', title: '批次号', width: 50
+            },
+            {field:'Qty',title:'现有量',width:50},
+            { field: 'StockQty', title: '备料数', width: 80, sortable: true, align: 'right' },
+            { field: 'AvailableQty', title: '可用数量', width: 80, sortable: true, align: 'right' }
+        ]],
+        fitColumns: true
+    });
+
     $("#btnSave").click(function () {
         if ($("form").valid()) {
             $.ajax({
@@ -38,12 +60,28 @@ $(function () {
          window.parent.frameReturnByClose();
     });
 });
-function frameReturnByClose() {
-$("#modalwindow").window('close');
-}
-function frameReturnByMes(mes) {
-$.messageBox5s(Lang.Tip, mes);
-}
+
+    function onSelect(index, row)
+    {
+        $("#Qty").html(row.AvailableQty);
+    }
+
+    function LoadLot()
+    {
+        var invId = $("#InvId").val();
+        var subInvId = "";
+        var partId = $("#SubAssemblyPartId").val();
+        $("#Lot").combogrid('grid').datagrid("load", { partId: partId, invId: invId });
+    };
+
+    function frameReturnByClose()
+    {
+        $("#modalwindow").window('close');
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
 </script>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
@@ -138,7 +176,7 @@ $.messageBox5s(Lang.Tip, mes);
                     @Html.LabelFor(model => model.InvId)：
                 </th>
                 <td>
-                    @Html.DropDownListFor(model => model.InvId, ViewBag.Inv as SelectList)
+                    @Html.DropDownListFor(model => model.InvId, ViewBag.Inv as SelectList, new { @onchange = "LoadLot()" })
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.InvId)</td>
             </tr>

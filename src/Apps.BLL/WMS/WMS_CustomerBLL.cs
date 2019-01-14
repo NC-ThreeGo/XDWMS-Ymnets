@@ -11,6 +11,7 @@ using Apps.Models.WMS;
 using System.Linq.Expressions;
 using Apps.IDAL.Sys;
 using Unity.Attributes;
+using System.Linq.Dynamic.Core;
 
 namespace Apps.BLL.WMS
 {
@@ -221,6 +222,16 @@ namespace Apps.BLL.WMS
                 }
             }
         }
+
+        public List<WMS_CustomerModel> GetListByWhere(ref GridPager pager, string where)
+        {
+            IQueryable<WMS_Customer> queryData = null;
+            queryData = m_Rep.GetList().Where(where);
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return CreateModelList(ref queryData);
+        }
     }
- }
+}
 

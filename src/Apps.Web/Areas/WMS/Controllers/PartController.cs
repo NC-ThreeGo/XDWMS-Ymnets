@@ -288,14 +288,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         /// </summary>
         /// <param name="mulSelect">是否多选</param>
         /// <returns></returns>
-        [SupportFilter(ActionName = "Create")]
+        [SupportFilter(ActionName = "Index")]
         public ActionResult PartLookUp(bool mulSelect = false)
         {
             return View();
         }
 
         [HttpPost]
-        [SupportFilter(ActionName = "Create")]
+        [SupportFilter(ActionName = "Index")]
         public JsonResult PartGetList(GridPager pager, string partCode, string partName)
         {
             List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\" && PartCode.Contains(\"" 

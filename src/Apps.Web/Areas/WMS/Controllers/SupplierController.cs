@@ -252,14 +252,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         /// </summary>
         /// <param name="mulSelect">是否多选</param>
         /// <returns></returns>
-        [SupportFilter(ActionName = "Create")]
+        [SupportFilter(ActionName = "Index")]
         public ActionResult SupplierLookUp(bool mulSelect = false)
         {
             return View();
         }
 
         [HttpPost]
-        [SupportFilter(ActionName = "Create")]
+        [SupportFilter(ActionName = "Index")]
         public JsonResult SupplierGetList(GridPager pager, string supplierCode, string supplierShortName)
         {
             List<WMS_SupplierModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\" && SupplierCode.Contains(\"" 

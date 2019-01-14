@@ -19,6 +19,9 @@ namespace Apps.Web.Areas.WMS.Controllers
     {
         [Dependency]
         public IWMS_Sale_OrderBLL m_BLL { get; set; }
+        [Dependency]
+        public IWMS_InvInfoBLL _InvInfoBll { get; set; }
+
         ValidationErrors errors = new ValidationErrors();
         
         [SupportFilter]
@@ -40,7 +43,13 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Create()
         {
-            return View();
+            ViewBag.Inv = new SelectList(_InvInfoBll.GetList(ref setNoPagerAscById, ""), "Id", "InvName");
+            WMS_Sale_OrderModel model = new WMS_Sale_OrderModel()
+            {
+                SaleBillNum = "XS" + DateTime.Now.ToString("yyyyMMddHHmmssff"),
+
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -48,7 +57,12 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_Sale_OrderModel model)
         {
             model.Id = 0;
+            model.CreatePerson = GetUserId();
             model.CreateTime = ResultHelper.NowTime;
+            model.PrintStaus = "未打印";
+            model.ConfirmStatus = "未确认";
+            if (model.Lot == "[空]")
+                model.Lot = "";
             if (model != null && ModelState.IsValid)
             {
 
@@ -67,6 +81,76 @@ namespace Apps.Web.Areas.WMS.Controllers
             else
             {
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail));
+            }
+        }
+        #endregion
+
+        #region 打印
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult Print()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        [ValidateInput(false)]
+        public JsonResult Print(string saleBillNum)
+        {
+            try
+            {
+                var SellBillNum = m_BLL.PrintSaleOrder(ref errors, GetUserId(), saleBillNum);
+                if (!String.IsNullOrEmpty(SellBillNum))
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功", "成功", "打印", "WMS_Sale_Order");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, SellBillNum));
+                    //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
+                }
+                else
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), errors.Error, "失败", "打印", "WMS_Sale_Order");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "打印", "WMS_Sale_Order");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+            }
+        }
+        #endregion
+
+        #region 确认
+        [SupportFilter(ActionName = "Edit")]
+        public ActionResult Confirm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Edit")]
+        [ValidateInput(false)]
+        public JsonResult Confirm(string sellBillNum)
+        {
+            try
+            {
+                if (m_BLL.ConfirmSaleOrder(ref errors, GetUserId(), sellBillNum))
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), "SellBillNum" + sellBillNum, "成功", "确认", "WMS_Sale_Order");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, sellBillNum));
+                }
+                else
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), "SellBillNum" + sellBillNum + ", " + errors.Error, "失败", "确认", "WMS_Sale_Order");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserId(), "ReturnOrderNum" + sellBillNum + ", " + ex.Message, "失败", "确认", "WMS_Sale_Order");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }
         #endregion
@@ -184,7 +268,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("销售单号（系统）", item.SellBillNum);
                     jo.Add("计划发货日期", item.PlanDeliveryDate);
                     jo.Add("客户", item.CustomerId);
-                    jo.Add("PartId", item.PartId);
+                    jo.Add("物料", item.PartId);
                     jo.Add("数量", item.Qty);
                     jo.Add("箱数", item.BoxQty);
                     jo.Add("库存", item.InvId);
@@ -265,6 +349,66 @@ namespace Apps.Web.Areas.WMS.Controllers
                     ExportData = dt
                 };
             }
+        #endregion
+
+        #region 选择投料单
+        /// <summary>
+        /// 弹出选择送检单
+        /// </summary>
+        /// <param name="mulSelect">是否多选</param>
+        /// <returns></returns>
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult SaleOrderLookUp(string type, bool mulSelect = false)
+        {
+            ViewBag.Type = type;
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult SaleOrderGetList(GridPager pager, string type, string queryStr)
+        {
+            List<WMS_Sale_OrderModel> list;
+
+            if (type == "print")
+            {
+                list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"未打印\"")
+                    .GroupBy(p => new { p.SaleBillNum, p.SellBillNum })
+                    .Select(g => g.First())
+                    .OrderBy(p => p.SaleBillNum).ToList();
+            }
+            else
+            {
+                list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"已打印\" and ConfirmStatus == \"未确认\"")
+                    .GroupBy(p => new { p.SaleBillNum, p.SellBillNum })
+                    .Select(g => g.First())
+                    .OrderBy(p => p.SaleBillNum).ToList();
+            }
+            GridRows<WMS_Sale_OrderModel> grs = new GridRows<WMS_Sale_OrderModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult GetSaleOrderByBillNum(GridPager pager, string type, string billNum)
+        {
+            List<WMS_Sale_OrderModel> list;
+
+            if (type == "print")
+            {
+                list = m_BLL.GetListByWhere(ref pager, "SaleBillNum = \"" + billNum + "\"");
+            }
+            else
+            {
+                list = m_BLL.GetListByWhere(ref pager, "SellBillNum = \"" + billNum + "\"");
+            }
+            GridRows<WMS_Sale_OrderModel> grs = new GridRows<WMS_Sale_OrderModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
         #endregion
     }
 }

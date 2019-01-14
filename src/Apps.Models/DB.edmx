@@ -1351,8 +1351,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SaleBillNum" Type="nvarchar" MaxLength="50" />
-          <Property Name="SellBillNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SaleBillNum" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SellBillNum" Type="nvarchar" MaxLength="50" />
           <Property Name="PlanDeliveryDate" Type="datetime" />
           <Property Name="CustomerId" Type="int" Nullable="false" />
           <Property Name="PartId" Type="int" Nullable="false" />
@@ -1377,6 +1377,7 @@
           <Property Name="CreateTime" Type="date" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
+          <Property Name="ConfirmMessage" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="WMS_SubInvInfo">
           <Key>
@@ -2918,6 +2919,11 @@
           <Parameter Name="ReturnOrderNum" Type="varchar" Mode="In" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
+        <Function Name="P_WMS_ConfirmSaleOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="SellBillNum" Type="varchar" Mode="In" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
         <Function Name="P_WMS_CreateInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="ArrivalBillNum" Type="varchar" Mode="In" />
@@ -2965,6 +2971,12 @@
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="JsonReturnOrder" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="ReturnOrderNum" Type="varchar" Mode="InOut" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="P_WMS_PrintSaleOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="SaleBillNum" Type="nvarchar" Mode="In" />
+          <Parameter Name="SellBillNum" Type="varchar" Mode="InOut" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
         <Function Name="P_WMS_ProcessInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -4232,6 +4244,17 @@
             <End Role="WMS_Part" EntitySet="WMS_Part" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
           </AssociationSet>
+          <FunctionImport Name="P_WMS_ConfirmSaleOrder">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="SellBillNum" Mode="In" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="P_WMS_PrintSaleOrder">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="SaleBillNum" Mode="In" Type="String" />
+            <Parameter Name="SellBillNum" Mode="InOut" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
           <EntitySet Name="WMS_Sale_Order" EntityType="DB.WMS_Sale_Order" />
           <AssociationSet Name="FK_WMS_Sale_Order_WMS_Customer" Association="DB.FK_WMS_Sale_Order_WMS_Customer">
             <End Role="WMS_Customer" EntitySet="WMS_Customer" />
@@ -7302,8 +7325,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SaleBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SellBillNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SaleBillNum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SellBillNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PlanDeliveryDate" Type="DateTime" Precision="3" />
           <Property Name="CustomerId" Type="Int32" Nullable="false" />
           <Property Name="PartId" Type="Int32" Nullable="false" />
@@ -7328,6 +7351,7 @@
           <Property Name="CreateTime" Type="DateTime" Precision="0" />
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmMessage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="WMS_Customer" Relationship="DB.FK_WMS_Sale_Order_WMS_Customer" FromRole="WMS_Sale_Order" ToRole="WMS_Customer" />
           <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_Sale_Order_WMS_InvInfo" FromRole="WMS_Sale_Order" ToRole="WMS_InvInfo" />
           <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_Sale_Order_WMS_Part" FromRole="WMS_Sale_Order" ToRole="WMS_Part" />
@@ -9125,9 +9149,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="P_WMS_ConfirmSaleOrder" FunctionName="DB.Store.P_WMS_ConfirmSaleOrder" />
+          <FunctionImportMapping FunctionImportName="P_WMS_PrintSaleOrder" FunctionName="DB.Store.P_WMS_PrintSaleOrder" />
           <EntitySetMapping Name="WMS_Sale_Order">
             <EntityTypeMapping TypeName="DB.WMS_Sale_Order">
               <MappingFragment StoreEntitySet="WMS_Sale_Order">
+                <ScalarProperty Name="ConfirmMessage" ColumnName="ConfirmMessage" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />

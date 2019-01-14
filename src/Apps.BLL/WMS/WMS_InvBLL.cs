@@ -24,6 +24,7 @@ namespace Apps.BLL.WMS
                                                   InvId = r.InvId,
                                                   PartId = r.PartId,
                                                   Qty = r.Qty,
+                                                  StockQty = r.StockQty,
                                                   SubInvId = r.SubInvId,
                                                   Lot = r.Lot,
 
@@ -33,8 +34,10 @@ namespace Apps.BLL.WMS
                                                   InvName = r.WMS_InvInfo.InvName,
                                                   SubInvName = r.WMS_SubInvInfo.SubInvName,
                                                   LotDisp = String.IsNullOrEmpty(r.Lot) ? "[空]" : r.Lot,
-                                              }).OrderBy("InvId asc, SubInvId asc, PartId asc")
-                                              .ToList();
+                                                  AvailableQty = r.Qty - r.StockQty.Value,
+                                              })
+                                             .OrderBy("InvId asc, SubInvId asc, PartId asc, Lot asc")
+                                             .ToList();
             return modelList;
         }
 
@@ -152,7 +155,8 @@ namespace Apps.BLL.WMS
 		public List<WMS_InvModel> GetListByWhere(ref GridPager pager, string where)
 		{
 			IQueryable<WMS_Inv> queryData = null;
-			queryData = m_Rep.GetList().Where(where);
+            queryData = m_Rep.GetList()
+                .Where(where);
 			pager.totalRows = queryData.Count();
 			//排序
 			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
@@ -162,9 +166,9 @@ namespace Apps.BLL.WMS
         public List<WMS_InvModel> GetLotsByPart(int invId, int? subInvId, int partId)
         {
             IQueryable<WMS_Inv> queryData = null;
-            queryData = m_Rep.GetList().Where(p => p.InvId == invId && p.SubInvId == subInvId && p.PartId == partId
-                                            && p.Qty > 0)
-                                      .OrderBy(p => p.Lot);
+            queryData = m_Rep.GetList()
+                .Where(p => p.InvId == invId && p.SubInvId == subInvId && p.PartId == partId
+                                            && p.Qty - p.StockQty > 0);
             return CreateModelList(ref queryData);
         }
     }

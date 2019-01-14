@@ -36,13 +36,16 @@
 </div>
 <div class="mvctool">
     <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
+    @Html.ToolButton("btnPrint", "fa fa-level-up", Resource.Print, ref perm, "Create", true)
+    @Html.ToolButton("btnConfirm", "fa fa-search", "确认", ref perm, "Edit", true)
+    @Html.ToolButton("btnReport", "fa fa-search", "查看单据", ref perm, "Query", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -86,6 +89,7 @@
                 { field: 'ConfirmStatus', title: '确认状态', width: 80,sortable:true },
                 { field: 'ConfirmMan', title: '确认人', width: 80,sortable:true },
                 { field: 'ConfirmDate', title: '确认时间', width: 80,sortable:true },
+                { field: 'ConfirmMessage', title: '确认信息', width: 80, sortable: true },
             ]]
         });
     });
@@ -151,6 +155,18 @@
         });
         $("#btnExportTemplate").click(function() {
           window.location = "@Url.Action("ExportTemplate")";
+        });
+        $("#btnPrint").click(function() {
+            $.modalWindow("单据打印", '@Url.Action("Print")', 1000, 600, 'fa fa-pencil');
+        });
+        $("#btnConfirm").click(function () {
+            $.modalWindow(Lang.Confirm, '@Url.Action("Confirm")', 1000, 600, 'fa fa-plus');
+        });
+        $("#btnReport").click(function() {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=SaleOrder&billNum=' + row.SellBillNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
     });
     function ImportData()

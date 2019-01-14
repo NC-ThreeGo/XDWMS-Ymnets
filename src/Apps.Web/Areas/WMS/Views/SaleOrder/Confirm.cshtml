@@ -1,4 +1,4 @@
-﻿@model Apps.Models.WMS.WMS_Feed_ListModel
+﻿@model Apps.Models.WMS.WMS_Sale_OrderModel
 @using Apps.Web.Core;
 @using Apps.Common;
 @using Apps.Models.WMS;
@@ -6,7 +6,7 @@
 @using Apps.Locale;
 @using Apps.Models.Sys;
 @{
-    ViewBag.Title = "确认投料单";
+    ViewBag.Title = "确认销售订单";
     Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
     List<permModel> perm = null;
 }
@@ -14,9 +14,9 @@
     $(function ()
     {
         //加载到货单
-        $("#btnLoadFeedList").click(function ()
+        $("#btnLoadSaleOrder").click(function ()
         {
-            var billNum = $("#ReleaseBillNum").val();
+            var billNum = $("#SellBillNum").val();
             $("#List").datagrid("load", { type: "confirm", billNum: billNum });
         });
 
@@ -35,7 +35,7 @@
                     $.ajax({
                         url: "@Url.Action("Confirm")",
                         type: "Post",
-                        data: { releaseBillNum: $("#ReleaseBillNum").val() },
+                        data: { sellBillNum: $("#SellBillNum").val() },
                         dataType: "json",
                         success: function (data)
                         {
@@ -72,7 +72,7 @@
     $(function ()
     {
         $('#List').datagrid({
-            url: '@Url.Action("GetFeedListByBillNum")?type=confirm&billNum=""',
+            url: '@Url.Action("GetSaleOrderByBillNum")?type=confirm&billNum=""',
             width: SetGridWidthSub(10),
             methord: 'post',
             height: SetGridHeightSub(100),
@@ -89,15 +89,15 @@
             showFooter: true,
             columns: [[
                 { field: 'Id', title: 'Id', width: 80, hidden: true },
-                { field: 'FeedBillNum', title: '投料单号（业务）', width: 80, sortable: true },
-                { field: 'ReleaseBillNum', title: '投料单号（系统）', width: 80, sortable: true },
-                { field: 'Department', title: '投料部门', width: 80, sortable: true },
-                { field: 'AssemblyPartCode', title: '总成物料', width: 80, sortable: true },
-                { field: 'SubAssemblyPartCode', title: '投料物料', width: 80, sortable: true },
-                { field: 'FeedQty', title: '投料数量', width: 80, sortable: true, align: 'right' },
-                { field: 'BoxQty', title: '箱数', width: 80, sortable: true, align: 'right' },
-                { field: 'Capacity', title: '体积', width: 80, sortable: true },
+                { field: 'SaleBillNum', title: '销售单号（业务）', width: 80, sortable: true },
+                { field: 'SellBillNum', title: '销售单号（系统）', width: 80, sortable: true },
+                { field: 'PlanDeliveryDate', title: '计划发货日期', width: 80, sortable: true },
+                { field: 'CustomerShortName', title: '客户', width: 80, sortable: true },
+                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'Qty', title: '数量', width: 80, sortable: true },
+                { field: 'BoxQty', title: '箱数', width: 80, sortable: true },
                 { field: 'InvCode', title: '库房', width: 80, sortable: true },
+                //{ field: 'SubInvId', title: '子库存', width: 80,sortable:true },
                 { field: 'Lot', title: '批次号', width: 80, sortable: true },
             ]]
         });
@@ -137,25 +137,25 @@
         <tbody>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.ReleaseBillNum)：
+                    @Html.LabelFor(model => model.SellBillNum)：
                 </th>
                 <td>
-                    <input id="ReleaseBillNum" name="Supplier" type="text" style="width: 200px; display: inline;">
-                    <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelFeedBillNum()"></a>
+                    <input id="SellBillNum" name="Supplier" type="text" style="width: 200px; display: inline;">
+                    <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelSaleOrderBillNum()"></a>
                     <script type="text/javascript">
-                        function showSelFeedBillNum()
+                        function showSelSaleOrderBillNum()
                         {
-                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/FeedList/FeedListLookUp?type=confirm'></iframe>");
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/SaleOrder/SaleOrderLookUp?type=confirm'></iframe>");
                             $("#modalwindow").window({ title: '选择投料单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
                         }
 
                         function SetSelResult(result, resultName)
                         {
-                            $("#ReleaseBillNum").val(resultName);
+                            $("#SellBillNum").val(resultName);
                         }
 
                     </script>
-                    @Html.ToolButton("btnLoadFeedList", "fa fa-reply", Resource.Load, false)
+                    @Html.ToolButton("btnLoadSaleOrder", "fa fa-reply", Resource.Load, false)
                 </td>
             </tr>
 

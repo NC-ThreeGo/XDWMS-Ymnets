@@ -82,7 +82,7 @@ namespace Apps.BLL.WMS
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SellBillNum, "销售单号（系统）");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PlanDeliveryDate, "计划发货日期");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CustomerId, "客户");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartId, "");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartId, "物料");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Qty, "数量");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.BoxQty, "箱数");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvId, "库存");
@@ -248,6 +248,43 @@ namespace Apps.BLL.WMS
 			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
 			return CreateModelList(ref queryData);
 		}
+
+        public string PrintSaleOrder(ref ValidationErrors errors, string opt, string saleBillNum)
+        {
+            try
+            {
+                string sellBillNum = null;
+                var rtn = m_Rep.PrintSaleOrder(opt, saleBillNum, ref sellBillNum);
+                if (!String.IsNullOrEmpty(rtn))
+                {
+                    errors.Add(rtn);
+                    return null;
+                }
+                else
+                {
+                    return sellBillNum;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+                return null;
+            }
+        }
+
+        public bool ConfirmSaleOrder(ref ValidationErrors errors, string opt, string sellBillNum)
+        {
+            try
+            {
+                m_Rep.ConfirmSaleOrder(opt, sellBillNum);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+                return false;
+            }
+        }
     }
- }
+}
 

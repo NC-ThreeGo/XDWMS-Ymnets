@@ -62,6 +62,8 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.CreateTime = ResultHelper.NowTime;
             model.PrintStaus = "未打印";
             model.ConfirmStatus = "未确认";
+            if (model.Lot == "[空]")
+                model.Lot = "";
             if (model != null && ModelState.IsValid)
             {
 
@@ -148,7 +150,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
             catch (Exception ex)
             {
-                LogHandler.WriteServiceLog(GetUserId(), "ReturnOrderNum" + releaseBillNum + ", " + ex.Message, "失败", "确认", "WMS_ReturnOrder");
+                LogHandler.WriteServiceLog(GetUserId(), "ReturnOrderNum" + releaseBillNum + ", " + ex.Message, "失败", "确认", "WMS_Feed_List");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }
@@ -375,14 +377,14 @@ namespace Apps.Web.Areas.WMS.Controllers
             if (type == "print")
             {
                 list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"未打印\"")
-                    .GroupBy(p => new { p.FeedBillNum })
+                    .GroupBy(p => new { p.FeedBillNum, p.ReleaseBillNum })
                     .Select(g => g.First())
                     .OrderBy(p => p.FeedBillNum).ToList();
             }
             else
             {
                 list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"已打印\" and ConfirmStatus == \"未确认\"")
-                    .GroupBy(p => new { p.ReleaseBillNum })
+                    .GroupBy(p => new { p.FeedBillNum, p.ReleaseBillNum })
                     .Select(g => g.First())
                     .OrderBy(p => p.FeedBillNum).ToList();
             }

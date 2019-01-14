@@ -245,6 +245,31 @@ namespace Apps.Web.Areas.WMS.Controllers
                 };
             }
         #endregion
+
+        #region 选择客户
+        /// <summary>
+        /// 弹出选择客户
+        /// </summary>
+        /// <param name="mulSelect">是否多选</param>
+        /// <returns></returns>
+        [SupportFilter(ActionName = "Index")]
+        public ActionResult CustomerLookUp(bool mulSelect = false)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult CustomerGetList(GridPager pager, string customerCode, string customerShortName)
+        {
+            List<WMS_CustomerModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\" && CustomerCode.Contains(\""
+                + customerCode + "\") && CustomerShortName.Contains(\"" + customerShortName + "\")");
+            GridRows<WMS_CustomerModel> grs = new GridRows<WMS_CustomerModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
     }
 }
 

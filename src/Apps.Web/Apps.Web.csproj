@@ -845,6 +845,10 @@
     <Content Include="Areas\WMS\Views\SaleOrder\Create.cshtml" />
     <Content Include="Areas\WMS\Views\SaleOrder\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\SaleOrder\Index.cshtml" />
+    <Content Include="Areas\WMS\Views\Customer\CustomerLookUp.cshtml" />
+    <Content Include="Areas\WMS\Views\SaleOrder\SaleOrderLookUp.cshtml" />
+    <Content Include="Areas\WMS\Views\SaleOrder\Print.cshtml" />
+    <Content Include="Areas\WMS\Views\SaleOrder\Confirm.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

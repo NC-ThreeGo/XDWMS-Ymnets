@@ -359,6 +359,7 @@
     <Compile Include="WC\WC_MessageResponseRepository.cs" />
     <Compile Include="WC\WC_OfficalAccountsRepository.cs" />
     <Compile Include="WebpartRepository.cs" />
+    <Compile Include="WMS\WMS_SaleOrderRepository.cs" />
     <Compile Include="WMS\WMS_ReInspectRepository.cs" />
     <Compile Include="WMS\WMS_Inv_AdjustRepository.cs" />
     <Compile Include="WMS\WMS_FeedListRepository.cs" />
