@@ -1701,3 +1701,161 @@ BEGIN
 	END
 END
 go
+
+
+
+CREATE  OR ALTER    PROCEDURE [dbo].[P_WMS_ConfirmSaleOrder]
+	@UserId varchar(50),
+	@SellBillNum	varchar(50),
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now datetime = getdate()
+	DECLARE @PartId int;
+	DECLARE @InvId int;
+	DECLARE @SubInvId int;
+	DECLARE @Lot varchar(50);
+	DECLARE @Qty decimal(10, 3);
+	DECLARE @rowId int;
+	DECLARE @countOK int = 0;
+	DECLARE @countError int = 0;
+
+	--修改库存
+	DECLARE cur_SaleOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, Qty * -1
+											from WMS_Sale_Order
+											where SellBillNum = @SellBillNum
+											  and ConfirmStatus = '未确认');
+    --打开游标--
+    open cur_SaleOrder;
+    --开始循环游标变量--
+    fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;
+    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+    begin         
+		BEGIN TRY   
+			BEGIN TRAN
+
+			exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, null, @Lot, 0, 1, @Qty, @now, '销售', @rowId, @SellBillNum;
+
+			--修改投料单行的确认状态
+			update WMS_Sale_Order set ConfirmStatus = '已确认', ConfirmMan = @UserId, ConfirmDate = @now,
+					ConfirmMessage = '',
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+
+			set @countOK = @countOK + 1;
+			COMMIT TRAN;
+ 		END TRY
+		BEGIN CATCH
+			IF @@TRANCOUNT > 0
+				ROLLBACK TRAN ;
+
+			--报错确认的错误信息
+			set @countError = @countError + 1;
+			update WMS_Sale_Order set ConfirmMessage = ERROR_MESSAGE(),
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+		END CATCH
+
+		--转到下一个游标，没有会死循环
+        fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;  
+    end    
+    close cur_SaleOrder  --关闭游标
+    deallocate cur_SaleOrder   --释放游标
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRAN ;
+
+	IF (@countError > 0)
+	BEGIN
+		set @ReturnValue = '销售订单确认成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
+		RETURN;
+	END
+END
+
+GO
+
+
+CREATE OR ALTER    PROCEDURE [dbo].[P_WMS_PrintSaleOrder]
+	@UserId varchar(50),
+	@SaleBillNum nvarchar(50),
+	@SellBillNum	varchar(50) OUTPUT,
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now date = getdate()
+	DECLARE @PartId int;
+	DECLARE @InvId int;
+	DECLARE @SubInvId int;
+	DECLARE @Lot varchar(50);
+	DECLARE @Qty decimal(10, 3);
+	DECLARE @rowId int;
+	DECLARE @countOK int = 0;
+	DECLARE @countError int = 0;
+
+	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
+	--exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
+
+	--获取当前的单据编号
+	exec P_WMS_GetMaxNum 'XS', 'WMS_Sale_Order', @now, @SellBillNum output
+
+	--进行库存备料
+	DECLARE cur_SaleOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, Qty * -1
+											from WMS_Sale_Order
+											where SaleBillNum = @SaleBillNum
+											  and PrintStaus = '未打印');
+    --打开游标--
+    open cur_SaleOrder;
+    --开始循环游标变量--
+    fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;
+    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+    begin         
+		BEGIN TRY   
+			BEGIN TRAN
+
+			exec P_WMS_InvStock @UserId, @PartId, @InvId, null, @Lot, @Qty, @now, '销售', @rowId, @SellBillNum;
+
+			--修改投料单行的打印状态
+			update WMS_Sale_Order set SellBillNum = @SellBillNum,
+					PrintStaus = '已打印', PrintMan = @UserId, PrintDate = @now,
+					ConfirmMessage = '',
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+
+			set @countOK = @countOK + 1;
+			COMMIT TRAN;
+ 		END TRY
+		BEGIN CATCH
+			IF @@TRANCOUNT > 0
+				ROLLBACK TRAN ;
+
+			--报错确认的错误信息
+			set @countError = @countError + 1;
+			update WMS_Sale_Order set ConfirmMessage = ERROR_MESSAGE(),
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+		END CATCH
+
+		--转到下一个游标，没有会死循环
+        fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;  
+    end    
+    close cur_SaleOrder  --关闭游标
+    deallocate cur_SaleOrder   --释放游标
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRAN ;
+
+	IF (@countError > 0)
+	BEGIN
+		set @ReturnValue = '销售订单备料成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
+		RETURN;
+	END
+END
+
+GO
+
