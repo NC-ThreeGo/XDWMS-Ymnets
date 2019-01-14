@@ -24,41 +24,30 @@ using Apps.Models.WMS;
 using Apps.IBLL.WMS;
 namespace Apps.BLL.WMS
 {
-	public partial class WMS_Sale_OrderBLL: Virtual_WMS_Sale_OrderBLL,IWMS_Sale_OrderBLL
+	public partial class WMS_Inventory_HBLL: Virtual_WMS_Inventory_HBLL,IWMS_Inventory_HBLL
 	{
         
 
 	}
-	public class Virtual_WMS_Sale_OrderBLL
+	public class Virtual_WMS_Inventory_HBLL
 	{
         [Dependency]
-        public IWMS_Sale_OrderRepository m_Rep { get; set; }
+        public IWMS_Inventory_HRepository m_Rep { get; set; }
 
-		public virtual List<WMS_Sale_OrderModel> GetList(ref GridPager pager, string queryStr)
+		public virtual List<WMS_Inventory_HModel> GetList(ref GridPager pager, string queryStr)
         {
 
-            IQueryable<WMS_Sale_Order> queryData = null;
+            IQueryable<WMS_Inventory_H> queryData = null;
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
 								
-								a=>a.SaleBillNum.Contains(queryStr)
-								|| a.SellBillNum.Contains(queryStr)
+								a=>a.InventoryBillNum.Contains(queryStr)
+								|| a.InventoryTitle.Contains(queryStr)
+								|| a.InventoryPerson.Contains(queryStr)
 								
-								
-								
-								
-								
-								
-								
-								|| a.Lot.Contains(queryStr)
+								|| a.InventoryStatus.Contains(queryStr)
 								|| a.Remark.Contains(queryStr)
-								|| a.PrintStaus.Contains(queryStr)
-								
-								|| a.PrintMan.Contains(queryStr)
-								|| a.ConfirmStatus.Contains(queryStr)
-								|| a.ConfirmMan.Contains(queryStr)
-								
 								|| a.Attr1.Contains(queryStr)
 								|| a.Attr2.Contains(queryStr)
 								|| a.Attr3.Contains(queryStr)
@@ -68,7 +57,6 @@ namespace Apps.BLL.WMS
 								
 								|| a.ModifyPerson.Contains(queryStr)
 								
-								|| a.ConfirmMessage.Contains(queryStr)
 								);
             }
             else
@@ -81,40 +69,29 @@ namespace Apps.BLL.WMS
             return CreateModelList(ref queryData);
         }
 
-		public virtual List<WMS_Sale_OrderModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
+		public virtual List<WMS_Inventory_HModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
 		{
-			return new List<WMS_Sale_OrderModel>();
+			return new List<WMS_Inventory_HModel>();
 		}
 		
-		public virtual List<WMS_Sale_OrderModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
+		public virtual List<WMS_Inventory_HModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
         {
-			return new List<WMS_Sale_OrderModel>();
+			return new List<WMS_Inventory_HModel>();
 		}
 
-        public virtual List<WMS_Sale_OrderModel> CreateModelList(ref IQueryable<WMS_Sale_Order> queryData)
+        public virtual List<WMS_Inventory_HModel> CreateModelList(ref IQueryable<WMS_Inventory_H> queryData)
         {
 
-            List<WMS_Sale_OrderModel> modelList = (from r in queryData
-                                              select new WMS_Sale_OrderModel
+            List<WMS_Inventory_HModel> modelList = (from r in queryData
+                                              select new WMS_Inventory_HModel
                                               {
 													Id = r.Id,
-													SaleBillNum = r.SaleBillNum,
-													SellBillNum = r.SellBillNum,
-													PlanDeliveryDate = r.PlanDeliveryDate,
-													CustomerId = r.CustomerId,
-													PartId = r.PartId,
-													Qty = r.Qty,
-													BoxQty = r.BoxQty,
-													InvId = r.InvId,
-													SubInvId = r.SubInvId,
-													Lot = r.Lot,
+													InventoryBillNum = r.InventoryBillNum,
+													InventoryTitle = r.InventoryTitle,
+													InventoryPerson = r.InventoryPerson,
+													InventoryTime = r.InventoryTime,
+													InventoryStatus = r.InventoryStatus,
 													Remark = r.Remark,
-													PrintStaus = r.PrintStaus,
-													PrintDate = r.PrintDate,
-													PrintMan = r.PrintMan,
-													ConfirmStatus = r.ConfirmStatus,
-													ConfirmMan = r.ConfirmMan,
-													ConfirmDate = r.ConfirmDate,
 													Attr1 = r.Attr1,
 													Attr2 = r.Attr2,
 													Attr3 = r.Attr3,
@@ -124,42 +101,30 @@ namespace Apps.BLL.WMS
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
-													ConfirmMessage = r.ConfirmMessage,
           
                                               }).ToList();
 
             return modelList;
         }
 
-        public virtual bool Create(ref ValidationErrors errors, WMS_Sale_OrderModel model)
+        public virtual bool Create(ref ValidationErrors errors, WMS_Inventory_HModel model)
         {
             try
             {
-                WMS_Sale_Order entity = m_Rep.GetById(model.Id);
+                WMS_Inventory_H entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
-                entity = new WMS_Sale_Order();
+                entity = new WMS_Inventory_H();
                				entity.Id = model.Id;
-				entity.SaleBillNum = model.SaleBillNum;
-				entity.SellBillNum = model.SellBillNum;
-				entity.PlanDeliveryDate = model.PlanDeliveryDate;
-				entity.CustomerId = model.CustomerId;
-				entity.PartId = model.PartId;
-				entity.Qty = model.Qty;
-				entity.BoxQty = model.BoxQty;
-				entity.InvId = model.InvId;
-				entity.SubInvId = model.SubInvId;
-				entity.Lot = model.Lot;
+				entity.InventoryBillNum = model.InventoryBillNum;
+				entity.InventoryTitle = model.InventoryTitle;
+				entity.InventoryPerson = model.InventoryPerson;
+				entity.InventoryTime = model.InventoryTime;
+				entity.InventoryStatus = model.InventoryStatus;
 				entity.Remark = model.Remark;
-				entity.PrintStaus = model.PrintStaus;
-				entity.PrintDate = model.PrintDate;
-				entity.PrintMan = model.PrintMan;
-				entity.ConfirmStatus = model.ConfirmStatus;
-				entity.ConfirmMan = model.ConfirmMan;
-				entity.ConfirmDate = model.ConfirmDate;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
 				entity.Attr3 = model.Attr3;
@@ -169,7 +134,6 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
-				entity.ConfirmMessage = model.ConfirmMessage;
   
 
                 if (m_Rep.Create(entity))
@@ -246,34 +210,23 @@ namespace Apps.BLL.WMS
 		
        
 
-        public virtual bool Edit(ref ValidationErrors errors, WMS_Sale_OrderModel model)
+        public virtual bool Edit(ref ValidationErrors errors, WMS_Inventory_HModel model)
         {
             try
             {
-                WMS_Sale_Order entity = m_Rep.GetById(model.Id);
+                WMS_Inventory_H entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
                               				entity.Id = model.Id;
-				entity.SaleBillNum = model.SaleBillNum;
-				entity.SellBillNum = model.SellBillNum;
-				entity.PlanDeliveryDate = model.PlanDeliveryDate;
-				entity.CustomerId = model.CustomerId;
-				entity.PartId = model.PartId;
-				entity.Qty = model.Qty;
-				entity.BoxQty = model.BoxQty;
-				entity.InvId = model.InvId;
-				entity.SubInvId = model.SubInvId;
-				entity.Lot = model.Lot;
+				entity.InventoryBillNum = model.InventoryBillNum;
+				entity.InventoryTitle = model.InventoryTitle;
+				entity.InventoryPerson = model.InventoryPerson;
+				entity.InventoryTime = model.InventoryTime;
+				entity.InventoryStatus = model.InventoryStatus;
 				entity.Remark = model.Remark;
-				entity.PrintStaus = model.PrintStaus;
-				entity.PrintDate = model.PrintDate;
-				entity.PrintMan = model.PrintMan;
-				entity.ConfirmStatus = model.ConfirmStatus;
-				entity.ConfirmMan = model.ConfirmMan;
-				entity.ConfirmDate = model.ConfirmDate;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
 				entity.Attr3 = model.Attr3;
@@ -283,7 +236,6 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
-				entity.ConfirmMessage = model.ConfirmMessage;
  
 
 
@@ -308,30 +260,19 @@ namespace Apps.BLL.WMS
 
       
 
-        public virtual WMS_Sale_OrderModel GetById(object id)
+        public virtual WMS_Inventory_HModel GetById(object id)
         {
             if (IsExists(id))
             {
-                WMS_Sale_Order entity = m_Rep.GetById(id);
-                WMS_Sale_OrderModel model = new WMS_Sale_OrderModel();
+                WMS_Inventory_H entity = m_Rep.GetById(id);
+                WMS_Inventory_HModel model = new WMS_Inventory_HModel();
                               				model.Id = entity.Id;
-				model.SaleBillNum = entity.SaleBillNum;
-				model.SellBillNum = entity.SellBillNum;
-				model.PlanDeliveryDate = entity.PlanDeliveryDate;
-				model.CustomerId = entity.CustomerId;
-				model.PartId = entity.PartId;
-				model.Qty = entity.Qty;
-				model.BoxQty = entity.BoxQty;
-				model.InvId = entity.InvId;
-				model.SubInvId = entity.SubInvId;
-				model.Lot = entity.Lot;
+				model.InventoryBillNum = entity.InventoryBillNum;
+				model.InventoryTitle = entity.InventoryTitle;
+				model.InventoryPerson = entity.InventoryPerson;
+				model.InventoryTime = entity.InventoryTime;
+				model.InventoryStatus = entity.InventoryStatus;
 				model.Remark = entity.Remark;
-				model.PrintStaus = entity.PrintStaus;
-				model.PrintDate = entity.PrintDate;
-				model.PrintMan = entity.PrintMan;
-				model.ConfirmStatus = entity.ConfirmStatus;
-				model.ConfirmMan = entity.ConfirmMan;
-				model.ConfirmDate = entity.ConfirmDate;
 				model.Attr1 = entity.Attr1;
 				model.Attr2 = entity.Attr2;
 				model.Attr3 = entity.Attr3;
@@ -341,7 +282,6 @@ namespace Apps.BLL.WMS
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
-				model.ConfirmMessage = entity.ConfirmMessage;
  
                 return model;
             }
@@ -355,7 +295,7 @@ namespace Apps.BLL.WMS
 		 /// <summary>
         /// 校验Excel数据,这个方法一般用于重写校验逻辑
         /// </summary>
-        public virtual bool CheckImportData(string fileName, List<WMS_Sale_OrderModel> list,ref ValidationErrors errors )
+        public virtual bool CheckImportData(string fileName, List<WMS_Inventory_HModel> list,ref ValidationErrors errors )
         {
           
             var targetFile = new FileInfo(fileName);
@@ -370,60 +310,37 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SaleBillNum, "销售单号（业务）");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SellBillNum, "销售单号（系统）");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PlanDeliveryDate, "计划发货日期");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CustomerId, "客户");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartId, "物料Id");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Qty, "数量");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.BoxQty, "箱数");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvId, "库存");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SubInvId, "子库存");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Lot, "批次号：YYYYMM");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Remark, "备注");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintStaus, "打印状态");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintDate, "打印日期");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintMan, "打印人");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmStatus, "确认状态");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmMan, "确认人");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmDate, "确认时间");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr1, "Attr1");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr2, "Attr2");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr3, "Attr3");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr4, "Attr4");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr5, "Attr5");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CreatePerson, "创建人");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CreateTime, "创建时间");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ModifyPerson, "修改人");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmMessage, "ConfirmMessage");
+			 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryBillNum, "盘点单号");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryTitle, "盘点名称");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryPerson, "盘点人");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryTime, "盘点时间");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryStatus, "盘点状态");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Remark, "备注");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr1, "Attr1");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr2, "Attr2");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr3, "Attr3");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr4, "Attr4");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr5, "Attr5");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.CreatePerson, "创建人");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.ModifyPerson, "修改人");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.ModifyTime, "修改时间");
  
             //SheetName
-            var excelContent = excelFile.Worksheet<WMS_Sale_OrderModel>(0);
+            var excelContent = excelFile.Worksheet<WMS_Inventory_HModel>(0);
             int rowIndex = 1;
             //检查数据正确性
             foreach (var row in excelContent)
             {
                 var errorMessage = new StringBuilder();
-                var entity = new WMS_Sale_OrderModel();
+                var entity = new WMS_Inventory_HModel();
 						 				  entity.Id = row.Id;
-				  entity.SaleBillNum = row.SaleBillNum;
-				  entity.SellBillNum = row.SellBillNum;
-				  entity.PlanDeliveryDate = row.PlanDeliveryDate;
-				  entity.CustomerId = row.CustomerId;
-				  entity.PartId = row.PartId;
-				  entity.Qty = row.Qty;
-				  entity.BoxQty = row.BoxQty;
-				  entity.InvId = row.InvId;
-				  entity.SubInvId = row.SubInvId;
-				  entity.Lot = row.Lot;
+				  entity.InventoryBillNum = row.InventoryBillNum;
+				  entity.InventoryTitle = row.InventoryTitle;
+				  entity.InventoryPerson = row.InventoryPerson;
+				  entity.InventoryTime = row.InventoryTime;
+				  entity.InventoryStatus = row.InventoryStatus;
 				  entity.Remark = row.Remark;
-				  entity.PrintStaus = row.PrintStaus;
-				  entity.PrintDate = row.PrintDate;
-				  entity.PrintMan = row.PrintMan;
-				  entity.ConfirmStatus = row.ConfirmStatus;
-				  entity.ConfirmMan = row.ConfirmMan;
-				  entity.ConfirmDate = row.ConfirmDate;
 				  entity.Attr1 = row.Attr1;
 				  entity.Attr2 = row.Attr2;
 				  entity.Attr3 = row.Attr3;
@@ -433,7 +350,6 @@ namespace Apps.BLL.WMS
 				  entity.CreateTime = row.CreateTime;
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
-				  entity.ConfirmMessage = row.ConfirmMessage;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -457,7 +373,7 @@ namespace Apps.BLL.WMS
         /// <summary>
         /// 保存数据
         /// </summary>
-        public virtual void SaveImportData(IEnumerable<WMS_Sale_OrderModel> list)
+        public virtual void SaveImportData(IEnumerable<WMS_Inventory_HModel> list)
         {
             try
             {
@@ -465,25 +381,14 @@ namespace Apps.BLL.WMS
                 {
                     foreach (var model in list)
                     {
-                        WMS_Sale_Order entity = new WMS_Sale_Order();
+                        WMS_Inventory_H entity = new WMS_Inventory_H();
                        						entity.Id = 0;
-						entity.SaleBillNum = model.SaleBillNum;
-						entity.SellBillNum = model.SellBillNum;
-						entity.PlanDeliveryDate = model.PlanDeliveryDate;
-						entity.CustomerId = model.CustomerId;
-						entity.PartId = model.PartId;
-						entity.Qty = model.Qty;
-						entity.BoxQty = model.BoxQty;
-						entity.InvId = model.InvId;
-						entity.SubInvId = model.SubInvId;
-						entity.Lot = model.Lot;
+						entity.InventoryBillNum = model.InventoryBillNum;
+						entity.InventoryTitle = model.InventoryTitle;
+						entity.InventoryPerson = model.InventoryPerson;
+						entity.InventoryTime = model.InventoryTime;
+						entity.InventoryStatus = model.InventoryStatus;
 						entity.Remark = model.Remark;
-						entity.PrintStaus = model.PrintStaus;
-						entity.PrintDate = model.PrintDate;
-						entity.PrintMan = model.PrintMan;
-						entity.ConfirmStatus = model.ConfirmStatus;
-						entity.ConfirmMan = model.ConfirmMan;
-						entity.ConfirmDate = model.ConfirmDate;
 						entity.Attr1 = model.Attr1;
 						entity.Attr2 = model.Attr2;
 						entity.Attr3 = model.Attr3;
@@ -493,9 +398,8 @@ namespace Apps.BLL.WMS
 						entity.CreateTime = ResultHelper.NowTime;
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
-						entity.ConfirmMessage = model.ConfirmMessage;
  
-                        db.WMS_Sale_Order.Add(entity);
+                        db.WMS_Inventory_H.Add(entity);
                     }
                     db.SaveChanges();
                 }
