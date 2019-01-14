@@ -63,5 +63,6 @@ namespace Apps.IBLL.WMS
         /// <param name="opt"></param>
         /// <param name="returnOrderNum"></param>
         bool ConfirmReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
+        bool CancelReturnOrder(ref ValidationErrors errors, string opt, int aiId);
     }
 }
