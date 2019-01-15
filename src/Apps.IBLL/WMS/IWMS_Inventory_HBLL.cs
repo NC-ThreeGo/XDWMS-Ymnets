@@ -27,5 +27,14 @@ namespace Apps.IBLL.WMS
          /// <param name="pager"></param>
          /// <param name="whereStr"></param>
          List<WMS_Inventory_HModel> GetListByWhere(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 创建盘点表的行
+        /// </summary>
+        /// <param name="oper"></param>
+        /// <param name="headId"></param>
+        /// <param name="invList"></param>
+        /// <returns></returns>
+        bool CreateInventoryD(ref ValidationErrors errors, string oper, int headId, string invList);
     }
 }

@@ -361,6 +361,7 @@
     <Compile Include="WC\IWC_GroupRepository.cs" />
     <Compile Include="WC\IWC_MessageResponseRepository.cs" />
     <Compile Include="WC\IWC_OfficalAccountsRepository.cs" />
+    <Compile Include="WMS\IWMS_InventoryHRepository.cs" />
     <Compile Include="WMS\IWMS_SaleOrderRepository.cs" />
     <Compile Include="WMS\IWMS_ReInspectRepository.cs" />
     <Compile Include="WMS\IWMS_Inv_AdjustRepository.cs" />

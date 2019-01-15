@@ -197,6 +197,28 @@ namespace Apps.BLL.WMS
 			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
 			return CreateModelList(ref queryData);
 		}
+
+        public bool CreateInventoryD(ref ValidationErrors errors, string oper, int headId, string invList)
+        {
+            try
+            {
+                var rtn = m_Rep.CreateInventoryD(oper, headId, invList);
+                if (String.IsNullOrEmpty(rtn))
+                {
+                    return true;
+                }
+                else
+                {
+                    errors.Add(rtn);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return false;
+            }
+        }
     }
- }
+}
 

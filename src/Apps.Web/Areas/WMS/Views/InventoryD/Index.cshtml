@@ -8,204 +8,223 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
-<div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
-<form name = "form1" method="post" id="form1">
-    <table>
-        <tr>
-            <th style="padding:20px;"> Excel：</th>
-            <td style="padding:20px;">
-                <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
-                <a href = "javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
-                <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
-                <span class="uploading">@Resource.Uploading</span>
-            </td>
-        </tr>
-        <tr>
-            <th style="padding:20px;"> 导入状态：</th>
-            <td style="padding:20px;">
-                <label id="importMessage"></label>
-                <a id="importResultFile" href="">         点击查看导入结果</a>
-            </td>
-        </tr>
-    </table>
-    <div class="endbtndiv">
-        <a id = "btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
-        <a id = "btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
-    </div>
-</form>
+<div id="uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+    <form name="form1" method="post" id="form1">
+        <table>
+            <tr>
+                <th style="padding:20px;"> Excel：</th>
+                <td style="padding:20px;">
+                    <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                    <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                    <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="padding:20px;"> 导入状态：</th>
+                <td style="padding:20px;">
+                    <label id="importMessage"></label>
+                    <a id="importResultFile" href="">         点击查看导入结果</a>
+                </td>
+            </tr>
+        </table>
+        <div class="endbtndiv">
+            <a id="btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+            <a id="btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+        </div>
+    </form>
 </div>
 <table style="width:100%">
-<tbody>
-    <tr>
-        <td style="width:330px;vertical-align: top">
-             <div class="mvctool">
-             </div>
-            <table id="ListParent"></table>
-        </td>        <td style="width:3px;"></td>
-        <td style="vertical-align:top">
-             <div class="mvctool">
-                 <input id="txtQuery" type="text" class="searchText" />
-                 @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-                 @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-                 @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-                 @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
-                 @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
-                 @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
-                 @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
-             </div>
-            <table id="List"></table>
-        </td>
-    </tr>
-</tbody>
+    <tbody>
+        <tr>
+            <td style="width:330px;vertical-align: top">
+                <div class="mvctool">
+                    @Html.ToolButton("btnCreate", "fa fa-plus", "生成盘点表", ref perm, "Create", true)
+                    @*@Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+                    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)*@
+                    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
+                    @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
+                    @*@Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)*@
+                    @Html.ToolButton("btnApprove", "fa fa-pencil", "盘点调整", ref perm, "Check", true)
+                </div>
+                <table id="ListParent"></table>
+            </td>
+            <td style="width:3px;"></td>
+            <td style="vertical-align:top">
+                <div class="mvctool">
+                    <input id="txtQuery" type="text" class="searchText" />
+                    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+                </div>
+                <table id="List"></table>
+            </td>
+        </tr>
+    </tbody>
 </table>
 
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <script type="text/javascript">
-    $(function () {
-        $('#ListParent').datagrid({
-            url: '@Url.Action("GetListParent")',
-            width:430,
-            methord: 'post',
-            height: SetGridHeightSub(45),
-            fitColumns: true,
-            sortName: 'CreateTime',
-            sortOrder: 'desc',
-            idField: 'Id',
-            pageSize: 15,
-            pageList: [15, 20, 30, 40, 50],
-            pagination: true,
-            striped: true, //奇偶行是否区分
-            singleSelect: true,//单选模式
-            //rownumbers: true,//行号
-            onLoadSuccess: function(data) {            },
-            columns: [[
-                { field: 'Id', title: 'ID', width: 80,hidden:true },
-                { field: 'InventoryBillNum', title: '盘点单号', width: 130,sortable:true },
-                { field: 'InventoryTitle', title: '盘点名称', width: 80,sortable:true },
-                { field: 'InventoryPerson', title: '盘点人', width: 80,sortable:true },
-                { field: 'InventoryTime', title: '盘点时间', width: 80,sortable:true },
-                { field: 'InventoryStatus', title: '盘点状态', width: 80,sortable:true },
-            ]]
-         ,onClickRow: function(index, row) {
-             $('#List').datagrid("load", { ParentId: row.Id });
-}
-        }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
-         $(window).resize(function() {
-             resizeLayout();
-         });
-        $('#List').datagrid({
-            url: '@Url.Action("GetList")?parentId=0',
-            width:SetGridWidthSub(450),
-            methord: 'post',
-            height: SetGridHeightSub(45),
-            fitColumns: true,
-            sortName: 'CreateTime',
-            sortOrder: 'desc',
-            idField: 'Id',
-            pageSize: 15,
-            pageList: [15, 20, 30, 40, 50],
-            pagination: true,
-            striped: true, //奇偶行是否区分
-            singleSelect: true,//单选模式
-            //rownumbers: true,//行号
-            onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
-            },
-            columns: [[
-                { field: 'Id', title: 'Id', width: 80,hidden:true },
-                { field: 'HeadId', title: 'HeadId', width: 80,sortable:true },
-                { field: 'PartId', title: '物料', width: 80,sortable:true },
-                { field: 'InventoryQty', title: '盘点数量', width: 80,sortable:true },
-                { field: 'InvId', title: '库存', width: 80,sortable:true },
-                { field: 'SubInvId', title: '子库存', width: 80,sortable:true },
-                { field: 'Lot', title: '批次号', width: 80, sortable: true },
-                { field: 'Remark', title: '备注', width: 80,sortable:true },
-            ]]
-        });
-    });
-    //ifram 返回
-    function frameReturnByClose() {
-        $("#modalwindow").window('close');
-    }
-    function frameReturnByReload(flag) {
-        if (flag)
-        {
-            $("#List").datagrid('load');
+            $(function () {
+                $('#ListParent').datagrid({
+                    url: '@Url.Action("GetListParent")',
+                    width:430,
+                    methord: 'post',
+                    height: SetGridHeightSub(45),
+                    fitColumns: true,
+                    sortName: 'CreateTime',
+                    sortOrder: 'desc',
+                    idField: 'Id',
+                    pageSize: 15,
+                    pageList: [15, 20, 30, 40, 50],
+                    pagination: true,
+                    striped: true, //奇偶行是否区分
+                    singleSelect: true,//单选模式
+                    //rownumbers: true,//行号
+                    onLoadSuccess: function(data) {            },
+                    columns: [[
+                        { field: 'Id', title: 'ID', width: 80,hidden:true },
+                        { field: 'InventoryBillNum', title: '盘点单号', width: 130,sortable:true },
+                        { field: 'InventoryTitle', title: '盘点名称', width: 80,sortable:true },
+                        { field: 'InventoryPerson', title: '盘点人', width: 80,sortable:true },
+                        { field: 'InventoryTime', title: '盘点时间', width: 80,sortable:true },
+                        { field: 'InventoryStatus', title: '盘点状态', width: 80,sortable:true },
+                    ]]
+                 ,onClickRow: function(index, row) {
+                     $('#List').datagrid("load", { ParentId: row.Id });
         }
-        else
-        {
-            $("#List,#ListParent").datagrid('reload');
-        }
-    }
-    function frameReturnByMes(mes) {
-        $.messageBox5s(Lang.Tip, mes);
-    }
-    $(function () {
-        $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
-        });
-        $("#btnEdit").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
-        });
-        $("#btnDetails").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
-            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
-	        });
-        $("#btnQuery").click(function () {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+                }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
+                 $(window).resize(function() {
+                     resizeLayout();
+                 });
+                $('#List').datagrid({
+                    url: '@Url.Action("GetList")?parentId=0',
+                    width:SetGridWidthSub(450),
+                    methord: 'post',
+                    height: SetGridHeightSub(45),
+                    fitColumns: true,
+                    sortName: 'CreateTime',
+                    sortOrder: 'desc',
+                    idField: 'Id',
+                    pageSize: 15,
+                    pageList: [15, 20, 30, 40, 50],
+                    pagination: true,
+                    striped: true, //奇偶行是否区分
+                    singleSelect: true,//单选模式
+                    //rownumbers: true,//行号
+                    onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
+                    },
+                    columns: [[
+                        { field: 'Id', title: 'Id', width: 80,hidden:true },
+                        { field: 'HeadId', title: 'HeadId', width: 80,sortable:true },
+                        { field: 'InvCode', title: '库房编码', width: 80, sortable: true },
+                        { field: 'InvName', title: '库房名称', width: 80, sortable: true },
+                        //{ field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
+                        { field: 'PartCode', title: '物料编码', width: 60, sortable: true },
+                        { field: 'PartName', title: '物料名称', width: 60, sortable: true },
+                        { field: 'Lot', title: '批次号', width: 80, sortable: true },
+                        { field: 'SnapshootQty', title: '库存数量', width: 80, sortable: true, align: 'right' },
+                        { field: 'InventoryQty', title: '盘点数量', width: 80, sortable: true, align: 'right' },
+                    ]]
+                });
+            });
+            //ifram 返回
+            function frameReturnByClose() {
+                $("#modalwindow").window('close');
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
-
-        });
-        $("#btnDelete").click(function () {
-	            dataDelete("@Url.Action("Delete")", "List");
-	        });
-        $("#btnImport").click(function() {
-             $("#txtExcelPath").val("");
-             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
-        });
-        $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
-            }
-          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
-                if (data.type == 1)
+            function frameReturnByReload(flag) {
+                if (flag)
                 {
-                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                    $("#List").datagrid('load');
                 }
                 else
                 {
-                $.messageBox5s(Lang.Tip, data.message);
+                    $("#List,#ListParent").datagrid('reload');
                 }
-            }, "json");
-        });
-        $("#btnExportTemplate").click(function() {
-          window.location = "@Url.Action("ExportTemplate")";
-        });
-    });
-    function ImportData()
-    {
-        showLoading();
-        var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
-        $.post(url, function(data) {
-            if (data.type == 1)
-            {
-             $("#List").datagrid('load');
-             $('#uploadExcel').window('close');
-             $('#FileUpload').val('');
             }
-            hideLoading();
-            $.messageBox5s('提示', data.message);
-            $('#importMessage').html(data.message);
-            $('#importResultFile').attr('href', data.value); 
-        }, "json");
-    }
+            function frameReturnByMes(mes) {
+                $.messageBox5s(Lang.Tip, mes);
+            }
+            $(function () {
+                $("#btnCreate").click(function () {
+                    var row = $('#ListParent').datagrid('getSelected');
+                    if (row != null) 
+                    {
+                        if (row.InventoryStatus == '未生成')
+                        {
+                            $.modalWindow(Lang.Edit, '@Url.Action("Create")?headerId=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
+                        }
+                        else
+                        {
+                            $.messageBox5s(Lang.Tip, '你选择的盘点已生成盘点表，不能重复生成！');
+                        }
+                    }
+                    else
+                    {
+                        $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords');
+                    }
+                });
+                $("#btnEdit").click(function () {
+                    var row = $('#List').datagrid('getSelected');
+                    if (row != null) {
+                        $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
+                    } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+                });
+                $("#btnDetails").click(function () {
+                    var row = $('#List').datagrid('getSelected');
+                    if (row != null) {
+                        $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
+                    } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
+                    });
+                $("#btnQuery").click(function () {
+                    var queryStr = $("#txtQuery").val();
+                    if (queryStr == null) {
+                        queryStr = "%";
+                    }
+                    $("#List").datagrid("load", { queryStr: queryStr });
+
+                });
+                $("#btnDelete").click(function () {
+                        dataDelete("@Url.Action("Delete")", "List");
+                    });
+                $("#btnImport").click(function() {
+                     $("#txtExcelPath").val("");
+                     $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+                });
+                $("#btnExport").click(function() {
+                    var queryStr = $("#txtQuery").val();
+                    if (queryStr == null) {
+                        queryStr = "%";
+                    }
+                  $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
+                        if (data.type == 1)
+                        {
+                            window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                        }
+                        else
+                        {
+                        $.messageBox5s(Lang.Tip, data.message);
+                        }
+                    }, "json");
+                });
+                $("#btnExportTemplate").click(function() {
+                  window.location = "@Url.Action("ExportTemplate")";
+                });
+            });
+            function ImportData()
+            {
+                showLoading();
+                var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
+                $.post(url, function(data) {
+                    if (data.type == 1)
+                    {
+                     $("#List").datagrid('load');
+                     $('#uploadExcel').window('close');
+                     $('#FileUpload').val('');
+                    }
+                    hideLoading();
+                    $.messageBox5s('提示', data.message);
+                    $('#importMessage').html(data.message);
+                    $('#importResultFile').attr('href', data.value);
+                }, "json");
+            }
 </script>
 

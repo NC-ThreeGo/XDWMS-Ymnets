@@ -7,6 +7,19 @@ namespace Apps.Models.WMS
     {
         [Display(Name = "类别名称")]
         public string Inventory_HName { get; set; }
-     }
+
+        [Display(Name = "物料编码")]
+        public string PartCode { get; set; }
+
+        [Display(Name = "物料名称")]
+        public string PartName { get; set; }
+
+        [Display(Name = "库房")]
+        public string InvCode { get; set; }
+        public string InvName { get; set; }
+
+        [Display(Name = "子库房")]
+        public string SubInvName { get; set; }
+    }
 }
 

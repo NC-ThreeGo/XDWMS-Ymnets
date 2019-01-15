@@ -900,5 +900,22 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_PrintSaleOrder", userIdParameter, saleBillNumParameter, sellBillNum, returnValue);
         }
+    
+        public virtual int P_WMS_CreateInventoryLine(string userId, Nullable<int> headId, string jsonInvList, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var headIdParameter = headId.HasValue ?
+                new ObjectParameter("HeadId", headId) :
+                new ObjectParameter("HeadId", typeof(int));
+    
+            var jsonInvListParameter = jsonInvList != null ?
+                new ObjectParameter("JsonInvList", jsonInvList) :
+                new ObjectParameter("JsonInvList", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateInventoryLine", userIdParameter, headIdParameter, jsonInvListParameter, returnValue);
+        }
     }
 }

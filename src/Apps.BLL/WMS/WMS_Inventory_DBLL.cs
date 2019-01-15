@@ -67,7 +67,15 @@ namespace Apps.BLL.WMS
                                                   PartId = r.PartId,
                                                   Remark = r.Remark,
                                                   SubInvId = r.SubInvId,
+                                                  Lot = r.Lot,
+                                                  SnapshootQty = r.SnapshootQty,
                                                   Inventory_HName = r.WMS_Inventory_H.InventoryTitle,
+
+                                                  PartCode = r.WMS_Part.PartCode,
+                                                  PartName = r.WMS_Part.PartName,
+                                                  InvCode = r.WMS_InvInfo.InvCode,
+                                                  InvName = r.WMS_InvInfo.InvName,
+                                                  SubInvName = r.WMS_SubInvInfo.SubInvName,
                                               }).ToList();
             return modelList;
         }
@@ -230,5 +238,5 @@ namespace Apps.BLL.WMS
 			return CreateModelList(ref queryData);
 		}
     }
- }
+}
 

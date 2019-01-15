@@ -1160,6 +1160,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HeadId" Type="int" Nullable="false" />
           <Property Name="PartId" Type="int" Nullable="false" />
+          <Property Name="SnapshootQty" Type="decimal" Precision="10" Scale="3" />
           <Property Name="InventoryQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="InvId" Type="int" Nullable="false" />
           <Property Name="SubInvId" Type="int" />
@@ -3020,6 +3021,12 @@
           <Parameter Name="ArrivalBillNum" Type="varchar" Mode="In" />
           <Parameter Name="InspectBillNum" Type="varchar" Mode="InOut" />
         </Function>
+        <Function Name="P_WMS_CreateInventoryLine" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="HeadId" Type="int" Mode="In" />
+          <Parameter Name="JsonInvList" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
         <Function Name="P_WMS_CreateReInspect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="AIID" Type="int" Mode="In" />
@@ -4399,6 +4406,12 @@
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
             <End Role="WMS_Inventory_D" EntitySet="WMS_Inventory_D" />
           </AssociationSet>
+          <FunctionImport Name="P_WMS_CreateInventoryLine">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="HeadId" Mode="In" Type="Int32" />
+            <Parameter Name="JsonInvList" Mode="In" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -7582,6 +7595,7 @@
           <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_Inventory_WMS_Inv" FromRole="WMS_Inventory_D" ToRole="WMS_InvInfo" />
           <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_Inventory_WMS_Part" FromRole="WMS_Inventory_D" ToRole="WMS_Part" />
           <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_Inventory_WMS_SubInvInfo" FromRole="WMS_Inventory_D" ToRole="WMS_SubInvInfo" />
+          <Property Name="SnapshootQty" Type="Decimal" Precision="10" Scale="3" />
         </EntityType>
         <Association Name="FK_WMS_Inventory_D_WMS_Inventory_H">
           <End Type="DB.WMS_Inventory_H" Role="WMS_Inventory_H" Multiplicity="1" />
@@ -9436,6 +9450,7 @@
           <EntitySetMapping Name="WMS_Inventory_D">
             <EntityTypeMapping TypeName="DB.WMS_Inventory_D">
               <MappingFragment StoreEntitySet="WMS_Inventory_D">
+                <ScalarProperty Name="SnapshootQty" ColumnName="SnapshootQty" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
@@ -9456,6 +9471,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="P_WMS_CreateInventoryLine" FunctionName="DB.Store.P_WMS_CreateInventoryLine" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
