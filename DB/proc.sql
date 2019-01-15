@@ -1859,3 +1859,77 @@ END
 
 GO
 
+CREATE OR ALTER PROCEDURE [dbo].[P_WMS_CreateInventoryLine]
+	@UserId varchar(50),
+	@HeadId int,
+	@JsonInvList NVARCHAR(MAX), --盘点的库房
+	@ReturnValue	varchar(500) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @InspectBillNum varchar(50)
+	DECLARE @now date = getdate();
+	DECLARE @InventoryStatus nvarchar(10);
+
+	select @InventoryStatus = InventoryStatus
+		from WMS_Inventory_H
+		where id = @HeadId;
+	IF (@InventoryStatus <> '未生成')
+	BEGIN
+		;
+		THROW 51000, '盘点表已生成，请确认！', 1;
+		RETURN
+	END;
+
+
+	--将盘点的库房保存到临时表
+	SELECT *
+		INTO #InvList
+		FROM OPENJSON(@JsonInvList)  
+			WITH (	Id int
+				);
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '临时保存盘点库房时出错！'
+		RETURN
+	END
+
+	BEGIN TRAN
+
+	--插入盘点行表
+	insert into WMS_Inventory_D (HeadId,
+								PartId,
+								InvId,
+								SubInvId,
+								Lot,
+								SnapshootQty,
+								InventoryQty,
+								CreatePerson,
+								CreateTime
+								)
+					select		@HeadId,
+								PartId,
+								InvId,
+								SubInvId,
+								Lot,
+								Qty,
+								0,
+								@UserId,
+								@now
+						from WMS_Inv inv
+						where inv.InvId in (select id from #InvList);
+
+	--修改盘点头表状态
+	update WMS_Inventory_H set InventoryStatus = '已生成',
+								ModifyPerson = @UserId,
+								ModifyTime = @now
+			where Id = @HeadId;
+
+	COMMIT TRAN
+	RETURN
+END
+
+GO
+
