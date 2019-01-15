@@ -35,7 +35,8 @@ namespace Apps.Web.Areas.WMS.Controllers
             List<ReportType> ROTypes = new List<ReportType>();
             //ROTypes.Add(new ReportType() { Type = 0, Name = "" });
             ROTypes.Add(new ReportType() { Type = 2, Name = "已退货" });
-            ROTypes.Add(new ReportType() { Type = 1, Name = "未退货" });            
+            ROTypes.Add(new ReportType() { Type = 1, Name = "未退货" });
+            ROTypes.Add(new ReportType() { Type = 3, Name = "已失效" });
             ViewBag.ReturnOrderStatus = new SelectList(ROTypes, "Name", "Name");
 
             return View();
@@ -58,16 +59,17 @@ namespace Apps.Web.Areas.WMS.Controllers
                 query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
                 query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
             }
+            if (returnOrderStatus == "已失效")
+            {
+                query += " 1=1 ";
+                if (!String.IsNullOrEmpty(returnOrderNum))
+                    query += "&&ReturnOrderNum.Contains(\"" + returnOrderNum + "\")";
+                if (!String.IsNullOrEmpty(inspectBillNum))
+                    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            }
 
-            //if (!String.IsNullOrEmpty(inspectBillNum))
-            //    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
-            //if (!String.IsNullOrEmpty(supplierShortName))
-            //    query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
-            //if (!String.IsNullOrEmpty(partCode))
-            //    query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
-            //if (!String.IsNullOrEmpty(returnOrderStatus))
-            //    query += " && PrintStaus.Contains(\"" + returnOrderStatus + "\")";
-            
             if (returnOrderStatus == "已退货")
             {
                 query = "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")";
@@ -240,11 +242,12 @@ namespace Apps.Web.Areas.WMS.Controllers
         #region 删除
         [HttpPost]
         [SupportFilter]
-        public ActionResult Delete(long id)
+        public ActionResult Delete(int id)
         {
             if (id != 0)
             {
-                if (m_BLL.Delete(ref errors, id))
+                //if (m_BLL.Delete(ref errors, id))
+                if (m_BLL.CancelReturnOrder(ref errors, GetUserId(), id))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_ReturnOrder");
                     return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
@@ -440,7 +443,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Edit")]
         public JsonResult RetunOrderForPrintedGetList(GridPager pager)
         {
-            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"已退货\" && ConfirmStatus == \"未审核\"")
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"已退货\" && ConfirmStatus == \"未确认\"")
                 .GroupBy(p => new { p.ReturnOrderNum, p.SupplierId, p.SupplierShortName })
                 .Select(g => g.First())
                 //.Select(p => new WMS_ReturnOrderModel { ReturnOrderNum = p.ReturnOrderNum, SupplierId = p.SupplierId, SupplierShortName = p.SupplierShortName })

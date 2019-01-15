@@ -262,9 +262,9 @@
         });
         $("#btnReport").click(function() {
             var row = $('#List').datagrid('getSelected');
-            if (row != null) {
+            if (row != null && row.PrintStaus!='已失效') {
                 $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + row.ReturnOrderNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+            } else { $.messageBox5s(Lang.Tip, '请选择有效单据'); }
         });
     });
     function ImportData()
