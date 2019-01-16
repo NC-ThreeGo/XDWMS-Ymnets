@@ -127,7 +127,13 @@ namespace Apps.BLL.WMS
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
 													ConfirmMessage = r.ConfirmMessage,
-          
+                                                  AssemblyPartCode = r.WMS_Part.PartCode,
+                                                  AssemblyPartName = r.WMS_Part.PartName,
+                                                  SubAssemblyPartCode = r.WMS_Part1.PartCode,
+                                                  SubAssemblyPartName =  r.WMS_Part1.PartName,
+                                                  InvCode = r.WMS_InvInfo.InvCode,
+                                                  InvName =  r.WMS_InvInfo.InvName,
+
                                               }).ToList();
 
             return modelList;

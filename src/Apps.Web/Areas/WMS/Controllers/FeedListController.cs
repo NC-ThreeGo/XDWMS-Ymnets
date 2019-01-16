@@ -22,19 +22,50 @@ namespace Apps.Web.Areas.WMS.Controllers
         [Dependency]
         public IWMS_InvInfoBLL _InvInfoBll { get; set; }
 
+        [Dependency]
+        public IWMS_PartBLL m_PartBLL { get; set; }
+
         ValidationErrors errors = new ValidationErrors();
         
         [SupportFilter]
         public ActionResult Index()
         {
+            //定义打印状态下拉框的值
+            List<ReportType> PrintTypes = new List<ReportType>();
+            PrintTypes.Add(new ReportType() { Type = 0, Name = "" });
+            PrintTypes.Add(new ReportType() { Type = 1, Name = "未打印" });
+            PrintTypes.Add(new ReportType() { Type = 2, Name = "已打印" });
+            ViewBag.PrintStaus = new SelectList(PrintTypes, "Name", "Name");
+
+            //定义打印状态下拉框的值
+            List<ReportType> ConfirmTypes = new List<ReportType>();
+            ConfirmTypes.Add(new ReportType() { Type = 0, Name = "" });
+            ConfirmTypes.Add(new ReportType() { Type = 1, Name = "未确认" });
+            ConfirmTypes.Add(new ReportType() { Type = 2, Name = "已确认" });
+            ViewBag.ConfirmStatus = new SelectList(ConfirmTypes, "Name", "Name");
+
+
             return View();
         }
         [HttpPost]
         [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr)
+        public JsonResult GetList(GridPager pager, string feedBillNum, string assemblyPartCode, string subAssemblyPartCode, string printStaus, string confirmStatus, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_Feed_ListModel> list = m_BLL.GetList(ref pager, queryStr);
-            GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
+            //List<WMS_Feed_ListModel> list = m_BLL.GetList(ref pager, queryStr);
+            string query = " 1=1 ";
+            if (printStaus == "已打印")
+            {
+               query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
+            }
+            query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\")";
+            query += " && WMS_Part1.PartCode.Contains(\"" + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
+
+            //List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, "FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\") && WMS_Part1.PartCode.Contains(\""
+            //  + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")&& PrintDate>=(\""
+            //  + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")");
+
+            List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, query);
+            GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>(); 
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
@@ -48,6 +79,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             WMS_Feed_ListModel model = new WMS_Feed_ListModel()
             {
                 FeedBillNum = "TL" + DateTime.Now.ToString("yyyyMMddHHmmssff"),
+                ReleaseBillNum = "TL" + DateTime.Now.ToString("yyyyMMddHHmmssff"),
 
             };
             return View(model);
@@ -160,7 +192,13 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Edit(long id)
         {
+            ViewBag.Inv = new SelectList(_InvInfoBll.GetList(ref setNoPagerAscById, ""), "Id", "InvName");
             WMS_Feed_ListModel entity = m_BLL.GetById(id);
+            WMS_PartModel entity_p = m_PartBLL.GetById(entity.AssemblyPartId);
+            entity.AssemblyPartCode = entity_p.PartCode;
+            WMS_PartModel entity_p1 = m_PartBLL.GetById(entity.SubAssemblyPartId);
+            entity.SubAssemblyPartCode = entity_p1.PartCode;
+
             return View(entity);
         }
 
@@ -168,25 +206,36 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public JsonResult Edit(WMS_Feed_ListModel model)
         {
-            if (model != null && ModelState.IsValid)
+            List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Id = " + model.Id + " &&ConfirmStatus = \"已确认\"");
+            if (list.Count() > 0)
             {
-
-                if (m_BLL.Edit(ref errors, model))
+                return Json(JsonHandler.CreateMessage(0, "已确认单据不能删除"));
+            }
+            else
+            {              
+                model.ModifyTime = ResultHelper.NowTime;
+                model.ModifyPerson = GetUserId();
+                if (model != null && ModelState.IsValid)
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum, "成功", "修改", "WMS_Feed_List");
-                    return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
+
+                    if (m_BLL.Edit(ref errors, model))
+                    {
+                        LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum, "成功", "修改", "WMS_Feed_List");
+                        return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
+                    }
+                    else
+                    {
+                        string ErrorCol = errors.Error;
+                        LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum + "," + ErrorCol, "失败", "修改", "WMS_Feed_List");
+                        return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
+                    }
                 }
                 else
                 {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum + "," + ErrorCol, "失败", "修改", "WMS_Feed_List");
-                    return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
+                    return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
                 }
             }
-            else
-            {
-                return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
-            }
+                
         }
         #endregion
 
@@ -205,24 +254,33 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Delete(long id)
         {
-            if(id!=0)
+            List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Id = " + id + " &&ConfirmStatus = \"已确认\"");
+            if (list.Count() > 0)
             {
-                if (m_BLL.Delete(ref errors, id))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_Feed_List");
-                    return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
-                }
-                else
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Feed_List");
-                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
-                }
+                return Json(JsonHandler.CreateMessage(0, "已确认单据不能删除"));
             }
             else
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+                if (id != 0)
+                {
+                    if (m_BLL.Delete(ref errors, id))
+                    {
+                        LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_Feed_List");
+                        return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+                    }
+                    else
+                    {
+                        string ErrorCol = errors.Error;
+                        LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Feed_List");
+                        return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                    }
+                }
+                else
+                {
+                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+                }
             }
+               
         }
         #endregion
 
@@ -257,25 +315,38 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         }
         [SupportFilter]
-        public ActionResult Export(string queryStr)
+        public ActionResult Export(string feedBillNum, string assemblyPartCode, string subAssemblyPartCode, string printStaus, string confirmStatus, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_Feed_ListModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            //List<WMS_Feed_ListModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            string query = " 1=1 ";
+            if (printStaus == "已打印")
+            {
+                query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
+            }
+            query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\")";
+            query += " && WMS_Part1.PartCode.Contains(\"" + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
+
+            //List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, "FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\") && WMS_Part1.PartCode.Contains(\""
+            //  + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")&& PrintDate>=(\""
+            //  + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")");
+
+            List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, query);
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
                     var jo = new JObject();
-                    jo.Add("Id", item.Id);
+                    //jo.Add("Id", item.Id);
                     jo.Add("投料单号（业务）", item.FeedBillNum);
                     jo.Add("投料单号（系统）", item.ReleaseBillNum);
                     jo.Add("投料部门", item.Department);
                     jo.Add("总成物料", item.AssemblyPartId);
-                    jo.Add("投料物料", item.SubAssemblyPartId);
-                jo.Add("批次号", item.Lot);
+                    jo.Add("投料物料", item.SubAssemblyPartId);                
                 jo.Add("投料数量", item.FeedQty);
                     jo.Add("箱数", item.BoxQty);
                     jo.Add("体积", item.Capacity);
-                    jo.Add("库存", item.InvId);
-                    jo.Add("子库存", item.SubInvId);
+                    jo.Add("库房", item.InvId);
+                jo.Add("批次号", item.Lot);
+                //jo.Add("子库存", item.SubInvId);
                     jo.Add("备注", item.Remark);
                     jo.Add("打印状态", item.PrintStaus);
                     jo.Add("打印时间", item.PrintDate);
@@ -283,15 +354,16 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("确认状态", item.ConfirmStatus);
                     jo.Add("确认人", item.ConfirmMan);
                     jo.Add("确认时间", item.ConfirmDate);
-                    jo.Add("Attr1", item.Attr1);
-                    jo.Add("Attr2", item.Attr2);
-                    jo.Add("Attr3", item.Attr3);
-                    jo.Add("Attr4", item.Attr4);
-                    jo.Add("Attr5", item.Attr5);
-                    jo.Add("创建人", item.CreatePerson);
-                    jo.Add("创建时间", item.CreateTime);
-                    jo.Add("修改人", item.ModifyPerson);
-                    jo.Add("修改时间", item.ModifyTime);
+                jo.Add("确认信息", item.ConfirmMessage);
+                    //jo.Add("Attr1", item.Attr1);
+                    //jo.Add("Attr2", item.Attr2);
+                    //jo.Add("Attr3", item.Attr3);
+                    //jo.Add("Attr4", item.Attr4);
+                    //jo.Add("Attr5", item.Attr5);
+                    //jo.Add("创建人", item.CreatePerson);
+                    //jo.Add("创建时间", item.CreateTime);
+                    //jo.Add("修改人", item.ModifyPerson);
+                    //jo.Add("修改时间", item.ModifyTime);
                     jObjects.Add(jo);
                 }
                 var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
@@ -311,34 +383,34 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             JArray jObjects = new JArray();
             var jo = new JObject();
-              jo.Add("Id", "");
+              //jo.Add("Id", "");
               jo.Add("投料单号（业务）", "");
-              jo.Add("投料单号（系统）", "");
+              //jo.Add("投料单号（系统）", "");
               jo.Add("投料部门", "");
               jo.Add("总成物料", "");
-              jo.Add("投料物料", "");
-            jo.Add("批次号", "");
+              jo.Add("投料物料", "");            
             jo.Add("投料数量", "");
               jo.Add("箱数", "");
-              jo.Add("体积", "");
-              jo.Add("库存", "");
-              jo.Add("子库存", "");
-              jo.Add("备注", "");
-              jo.Add("打印状态", "");
-              jo.Add("打印时间", "");
-              jo.Add("打印人", "");
-              jo.Add("确认状态", "");
-              jo.Add("确认人", "");
-              jo.Add("确认时间", "");
-              jo.Add("Attr1", "");
-              jo.Add("Attr2", "");
-              jo.Add("Attr3", "");
-              jo.Add("Attr4", "");
-              jo.Add("Attr5", "");
-              jo.Add("创建人", "");
-              jo.Add("创建时间", "");
-              jo.Add("修改人", "");
-              jo.Add("修改时间", "");
+              jo.Add("体积", "");            
+            jo.Add("库房", "");
+            jo.Add("批次号", "");
+            //jo.Add("子库存", "");
+            jo.Add("备注", "");
+              //jo.Add("打印状态", "");
+              //jo.Add("打印时间", "");
+              //jo.Add("打印人", "");
+              //jo.Add("确认状态", "");
+              //jo.Add("确认人", "");
+              //jo.Add("确认时间", "");
+              //jo.Add("Attr1", "");
+              //jo.Add("Attr2", "");
+              //jo.Add("Attr3", "");
+              //jo.Add("Attr4", "");
+              //jo.Add("Attr5", "");
+              //jo.Add("创建人", "");
+              //jo.Add("创建时间", "");
+              //jo.Add("修改人", "");
+              //jo.Add("修改时间", "");
             jo.Add("导入的错误信息", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
