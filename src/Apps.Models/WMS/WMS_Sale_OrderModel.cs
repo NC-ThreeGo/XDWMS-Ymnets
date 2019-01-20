@@ -8,8 +8,11 @@ namespace Apps.Models.WMS
         [Display(Name = "物料编码")]
         public string PartCode { get; set; }
 
-        [Display(Name = "物料名称码")]
+        [Display(Name = "物料名称")]
         public string PartName { get; set; }
+
+        [Display(Name = "体积")]
+        public decimal? BoxVolume { get; set; }
 
         [Display(Name = "库房编码")]
         public string InvCode { get; set; }

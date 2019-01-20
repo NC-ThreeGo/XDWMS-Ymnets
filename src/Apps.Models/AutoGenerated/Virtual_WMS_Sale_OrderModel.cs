@@ -34,7 +34,7 @@ namespace Apps.Models.WMS
 		[Display(Name = "数量")]
 		public virtual decimal Qty { get; set; }
 		[Display(Name = "箱数")]
-		public virtual Nullable<decimal> BoxQty { get; set; }
+		public virtual decimal BoxQty { get; set; }
 		[Display(Name = "库存")]
 		public virtual Nullable<int> InvId { get; set; }
 		[Display(Name = "子库存")]

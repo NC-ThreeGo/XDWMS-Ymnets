@@ -35,7 +35,15 @@
 </form>
 </div>
 <div class="mvctool">
-    <input id="txtQuery" type="text" class="searchText" />
+    @*<input id="txtQuery" type="text" class="searchText" />*@
+    <input id="txtSaleBillNum" type="text" placeholder="销售单号(业务):" class="searchText" />
+    <input id="txtPartCode" type="text" placeholder="物料编码:" class="searchText" />
+    <input id="txtCustomerShortName" placeholder="客户简称:" type="text" class="searchText" />
+    打印状态：@Html.DropDownList("txtPrintStaus", ViewBag.PrintStaus as SelectList, new { @style = "width:70px;" })
+    确认状态：@Html.DropDownList("txtConfirmStatus", ViewBag.ConfirmStatus as SelectList, new { @style = "width:70px;" })
+    打印日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    <br>
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
     @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
     @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
@@ -73,22 +81,42 @@
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
                 { field: 'SaleBillNum', title: '销售单号（业务）', width: 80,sortable:true },
-                { field: 'SellBillNum', title: '销售单号（系统）', width: 80,sortable:true },
-                { field: 'PlanDeliveryDate', title: '计划发货日期', width: 80,sortable:true },
+                //{ field: 'SellBillNum', title: '销售单号（系统）', width: 80,sortable:true },
+                //{ field: 'PlanDeliveryDate', title: '计划发货日期', width: 80, sortable: true },
+                {
+                    field: 'PlanDeliveryDate', title: '计划发货日期', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 { field: 'CustomerShortName', title: '客户', width: 80,sortable:true },
-                { field: 'PartCode', title: '物料编码', width: 80,sortable:true },
+                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 80, sortable: true },
                 { field: 'Qty', title: '数量', width: 80,sortable:true },
-                { field: 'BoxQty', title: '箱数', width: 80,sortable:true },
-                { field: 'InvCode', title: '库房', width: 80,sortable:true },
+                { field: 'BoxQty', title: '箱数', width: 80, sortable: true },
+                { field: 'BoxVolume', title: '体积', width: 80, sortable: true },
+                { field: 'InvName', title: '库房', width: 80,sortable:true },
                 //{ field: 'SubInvId', title: '子库存', width: 80,sortable:true },
                 { field: 'Lot', title: '批次号', width: 80,sortable:true },
                 { field: 'Remark', title: '备注', width: 80,sortable:true },
-                { field: 'PrintStaus', title: '打印状态', width: 80,sortable:true },
-                { field: 'PrintDate', title: '打印日期', width: 80,sortable:true },
+                { field: 'PrintStaus', title: '打印状态', width: 80, sortable: true },                
+                //{ field: 'PrintDate', title: '打印日期', width: 80, sortable: true },
+                {
+                    field: 'PrintDate', title: '打印日期', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 { field: 'PrintMan', title: '打印人', width: 80,sortable:true },
                 { field: 'ConfirmStatus', title: '确认状态', width: 80,sortable:true },
                 { field: 'ConfirmMan', title: '确认人', width: 80,sortable:true },
-                { field: 'ConfirmDate', title: '确认时间', width: 80,sortable:true },
+                //{ field: 'ConfirmDate', title: '确认时间', width: 80, sortable: true },
+                {
+                    field: 'ConfirmDate', title: '确认时间', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 { field: 'ConfirmMessage', title: '确认信息', width: 80, sortable: true },
             ]]
         });
@@ -113,8 +141,13 @@
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+                if (row.ConfirmStatus == "已确认") {            
+                    $.messager.confirm(index_lang_tip, "单据已确认不能被修改")
+            }
+            else { $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 800, 600, 'fa fa-pencil');
+            } 
+                
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); } 
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
@@ -123,29 +156,66 @@
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            //var queryStr = $("#txtQuery").val();
+            //if (queryStr == null) {
+            //    queryStr = "%";
+            //}
+            //$("#List").datagrid("load", { queryStr: queryStr });
+            var saleBillNum = $("#txtSaleBillNum").val();
+            var partCode = $("#txtPartCode").val();
+            var customerShortName = $("#txtCustomerShortName").val();
+            var printStaus = $("#txtPrintStaus").val();
+            var confirmStatus = $("#txtConfirmStatus").val();
+            if (saleBillNum == null) {
+                saleBillNum = "";
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (customerShortName == null) {
+                customerShortName = "";
+            }
+
+            $("#List").datagrid("load", {
+                saleBillNum: saleBillNum, partCode: partCode, customerShortName: customerShortName, printStaus: printStaus, confirmStatus: confirmStatus, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+            });
 
         });
         $("#btnDelete").click(function () {
-	            dataDelete("@Url.Action("Delete")", "List");
-	        });
+	         var row = $('#List').datagrid('getSelected');
+            if (row.ConfirmStatus == "已确认") {                
+                $.messager.confirm(index_lang_tip, "单据已确认不能被删除")
+            }
+            else { dataDelete("@Url.Action("Delete")", "List");
+            } 
+	    });
         $("#btnImport").click(function() {
              $("#txtExcelPath").val("");
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            var saleBillNum = $("#txtSaleBillNum").val();
+            var partCode = $("#txtPartCode").val();
+            var customerShortName = $("#txtCustomerShortName").val();
+            var printStaus = $("#txtPrintStaus").val();
+            var confirmStatus = $("#txtConfirmStatus").val();
+            if (saleBillNum == null) {
+                saleBillNum = "";
             }
-          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (customerShortName == null) {
+                customerShortName = "";
+            }
+            $.post("@Url.Action("CheckExportData")?saleBillNum=" + saleBillNum + "&partCode=" + partCode + "&customerShortName=" + customerShortName
+                + "&confirmStatus=" + confirmStatus + "&beginDate=" + $("#beginDate").val()
+                + "&endDate= " + $("#endDate").val(), function(data) {
                 if (data.type == 1)
                 {
-                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                    window.location = "@Url.Action("Export")?saleBillNum=" + saleBillNum + "&partCode=" + partCode + "&customerShortName=" + customerShortName + "&printStaus=" + printStaus
+                        + "&confirmStatus=" + confirmStatus + "&beginDate=" + $("#beginDate").val()
+                        + "&endDate= " + $("#endDate").val();
                 }
                 else
                 {

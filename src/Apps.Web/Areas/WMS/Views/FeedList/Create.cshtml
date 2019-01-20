@@ -22,7 +22,7 @@ $(function () {
         url: '@Url.Action("GetLotsByPart", "Inv")',
         method: 'post',
         editable: false,
-        onSelect: onSelect,
+        onSelect: onSelect,        
         columns: [[
             { field: 'Lot', title: '批次号', width: 50, hidden: true },
             {
@@ -92,7 +92,7 @@ $(function () {
 {
     @Html.HiddenFor(model => model.Id, new { @Value = 0 })
     <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
-    @Html.HiddenFor(model => model.FeedBillNum)
+    @*@Html.HiddenFor(model => model.FeedBillNum)*@
     <table class="formtable">
         <tbody>
             <tr>
@@ -100,19 +100,21 @@ $(function () {
                     @Html.LabelFor(model => model.FeedBillNum)：
                 </th>
                 <td>
-                    @Model.FeedBillNum（自动生成）
+                    @*@Model.FeedBillNum*@
+                    @Html.EditorFor(model => model.FeedBillNum)（自动生成）
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.FeedBillNum)</td>
             </tr>
-            @*<tr>
+            <tr>
                     <th>
                         @Html.LabelFor(model => model.ReleaseBillNum)：
                     </th>
                     <td>
-                        @Html.EditorFor(model => model.ReleaseBillNum)
+                        @*@Html.EditorFor(model => model.ReleaseBillNum)*@
+                        @Html.ReadOnlyTextBoxFor(model => model.ReleaseBillNum, true)（自动生成）                        
                     </td>
                     <td>@Html.ValidationMessageFor(model => model.ReleaseBillNum)</td>
-                </tr>*@
+                </tr>
             <tr>
                 <th>
                     @Html.LabelFor(model => model.Department)：
