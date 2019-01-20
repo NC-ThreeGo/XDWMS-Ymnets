@@ -25,6 +25,8 @@ namespace Apps.Models.WMS
 		public virtual int HeadId { get; set; }
 		[Display(Name = "物料")]
 		public virtual int PartId { get; set; }
+		[Display(Name = "快照数量")]
+		public virtual Nullable<decimal> SnapshootQty { get; set; }
 		[Display(Name = "盘点数量")]
 		public virtual decimal InventoryQty { get; set; }
 		[Display(Name = "库存")]
@@ -35,6 +37,8 @@ namespace Apps.Models.WMS
 		public virtual string Lot { get; set; }
 		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }
+		[Display(Name = "未设置")]
+		public virtual string ConfirmMessage { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string Attr1 { get; set; }
 		[Display(Name = "未设置")]
@@ -53,7 +57,5 @@ namespace Apps.Models.WMS
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
-		[Display(Name = "快照数量")]
-		public virtual Nullable<decimal> SnapshootQty { get; set; }
 		}
 }

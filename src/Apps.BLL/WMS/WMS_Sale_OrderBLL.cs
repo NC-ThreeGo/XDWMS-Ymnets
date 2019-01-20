@@ -55,7 +55,7 @@ namespace Apps.BLL.WMS
                                                        InvName = r.WMS_InvInfo.InvName,
                                                        CustomerShortName = r.WMS_Customer.CustomerShortName,
                                                        CustomerName = r.WMS_Customer.CustomerName,
-                                                       BoxVolume = Math.Ceiling(r.BoxQty)*r.WMS_Part.Volume,
+                                                       BoxVolume = Math.Ceiling(r.BoxQty.Value)*r.WMS_Part.Volume,
                                                        ConfirmMessage = r.ConfirmMessage,
                                               }).ToList();
             return modelList;

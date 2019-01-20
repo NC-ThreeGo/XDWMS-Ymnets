@@ -21,7 +21,7 @@ namespace Apps.Models
         public int CustomerId { get; set; }
         public int PartId { get; set; }
         public decimal Qty { get; set; }
-        public decimal BoxQty { get; set; }
+        public Nullable<decimal> BoxQty { get; set; }
         public Nullable<int> InvId { get; set; }
         public Nullable<int> SubInvId { get; set; }
         public string Lot { get; set; }

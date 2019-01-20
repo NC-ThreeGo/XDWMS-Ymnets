@@ -17,11 +17,13 @@ namespace Apps.Models
         public int Id { get; set; }
         public int HeadId { get; set; }
         public int PartId { get; set; }
+        public Nullable<decimal> SnapshootQty { get; set; }
         public decimal InventoryQty { get; set; }
         public int InvId { get; set; }
         public Nullable<int> SubInvId { get; set; }
         public string Lot { get; set; }
         public string Remark { get; set; }
+        public string ConfirmMessage { get; set; }
         public string Attr1 { get; set; }
         public string Attr2 { get; set; }
         public string Attr3 { get; set; }
@@ -31,7 +33,6 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
-        public Nullable<decimal> SnapshootQty { get; set; }
     
         public virtual WMS_Inventory_H WMS_Inventory_H { get; set; }
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
