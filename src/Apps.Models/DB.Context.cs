@@ -917,5 +917,18 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateInventoryLine", userIdParameter, headIdParameter, jsonInvListParameter, returnValue);
         }
+    
+        public virtual int P_WMS_ConfirmInventory(string userId, Nullable<int> headId, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var headIdParameter = headId.HasValue ?
+                new ObjectParameter("HeadId", headId) :
+                new ObjectParameter("HeadId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ConfirmInventory", userIdParameter, headIdParameter, returnValue);
+        }
     }
 }

@@ -92,9 +92,9 @@
                      $('#List').datagrid("load", { ParentId: row.Id });
         }
                 }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
-                 $(window).resize(function() {
-                     resizeLayout();
-                 });
+                 //$(window).resize(function() {
+                 //    resizeLayout();
+                 //});
                 $('#List').datagrid({
                     url: '@Url.Action("GetList")?parentId=0',
                     width:SetGridWidthSub(450),
@@ -214,6 +214,37 @@
                 $("#btnExportTemplate").click(function() {
                   window.location = "@Url.Action("ExportTemplate")";
                 });
+                $("#btnApprove").click(function () {
+                    var row = $('#ListParent').datagrid('getSelected');
+                    if (row != null)
+                    {
+                        $.messager.confirm(index_lang_tip, '确认是否需要进行盘点调整？', function (r)
+                        {
+                            if (r)
+                            {
+                                $.ajax({
+                                    url: "@Url.Action("Confirm", "InventoryH")",
+                                    type: "Post",
+                                    data: { headId: row.Id },
+                                    dataType: "json",
+                                    success: function (data)
+                                    {
+                                        if (data.type == 1)
+                                        {
+                                            $("#ListParent").datagrid('reload');
+                                            $.messageBox5s(Lang.Tip, data.message);
+                                        }
+                                        else
+                                        {           
+                                            $("#List").datagrid('reload');
+                                            $.messageBox5s(Lang.Tip, data.message);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+                    });
             });
             function ImportData()
             {
