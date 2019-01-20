@@ -194,12 +194,12 @@
         <AssociationConnector Association="DB.FK_WMS_Sale_Order_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_WMS_Sale_Order_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_Sale_Order_WMS_SubInvInfo" />
-        <EntityTypeShape EntityType="DB.WMS_Inventory_H" Width="1.5" PointX="26.625" PointY="46.75" />
         <EntityTypeShape EntityType="DB.WMS_Inventory_D" Width="1.5" PointX="30.875" PointY="32.75" />
-        <AssociationConnector Association="DB.FK_WMS_Inventory_D_WMS_Inventory_H" />
         <AssociationConnector Association="DB.FK_WMS_Inventory_WMS_Inv" />
         <AssociationConnector Association="DB.FK_WMS_Inventory_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_Inventory_WMS_SubInvInfo" />
+        <EntityTypeShape EntityType="DB.WMS_Inventory_H" Width="1.5" PointX="24.375" PointY="6" />
+        <AssociationConnector Association="DB.FK_WMS_Inventory_D_WMS_Inventory_H" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
