@@ -191,9 +191,9 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("供应商类型", item.SupplierType);
                     jo.Add("联系人", item.LinkMan);
                     jo.Add("联系人电话", item.LinkManTel);
-                    jo.Add("联系人地址", item.LinkManAddress);
-                    //jo.Add("状态", item.Status);
-                    jo.Add("说明", item.Remark);
+                    jo.Add("联系人地址", item.LinkManAddress);                    
+                //jo.Add("状态", item.Status);
+                jo.Add("说明", item.Remark);
                     //jo.Add("创建人", item.CreatePerson);
                     //jo.Add("创建时间", item.CreateTime);
                     //jo.Add("修改人", item.ModifyPerson);
@@ -225,8 +225,9 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("联系人", "");
               jo.Add("联系人电话", "");
               jo.Add("联系人地址", "");
-              //jo.Add("状态", "");
-              jo.Add("说明", "");
+              jo.Add("超量接收(允许/不允许)", "");
+            //jo.Add("状态", "");
+            jo.Add("说明", "");
               //jo.Add("创建人", "");
               //jo.Add("创建时间", "");
               //jo.Add("修改人", "");
@@ -234,10 +235,12 @@ namespace Apps.Web.Areas.WMS.Controllers
                jo.Add("导入的错误信息", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
-            var exportFileName = string.Concat(
-                    RouteData.Values["controller"].ToString() + "_Template",
-                    ".xlsx");
-                return new ExportExcelResult
+            //var exportFileName = string.Concat(
+            //        RouteData.Values["controller"].ToString() + "_Template",
+            //        ".xlsx");
+            var exportFileName = string.Concat("供应商导入模板",
+                   ".xlsx");
+            return new ExportExcelResult
                 {
                     SheetName = "Sheet1",
                     FileName = exportFileName,
