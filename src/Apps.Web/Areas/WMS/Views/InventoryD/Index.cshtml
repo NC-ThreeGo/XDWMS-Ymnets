@@ -44,7 +44,7 @@
                     @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)*@
                     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
                     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
-                    @*@Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)*@
+                    @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
                     @Html.ToolButton("btnApprove", "fa fa-pencil", "盘点调整", ref perm, "Check", true)
                 </div>
                 <table id="ListParent"></table>
@@ -78,7 +78,7 @@
                     pagination: true,
                     striped: true, //奇偶行是否区分
                     singleSelect: true,//单选模式
-                    //rownumbers: true,//行号
+                    //rownumbers: true,//行号                   
                     onLoadSuccess: function(data) {            },
                     columns: [[
                         { field: 'Id', title: 'ID', width: 80,hidden:true },
@@ -110,12 +110,17 @@
                     striped: true, //奇偶行是否区分
                     singleSelect: true,//单选模式
                     //rownumbers: true,//行号
+                    rowStyler: function (index, row) {
+                        if (Number(row.SnapshootQty) != Number(row.InventoryQty)) {
+                            return 'background: #D24D57; color: #fff';
+                        }
+                    },
                     onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
                     },
                     columns: [[
                         { field: 'Id', title: 'Id', width: 80,hidden:true },
-                        { field: 'HeadId', title: 'HeadId', width: 80,sortable:true },
-                        { field: 'InvCode', title: '库房编码', width: 80, sortable: true },
+                        { field: 'HeadId', title: 'HeadId', width: 80, sortable: true, hidden: true },
+                        { field: 'Inventory_HName', title: '盘点名称', width: 80, sortable: true },
                         { field: 'InvName', title: '库房名称', width: 80, sortable: true },
                         //{ field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
                         { field: 'PartCode', title: '物料编码', width: 60, sortable: true },
@@ -123,6 +128,7 @@
                         { field: 'Lot', title: '批次号', width: 80, sortable: true },
                         { field: 'SnapshootQty', title: '库存数量', width: 80, sortable: true, align: 'right' },
                         { field: 'InventoryQty', title: '盘点数量', width: 80, sortable: true, align: 'right' },
+                        { field: 'ConfirmMessage', title: '确认信息', width: 80, sortable: true, align: 'right' },
                     ]]
                 });
             });
