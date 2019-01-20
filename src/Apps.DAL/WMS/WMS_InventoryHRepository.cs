@@ -26,5 +26,22 @@ namespace Apps.DAL.WMS
             else
                 return (string)returnValue.Value;
         }
+
+        public string ConfirmInventory(string opt, int headId)
+        {
+            ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
+
+            //由于EF的默认调用会启用事务，导致和存储过程中的事务冲突，所以设置为不启用事务。
+            Context.Configuration.EnsureTransactionsForFunctionsAndCommands = false;
+
+            Context.P_WMS_ConfirmInventory(opt, headId, returnValue);
+
+            if (returnValue.Value == DBNull.Value)
+            {
+                return null;
+            }
+            else
+                return (string)returnValue.Value;
+        }
     }
 }

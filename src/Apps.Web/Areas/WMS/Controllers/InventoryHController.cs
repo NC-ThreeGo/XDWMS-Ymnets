@@ -79,6 +79,32 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
+        #region 确认（盘点调整）
+        [HttpPost]
+        [SupportFilter(ActionName = "Check")]
+        public ActionResult Confirm(int headId)
+        {
+            if (headId != 0)
+            {
+                if (m_BLL.ConfirmInventory(ref errors, GetUserId(), headId))
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), "HeadId:" + headId, "成功", "盘点调整", "WMS_Inventory_H");
+                    return Json(JsonHandler.CreateMessage(1, "盘点调整成功！"));
+                }
+                else
+                {
+                    string ErrorCol = errors.Error;
+                    LogHandler.WriteServiceLog(GetUserId(), "HeadId" + headId + "," + ErrorCol, "失败", "盘点调整", "WMS_Inventory_H");
+                    return Json(JsonHandler.CreateMessage(0, "盘点调整失败：" + ErrorCol));
+                }
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(0, "盘点调整失败！"));
+            }
+        }
+        #endregion
+
         #region 修改
         [SupportFilter]
         public ActionResult Edit(long id)

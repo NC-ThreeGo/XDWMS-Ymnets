@@ -219,6 +219,28 @@ namespace Apps.BLL.WMS
                 return false;
             }
         }
+
+        public bool ConfirmInventory(ref ValidationErrors errors, string oper, int headId)
+        {
+            try
+            {
+                var rtn = m_Rep.ConfirmInventory(oper, headId);
+                if (String.IsNullOrEmpty(rtn))
+                {
+                    return true;
+                }
+                else
+                {
+                    errors.Add(rtn);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return false;
+            }
+        }
     }
 }
 

@@ -36,5 +36,14 @@ namespace Apps.IBLL.WMS
         /// <param name="invList"></param>
         /// <returns></returns>
         bool CreateInventoryD(ref ValidationErrors errors, string oper, int headId, string invList);
+
+        /// <summary>
+        /// 盘点调整
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="oper"></param>
+        /// <param name="headId"></param>
+        /// <returns></returns>
+        bool ConfirmInventory(ref ValidationErrors errors, string oper, int headId);
     }
 }

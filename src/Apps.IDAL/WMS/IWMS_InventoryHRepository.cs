@@ -13,5 +13,13 @@ namespace Apps.IDAL.WMS
         /// <param name="headId"></param>
         /// <param name="invList"></param>
         string CreateInventoryD(string opt, int headId, string invList);
+
+        /// <summary>
+        /// 盘点调整
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="headId"></param>
+        /// <returns></returns>
+        string ConfirmInventory(string opt, int headId);
     }
 }
