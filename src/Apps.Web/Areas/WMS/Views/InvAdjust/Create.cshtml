@@ -13,6 +13,27 @@
 
 <script type="text/javascript">
 $(function () {
+    @*$('#Lot').combogrid({
+        panelWidth: 300,
+        panelHeight: 150,
+        idField: 'LotDisp',
+        textField: 'LotDisp',
+        url: '@Url.Action("GetLotsByPart", "Inv")',
+        method: 'post',
+        editable: false,
+        onSelect: onSelect,
+        columns: [[
+            { field: 'Lot', title: '批次号', width: 50, hidden: true },
+            {
+                field: 'LotDisp', title: '批次号', width: 50
+            },
+            {field:'Qty',title:'现有量',width:50},
+            { field: 'StockQty', title: '备料数', width: 80, sortable: true, align: 'right' },
+            { field: 'AvailableQty', title: '可用数量', width: 80, sortable: true, align: 'right' }
+        ]],
+        fitColumns: true
+    });*@
+
     $("#btnSave").click(function () {
         if ($("form").valid()) {
             $.ajax({
@@ -38,12 +59,27 @@ $(function () {
          window.parent.frameReturnByClose();
     });
 });
-function frameReturnByClose() {
-$("#modalwindow").window('close');
-}
-function frameReturnByMes(mes) {
-$.messageBox5s(Lang.Tip, mes);
-}
+
+    function onSelect(index, row)
+    {
+        $("#Qty").html(row.AvailableQty);
+    }
+
+    function LoadLot()
+    {
+        var invId = $("#InvId").val();
+        var subInvId = "";
+        var partId = $("#PartId").val();
+        $("#Lot").combogrid('grid').datagrid("load", { partId: partId, invId: invId });
+    };
+
+    function frameReturnByClose()
+    {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
 </script>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
@@ -55,70 +91,54 @@ $.messageBox5s(Lang.Tip, mes);
              @Html.HiddenFor(model => model.Id, new { @Value = 0})
              <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
  <table class="formtable">
-    <tbody>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InvAdjustBillNum)：
-            </th>
-            <td>
-                @Model.InvAdjustBillNum（自动生成）
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InvAdjustBillNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.PartId)：
-            </th>
-            <td>
-                <div style="height:0;width:0;overflow:hidden">
-                    @Html.EditorFor(model => model.PartId)
-                </div>
-                <input id="PartList" name="PartList" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
-                <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelPart()"></a>
-                <script type="text/javascript">
-                    function showSelPart()
-                    {
-                        $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Part/PartLookUp'></iframe>");
-                        $("#modalwindow").window({ title: '选择物料', width: SetGridWidthSub(20), height: SetGridHeightSub(45), iconCls: 'fa fa-plus' }).window('open');
-                    }
+     <tbody>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.InvAdjustBillNum)：
+             </th>
+             <td>
+                 @Model.InvAdjustBillNum（自动生成）
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.InvAdjustBillNum)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.PartId)：
+             </th>
+             <td>
+                 <div style="height:0;width:0;overflow:hidden">
+                     @Html.EditorFor(model => model.PartId)
+                 </div>
+                 <input id="PartList" name="PartList" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
+                 <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelPart()"></a>
+                 <script type="text/javascript">
+                     function showSelPart()
+                     {
+                         $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Part/PartLookUp'></iframe>");
+                         $("#modalwindow").window({ title: '选择物料', width: SetGridWidthSub(20), height: SetGridHeightSub(45), iconCls: 'fa fa-plus' }).window('open');
+                     }
 
-                    function SetSelResultForPart(result, resultName)
-                    {
-                        $("#PartId").val(result);
-                        $("#PartList").val(resultName);
-                    }
-                </script>
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.PartId)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.AdjustQty)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.AdjustQty)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.AdjustQty)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.AdjustType)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.AdjustType)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.AdjustType)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InvId)：
-            </th>
-            <td>
-                @Html.DropDownListFor(model => model.InvId, ViewBag.Inv as SelectList)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InvId)</td>
-        </tr>
-        @*<tr>
+                     function SetSelResultForPart(result, resultName)
+                     {
+                         $("#PartId").val(result);
+                         $("#PartList").val(resultName);
+                         //LoadLot();
+                     }
+                 </script>
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.PartId)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.InvId)：
+             </th>
+             <td>
+                 @Html.DropDownListFor(model => model.InvId, ViewBag.Inv as SelectList)
+                 @*@Html.DropDownListFor(model => model.InvId, ViewBag.Inv as SelectList, new { @onchange = "LoadLot()" })*@
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.InvId)</td>
+         </tr>
+         @*<tr>
             <th>
                 @Html.LabelFor(model => model.SubInvId)：
             </th>
@@ -127,16 +147,45 @@ $.messageBox5s(Lang.Tip, mes);
             </td>
             <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
         </tr>*@
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Remark)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Remark)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Remark)</td>
-        </tr>
-        @*<tr>
+         <tr>
+             <th>
+                 批次号：
+             </th>
+             <td>
+                 @*<input id="Lot" name="Lot" value="">
+                 <label id="Qty" for="Lot" name="Qty"></label>*@
+                 @Html.EditorFor(model => model.Lot)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.Lot)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.AdjustQty)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.AdjustQty)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.AdjustQty)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.AdjustType)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.AdjustType)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.AdjustType)</td>
+         </tr>
+         <tr>
+             <th>
+                 @Html.LabelFor(model => model.Remark)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.Remark)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+         </tr>
+         @*<tr>
             <th>
                 @Html.LabelFor(model => model.Attr1)：
             </th>
@@ -208,7 +257,7 @@ $.messageBox5s(Lang.Tip, mes);
             </td>
             <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
         </tr>*@
-    </tbody>
+     </tbody>
 </table>
 }
 

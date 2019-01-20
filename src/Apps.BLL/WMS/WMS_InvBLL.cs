@@ -16,29 +16,35 @@ namespace Apps.BLL.WMS
 
         public override List<WMS_InvModel> CreateModelList(ref IQueryable<WMS_Inv> queryData)
         {
+            try
+            {
+                List<WMS_InvModel> modelList = (from r in queryData
+                                                select new WMS_InvModel
+                                                {
+                                                    Id = r.Id,
+                                                    InvId = r.InvId,
+                                                    PartId = r.PartId,
+                                                    Qty = r.Qty,
+                                                    StockQty = r.StockQty,
+                                                    SubInvId = r.SubInvId,
+                                                    Lot = r.Lot,
 
-            List<WMS_InvModel> modelList = (from r in queryData
-                                              select new WMS_InvModel
-                                              {
-                                                  Id = r.Id,
-                                                  InvId = r.InvId,
-                                                  PartId = r.PartId,
-                                                  Qty = r.Qty,
-                                                  StockQty = r.StockQty,
-                                                  SubInvId = r.SubInvId,
-                                                  Lot = r.Lot,
-
-                                                  PartCode = r.WMS_Part.PartCode,
-                                                  PartName = r.WMS_Part.PartName,
-                                                  InvCode = r.WMS_InvInfo.InvCode,
-                                                  InvName = r.WMS_InvInfo.InvName,
-                                                  SubInvName = r.WMS_SubInvInfo.SubInvName,
-                                                  LotDisp = String.IsNullOrEmpty(r.Lot) ? "[空]" : r.Lot,
-                                                  AvailableQty = r.Qty - r.StockQty.Value,
-                                              })
-                                             .OrderBy("InvId asc, SubInvId asc, PartId asc, Lot asc")
-                                             .ToList();
-            return modelList;
+                                                    PartCode = r.WMS_Part.PartCode,
+                                                    PartName = r.WMS_Part.PartName,
+                                                    InvCode = r.WMS_InvInfo.InvCode,
+                                                    InvName = r.WMS_InvInfo.InvName,
+                                                    SubInvName = r.WMS_SubInvInfo.SubInvName,
+                                                    LotDisp = String.IsNullOrEmpty(r.Lot) ? "[空]" : r.Lot,
+                                                    AvailableQty = r.Qty - r.StockQty.Value,
+                                                })
+                                                 .OrderBy("InvId asc, SubInvId asc, PartId asc, Lot asc")
+                                                 .ToList();
+                return modelList;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
 		public bool ImportExcelData(string oper, string filePath, ref ValidationErrors errors)
