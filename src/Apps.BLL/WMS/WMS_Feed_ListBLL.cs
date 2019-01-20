@@ -190,10 +190,10 @@ namespace Apps.BLL.WMS
                             entity.Lot = model.Lot;
 									//entity.SubInvId = model.SubInvId;
 									entity.Remark = model.Remark;
-									//entity.PrintStaus = model.PrintStaus;
+									entity.PrintStaus = "未打印";
 									//entity.PrintDate = model.PrintDate;
 									//entity.PrintMan = model.PrintMan;
-									//entity.ConfirmStatus = model.ConfirmStatus;
+									entity.ConfirmStatus = "未确认";
 									//entity.ConfirmMan = model.ConfirmMan;
 									//entity.ConfirmDate = model.ConfirmDate;
 									//entity.Attr1 = model.Attr1;

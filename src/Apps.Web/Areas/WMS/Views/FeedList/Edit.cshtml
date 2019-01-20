@@ -21,7 +21,7 @@
         textField: 'LotDisp',
         url: '@Url.Action("GetLotsByPart", "Inv")',
         method: 'post',
-        editable: true,
+        editable: false,
         onSelect: onSelect,
         columns: [[
             { field: 'Lot', title: '批次号', width: 50, hidden: true },
@@ -65,7 +65,16 @@ $("#modalwindow").window('close');
 }
 function frameReturnByMes(mes) {
 $.messageBox5s(Lang.Tip, mes);
-}
+    }
+function onSelect(index, row) {
+        $("#Qty").html(row.AvailableQty);
+    }
+    function LoadLot() {
+        var invId = $("#InvId").val();
+        var subInvId = "";
+        var partId = $("#SubAssemblyPartId").val();
+        $("#Lot").combogrid('grid').datagrid("load", { partId: partId, invId: invId });
+    };
 </script>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
@@ -80,7 +89,7 @@ $.messageBox5s(Lang.Tip, mes);
     @Html.HiddenFor(model => model.PrintMan)
     @Html.HiddenFor(model => model.PrintStaus)
     @Html.HiddenFor(model => model.PrintDate)
-    @Html.HiddenFor(model => model.InvId)
+    //@Html.HiddenFor(model => model.InvId)
     @Html.HiddenFor(model => model.ConfirmMan)
     @Html.HiddenFor(model => model.ConfirmDate)
     @Html.HiddenFor(model => model.ConfirmStatus)
@@ -174,7 +183,7 @@ $.messageBox5s(Lang.Tip, mes);
                     批次号：
                 </th>
                 <td>
-                    <input id="Lot" name="Lot" value="">
+                    <input id="Lot" name="Lot" value="@Model.Lot">
                     <label id="Qty" for="Lot" name="Qty"></label>
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.Lot)</td>

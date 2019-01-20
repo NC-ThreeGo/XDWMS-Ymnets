@@ -8,6 +8,7 @@ using System.IO;
 using LinqToExcel;
 using ClosedXML.Excel;
 using Apps.Models.WMS;
+using System.Linq.Expressions;
 
 namespace Apps.BLL.WMS
 {
@@ -49,11 +50,13 @@ namespace Apps.BLL.WMS
                                                        SubInvId = r.SubInvId,
 
                                                        PartCode = r.WMS_Part.PartCode,
-                                                       PartName = r.WMS_Part.PartName,
+                                                       PartName = r.WMS_Part.PartName,                                                       
                                                        InvCode = r.WMS_InvInfo.InvCode,
                                                        InvName = r.WMS_InvInfo.InvName,
                                                        CustomerShortName = r.WMS_Customer.CustomerShortName,
                                                        CustomerName = r.WMS_Customer.CustomerName,
+                                                       BoxVolume = Math.Ceiling(r.BoxQty)*r.WMS_Part.Volume,
+                                                       ConfirmMessage = r.ConfirmMessage,
                                               }).ToList();
             return modelList;
         }
@@ -79,31 +82,31 @@ namespace Apps.BLL.WMS
 				{
 					//对应列头
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SaleBillNum, "销售单号（业务）");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SellBillNum, "销售单号（系统）");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SellBillNum, "销售单号（系统）");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PlanDeliveryDate, "计划发货日期");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CustomerId, "客户");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartId, "物料");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CustomerShortName, "客户简称");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartCode, "物料编码");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Qty, "数量");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.BoxQty, "箱数");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvId, "库存");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SubInvId, "子库存");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvName, "库房");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SubInvId, "子库存");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Lot, "批次号：YYYYMM");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Remark, "备注");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintStaus, "打印状态");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintDate, "打印日期");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintMan, "打印人");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmStatus, "确认状态");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmMan, "确认人");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmDate, "确认时间");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr1, "");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr2, "");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr3, "");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr4, "");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr5, "");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CreatePerson, "创建人");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CreateTime, "创建时间");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ModifyPerson, "修改人");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ModifyTime, "修改时间");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintStaus, "打印状态");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintDate, "打印日期");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintMan, "打印人");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmStatus, "确认状态");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmMan, "确认人");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmDate, "确认时间");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr1, "");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr2, "");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr3, "");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr4, "");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Attr5, "");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CreatePerson, "创建人");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CreateTime, "创建时间");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ModifyPerson, "修改人");
+					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ModifyTime, "修改时间");
 
 					//SheetName，第一个Sheet
 					var excelContent = excelFile.Worksheet<WMS_Sale_OrderModel>(0);
@@ -122,31 +125,31 @@ namespace Apps.BLL.WMS
 								var model = new WMS_Sale_OrderModel();
 								model.Id = row.Id;
 								model.SaleBillNum = row.SaleBillNum;
-								model.SellBillNum = row.SellBillNum;
+								//model.SellBillNum = row.SellBillNum;
 								model.PlanDeliveryDate = row.PlanDeliveryDate;
-								model.CustomerId = row.CustomerId;
-								model.PartId = row.PartId;
+								model.CustomerShortName = row.CustomerShortName;
+								model.PartCode = row.PartCode;
 								model.Qty = row.Qty;
 								model.BoxQty = row.BoxQty;
-								model.InvId = row.InvId;
-								model.SubInvId = row.SubInvId;
+								model.InvName = row.InvName;
+								//model.SubInvId = row.SubInvId;
 								model.Lot = row.Lot;
 								model.Remark = row.Remark;
-								model.PrintStaus = row.PrintStaus;
-								model.PrintDate = row.PrintDate;
-								model.PrintMan = row.PrintMan;
-								model.ConfirmStatus = row.ConfirmStatus;
-								model.ConfirmMan = row.ConfirmMan;
-								model.ConfirmDate = row.ConfirmDate;
-								model.Attr1 = row.Attr1;
-								model.Attr2 = row.Attr2;
-								model.Attr3 = row.Attr3;
-								model.Attr4 = row.Attr4;
-								model.Attr5 = row.Attr5;
-								model.CreatePerson = row.CreatePerson;
-								model.CreateTime = row.CreateTime;
-								model.ModifyPerson = row.ModifyPerson;
-								model.ModifyTime = row.ModifyTime;
+								//model.PrintStaus = row.PrintStaus;
+								//model.PrintDate = row.PrintDate;
+								//model.PrintMan = row.PrintMan;
+								//model.ConfirmStatus = row.ConfirmStatus;
+								//model.ConfirmMan = row.ConfirmMan;
+								//model.ConfirmDate = row.ConfirmDate;
+								//model.Attr1 = row.Attr1;
+								//model.Attr2 = row.Attr2;
+								//model.Attr3 = row.Attr3;
+								//model.Attr4 = row.Attr4;
+								//model.Attr5 = row.Attr5;
+								//model.CreatePerson = row.CreatePerson;
+								//model.CreateTime = row.CreateTime;
+								//model.ModifyPerson = row.ModifyPerson;
+								//model.ModifyTime = row.ModifyTime;
 
 								if (!String.IsNullOrEmpty(errorMessage))
 								{
@@ -158,7 +161,7 @@ namespace Apps.BLL.WMS
 								//执行额外的数据校验
 								try
 								{
-									AdditionalCheckExcelData(ref model);
+									AdditionalCheckExcelData(db, ref model);
 								}
 								catch (Exception ex)
 								{
@@ -173,7 +176,7 @@ namespace Apps.BLL.WMS
 									WMS_Sale_Order entity = new WMS_Sale_Order();
 									entity.Id = model.Id;
 									entity.SaleBillNum = model.SaleBillNum;
-									entity.SellBillNum = model.SellBillNum;
+									entity.SellBillNum = "XS" + DateTime.Now.ToString("yyyyMMddHHmmssff");
 									entity.PlanDeliveryDate = model.PlanDeliveryDate;
 									entity.CustomerId = model.CustomerId;
 									entity.PartId = model.PartId;
@@ -183,21 +186,21 @@ namespace Apps.BLL.WMS
 									entity.SubInvId = model.SubInvId;
 									entity.Lot = model.Lot;
 									entity.Remark = model.Remark;
-									entity.PrintStaus = model.PrintStaus;
-									entity.PrintDate = model.PrintDate;
-									entity.PrintMan = model.PrintMan;
-									entity.ConfirmStatus = model.ConfirmStatus;
-									entity.ConfirmMan = model.ConfirmMan;
-									entity.ConfirmDate = model.ConfirmDate;
-									entity.Attr1 = model.Attr1;
-									entity.Attr2 = model.Attr2;
-									entity.Attr3 = model.Attr3;
-									entity.Attr4 = model.Attr4;
-									entity.Attr5 = model.Attr5;
-									entity.CreatePerson = model.CreatePerson;
-									entity.CreateTime = model.CreateTime;
-									entity.ModifyPerson = model.ModifyPerson;
-									entity.ModifyTime = model.ModifyTime;
+									entity.PrintStaus = "未打印";
+									//entity.PrintDate = model.PrintDate;
+									//entity.PrintMan = model.PrintMan;
+									entity.ConfirmStatus = "未确认";
+									//entity.ConfirmMan = model.ConfirmMan;
+									//entity.ConfirmDate = model.ConfirmDate;
+									//entity.Attr1 = model.Attr1;
+									//entity.Attr2 = model.Attr2;
+									//entity.Attr3 = model.Attr3;
+									//entity.Attr4 = model.Attr4;
+									//entity.Attr5 = model.Attr5;
+									//entity.CreatePerson = model.CreatePerson;
+									//entity.CreateTime = model.CreateTime;
+									//entity.ModifyPerson = model.ModifyPerson;
+									//entity.ModifyTime = model.ModifyTime;
 									entity.CreatePerson = oper;
 									entity.CreateTime = DateTime.Now;
 									entity.ModifyPerson = oper;
@@ -235,9 +238,76 @@ namespace Apps.BLL.WMS
 				return rtn;
 			}
 
-		public void AdditionalCheckExcelData(ref WMS_Sale_OrderModel model)
+		public void AdditionalCheckExcelData(DBContainer db, ref WMS_Sale_OrderModel model)
 		{
-		}
+            //获取物料ID
+            if (!String.IsNullOrEmpty(model.PartCode))
+            {
+                var partCode = model.PartCode;
+                Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
+
+                //var part = m_PartRep.GetSingleWhere(exp);
+                var part = db.WMS_Part.FirstOrDefault(exp);
+                if (part == null)
+                {
+                    throw new Exception("物料编码不存在！");
+                }
+                else
+                {
+                    model.PartId = part.Id;
+                }
+            }
+            else
+            {
+                throw new Exception("物料编码不能为空！");
+            }
+            //设定箱数的默认值
+            //if (model.BoxQty == null) { model.BoxQty = 0; }
+
+            //获取客户ID
+            if (!String.IsNullOrEmpty(model.CustomerShortName))
+            {
+                var customerShortName = model.CustomerShortName;
+                Expression<Func<WMS_Customer, bool>> exp = x => x.CustomerShortName == customerShortName;
+
+                //var part = m_PartRep.GetSingleWhere(exp);
+                var customer = db.WMS_Customer.FirstOrDefault(exp);
+                if (customer == null)
+                {
+                    throw new Exception("客户不存在！");
+                }
+                else
+                {
+                    model.CustomerId = customer.Id;
+                }
+            }
+            else
+            {
+                throw new Exception("客户简称不能为空！");
+            }
+
+            //获取库房ID
+            if (!String.IsNullOrEmpty(model.InvName))
+            {
+                var invName = model.InvName;
+                Expression<Func<WMS_InvInfo, bool>> exp = x => x.InvName == invName;
+
+                //var supplier = m_SupplierRep.GetSingleWhere(exp);
+                var invInfo = db.WMS_InvInfo.FirstOrDefault(exp);
+                if (invInfo == null)
+                {
+                    throw new Exception("库房不存在！");
+                }
+                else
+                {
+                    model.InvId = invInfo.Id;
+                }
+            }
+            else
+            {
+                throw new Exception("库房不能为空！");
+            }
+        }
 
 		public List<WMS_Sale_OrderModel> GetListByWhere(ref GridPager pager, string where)
 		{

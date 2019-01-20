@@ -21,7 +21,7 @@ $(function () {
         textField: 'LotDisp',
         url: '@Url.Action("GetLotsByPart", "Inv")',
         method: 'post',
-        editable: true,
+        editable: false,
         onSelect: onSelect,        
         columns: [[
             { field: 'Lot', title: '批次号', width: 50, hidden: true },

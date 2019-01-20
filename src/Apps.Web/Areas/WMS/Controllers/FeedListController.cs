@@ -209,7 +209,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Id = " + model.Id + " &&ConfirmStatus = \"已确认\"");
             if (list.Count() > 0)
             {
-                return Json(JsonHandler.CreateMessage(0, "已确认单据不能删除"));
+                return Json(JsonHandler.CreateMessage(0, "已确认单据不能修改"));
             }
             else
             {              
