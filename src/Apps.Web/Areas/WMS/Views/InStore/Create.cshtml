@@ -33,7 +33,14 @@
                 //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
                 $("#inserted").val(JSON.stringify(rows));
                 if (rows.length) {
-                    showLoading();
+                    for (var i = 0; i < rows.length; i++) {
+                        //sum_AdjustQty = sum_AdjustQty + Number(rows[i]['AdjustQty']);
+                        if (rows[i]['QualifyQty'] == null || rows[i]['NoQualifyQty'] == null || rows[i]['CheckOutResult'] == null) {
+                            $.messageBox5s('提示', "录入数据缺失");
+                            return;
+                        }
+                    showLoading();   
+                    }
                     $.ajax({
                         url: "@Url.Action("Create")",
                         type: "Post",

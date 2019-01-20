@@ -135,6 +135,7 @@
                         {
                             $("#PartID").val(result);
                             $("#PartList").val(resultName);
+                            LoadLot();
                         }
 
                     </script>
@@ -203,7 +204,7 @@
                 </th>
                 <td>
                     <input id="Lot" name="Lot" value="">
-                    <label id="Qty" for="Lot" name="Qty"></label>
+                    <label id="Qty" for="Lot" name="Qty"></label>                    
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.Lot)</td>
             </tr>
