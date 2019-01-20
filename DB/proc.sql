@@ -724,161 +724,6 @@ END
 
 GO
 
-ALTER   PROCEDURE [dbo].[P_WMS_PrintFeedList]
-	@UserId varchar(50),
-	@FeedBillNum nvarchar(50),
-	@ReleaseBillNum	varchar(50) OUTPUT,
-	@ReturnValue	varchar(50) OUTPUT
-AS
-BEGIN
-	SET NOCOUNT ON;
-	set xact_abort on   
-
-	DECLARE @now date = getdate()
-	DECLARE @SubAssemblyPartId int;
-	DECLARE @InvId int;
-	DECLARE @SubInvId int;
-	DECLARE @Lot varchar(50);
-	DECLARE @Qty decimal(10, 3);
-	DECLARE @rowId int;
-	DECLARE @countOK int = 0;
-	DECLARE @countError int = 0;
-
-	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
-	--exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
-
-	--获取当前的单据编号
-	exec P_WMS_GetMaxNum 'TL', 'WMS_Feed_List', @now, @ReleaseBillNum output
-
-	--进行库存备料
-	DECLARE cur_FeedList cursor for (select Id, SubAssemblyPartId, InvId, SubInvId, Lot, FeedQty * -1
-											from WMS_Feed_List
-											where FeedBillNum = @FeedBillNum
-											  and PrintStaus = '未打印');
-    --打开游标--
-    open cur_FeedList;
-    --开始循环游标变量--
-    fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;
-    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
-    begin         
-		BEGIN TRY   
-			BEGIN TRAN
-
-			exec P_WMS_InvStock @UserId, @SubAssemblyPartId, @InvId, null, @Lot, @Qty, @now, '投料', @rowId, @ReleaseBillNum;
-
-			--修改投料单行的打印状态
-			update WMS_Feed_List set ReleaseBillNum = @ReleaseBillNum,
-					PrintStaus = '已打印', PrintMan = @UserId, PrintDate = @now,
-					ConfirmMessage = '',
-					ModifyPerson = @UserId, ModifyTime = @now
-					where Id = @rowId;
-
-			set @countOK = @countOK + 1;
-			COMMIT TRAN;
- 		END TRY
-		BEGIN CATCH
-			IF @@TRANCOUNT > 0
-				ROLLBACK TRAN ;
-
-			--报错确认的错误信息
-			set @countError = @countError + 1;
-			update WMS_Feed_List set ConfirmMessage = ERROR_MESSAGE(),
-					ModifyPerson = @UserId, ModifyTime = @now
-					where Id = @rowId;
-		END CATCH
-
-		--转到下一个游标，没有会死循环
-        fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;  
-    end    
-    close cur_FeedList  --关闭游标
-    deallocate cur_FeedList   --释放游标
-
-	IF @@TRANCOUNT > 0
-		COMMIT TRAN ;
-
-	IF (@countError > 0)
-	BEGIN
-		set @ReturnValue = '投料单备料成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
-		RETURN;
-	END
-END
-
-GO
-
-ALTER   PROCEDURE [dbo].[P_WMS_PrintReturnOrder]
-	@UserId varchar(50),
-	@JsonReturnOrder NVARCHAR(MAX), --所选择要打印的退货记录
-	@ReturnOrderNum	varchar(50) OUTPUT,
-	@ReturnValue	varchar(50) OUTPUT
-AS
-BEGIN
-	SET NOCOUNT ON;
-	set xact_abort on   
-
-	DECLARE @now date = getdate()
-	DECLARE @batchId int
-
-	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
-	exec P_WMS_InitNumForDay 'TH', 'WMS_ReturnOrder', @now
-
-	--将检验结果保存到临时表
-	SELECT *
-		INTO #ReturnOrder
-		FROM OPENJSON(@JsonReturnOrder)  
-			WITH (	Id int,
-					AdjustQty decimal(10, 3),
-					Remark nvarchar(200)
-				) 
-	IF (@@ERROR <> 0)
-	BEGIN
-		set @ReturnValue = '临时保存检验信息时出错！'
-		RETURN
-	END
-
-	BEGIN TRAN
-
-	--修改表的BatchId，以解决并发问题
-	SELECT @batchId = NEXT VALUE FOR S_WMS_BatchId;
-	update WMS_ReturnOrder set BatchId = @batchId
-			FROM WMS_ReturnOrder ro,
-				 #ReturnOrder t
-			WHERE ro.Id = t.Id
-			  AND BatchId is null
-	IF (@@ERROR <> 0)
-	BEGIN
-		set @ReturnValue = '修改BatchId时出错！'
-		RETURN
-	END
-
-	--获取当前的单据编号
-	exec P_WMS_GetMaxNum 'TH', 'WMS_ReturnOrder', @now, @ReturnOrderNum output
-
-	update WMS_ReturnOrder set ReturnOrderNum = @ReturnOrderNum,
-								--AdjustQty = t.AdjustQty,
-								--Remark = t.Remark,
-								PrintStaus = '已退货',
-								PrintDate = @now,
-								PrintMan = @UserId,
-								ModifyPerson = @UserId,
-								ModifyTime = @now
-			FROM WMS_ReturnOrder ro,
-				 #ReturnOrder t
-			WHERE ro.Id = t.Id
-				AND ro.BatchId = @batchId
-	IF (@@ERROR <> 0)
-	BEGIN
-		set @ReturnValue = '保存退货记录时出错！'
-		RETURN
-	END
-
-
-	COMMIT TRAN
-	RETURN
-
-
-END
-
-GO
 
 ALTER   PROCEDURE [dbo].[P_WMS_ProcessInspectBill]
 	@UserId varchar(50),
@@ -1778,87 +1623,6 @@ END
 GO
 
 
-CREATE OR ALTER    PROCEDURE [dbo].[P_WMS_PrintSaleOrder]
-	@UserId varchar(50),
-	@SaleBillNum nvarchar(50),
-	@SellBillNum	varchar(50) OUTPUT,
-	@ReturnValue	varchar(50) OUTPUT
-AS
-BEGIN
-	SET NOCOUNT ON;
-	set xact_abort on   
-
-	DECLARE @now date = getdate()
-	DECLARE @PartId int;
-	DECLARE @InvId int;
-	DECLARE @SubInvId int;
-	DECLARE @Lot varchar(50);
-	DECLARE @Qty decimal(10, 3);
-	DECLARE @rowId int;
-	DECLARE @countOK int = 0;
-	DECLARE @countError int = 0;
-
-	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
-	--exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
-
-	--获取当前的单据编号
-	exec P_WMS_GetMaxNum 'XS', 'WMS_Sale_Order', @now, @SellBillNum output
-
-	--进行库存备料
-	DECLARE cur_SaleOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, Qty * -1
-											from WMS_Sale_Order
-											where SaleBillNum = @SaleBillNum
-											  and PrintStaus = '未打印');
-    --打开游标--
-    open cur_SaleOrder;
-    --开始循环游标变量--
-    fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;
-    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
-    begin         
-		BEGIN TRY   
-			BEGIN TRAN
-
-			exec P_WMS_InvStock @UserId, @PartId, @InvId, null, @Lot, @Qty, @now, '销售', @rowId, @SellBillNum;
-
-			--修改投料单行的打印状态
-			update WMS_Sale_Order set SellBillNum = @SellBillNum,
-					PrintStaus = '已打印', PrintMan = @UserId, PrintDate = @now,
-					ConfirmMessage = '',
-					ModifyPerson = @UserId, ModifyTime = @now
-					where Id = @rowId;
-
-			set @countOK = @countOK + 1;
-			COMMIT TRAN;
- 		END TRY
-		BEGIN CATCH
-			IF @@TRANCOUNT > 0
-				ROLLBACK TRAN ;
-
-			--报错确认的错误信息
-			set @countError = @countError + 1;
-			update WMS_Sale_Order set ConfirmMessage = ERROR_MESSAGE(),
-					ModifyPerson = @UserId, ModifyTime = @now
-					where Id = @rowId;
-		END CATCH
-
-		--转到下一个游标，没有会死循环
-        fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;  
-    end    
-    close cur_SaleOrder  --关闭游标
-    deallocate cur_SaleOrder   --释放游标
-
-	IF @@TRANCOUNT > 0
-		COMMIT TRAN ;
-
-	IF (@countError > 0)
-	BEGIN
-		set @ReturnValue = '销售订单备料成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
-		RETURN;
-	END
-END
-
-GO
-
 CREATE OR ALTER PROCEDURE [dbo].[P_WMS_CreateInventoryLine]
 	@UserId varchar(50),
 	@HeadId int,
@@ -1929,6 +1693,202 @@ BEGIN
 
 	COMMIT TRAN
 	RETURN
+END
+
+GO
+
+USE [XDWMS-Ymnets]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/1/20 13:24:41 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER   PROCEDURE [dbo].[P_WMS_PrintFeedList]
+	@UserId varchar(50),
+	@FeedBillNum nvarchar(50),
+	@ReleaseBillNum	varchar(50) OUTPUT,
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now date = getdate()
+	DECLARE @SubAssemblyPartId int;
+	DECLARE @InvId int;
+	DECLARE @SubInvId int;
+	DECLARE @Lot varchar(50);
+	DECLARE @Qty decimal(10, 3);
+	DECLARE @rowId int;
+	DECLARE @countOK int = 0;
+	DECLARE @countError int = 0;
+
+	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
+	--exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
+
+	--获取当前的单据编号
+	exec P_WMS_GetMaxNum 'TL', 'WMS_Feed_List', @now, @ReleaseBillNum output
+
+	--进行库存备料
+	DECLARE cur_FeedList cursor for (select Id, SubAssemblyPartId, InvId, SubInvId, Lot, FeedQty * -1
+											from WMS_Feed_List
+											where FeedBillNum = @FeedBillNum
+											  and PrintStaus = '未打印');
+    --打开游标--
+    open cur_FeedList;
+    --开始循环游标变量--
+    fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;
+    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+    begin         
+		BEGIN TRY   
+			--判断投料数如果大于0，报错
+			IF (@Qty >= 0)
+			BEGIN
+				;
+				THROW 51000, '当前投料数为负数或零，请确认！', 1;
+			END;
+
+			BEGIN TRAN
+
+			exec P_WMS_InvStock @UserId, @SubAssemblyPartId, @InvId, null, @Lot, @Qty, @now, '投料', @rowId, @ReleaseBillNum;
+
+			--修改投料单行的打印状态
+			update WMS_Feed_List set ReleaseBillNum = @ReleaseBillNum,
+					PrintStaus = '已打印', PrintMan = @UserId, PrintDate = @now,
+					ConfirmMessage = '',
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+
+			set @countOK = @countOK + 1;
+			COMMIT TRAN;
+ 		END TRY
+		BEGIN CATCH
+			IF @@TRANCOUNT > 0
+				ROLLBACK TRAN ;
+
+			--报错确认的错误信息
+			set @countError = @countError + 1;
+			update WMS_Feed_List set ConfirmMessage = ERROR_MESSAGE(),
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+		END CATCH
+
+		--转到下一个游标，没有会死循环
+        fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;  
+    end    
+    close cur_FeedList  --关闭游标
+    deallocate cur_FeedList   --释放游标
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRAN ;
+
+	IF (@countError > 0)
+	BEGIN
+		set @ReturnValue = '投料单备料成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
+		RETURN;
+	END
+END
+
+GO
+
+USE [XDWMS-Ymnets]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/1/20 13:25:02 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER     PROCEDURE [dbo].[P_WMS_PrintSaleOrder]
+	@UserId varchar(50),
+	@SaleBillNum nvarchar(50),
+	@SellBillNum	varchar(50) OUTPUT,
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now date = getdate()
+	DECLARE @PartId int;
+	DECLARE @InvId int;
+	DECLARE @SubInvId int;
+	DECLARE @Lot varchar(50);
+	DECLARE @Qty decimal(10, 3);
+	DECLARE @rowId int;
+	DECLARE @countOK int = 0;
+	DECLARE @countError int = 0;
+
+	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
+	--exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
+
+	--获取当前的单据编号
+	exec P_WMS_GetMaxNum 'XS', 'WMS_Sale_Order', @now, @SellBillNum output
+
+	--进行库存备料
+	DECLARE cur_SaleOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, Qty * -1
+											from WMS_Sale_Order
+											where SaleBillNum = @SaleBillNum
+											  and PrintStaus = '未打印');
+    --打开游标--
+    open cur_SaleOrder;
+    --开始循环游标变量--
+    fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;
+    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+    begin         
+		BEGIN TRY   
+			--判断销售订单数如果大于0，报错
+			IF (@Qty >= 0)
+			BEGIN
+				;
+				THROW 51000, '当前销售订单数为负数或零，请确认！', 1;
+			END;
+
+			BEGIN TRAN
+
+			exec P_WMS_InvStock @UserId, @PartId, @InvId, null, @Lot, @Qty, @now, '销售', @rowId, @SellBillNum;
+
+			--修改投料单行的打印状态
+			update WMS_Sale_Order set SellBillNum = @SellBillNum,
+					PrintStaus = '已打印', PrintMan = @UserId, PrintDate = @now,
+					ConfirmMessage = '',
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+
+			set @countOK = @countOK + 1;
+			COMMIT TRAN;
+ 		END TRY
+		BEGIN CATCH
+			IF @@TRANCOUNT > 0
+				ROLLBACK TRAN ;
+
+			--报错确认的错误信息
+			set @countError = @countError + 1;
+			update WMS_Sale_Order set ConfirmMessage = ERROR_MESSAGE(),
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+		END CATCH
+
+		--转到下一个游标，没有会死循环
+        fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;  
+    end    
+    close cur_SaleOrder  --关闭游标
+    deallocate cur_SaleOrder   --释放游标
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRAN ;
+
+	IF (@countError > 0)
+	BEGIN
+		set @ReturnValue = '销售订单备料成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
+		RETURN;
+	END
 END
 
 GO
