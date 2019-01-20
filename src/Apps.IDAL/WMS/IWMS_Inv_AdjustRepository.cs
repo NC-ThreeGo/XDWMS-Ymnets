@@ -16,6 +16,6 @@ namespace Apps.IDAL.WMS
         /// <param name="adjustType"></param>
         /// <param name="remark"></param>
         /// <returns></returns>
-        string CreateInvAdjust(string opt, int? partId, int? invId, decimal? adjustQty, string adjustType, string remark, ref string invAdjustBillNum);
+        string CreateInvAdjust(string opt, int? partId, int? invId, string lot, decimal? adjustQty, string adjustType, string remark, ref string invAdjustBillNum);
     }
 }

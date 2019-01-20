@@ -211,7 +211,7 @@ namespace Apps.BLL.WMS
             string invAdjustBillNum = null;
             try
             {
-                var rtn = m_Rep.CreateInvAdjust(model.CreatePerson, model.PartId, model.InvId, model.AdjustQty, model.AdjustType,
+                var rtn = m_Rep.CreateInvAdjust(model.CreatePerson, model.PartId, model.InvId, model.Lot, model.AdjustQty, model.AdjustType,
                         model.Remark, ref invAdjustBillNum);
                 if (String.IsNullOrEmpty(rtn))
                 {
