@@ -242,6 +242,12 @@ namespace Apps.BLL.WMS
 
         public void AdditionalCheckExcelData(DBContainer db, ref WMS_Inventory_DModel model)
         {
+            //获取数量
+            if (model.InventoryQty< 0)
+                {
+                    throw new Exception("盘点数量不能为负！");
+                }
+            
             //获取总成物料ID
             if (!String.IsNullOrEmpty(model.PartCode))
             {

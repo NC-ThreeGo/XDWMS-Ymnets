@@ -74,7 +74,7 @@ namespace Apps.BLL.WMS
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkMan, "联系人");
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkManTel, "联系人电话");
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkManAddress, "联系人地址");
-					//excelFile.AddMapping<WMS_SupplierModel>(x => x.Status, "状态");
+					excelFile.AddMapping<WMS_SupplierModel>(x => x.MoreAccept, "超量接收(允许/不允许)");
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.Remark, "说明");
 					//excelFile.AddMapping<WMS_SupplierModel>(x => x.CreatePerson, "创建人");
 					//excelFile.AddMapping<WMS_SupplierModel>(x => x.CreateTime, "创建时间");
@@ -104,6 +104,7 @@ namespace Apps.BLL.WMS
 								model.LinkMan = row.LinkMan;
 								model.LinkManTel = row.LinkManTel;
 								model.LinkManAddress = row.LinkManAddress;
+                                model.MoreAccept = row.MoreAccept;
 								//model.Status = row.Status;
 								model.Remark = row.Remark;
 								//model.CreatePerson = row.CreatePerson;
@@ -142,6 +143,7 @@ namespace Apps.BLL.WMS
 									entity.LinkMan = model.LinkMan;
 									entity.LinkManTel = model.LinkManTel;
 									entity.LinkManAddress = model.LinkManAddress;
+                                    entity.MoreAccept = model.MoreAccept;
                                     entity.MoreAccept = "允许";
 									entity.Status = "有效";
 									entity.Remark = model.Remark;
@@ -184,6 +186,20 @@ namespace Apps.BLL.WMS
 
 		public void AdditionalCheckExcelData(DBContainer db, ref WMS_SupplierModel model)
 		{
+            //获取超量接收
+            if (!String.IsNullOrEmpty(model.MoreAccept))
+            {                
+                if (model.MoreAccept!= "允许" && model.MoreAccept != "不允许")
+                {
+                    throw new Exception("超量接收只能维护允许或者不允许！");
+                }
+
+            }
+            else
+            {
+                throw new Exception("超量接收不能为空！");
+            }
+
             //获取供应商编码
             if (!String.IsNullOrEmpty(model.SupplierCode))
             {

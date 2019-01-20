@@ -287,8 +287,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             jo.Add("导入的错误信息", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
-            var exportFileName = string.Concat(
-                    RouteData.Values["controller"].ToString() + "_Template",
+            var exportFileName = string.Concat("采购订单导入模板",
                     ".xlsx");
                 return new ExportExcelResult
                 {
