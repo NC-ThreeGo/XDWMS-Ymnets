@@ -23,7 +23,7 @@ namespace Apps.Models
         public string InventoryBillNum { get; set; }
         public string InventoryTitle { get; set; }
         public string InventoryPerson { get; set; }
-        public System.DateTime InventoryTime { get; set; }
+        public Nullable<System.DateTime> InventoryTime { get; set; }
         public string InventoryStatus { get; set; }
         public string Remark { get; set; }
         public string Attr1 { get; set; }

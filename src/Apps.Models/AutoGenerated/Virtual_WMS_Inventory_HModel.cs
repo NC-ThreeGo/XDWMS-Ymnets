@@ -28,7 +28,7 @@ namespace Apps.Models.WMS
 		[Display(Name = "盘点人")]
 		public virtual string InventoryPerson { get; set; }
 		[Display(Name = "盘点时间")]
-		public virtual System.DateTime InventoryTime { get; set; }
+		public virtual Nullable<System.DateTime> InventoryTime { get; set; }
 		[Display(Name = "盘点状态")]
 		public virtual string InventoryStatus { get; set; }
 		[Display(Name = "备注")]
