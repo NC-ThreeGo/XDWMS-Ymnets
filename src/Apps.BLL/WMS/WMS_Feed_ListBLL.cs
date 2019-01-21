@@ -179,7 +179,7 @@ namespace Apps.BLL.WMS
 									entity.Id = model.Id;
 									entity.FeedBillNum = model.FeedBillNum;
                             //entity.ReleaseBillNum = model.ReleaseBillNum;
-                            entity.ReleaseBillNum = "TL" + DateTime.Now.ToString("yyyyMMddHHmmssff");
+                            //entity.ReleaseBillNum = "TL" + DateTime.Now.ToString("yyyyMMddHHmmssff");打印时生成
                             entity.Department = model.Department;
 									entity.AssemblyPartId = model.AssemblyPartId;
 									entity.SubAssemblyPartId = model.SubAssemblyPartId;

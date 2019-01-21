@@ -176,8 +176,8 @@ namespace Apps.BLL.WMS
 									WMS_Sale_Order entity = new WMS_Sale_Order();
 									entity.Id = model.Id;
 									entity.SaleBillNum = model.SaleBillNum;
-									entity.SellBillNum = "XS" + DateTime.Now.ToString("yyyyMMddHHmmssff");
-									entity.PlanDeliveryDate = model.PlanDeliveryDate;
+                            //entity.SellBillNum = "XS" + DateTime.Now.ToString("yyyyMMddHHmmssff");打印时生成
+                            entity.PlanDeliveryDate = model.PlanDeliveryDate;
 									entity.CustomerId = model.CustomerId;
 									entity.PartId = model.PartId;
 									entity.Qty = model.Qty;
