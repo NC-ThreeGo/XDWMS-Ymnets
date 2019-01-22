@@ -109,7 +109,7 @@ $.messageBox5s(Lang.Tip, mes);
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.BoxQty)</td>
             </tr>
-            
+
             <tr>
                 <th>
                     @Html.LabelFor(model => model.ArrivalDate)：
@@ -118,6 +118,15 @@ $.messageBox5s(Lang.Tip, mes);
                     @Html.TextBoxFor(model => model.ArrivalDate, new { @onClick = "WdatePicker()", @style = "width: 120px" })
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.ArrivalDate)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Lot)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Lot)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Lot)</td>
             </tr>
         </tbody>
     </table>

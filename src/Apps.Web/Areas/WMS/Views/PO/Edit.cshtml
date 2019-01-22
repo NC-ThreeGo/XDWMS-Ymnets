@@ -73,7 +73,7 @@ $.messageBox5s(Lang.Tip, mes);
             </th>
             <td>
                 @* @Html.EditorFor(model => model.PODate)*@
-                @Html.TextBoxFor(model => model.PODate, new { @onClick = "WdatePicker()", @class = "Wdate", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
+                @Html.TextBoxFor(model => model.PODate, new { @onClick = "WdatePicker()", @class = "Wdate"})
             </td>
             <td>@Html.ValidationMessageFor(model => model.PODate)</td>
         </tr>
@@ -149,7 +149,7 @@ $.messageBox5s(Lang.Tip, mes);
             </th>
             <td>
                 @* @Html.EditorFor(model => model.PlanDate)*@
-                @Html.TextBoxFor(model => model.PlanDate, new { @onClick = "WdatePicker()", @class = "Wdate", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
+                @Html.TextBoxFor(model => model.PlanDate, new { @onClick = "WdatePicker()", @class = "Wdate" })
             </td>
             <td>@Html.ValidationMessageFor(model => model.PlanDate)</td>
         </tr>

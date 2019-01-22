@@ -248,6 +248,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("物料编码", item.PartCode);
                     jo.Add("物料名称", item.PartName);
                     jo.Add("供应商简称", item.SupplierShortName);
+                    jo.Add("到货批次", item.Lot);
                     jo.Add("到货数量", item.ArrivalQty);
                     jo.Add("到货箱数", item.BoxQty);
                     jo.Add("计划到货日期", item.PlanDate);
