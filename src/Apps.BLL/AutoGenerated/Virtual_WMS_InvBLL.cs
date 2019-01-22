@@ -41,14 +41,10 @@ namespace Apps.BLL.WMS
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
-								
-								
-								
-								
-								
 								a=>a.Lot.Contains(queryStr)
-								
-								);
+                                || a.WMS_Part.PartCode.Contains(queryStr)
+                                || a.WMS_Part.PartName.Contains(queryStr)
+                                );
             }
             else
             {
