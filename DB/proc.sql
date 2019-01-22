@@ -1,4 +1,99 @@
-ALTER   PROCEDURE [dbo].[P_WMS_ConfirmFeedList]
+/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty_BatchUpdate]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_UpdateInvQty_BatchUpdate]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_UpdateInvQty]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessProductEntry]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_ProcessProductEntry]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_ProcessInspectBill]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_PrintSaleOrder]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder1]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_PrintReturnOrder1]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_PrintReturnOrder]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_PrintFeedList]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock_BatchUpdate]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_InvStock_BatchUpdate]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_InvStock]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvAdjust]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_InvAdjust]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_InitNumForDay]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_InitNumForDay]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_GetMaxNum]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_GetMaxNum]
+GO
+
+/****** Object:  StoredProcedure [dbo].[p_wms_deleteTestData]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[p_wms_deleteTestData]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReturnOrder]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_CreateReturnOrder]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReInspect]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_CreateReInspect]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInventoryLine]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_CreateInventoryLine]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInspectBill]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_CreateInspectBill]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmSaleOrder]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_ConfirmSaleOrder]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmReturnOrder]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_ConfirmReturnOrder]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmInventory]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_ConfirmInventory]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmFeedList]    Script Date: 2019/1/20 21:21:24 ******/
+DROP PROCEDURE [dbo].[P_WMS_ConfirmFeedList]
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmFeedList]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[P_WMS_ConfirmFeedList]
 	@UserId varchar(50),
 	@ReleaseBillNum	varchar(50),
 	@ReturnValue	varchar(50) OUTPUT
@@ -71,7 +166,187 @@ END
 
 GO
 
-ALTER   PROCEDURE [dbo].[P_WMS_ConfirmReturnOrder]
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmInventory]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[P_WMS_ConfirmInventory] --盘点调整
+	@UserId varchar(50),
+	@HeadId int,	--盘点头表的ID
+	@ReturnValue	varchar(50) OUTPUT
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now datetime = getdate()
+	DECLARE @Count int;
+
+	--查询该盘点表的状态是否为“已生成”
+	select @Count = count(*) from WMS_Inventory_H
+							where id = @HeadId
+							  and InventoryStatus = '已生成';
+	IF (@Count <> 1)
+	BEGIN
+		;
+		THROW 51000, '当前盘点表状态不是“已生成”，请确认！', 1;
+		RETURN;
+	END;
+
+
+	--查询是否存在实盘数小于0的数据
+	select @Count = count(*) from WMS_Inventory_D id
+							where id.HeadId = @HeadId
+							  and id.InventoryQty < 0;
+	IF (@Count > 0)
+	BEGIN
+		update WMS_Inventory_D set ConfirmMessage = '实盘数小于0，无法进行盘点调整！'
+				from WMS_Inventory_D id
+				where id.HeadId = @HeadId
+					and id.InventoryQty < 0;
+		THROW 51000, '存在实盘数小于0，请确认！', 1;
+		RETURN;
+	END;
+
+	--判断盘点表中物料的批次是否冲突：空批次和非空批次同时存在
+	select InvId, SubInvId, PartId,
+			count(*) cnt
+		INTO #id_lot
+		from WMS_Inventory_D
+		where HeadId = @HeadId
+		group by InvId, SubInvId, PartId,
+				case when Lot is null then 0
+					 else 1
+					 end;
+	select @Count = count(*) from #id_lot
+		where cnt > 1;
+	IF (@Count > 0)
+	BEGIN
+		update WMS_Inventory_D set ConfirmMessage = '盘点物料的批次存在冲突【空批次和非空批次同时存在】，无法进行盘点调整！'
+				from WMS_Inventory_D id,
+					 #id_lot id_lot
+				where id.InvId = id_lot.InvId
+					and isnull(id.SubInvId, 0) = isnull(id_lot.SubInvId, 0)
+					and id.PartId = id_lot.PartId
+					and id.HeadId = @HeadId
+					and id_lot.cnt > 1;
+		THROW 51000, '盘点物料的批次存在冲突【空批次和非空批次同时存在】，请确认！', 1;
+		RETURN;
+	END;
+
+	--查询是否存在实盘数<备料数的数据，如果存在写入错误信息后报错
+	select @Count = count(*) from WMS_Inventory_D id,
+								  WMS_Inv inv
+							where id.InvId = inv.InvId
+							  and isnull(id.SubInvId, 0) = isnull(inv.SubInvId, 0)
+							  and id.PartId = inv.PartId
+							  and isnull(id.Lot, 0) = isnull(inv.Lot, 0)
+							  and id.HeadId = @HeadId
+							  and id.InventoryQty < inv.StockQty;
+	IF (@Count > 0)
+	BEGIN
+		update WMS_Inventory_D set ConfirmMessage = '实盘数小于备料数，无法进行盘点调整！'
+				from WMS_Inventory_D id,
+					 WMS_Inv inv
+				where id.InvId = inv.InvId
+					and isnull(id.SubInvId, 0) = isnull(inv.SubInvId, 0)
+					and id.PartId = inv.PartId
+					and isnull(id.Lot, 0) = isnull(inv.Lot, 0)
+					and id.HeadId = @HeadId
+					and id.InventoryQty < inv.StockQty;
+		THROW 51000, '存在实盘数小于备料数的数据，请确认！', 1;
+		RETURN;
+	END;
+
+	BEGIN TRAN
+
+	--插入库存记录表
+	INSERT INTO WMS_InvRecord (PartId,
+								Lot,
+								QTY,
+								InvId,
+								SubInvId,
+								BillId,
+								SourceBill,
+								OperateDate,
+								Type,
+								OperateMan
+								)
+				SELECT id.PartId,
+						id.Lot,
+						id.InventoryQty - id.SnapshootQty,
+						id.InvId,
+						id.SubInvId,	
+						id.Id,
+						@HeadId,
+						@now,
+						'盘点调整',
+						@UserId
+						FROM WMS_Inventory_D id
+						WHERE id.HeadId = @HeadId
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '保存库存记录时出错！'
+		ROLLBACK TRAN
+		RETURN
+	END
+
+	--修改现有量
+	MERGE INTO WMS_Inv AS inv
+		USING (SELECT * FROM WMS_Inventory_D WHERE HeadId = @HeadId)  AS id
+		ON (id.InvId = inv.InvId
+			and isnull(id.SubInvId, 0) = isnull(inv.SubInvId, 0)
+			and id.PartId = inv.PartId
+			and isnull(id.Lot, 0) = isnull(inv.Lot, 0)
+			)
+		WHEN MATCHED
+			THEN UPDATE SET inv.Qty = inv.Qty + (id.InventoryQty - id.SnapshootQty)
+		WHEN NOT MATCHED
+			THEN INSERT (InvId,
+						SubInvId,
+						PartId,
+						Lot,
+						Qty,
+						StockQty) 
+					VALUES(id.InvId,
+							id.SubInvId,
+							id.PartId,
+							id.Lot,
+							id.InventoryQty,
+							0);
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '修改库存现有量时出错！'
+		ROLLBACK TRAN
+		RETURN
+	END
+
+	--修改盘点表状态
+	update WMS_Inventory_H set InventoryStatus = '已确认',
+								ModifyPerson = @UserId,
+								ModifyTime = @now
+			where Id = @HeadId;
+
+
+	COMMIT TRAN
+	RETURN
+
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmReturnOrder]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[P_WMS_ConfirmReturnOrder]
 	@UserId varchar(50),
 	@ReturnOrderNum	varchar(50),
 	@ReturnValue	varchar(50) OUTPUT
@@ -125,7 +400,94 @@ BEGIN
 END
 GO
 
-ALTER   PROCEDURE [dbo].[P_WMS_CreateInspectBill]
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmSaleOrder]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE     PROCEDURE [dbo].[P_WMS_ConfirmSaleOrder]
+	@UserId varchar(50),
+	@SellBillNum	varchar(50),
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now datetime = getdate()
+	DECLARE @PartId int;
+	DECLARE @InvId int;
+	DECLARE @SubInvId int;
+	DECLARE @Lot varchar(50);
+	DECLARE @Qty decimal(10, 3);
+	DECLARE @rowId int;
+	DECLARE @countOK int = 0;
+	DECLARE @countError int = 0;
+
+	--修改库存
+	DECLARE cur_SaleOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, Qty * -1
+											from WMS_Sale_Order
+											where SellBillNum = @SellBillNum
+											  and ConfirmStatus = '未确认');
+    --打开游标--
+    open cur_SaleOrder;
+    --开始循环游标变量--
+    fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;
+    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+    begin         
+		BEGIN TRY   
+			BEGIN TRAN
+
+			exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, null, @Lot, 0, 1, @Qty, @now, '销售', @rowId, @SellBillNum;
+
+			--修改投料单行的确认状态
+			update WMS_Sale_Order set ConfirmStatus = '已确认', ConfirmMan = @UserId, ConfirmDate = @now,
+					ConfirmMessage = '',
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+
+			set @countOK = @countOK + 1;
+			COMMIT TRAN;
+ 		END TRY
+		BEGIN CATCH
+			IF @@TRANCOUNT > 0
+				ROLLBACK TRAN ;
+
+			--报错确认的错误信息
+			set @countError = @countError + 1;
+			update WMS_Sale_Order set ConfirmMessage = ERROR_MESSAGE(),
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+		END CATCH
+
+		--转到下一个游标，没有会死循环
+        fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;  
+    end    
+    close cur_SaleOrder  --关闭游标
+    deallocate cur_SaleOrder   --释放游标
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRAN ;
+
+	IF (@countError > 0)
+	BEGIN
+		set @ReturnValue = '销售订单确认成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
+		RETURN;
+	END
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInspectBill]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[P_WMS_CreateInspectBill]
 	-- Add the parameters for the stored procedure here
 	@UserId varchar(50),
 	@ArrivalBillNum varchar(50),
@@ -165,7 +527,95 @@ END
 
 GO
 
-ALTER   PROCEDURE [dbo].[P_WMS_CreateReInspect]
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInventoryLine]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[P_WMS_CreateInventoryLine]
+	@UserId varchar(50),
+	@HeadId int,
+	@JsonInvList NVARCHAR(MAX), --盘点的库房
+	@ReturnValue	varchar(500) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @InspectBillNum varchar(50)
+	DECLARE @now date = getdate();
+	DECLARE @InventoryStatus nvarchar(10);
+
+	select @InventoryStatus = InventoryStatus
+		from WMS_Inventory_H
+		where id = @HeadId;
+	IF (@InventoryStatus <> '未生成')
+	BEGIN
+		;
+		THROW 51000, '盘点表已生成，请确认！', 1;
+		RETURN
+	END;
+
+
+	--将盘点的库房保存到临时表
+	SELECT *
+		INTO #InvList
+		FROM OPENJSON(@JsonInvList)  
+			WITH (	Id int
+				);
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '临时保存盘点库房时出错！'
+		RETURN
+	END
+
+	BEGIN TRAN
+
+	--插入盘点行表
+	insert into WMS_Inventory_D (HeadId,
+								PartId,
+								InvId,
+								SubInvId,
+								Lot,
+								SnapshootQty,
+								InventoryQty,
+								CreatePerson,
+								CreateTime
+								)
+					select		@HeadId,
+								PartId,
+								InvId,
+								SubInvId,
+								Lot,
+								Qty,
+								0,
+								@UserId,
+								@now
+						from WMS_Inv inv
+						where inv.InvId in (select id from #InvList);
+
+	--修改盘点头表状态
+	update WMS_Inventory_H set InventoryStatus = '已生成',
+								ModifyPerson = @UserId,
+								ModifyTime = @now
+			where Id = @HeadId;
+
+	COMMIT TRAN
+	RETURN
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReInspect]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[P_WMS_CreateReInspect]
 	@UserId varchar(50),
 	@AIID int,
 	@NCheckOutResult nvarchar(50),
@@ -262,7 +712,7 @@ BEGIN
 
 	--修改库存：调整数量=新数量-旧数量
 	set @qty = @NQualifyQty - @OQualifyQty;
-	exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, @SubInvId, @Lot, 0, 1, @qty, @now, '重新送检', @rowId, null
+	exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, @SubInvId, @Lot, 0, 0, @qty, @now, '重新送检', @rowId, null
 
 	COMMIT TRAN
 	RETURN
@@ -270,8 +720,15 @@ END
 
 GO
 
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReturnOrder]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 --手工创建退货单
-ALTER PROCEDURE [dbo].[P_WMS_CreateReturnOrder]
+CREATE PROCEDURE [dbo].[P_WMS_CreateReturnOrder]
 	@UserId varchar(50),
 	@PartId int,
 	@SupplierId int,
@@ -387,7 +844,122 @@ END
 
 GO
 
-ALTER   PROCEDURE [dbo].[P_WMS_InvAdjust]
+/****** Object:  StoredProcedure [dbo].[p_wms_deleteTestData]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[p_wms_deleteTestData]
+AS
+BEGIN
+delete wms_inv
+delete WMS_InvRecord
+delete WMS_Feed_List;
+delete WMS_Sale_Order;
+delete WMS_ReturnOrder
+delete WMS_Inv_Adjust
+delete WMS_Product_Entry
+delete WMS_ReInspect;
+delete WMS_Inventory_D;
+delete WMS_Inventory_H;
+delete [WMS_AI]
+delete wms_po
+end
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_GetMaxNum]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[P_WMS_GetMaxNum]
+	@Type varchar(50),
+	@Tabname varchar(50),
+	@Now date,
+	@Result nvarchar(50) output 
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	declare @count int
+	declare @maxNum int
+
+	--获取单据编号
+	select @count = count(*) from WMS_Num t
+		where t.Type = @Type and t.TabName = @Tabname  and t.Day = @Now
+	IF (@count = 0)
+	BEGIN
+		set @maxNum = 0
+		--begin tran
+		insert into WMS_Num (Num, Day, Type, TabName, MinNum, MaxNum)
+			values (@maxNum, @Now, @Type, @Tabname, 0, 9999)
+		--commit tran
+	END
+
+	--修改当前的单据编号
+	update WMS_Num set Num = Num + 1 
+		where Type = @type and Day = @now
+
+	select @maxNum = Num from WMS_Num t
+		where t.Type = @Type and t.Day = @Now
+
+
+	set @Result = @Type + CONVERT(varchar(8), @Now, 112) + replace(right(str(@maxNum), 4),' ','0')
+
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_InitNumForDay]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[P_WMS_InitNumForDay]
+	@Type varchar(50),
+	@Tabname varchar(50),
+	@Now date
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	declare @count int
+	declare @maxNum int
+
+	--获取单据编号
+	select @count = count(*) from WMS_Num t
+		where t.Type = @Type and t.TabName = @Tabname  and t.Day = @Now
+	IF (@count = 0)
+	BEGIN
+		set @maxNum = 0
+		insert into WMS_Num (Num, Day, Type, TabName, MinNum, MaxNum)
+			values (@maxNum, @Now, @Type, @Tabname, 0, 9999)
+	END
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvAdjust]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE   PROCEDURE [dbo].[P_WMS_InvAdjust]
 	-- Add the parameters for the stored procedure here
 	@UserId varchar(50),
 	@PartId int,
@@ -444,7 +1016,7 @@ BEGIN
 	set @rowId = @@IDENTITY
 
 	--修改库存：
-	exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, null, @Lot, 0, 0,
+	exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, null, @Lot, 1, 0,
 		@AdjustQty, @now, '调账', @rowId, @InvAdjustBillNum
 
 	COMMIT TRAN
@@ -454,7 +1026,14 @@ END
 
 GO
 
-ALTER  PROCEDURE [dbo].[P_WMS_InvStock]	--库存备料
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE       PROCEDURE [dbo].[P_WMS_InvStock]	--库存备料
 	@UserId varchar(50),
 	@PartId int,
 	@InvId int,
@@ -592,6 +1171,14 @@ BEGIN
 		deallocate cur_Inv   --释放游标
 	END
 END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock_BatchUpdate]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE     PROCEDURE [dbo].[P_WMS_InvStock_BatchUpdate]	--库存备料
@@ -724,8 +1311,373 @@ END
 
 GO
 
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
 
-ALTER   PROCEDURE [dbo].[P_WMS_ProcessInspectBill]
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[P_WMS_PrintFeedList]
+	@UserId varchar(50),
+	@FeedBillNum nvarchar(50),
+	@ReleaseBillNum	varchar(50) OUTPUT,
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now date = getdate()
+	DECLARE @SubAssemblyPartId int;
+	DECLARE @InvId int;
+	DECLARE @SubInvId int;
+	DECLARE @Lot varchar(50);
+	DECLARE @Qty decimal(10, 3);
+	DECLARE @rowId int;
+	DECLARE @countOK int = 0;
+	DECLARE @countError int = 0;
+
+	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
+	--exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
+
+	--获取当前的单据编号
+	exec P_WMS_GetMaxNum 'TL', 'WMS_Feed_List', @now, @ReleaseBillNum output
+
+	--进行库存备料
+	DECLARE cur_FeedList cursor for (select Id, SubAssemblyPartId, InvId, SubInvId, Lot, FeedQty * -1
+											from WMS_Feed_List
+											where FeedBillNum = @FeedBillNum
+											  and PrintStaus = '未打印');
+    --打开游标--
+    open cur_FeedList;
+    --开始循环游标变量--
+    fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;
+    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+    begin         
+		BEGIN TRY   
+			--判断投料数如果大于0，报错
+			IF (@Qty >= 0)
+			BEGIN
+				;
+				THROW 51000, '当前投料数为负数或零，请确认！', 1;
+			END;
+
+			BEGIN TRAN
+
+			exec P_WMS_InvStock @UserId, @SubAssemblyPartId, @InvId, null, @Lot, @Qty, @now, '投料', @rowId, @ReleaseBillNum;
+
+			--修改投料单行的打印状态
+			update WMS_Feed_List set ReleaseBillNum = @ReleaseBillNum,
+					PrintStaus = '已打印', PrintMan = @UserId, PrintDate = @now,
+					ConfirmMessage = '',
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+
+			set @countOK = @countOK + 1;
+			COMMIT TRAN;
+ 		END TRY
+		BEGIN CATCH
+			IF @@TRANCOUNT > 0
+				ROLLBACK TRAN ;
+
+			--报错确认的错误信息
+			set @countError = @countError + 1;
+			update WMS_Feed_List set ConfirmMessage = ERROR_MESSAGE(),
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+		END CATCH
+
+		--转到下一个游标，没有会死循环
+        fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;  
+    end    
+    close cur_FeedList  --关闭游标
+    deallocate cur_FeedList   --释放游标
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRAN ;
+
+	IF (@countError > 0)
+	BEGIN
+		set @ReturnValue = '投料单备料成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
+		RETURN;
+	END
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[P_WMS_PrintReturnOrder]
+	@UserId varchar(50),
+	@JsonReturnOrder NVARCHAR(MAX), --所选择要打印的退货记录
+	@ReturnOrderNum	varchar(50) OUTPUT,
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now date = getdate()
+	DECLARE @batchId int
+
+	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
+	exec P_WMS_InitNumForDay 'TH', 'WMS_ReturnOrder', @now
+
+	--将检验结果保存到临时表
+	SELECT *
+		INTO #ReturnOrder
+		FROM OPENJSON(@JsonReturnOrder)  
+			WITH (	Id int,
+					AdjustQty decimal(10, 3),
+					Remark nvarchar(200)
+				) 
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '临时保存检验信息时出错！'
+		RETURN
+	END
+
+	BEGIN TRAN
+
+	--修改表的BatchId，以解决并发问题
+	SELECT @batchId = NEXT VALUE FOR S_WMS_BatchId;
+	update WMS_ReturnOrder set BatchId = @batchId
+			FROM WMS_ReturnOrder ro,
+				 #ReturnOrder t
+			WHERE ro.Id = t.Id
+			  AND BatchId is null
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '修改BatchId时出错！'
+		RETURN
+	END
+
+	--获取当前的单据编号
+	exec P_WMS_GetMaxNum 'TH', 'WMS_ReturnOrder', @now, @ReturnOrderNum output
+
+	update WMS_ReturnOrder set ReturnOrderNum = @ReturnOrderNum,
+								--AdjustQty = t.AdjustQty,
+								--Remark = t.Remark,
+								PrintStaus = '已退货',
+								PrintDate = @now,
+								PrintMan = @UserId,
+								ModifyPerson = @UserId,
+								ModifyTime = @now
+			FROM WMS_ReturnOrder ro,
+				 #ReturnOrder t
+			WHERE ro.Id = t.Id
+				AND ro.BatchId = @batchId
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '保存退货记录时出错！'
+		RETURN
+	END
+
+
+	COMMIT TRAN
+	RETURN
+
+
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder1]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[P_WMS_PrintReturnOrder1]
+	@UserId varchar(50),
+	@ReturnOrderNum	varchar(50),
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now date = getdate()
+
+	BEGIN TRAN
+
+	--修改退货单状态
+	UPDATE WMS_ReturnOrder set PrintStaus = '已退货',
+								PrintDate = @now,
+								PrintMan = @UserId,
+								ModifyPerson = @UserId,
+								ModifyTime = @now
+			WHERE ReturnOrderNum = @ReturnOrderNum
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '保存退货记录时出错！'
+		RETURN
+	END
+
+	--修改库存：只对AIID为空的记录修改库存（手工创建的退货单），根据不合格数量生成的退货单是没有进入库存的。
+	--插入库存记录表
+	INSERT INTO WMS_InvRecord (PartId,
+								QTY,
+								InvId,
+								SubInvId,
+								BillId,
+								SourceBill,
+								OperateDate,
+								Type,
+								OperateMan
+								)
+				SELECT ro.PartId,
+						ro.AdjustQty,
+						ro.InvId,
+						ro.SubInvId,	
+						ro.Id,
+						@ReturnOrderNum,
+						@now,
+						'退库',
+						@UserId
+						FROM WMS_ReturnOrder ro
+						WHERE ro.ReturnOrderNum = @ReturnOrderNum
+						 AND  ro.AIID IS NULL
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '保存库存记录时出错！'
+		ROLLBACK TRAN
+		RETURN
+	END
+
+	--修改现有量
+	UPDATE WMS_Inv SET Qty = Qty - ro.AdjustQty
+		FROM WMS_Inv inv,
+			WMS_ReturnOrder ro
+		WHERE inv.InvId = ro.InvId
+			AND Isnull(inv.SubInvId, 0) = Isnull(ro.SubInvId, 0)
+			AND inv.PartId = ro.PartId
+			AND ro.ReturnOrderNum = @ReturnOrderNum
+			AND  ro.AIID IS NULL
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '修改库存现有量时出错！'
+		ROLLBACK TRAN
+		RETURN
+	END
+
+
+	COMMIT TRAN
+	RETURN
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE     PROCEDURE [dbo].[P_WMS_PrintSaleOrder]
+	@UserId varchar(50),
+	@SaleBillNum nvarchar(50),
+	@SellBillNum	varchar(50) OUTPUT,
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now date = getdate()
+	DECLARE @PartId int;
+	DECLARE @InvId int;
+	DECLARE @SubInvId int;
+	DECLARE @Lot varchar(50);
+	DECLARE @Qty decimal(10, 3);
+	DECLARE @rowId int;
+	DECLARE @countOK int = 0;
+	DECLARE @countError int = 0;
+
+	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
+	--exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
+
+	--获取当前的单据编号
+	exec P_WMS_GetMaxNum 'XS', 'WMS_Sale_Order', @now, @SellBillNum output
+
+	--进行库存备料
+	DECLARE cur_SaleOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, Qty * -1
+											from WMS_Sale_Order
+											where SaleBillNum = @SaleBillNum
+											  and PrintStaus = '未打印');
+    --打开游标--
+    open cur_SaleOrder;
+    --开始循环游标变量--
+    fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;
+    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+    begin         
+		BEGIN TRY   
+			--判断销售订单数如果大于0，报错
+			IF (@Qty >= 0)
+			BEGIN
+				;
+				THROW 51000, '当前销售订单数为负数或零，请确认！', 1;
+			END;
+
+			BEGIN TRAN
+
+			exec P_WMS_InvStock @UserId, @PartId, @InvId, null, @Lot, @Qty, @now, '销售', @rowId, @SellBillNum;
+
+			--修改投料单行的打印状态
+			update WMS_Sale_Order set SellBillNum = @SellBillNum,
+					PrintStaus = '已打印', PrintMan = @UserId, PrintDate = @now,
+					ConfirmMessage = '',
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+
+			set @countOK = @countOK + 1;
+			COMMIT TRAN;
+ 		END TRY
+		BEGIN CATCH
+			IF @@TRANCOUNT > 0
+				ROLLBACK TRAN ;
+
+			--报错确认的错误信息
+			set @countError = @countError + 1;
+			update WMS_Sale_Order set ConfirmMessage = ERROR_MESSAGE(),
+					ModifyPerson = @UserId, ModifyTime = @now
+					where Id = @rowId;
+		END CATCH
+
+		--转到下一个游标，没有会死循环
+        fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;  
+    end    
+    close cur_SaleOrder  --关闭游标
+    deallocate cur_SaleOrder   --释放游标
+
+	IF @@TRANCOUNT > 0
+		COMMIT TRAN ;
+
+	IF (@countError > 0)
+	BEGIN
+		set @ReturnValue = '销售订单备料成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
+		RETURN;
+	END
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[P_WMS_ProcessInspectBill]
 	@UserId varchar(50),
 	@JsonInspectBill NVARCHAR(MAX), --检验结果
 	@ReturnValue	varchar(50) OUTPUT
@@ -923,7 +1875,14 @@ END
 
 GO
 
-ALTER   PROCEDURE [dbo].[P_WMS_ProcessProductEntry]
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessProductEntry]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[P_WMS_ProcessProductEntry]
 	@UserId varchar(50),
 	@ProductBillNum nvarchar(100), --自制件入库单号（业务）
 	@ReturnValue	varchar(50) OUTPUT
@@ -1053,6 +2012,273 @@ BEGIN
 	RETURN
 END
 
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE     PROCEDURE [dbo].[P_WMS_UpdateInvQty]
+	@UserId varchar(50),
+	@PartId int,
+	@InvId int,
+	@SubInvId int,
+	@Lot varchar(50),
+	@AllowAddLot bit,	--在增加库存时，是否允许新增批次
+	@HasStockQty bit,	--在减少库存时，是否已进行过备料
+	@Qty decimal(10, 3),
+	@now datetime,
+	@type varchar(50),
+	@BillId int,
+	@SourceBill varchar(50)
+AS
+BEGIN
+	DECLARE @AllowNegativeInv bit = 0; --是否允许负库存，默认否
+	DECLARE @Count int;
+	DECLARE @rowId int;
+	DECLARE @InvQty decimal(10, 3);
+	DECLARE @StockQty decimal(10, 3) = 0;	--备料数
+	DECLARE @CurrentQty decimal(10, 3) = 0;	--当前扣除数量
+	DECLARE @ResidueQty decimal(10, 3) = 0; --剩余数量
+
+	IF (@Qty = 0)
+	BEGIN
+		;
+		THROW 51000, '库存修改数量为0，请确认！', 1;
+		RETURN;
+	END;
+	
+	--修改库存现有量
+	--增加库存
+	IF (@Qty > 0)
+	BEGIN
+		--查找是否存在同批次的库存
+		SELECT @Count = count(*) FROM WMS_Inv
+			WHERE InvId = @InvId
+				AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+				AND PartId = @PartId
+				AND Isnull(Lot, 0) = Isnull(@Lot, 0);
+		IF (@Count = 1)	--如果找到，则修改库存现有量
+		BEGIN
+			UPDATE WMS_Inv SET Qty = Qty + @Qty
+				WHERE InvId = @InvId
+					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+					AND PartId = @PartId
+					AND Isnull(Lot, 0) = Isnull(@Lot, 0);
+		END
+		ELSE IF (@AllowAddLot = 1)	--新增批次
+		BEGIN
+			--如果批次不为空，则判断已有的库存现有量是否存在空批次（系统不允许存在空批次和非空批次同时存在的情况）
+			IF (@Lot IS NOT NULL)
+			BEGIN
+				SELECT @Count = count(*) FROM WMS_Inv
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId
+						AND Lot IS NULL;
+				IF (@Count > 0)
+				BEGIN
+					;
+					THROW 51000, '入库批次存在问题：当前批次不为空，但库存存在为空的批次，请确认！', 1;
+					RETURN;
+				END
+			END
+			--如果批次为空，则判断已有的库存现有量是否存在不为空批次（系统不允许存在空批次和非空批次同时存在的情况）
+			IF (@Lot IS NULL)
+			BEGIN
+				SELECT @Count = count(*) FROM WMS_Inv
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId
+						AND Lot IS NOT NULL;
+				IF (@Count > 0)
+				BEGIN
+					;
+					THROW 51000, '入库批次存在问题：当前批次为空，但库存存在不为空的批次，请确认！', 1;
+					RETURN;
+				END
+			END
+		
+			--插入库存现有量
+			INSERT INTO WMS_Inv (InvId,
+								SubInvId,
+								PartId,
+								Lot,
+								Qty,
+								StockQty)
+						VALUES (@InvId,
+								@SubInvId,
+								@PartId,
+								@Lot,
+								@Qty,
+								0
+								);
+
+		END
+		ELSE  --增加库存时发生无效批次
+		BEGIN
+			;
+			THROW 51000, '入库批次存在问题：当前批次库存不存在且该操作不允许新增批次，请确认！', 1;
+			RETURN;
+		END
+	END
+
+
+	--减少库存：当批次为空，则按先进先出的原则扣减库存；当批次非空时，只扣减指定批次的库存
+	IF (@Qty < 0)
+	BEGIN
+		IF (@HasStockQty = 1)	--已经备料过，直接扣减库存，不用判断库存现有量
+		BEGIN
+			--修改库存现有量
+			UPDATE WMS_Inv SET Qty = inv.Qty - r.QTY, 
+								StockQty = inv.StockQty - r.Qty
+				FROM WMS_Inv inv,
+					 WMS_InvRecord r
+				WHERE r.Type = @type
+				  AND r.BillId = @BillId
+				  AND r.Stock_InvId = inv.Id;
+
+			--插入库存记录表
+			INSERT INTO WMS_InvRecord (PartId,
+										Lot,
+										QTY,
+										InvId,
+										SubInvId,
+										BillId,
+										SourceBill,
+										OperateDate,
+										Type,
+										OperateMan,
+										Stock_InvId
+										)
+								SELECT	r.PartId,
+										r.Lot,
+										r.Qty,
+										r.InvId,
+										r.SubInvId,	
+										r.BillId,
+										r.SourceBill,
+										@now,
+										r.type,
+										@UserId,
+										null
+									FROM WMS_InvRecord r
+									WHERE r.Type = @type
+										AND r.BillId = @BillId
+										AND r.Stock_InvId is not null;
+		END
+		ELSE
+		BEGIN
+			IF (@Lot IS NOT NULL) --批次不为空
+			BEGIN
+				SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId
+						AND Isnull(Lot, 0) = Isnull(@Lot, 0);
+				IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+				BEGIN
+					;
+					THROW 51000, '当前批次的库存现有量不足，请确认！', 1;
+					RETURN;
+				END
+			END
+
+			IF (@Lot IS NULL) --批次为空
+			BEGIN
+				SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
+					WHERE InvId = @InvId
+						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+						AND PartId = @PartId;
+				IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
+				BEGIN
+					;
+					THROW 51000, '库存现有量不足，请确认！', 1;
+					RETURN;
+				END
+			END
+
+			--使用游标，按先进先出的原则出库
+			DECLARE cur_Inv cursor for select Id, Qty, Isnull(StockQty, 0)
+											from WMS_Inv
+											where InvId = @InvId
+												AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
+												AND PartId = @PartId
+												AND Isnull(Lot, 0) = Isnull(@Lot, Isnull(Lot, 0))
+												AND Qty - Isnull(StockQty, 0) > 0
+											Order By Lot;
+			set @ResidueQty = ABS(@Qty);
+			--打开游标--
+			open cur_Inv;
+			--开始循环游标变量--
+			fetch next from cur_Inv into @rowId, @InvQty, @StockQty;
+			while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+			begin         
+				IF (@InvQty - @StockQty < @ResidueQty)
+				BEGIN
+					set @CurrentQty = @InvQty - @StockQty;
+				END
+				ELSE
+				BEGIN
+					set @CurrentQty = @ResidueQty;
+				END;
+				set @ResidueQty = @ResidueQty - @CurrentQty;
+
+				--修改库存现有量
+				UPDATE WMS_Inv SET Qty = Qty - @CurrentQty
+					WHERE Id = @rowId;
+				--插入库存记录表
+				INSERT INTO WMS_InvRecord (PartId,
+											Lot,
+											QTY,
+											InvId,
+											SubInvId,
+											BillId,
+											SourceBill,
+											OperateDate,
+											Type,
+											OperateMan,
+											Stock_InvId
+											)
+									VALUES (@PartId,
+											@Lot,
+											@CurrentQty,
+											@InvId,
+											@SubInvId,	
+											@BillId,
+											@SourceBill,
+											@now,
+											@type,
+											@UserId,
+											null);
+
+				IF (@ResidueQty > 0)
+				BEGIN
+					--转到下一个游标，没有会死循环
+					fetch next from cur_Inv into @rowId, @InvQty, @StockQty; 
+				END
+				ELSE
+				BEGIN
+					BREAK;
+				END;
+			end    
+			close cur_Inv  --关闭游标
+			deallocate cur_Inv   --释放游标
+
+		END
+	END
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty_BatchUpdate]    Script Date: 2019/1/20 21:21:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE   PROCEDURE [dbo].[P_WMS_UpdateInvQty_BatchUpdate]
@@ -1292,602 +2518,6 @@ BEGIN
 		;
 		THROW 51000, '保存库存记录时出错！', 1;
 		RETURN
-	END
-END
-
-GO
-
-ALTER     PROCEDURE [dbo].[P_WMS_UpdateInvQty]
-	@UserId varchar(50),
-	@PartId int,
-	@InvId int,
-	@SubInvId int,
-	@Lot varchar(50),
-	@AllowAddLot bit,	--在增加库存时，是否允许新增批次
-	@HasStockQty bit,	--在减少库存时，是否已进行过备料
-	@Qty decimal(10, 3),
-	@now datetime,
-	@type varchar(50),
-	@BillId int,
-	@SourceBill varchar(50)
-AS
-BEGIN
-	DECLARE @AllowNegativeInv bit = 0; --是否允许负库存，默认否
-	DECLARE @Count int;
-	DECLARE @rowId int;
-	DECLARE @InvQty decimal(10, 3);
-	DECLARE @StockQty decimal(10, 3) = 0;	--备料数
-	DECLARE @CurrentQty decimal(10, 3) = 0;	--当前扣除数量
-	DECLARE @ResidueQty decimal(10, 3) = 0; --剩余数量
-
-	IF (@Qty = 0)
-	BEGIN
-		;
-		THROW 51000, '库存修改数量为0，请确认！', 1;
-		RETURN;
-	END;
-	
-	--修改库存现有量
-	--增加库存
-	IF (@Qty > 0)
-	BEGIN
-		--查找是否存在同批次的库存
-		SELECT @Count = count(*) FROM WMS_Inv
-			WHERE InvId = @InvId
-				AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
-				AND PartId = @PartId
-				AND Isnull(Lot, 0) = Isnull(@Lot, 0);
-		IF (@Count = 1)	--如果找到，则修改库存现有量
-		BEGIN
-			UPDATE WMS_Inv SET Qty = Qty + @Qty
-				WHERE InvId = @InvId
-					AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
-					AND PartId = @PartId
-					AND Isnull(Lot, 0) = Isnull(@Lot, 0);
-		END
-		ELSE IF (@AllowAddLot = 1)	--新增批次
-		BEGIN
-			--如果批次不为空，则判断已有的库存现有量是否存在空批次（系统不允许存在空批次和非空批次同时存在的情况）
-			IF (@Lot IS NOT NULL)
-			BEGIN
-				SELECT @Count = count(*) FROM WMS_Inv
-					WHERE InvId = @InvId
-						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
-						AND PartId = @PartId
-						AND Lot IS NULL;
-				IF (@Count > 0)
-				BEGIN
-					;
-					THROW 51000, '入库批次存在问题：当前批次不为空，但库存存在为空的批次，请确认！', 1;
-					RETURN;
-				END
-			END
-			--如果批次为空，则判断已有的库存现有量是否存在不为空批次（系统不允许存在空批次和非空批次同时存在的情况）
-			IF (@Lot IS NULL)
-			BEGIN
-				SELECT @Count = count(*) FROM WMS_Inv
-					WHERE InvId = @InvId
-						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
-						AND PartId = @PartId
-						AND Lot IS NOT NULL;
-				IF (@Count > 0)
-				BEGIN
-					;
-					THROW 51000, '入库批次存在问题：当前批次为空，但库存存在不为空的批次，请确认！', 1;
-					RETURN;
-				END
-			END
-		
-			--插入库存现有量
-			INSERT INTO WMS_Inv (InvId,
-								SubInvId,
-								PartId,
-								Lot,
-								Qty)
-						VALUES (@InvId,
-								@SubInvId,
-								@PartId,
-								@Lot,
-								@Qty
-								);
-
-		END
-		ELSE  --增加库存时发生无效批次
-		BEGIN
-			;
-			THROW 51000, '入库批次存在问题：当前批次库存不存在且该操作不允许新增批次，请确认！', 1;
-			RETURN;
-		END
-	END
-
-
-	--减少库存：当批次为空，则按先进先出的原则扣减库存；当批次非空时，只扣减指定批次的库存
-	IF (@Qty < 0)
-	BEGIN
-		IF (@HasStockQty = 1)	--已经备料过，直接扣减库存，不用判断库存现有量
-		BEGIN
-			--修改库存现有量
-			UPDATE WMS_Inv SET Qty = inv.Qty - r.QTY, 
-								StockQty = inv.StockQty - r.Qty
-				FROM WMS_Inv inv,
-					 WMS_InvRecord r
-				WHERE r.Type = @type
-				  AND r.BillId = @BillId
-				  AND r.Stock_InvId = inv.Id;
-
-			--插入库存记录表
-			INSERT INTO WMS_InvRecord (PartId,
-										Lot,
-										QTY,
-										InvId,
-										SubInvId,
-										BillId,
-										SourceBill,
-										OperateDate,
-										Type,
-										OperateMan,
-										Stock_InvId
-										)
-								SELECT	r.PartId,
-										r.Lot,
-										r.Qty,
-										r.InvId,
-										r.SubInvId,	
-										r.BillId,
-										r.SourceBill,
-										@now,
-										r.type,
-										@UserId,
-										null
-									FROM WMS_InvRecord r
-									WHERE r.Type = @type
-										AND r.BillId = @BillId
-										AND r.Stock_InvId is not null;
-		END
-		ELSE
-		BEGIN
-			IF (@Lot IS NOT NULL) --批次不为空
-			BEGIN
-				SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
-					WHERE InvId = @InvId
-						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
-						AND PartId = @PartId
-						AND Isnull(Lot, 0) = Isnull(@Lot, 0);
-				IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
-				BEGIN
-					;
-					THROW 51000, '当前批次的库存现有量不足，请确认！', 1;
-					RETURN;
-				END
-			END
-
-			IF (@Lot IS NULL) --批次为空
-			BEGIN
-				SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
-					WHERE InvId = @InvId
-						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
-						AND PartId = @PartId;
-				IF (@Qty < 0 AND IsNull(@InvQty, 0) < ABS(@Qty) AND @AllowNegativeInv = 0)	--当减少库存、且不允许负库存、且库存现有量不足时，抛出异常
-				BEGIN
-					;
-					THROW 51000, '库存现有量不足，请确认！', 1;
-					RETURN;
-				END
-			END
-
-			--使用游标，按先进先出的原则出库
-			DECLARE cur_Inv cursor for select Id, Qty, Isnull(StockQty, 0)
-											from WMS_Inv
-											where InvId = @InvId
-												AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
-												AND PartId = @PartId
-												AND Isnull(Lot, 0) = Isnull(@Lot, Isnull(Lot, 0))
-												AND Qty - Isnull(StockQty, 0) > 0
-											Order By Lot;
-			set @ResidueQty = ABS(@Qty);
-			--打开游标--
-			open cur_Inv;
-			--开始循环游标变量--
-			fetch next from cur_Inv into @rowId, @InvQty, @StockQty;
-			while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
-			begin         
-				IF (@InvQty - @StockQty < @ResidueQty)
-				BEGIN
-					set @CurrentQty = @InvQty - @StockQty;
-				END
-				ELSE
-				BEGIN
-					set @CurrentQty = @ResidueQty;
-				END;
-				set @ResidueQty = @ResidueQty - @CurrentQty;
-
-				--修改库存现有量
-				UPDATE WMS_Inv SET Qty = Qty - @CurrentQty
-					WHERE Id = @rowId;
-				--插入库存记录表
-				INSERT INTO WMS_InvRecord (PartId,
-											Lot,
-											QTY,
-											InvId,
-											SubInvId,
-											BillId,
-											SourceBill,
-											OperateDate,
-											Type,
-											OperateMan,
-											Stock_InvId
-											)
-									VALUES (@PartId,
-											@Lot,
-											@CurrentQty,
-											@InvId,
-											@SubInvId,	
-											@BillId,
-											@SourceBill,
-											@now,
-											@type,
-											@UserId,
-											null);
-
-				IF (@ResidueQty > 0)
-				BEGIN
-					--转到下一个游标，没有会死循环
-					fetch next from cur_Inv into @rowId, @InvQty, @StockQty; 
-				END
-				ELSE
-				BEGIN
-					BREAK;
-				END;
-			end    
-			close cur_Inv  --关闭游标
-			deallocate cur_Inv   --释放游标
-
-		END
-	END
-END
-go
-
-
-
-CREATE  OR ALTER    PROCEDURE [dbo].[P_WMS_ConfirmSaleOrder]
-	@UserId varchar(50),
-	@SellBillNum	varchar(50),
-	@ReturnValue	varchar(50) OUTPUT
-AS
-BEGIN
-	SET NOCOUNT ON;
-	set xact_abort on   
-
-	DECLARE @now datetime = getdate()
-	DECLARE @PartId int;
-	DECLARE @InvId int;
-	DECLARE @SubInvId int;
-	DECLARE @Lot varchar(50);
-	DECLARE @Qty decimal(10, 3);
-	DECLARE @rowId int;
-	DECLARE @countOK int = 0;
-	DECLARE @countError int = 0;
-
-	--修改库存
-	DECLARE cur_SaleOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, Qty * -1
-											from WMS_Sale_Order
-											where SellBillNum = @SellBillNum
-											  and ConfirmStatus = '未确认');
-    --打开游标--
-    open cur_SaleOrder;
-    --开始循环游标变量--
-    fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;
-    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
-    begin         
-		BEGIN TRY   
-			BEGIN TRAN
-
-			exec P_WMS_UpdateInvQty @UserId, @PartId, @InvId, null, @Lot, 0, 1, @Qty, @now, '销售', @rowId, @SellBillNum;
-
-			--修改投料单行的确认状态
-			update WMS_Sale_Order set ConfirmStatus = '已确认', ConfirmMan = @UserId, ConfirmDate = @now,
-					ConfirmMessage = '',
-					ModifyPerson = @UserId, ModifyTime = @now
-					where Id = @rowId;
-
-			set @countOK = @countOK + 1;
-			COMMIT TRAN;
- 		END TRY
-		BEGIN CATCH
-			IF @@TRANCOUNT > 0
-				ROLLBACK TRAN ;
-
-			--报错确认的错误信息
-			set @countError = @countError + 1;
-			update WMS_Sale_Order set ConfirmMessage = ERROR_MESSAGE(),
-					ModifyPerson = @UserId, ModifyTime = @now
-					where Id = @rowId;
-		END CATCH
-
-		--转到下一个游标，没有会死循环
-        fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;  
-    end    
-    close cur_SaleOrder  --关闭游标
-    deallocate cur_SaleOrder   --释放游标
-
-	IF @@TRANCOUNT > 0
-		COMMIT TRAN ;
-
-	IF (@countError > 0)
-	BEGIN
-		set @ReturnValue = '销售订单确认成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
-		RETURN;
-	END
-END
-
-GO
-
-
-CREATE OR ALTER PROCEDURE [dbo].[P_WMS_CreateInventoryLine]
-	@UserId varchar(50),
-	@HeadId int,
-	@JsonInvList NVARCHAR(MAX), --盘点的库房
-	@ReturnValue	varchar(500) OUTPUT
-AS
-BEGIN
-	SET NOCOUNT ON;
-	set xact_abort on   
-
-	DECLARE @InspectBillNum varchar(50)
-	DECLARE @now date = getdate();
-	DECLARE @InventoryStatus nvarchar(10);
-
-	select @InventoryStatus = InventoryStatus
-		from WMS_Inventory_H
-		where id = @HeadId;
-	IF (@InventoryStatus <> '未生成')
-	BEGIN
-		;
-		THROW 51000, '盘点表已生成，请确认！', 1;
-		RETURN
-	END;
-
-
-	--将盘点的库房保存到临时表
-	SELECT *
-		INTO #InvList
-		FROM OPENJSON(@JsonInvList)  
-			WITH (	Id int
-				);
-	IF (@@ERROR <> 0)
-	BEGIN
-		set @ReturnValue = '临时保存盘点库房时出错！'
-		RETURN
-	END
-
-	BEGIN TRAN
-
-	--插入盘点行表
-	insert into WMS_Inventory_D (HeadId,
-								PartId,
-								InvId,
-								SubInvId,
-								Lot,
-								SnapshootQty,
-								InventoryQty,
-								CreatePerson,
-								CreateTime
-								)
-					select		@HeadId,
-								PartId,
-								InvId,
-								SubInvId,
-								Lot,
-								Qty,
-								0,
-								@UserId,
-								@now
-						from WMS_Inv inv
-						where inv.InvId in (select id from #InvList);
-
-	--修改盘点头表状态
-	update WMS_Inventory_H set InventoryStatus = '已生成',
-								ModifyPerson = @UserId,
-								ModifyTime = @now
-			where Id = @HeadId;
-
-	COMMIT TRAN
-	RETURN
-END
-
-GO
-
-USE [XDWMS-Ymnets]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/1/20 13:24:41 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-ALTER   PROCEDURE [dbo].[P_WMS_PrintFeedList]
-	@UserId varchar(50),
-	@FeedBillNum nvarchar(50),
-	@ReleaseBillNum	varchar(50) OUTPUT,
-	@ReturnValue	varchar(50) OUTPUT
-AS
-BEGIN
-	SET NOCOUNT ON;
-	set xact_abort on   
-
-	DECLARE @now date = getdate()
-	DECLARE @SubAssemblyPartId int;
-	DECLARE @InvId int;
-	DECLARE @SubInvId int;
-	DECLARE @Lot varchar(50);
-	DECLARE @Qty decimal(10, 3);
-	DECLARE @rowId int;
-	DECLARE @countOK int = 0;
-	DECLARE @countError int = 0;
-
-	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
-	--exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
-
-	--获取当前的单据编号
-	exec P_WMS_GetMaxNum 'TL', 'WMS_Feed_List', @now, @ReleaseBillNum output
-
-	--进行库存备料
-	DECLARE cur_FeedList cursor for (select Id, SubAssemblyPartId, InvId, SubInvId, Lot, FeedQty * -1
-											from WMS_Feed_List
-											where FeedBillNum = @FeedBillNum
-											  and PrintStaus = '未打印');
-    --打开游标--
-    open cur_FeedList;
-    --开始循环游标变量--
-    fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;
-    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
-    begin         
-		BEGIN TRY   
-			--判断投料数如果大于0，报错
-			IF (@Qty >= 0)
-			BEGIN
-				;
-				THROW 51000, '当前投料数为负数或零，请确认！', 1;
-			END;
-
-			BEGIN TRAN
-
-			exec P_WMS_InvStock @UserId, @SubAssemblyPartId, @InvId, null, @Lot, @Qty, @now, '投料', @rowId, @ReleaseBillNum;
-
-			--修改投料单行的打印状态
-			update WMS_Feed_List set ReleaseBillNum = @ReleaseBillNum,
-					PrintStaus = '已打印', PrintMan = @UserId, PrintDate = @now,
-					ConfirmMessage = '',
-					ModifyPerson = @UserId, ModifyTime = @now
-					where Id = @rowId;
-
-			set @countOK = @countOK + 1;
-			COMMIT TRAN;
- 		END TRY
-		BEGIN CATCH
-			IF @@TRANCOUNT > 0
-				ROLLBACK TRAN ;
-
-			--报错确认的错误信息
-			set @countError = @countError + 1;
-			update WMS_Feed_List set ConfirmMessage = ERROR_MESSAGE(),
-					ModifyPerson = @UserId, ModifyTime = @now
-					where Id = @rowId;
-		END CATCH
-
-		--转到下一个游标，没有会死循环
-        fetch next from cur_FeedList into @rowId, @SubAssemblyPartId, @InvId, @SubInvId, @Lot, @Qty;  
-    end    
-    close cur_FeedList  --关闭游标
-    deallocate cur_FeedList   --释放游标
-
-	IF @@TRANCOUNT > 0
-		COMMIT TRAN ;
-
-	IF (@countError > 0)
-	BEGIN
-		set @ReturnValue = '投料单备料成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
-		RETURN;
-	END
-END
-
-GO
-
-USE [XDWMS-Ymnets]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/1/20 13:25:02 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-ALTER     PROCEDURE [dbo].[P_WMS_PrintSaleOrder]
-	@UserId varchar(50),
-	@SaleBillNum nvarchar(50),
-	@SellBillNum	varchar(50) OUTPUT,
-	@ReturnValue	varchar(50) OUTPUT
-AS
-BEGIN
-	SET NOCOUNT ON;
-	set xact_abort on   
-
-	DECLARE @now date = getdate()
-	DECLARE @PartId int;
-	DECLARE @InvId int;
-	DECLARE @SubInvId int;
-	DECLARE @Lot varchar(50);
-	DECLARE @Qty decimal(10, 3);
-	DECLARE @rowId int;
-	DECLARE @countOK int = 0;
-	DECLARE @countError int = 0;
-
-	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
-	--exec P_WMS_InitNumForDay 'TL', 'WMS_Feed_List', @now
-
-	--获取当前的单据编号
-	exec P_WMS_GetMaxNum 'XS', 'WMS_Sale_Order', @now, @SellBillNum output
-
-	--进行库存备料
-	DECLARE cur_SaleOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, Qty * -1
-											from WMS_Sale_Order
-											where SaleBillNum = @SaleBillNum
-											  and PrintStaus = '未打印');
-    --打开游标--
-    open cur_SaleOrder;
-    --开始循环游标变量--
-    fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;
-    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
-    begin         
-		BEGIN TRY   
-			--判断销售订单数如果大于0，报错
-			IF (@Qty >= 0)
-			BEGIN
-				;
-				THROW 51000, '当前销售订单数为负数或零，请确认！', 1;
-			END;
-
-			BEGIN TRAN
-
-			exec P_WMS_InvStock @UserId, @PartId, @InvId, null, @Lot, @Qty, @now, '销售', @rowId, @SellBillNum;
-
-			--修改投料单行的打印状态
-			update WMS_Sale_Order set SellBillNum = @SellBillNum,
-					PrintStaus = '已打印', PrintMan = @UserId, PrintDate = @now,
-					ConfirmMessage = '',
-					ModifyPerson = @UserId, ModifyTime = @now
-					where Id = @rowId;
-
-			set @countOK = @countOK + 1;
-			COMMIT TRAN;
- 		END TRY
-		BEGIN CATCH
-			IF @@TRANCOUNT > 0
-				ROLLBACK TRAN ;
-
-			--报错确认的错误信息
-			set @countError = @countError + 1;
-			update WMS_Sale_Order set ConfirmMessage = ERROR_MESSAGE(),
-					ModifyPerson = @UserId, ModifyTime = @now
-					where Id = @rowId;
-		END CATCH
-
-		--转到下一个游标，没有会死循环
-        fetch next from cur_SaleOrder into @rowId, @PartId, @InvId, @SubInvId, @Lot, @Qty;  
-    end    
-    close cur_SaleOrder  --关闭游标
-    deallocate cur_SaleOrder   --释放游标
-
-	IF @@TRANCOUNT > 0
-		COMMIT TRAN ;
-
-	IF (@countError > 0)
-	BEGIN
-		set @ReturnValue = '销售订单备料成功:' + CONVERT(varchar, @countOK) + '行，失败:' + CONVERT(varchar, @countError) + '行，具体请查看错误信息！';
-		RETURN;
 	END
 END
 
