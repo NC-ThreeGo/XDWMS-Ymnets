@@ -321,12 +321,12 @@ namespace Apps.BLL.WMS
 			return CreateModelList(ref queryData);
 		}
 
-        public string PrintFeedList(ref ValidationErrors errors, string opt, string feedBillNum)
+        public string PrintFeedList(ref ValidationErrors errors, string opt, string feedBillNum, int id)
         {
             try
             {
                 string releaseBillNum = null;
-                var rtn = m_Rep.PrintFeedList(opt, feedBillNum, ref releaseBillNum);
+                var rtn = m_Rep.PrintFeedList(opt, feedBillNum, ref releaseBillNum, id);
                 if (!String.IsNullOrEmpty(rtn))
                 {
                     errors.Add(rtn);

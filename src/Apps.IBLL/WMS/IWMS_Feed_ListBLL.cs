@@ -35,7 +35,7 @@ namespace Apps.IBLL.WMS
         /// <param name="opt"></param>
         /// <param name="feedBillNum"></param>
         /// <returns></returns>
-        string PrintFeedList(ref ValidationErrors errors, string opt, string feedBillNum);
+        string PrintFeedList(ref ValidationErrors errors, string opt, string feedBillNum, int id);
 
         /// <summary>
         /// 确认投料单

@@ -132,7 +132,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             try
             {
-                var releaseBillNum = m_BLL.PrintFeedList(ref errors, GetUserId(), feedBillNum);
+                var releaseBillNum = m_BLL.PrintFeedList(ref errors, GetUserId(), feedBillNum, 0);
                 if (!String.IsNullOrEmpty(releaseBillNum))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功", "成功", "打印", "WMS_Feed_List");
@@ -142,6 +142,34 @@ namespace Apps.Web.Areas.WMS.Controllers
                 else
                 {
                     LogHandler.WriteServiceLog(GetUserId(), errors.Error, "失败", "打印", "WMS_Feed_List");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "打印", "WMS_Feed_List");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        [ValidateInput(false)]
+        public JsonResult PrintLine(string feedBillNum, int id)
+        {
+            try
+            {
+                var releaseBillNum = m_BLL.PrintFeedList(ref errors, GetUserId(), feedBillNum, id);
+                if (!String.IsNullOrEmpty(releaseBillNum))
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功，id:" + id.ToString(), "成功", "打印", "WMS_Feed_List");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNum));
+                    //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
+                }
+                else
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), errors.Error, "失败,id:" + id.ToString(), "打印", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
                 }
 

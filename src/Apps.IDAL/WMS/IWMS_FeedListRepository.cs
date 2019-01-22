@@ -11,9 +11,10 @@ namespace Apps.IDAL.WMS
         /// </summary>
         /// <param name="opt"></param>
         /// <param name="feedBillNum"></param>
+        /// <param name="id"></param>
         /// <param name="releaseBillNum">投料单号</param>
         /// <returns>错误信息</returns>
-        string PrintFeedList(string opt, string feedBillNum, ref string releaseBillNum);
+        string PrintFeedList(string opt, string feedBillNum, int id, ref string releaseBillNum);
 
         /// <summary>
         /// 确认投料单

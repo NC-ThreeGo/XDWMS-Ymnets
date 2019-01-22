@@ -3068,6 +3068,7 @@
         <Function Name="P_WMS_PrintFeedList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="FeedBillNum" Type="nvarchar" Mode="In" />
+          <Parameter Name="Id" Type="int" Mode="In" />
           <Parameter Name="ReleaseBillNum" Type="varchar" Mode="InOut" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
@@ -3080,6 +3081,7 @@
         <Function Name="P_WMS_PrintSaleOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="SaleBillNum" Type="nvarchar" Mode="In" />
+          <Parameter Name="Id" Type="int" Mode="In" />
           <Parameter Name="SellBillNum" Type="varchar" Mode="InOut" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
@@ -3091,6 +3093,18 @@
         <Function Name="P_WMS_ProcessProductEntry" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="ProductBillNum" Type="nvarchar" Mode="In" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="P_WMS_UnPrintFeedList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="ReleaseBillNum" Type="nvarchar" Mode="In" />
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="P_WMS_UnPrintSaleOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="SellBillNum" Type="varchar" Mode="In" />
+          <Parameter Name="Id" Type="int" Mode="In" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
         <EntityContainer Name="DBStoreContainer">
@@ -4316,6 +4330,7 @@
           <FunctionImport Name="P_WMS_PrintFeedList">
             <Parameter Name="UserId" Mode="In" Type="String" />
             <Parameter Name="FeedBillNum" Mode="In" Type="String" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
             <Parameter Name="ReleaseBillNum" Mode="InOut" Type="String" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -4374,6 +4389,7 @@
           <FunctionImport Name="P_WMS_PrintSaleOrder">
             <Parameter Name="UserId" Mode="In" Type="String" />
             <Parameter Name="SaleBillNum" Mode="In" Type="String" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
             <Parameter Name="SellBillNum" Mode="InOut" Type="String" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -4421,6 +4437,18 @@
           <FunctionImport Name="P_WMS_ConfirmInventory">
             <Parameter Name="UserId" Mode="In" Type="String" />
             <Parameter Name="HeadId" Mode="In" Type="Int32" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="P_WMS_UnPrintFeedList">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="ReleaseBillNum" Mode="In" Type="String" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="P_WMS_UnPrintSaleOrder">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="SellBillNum" Mode="In" Type="String" />
+            <Parameter Name="Id" Mode="In" Type="Int32" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
           </EntityContainer>
@@ -9486,6 +9514,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="P_WMS_ConfirmInventory" FunctionName="DB.Store.P_WMS_ConfirmInventory" />
+          <FunctionImportMapping FunctionImportName="P_WMS_UnPrintFeedList" FunctionName="DB.Store.P_WMS_UnPrintFeedList" />
+          <FunctionImportMapping FunctionImportName="P_WMS_UnPrintSaleOrder" FunctionName="DB.Store.P_WMS_UnPrintSaleOrder" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

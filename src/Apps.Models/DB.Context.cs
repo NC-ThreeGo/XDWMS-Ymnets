@@ -849,7 +849,7 @@ namespace Apps.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ConfirmReturnOrder", userIdParameter, returnOrderNumParameter, returnValue);
         }
     
-        public virtual int P_WMS_PrintFeedList(string userId, string feedBillNum, ObjectParameter releaseBillNum, ObjectParameter returnValue)
+        public virtual int P_WMS_PrintFeedList(string userId, string feedBillNum, Nullable<int> id, ObjectParameter releaseBillNum, ObjectParameter returnValue)
         {
             var userIdParameter = userId != null ?
                 new ObjectParameter("UserId", userId) :
@@ -859,7 +859,11 @@ namespace Apps.Models
                 new ObjectParameter("FeedBillNum", feedBillNum) :
                 new ObjectParameter("FeedBillNum", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_PrintFeedList", userIdParameter, feedBillNumParameter, releaseBillNum, returnValue);
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_PrintFeedList", userIdParameter, feedBillNumParameter, idParameter, releaseBillNum, returnValue);
         }
     
         public virtual int P_WMS_ConfirmFeedList(string userId, string releaseBillNum, ObjectParameter returnValue)
@@ -888,7 +892,7 @@ namespace Apps.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ConfirmSaleOrder", userIdParameter, sellBillNumParameter, returnValue);
         }
     
-        public virtual int P_WMS_PrintSaleOrder(string userId, string saleBillNum, ObjectParameter sellBillNum, ObjectParameter returnValue)
+        public virtual int P_WMS_PrintSaleOrder(string userId, string saleBillNum, Nullable<int> id, ObjectParameter sellBillNum, ObjectParameter returnValue)
         {
             var userIdParameter = userId != null ?
                 new ObjectParameter("UserId", userId) :
@@ -898,7 +902,11 @@ namespace Apps.Models
                 new ObjectParameter("SaleBillNum", saleBillNum) :
                 new ObjectParameter("SaleBillNum", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_PrintSaleOrder", userIdParameter, saleBillNumParameter, sellBillNum, returnValue);
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_PrintSaleOrder", userIdParameter, saleBillNumParameter, idParameter, sellBillNum, returnValue);
         }
     
         public virtual int P_WMS_CreateInventoryLine(string userId, Nullable<int> headId, string jsonInvList, ObjectParameter returnValue)
@@ -929,6 +937,40 @@ namespace Apps.Models
                 new ObjectParameter("HeadId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ConfirmInventory", userIdParameter, headIdParameter, returnValue);
+        }
+    
+        public virtual int P_WMS_UnPrintFeedList(string userId, string releaseBillNum, Nullable<int> id, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var releaseBillNumParameter = releaseBillNum != null ?
+                new ObjectParameter("ReleaseBillNum", releaseBillNum) :
+                new ObjectParameter("ReleaseBillNum", typeof(string));
+    
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_UnPrintFeedList", userIdParameter, releaseBillNumParameter, idParameter, returnValue);
+        }
+    
+        public virtual int P_WMS_UnPrintSaleOrder(string userId, string sellBillNum, Nullable<int> id, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var sellBillNumParameter = sellBillNum != null ?
+                new ObjectParameter("SellBillNum", sellBillNum) :
+                new ObjectParameter("SellBillNum", typeof(string));
+    
+            var idParameter = id.HasValue ?
+                new ObjectParameter("Id", id) :
+                new ObjectParameter("Id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_UnPrintSaleOrder", userIdParameter, sellBillNumParameter, idParameter, returnValue);
         }
     }
 }
