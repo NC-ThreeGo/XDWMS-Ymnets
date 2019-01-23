@@ -339,7 +339,7 @@ namespace Apps.BLL.WMS
             }
             catch (Exception ex)
             {
-                errors.Add(ex.Message);
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
                 return null;
             }
         }
@@ -353,7 +353,7 @@ namespace Apps.BLL.WMS
             }
             catch (Exception ex)
             {
-                errors.Add(ex.Message);
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
                 return false;
             }
         }
@@ -367,7 +367,7 @@ namespace Apps.BLL.WMS
             }
             catch (Exception ex)
             {
-                errors.Add(ex.Message);
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
                 return false;
             }
         }
