@@ -189,8 +189,9 @@
             }
 	        });
         $("#btnImport").click(function() {
-             $("#txtExcelPath").val("");
-             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+            $("#txtExcelPath").val("");
+            $("#FileUpload").val("");
+            $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
             var feedBillNum = $("#txtFeedBillNum").val();

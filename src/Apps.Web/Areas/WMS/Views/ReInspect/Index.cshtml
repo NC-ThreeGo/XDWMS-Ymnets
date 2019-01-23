@@ -163,6 +163,7 @@
 	        });
         $("#btnImport").click(function() {
              $("#txtExcelPath").val("");
+            $("#FileUpload").val("");
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function () {
