@@ -124,20 +124,20 @@ namespace Apps.Web.Areas.WMS.Controllers
         [HttpPost]
         [SupportFilter(ActionName = "Create")]
         [ValidateInput(false)]
-        public JsonResult Print(string saleBillNum)
+        public JsonResult Print(string saleBillNum, int id = 0)
         {
             try
             {
-                var SellBillNum = m_BLL.PrintSaleOrder(ref errors, GetUserId(), saleBillNum);
+                var SellBillNum = m_BLL.PrintSaleOrder(ref errors, GetUserId(), saleBillNum, id);
                 if (!String.IsNullOrEmpty(SellBillNum))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功", "成功", "打印", "WMS_Sale_Order");
+                    LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功，id:" + id.ToString(), "成功", "打印", "WMS_Sale_Order");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, SellBillNum));
                     //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
                 }
                 else
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), errors.Error, "失败", "打印", "WMS_Sale_Order");
+                    LogHandler.WriteServiceLog(GetUserId(), errors.Error + ", id:" + id.ToString(), "失败", "打印", "WMS_Sale_Order");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
                 }
 
@@ -145,6 +145,33 @@ namespace Apps.Web.Areas.WMS.Controllers
             catch (Exception ex)
             {
                 LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "打印", "WMS_Sale_Order");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        [ValidateInput(false)]
+        public JsonResult UnPrint(string sellBillNum, int id = 0)
+        {
+            try
+            {
+                if (m_BLL.UnPrintSaleOrder(ref errors, GetUserId(), sellBillNum, id))
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功，id:" + id.ToString(), "成功", "取消打印", "WMS_Sale_Order");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, sellBillNum));
+                    //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
+                }
+                else
+                {
+                    LogHandler.WriteServiceLog(GetUserId(), errors.Error + ", id:" + id.ToString(), "失败", "取消打印", "WMS_Sale_Order");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "取消打印", "WMS_Sale_Order");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }

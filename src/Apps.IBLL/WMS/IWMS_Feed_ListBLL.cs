@@ -38,6 +38,16 @@ namespace Apps.IBLL.WMS
         string PrintFeedList(ref ValidationErrors errors, string opt, string feedBillNum, int id);
 
         /// <summary>
+        /// 取消打印备料投料单
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="opt"></param>
+        /// <param name="releaseBillNum"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        bool UnPrintFeedList(ref ValidationErrors errors, string opt, string releaseBillNum, int id);
+
+        /// <summary>
         /// 确认投料单
         /// </summary>
         /// <param name="errors"></param>

@@ -319,12 +319,12 @@ namespace Apps.BLL.WMS
 			return CreateModelList(ref queryData);
 		}
 
-        public string PrintSaleOrder(ref ValidationErrors errors, string opt, string saleBillNum)
+        public string PrintSaleOrder(ref ValidationErrors errors, string opt, string saleBillNum, int id)
         {
             try
             {
                 string sellBillNum = null;
-                var rtn = m_Rep.PrintSaleOrder(opt, saleBillNum, ref sellBillNum);
+                var rtn = m_Rep.PrintSaleOrder(opt, saleBillNum, id, ref sellBillNum);
                 if (!String.IsNullOrEmpty(rtn))
                 {
                     errors.Add(rtn);
@@ -339,6 +339,20 @@ namespace Apps.BLL.WMS
             {
                 errors.Add(ex.Message);
                 return null;
+            }
+        }
+
+        public bool UnPrintSaleOrder(ref ValidationErrors errors, string opt, string sellBillNum, int id)
+        {
+            try
+            {
+                m_Rep.UnPrintSaleOrder(opt, sellBillNum, id);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+                return false;
             }
         }
 

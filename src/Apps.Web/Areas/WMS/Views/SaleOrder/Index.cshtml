@@ -52,6 +52,7 @@
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
     @Html.ToolButton("btnPrint", "fa fa-level-up", Resource.Print, ref perm, "Create", true)
+    @Html.ToolButton("btnUnPrint", "fa fa-level-up", Resource.UnPrint, ref perm, "Create", true)
     @Html.ToolButton("btnConfirm", "fa fa-search", "确认", ref perm, "Edit", true)
     @Html.ToolButton("btnReport", "fa fa-search", "查看单据", ref perm, "Query", true)
 </div>
@@ -228,6 +229,36 @@
         });
         $("#btnPrint").click(function() {
             $.modalWindow("单据打印", '@Url.Action("Print")', 1000, 600, 'fa fa-pencil');
+        });
+        $("#btnUnPrint").click(function() {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null)
+            {
+                $.messager.confirm(index_lang_tip, '确认是否需要取消打印该行投料单？', function (r)
+                {
+                    if (r)
+                    {
+                        $.ajax({
+                            url: "@Url.Action("UnPrint")",
+                            type: "Post",
+                            data: { sellBillNum: row.SellBillNum, id: row.Id },
+                            dataType: "json",
+                            success: function (data)
+                            {
+                                if (data.type == 1)
+                                {
+                                    frameReturnByReload(true);
+                                    $.messageBox5s(Lang.Tip, data.message);
+                                }
+                                else
+                                {
+                                    $.messageBox5s(Lang.Tip, data.message);
+                                }
+                            }
+                        });
+                    }
+                });
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnConfirm").click(function () {
             $.modalWindow(Lang.Confirm, '@Url.Action("Confirm")', 1000, 600, 'fa fa-plus');

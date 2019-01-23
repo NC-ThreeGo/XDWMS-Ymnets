@@ -35,7 +35,17 @@ namespace Apps.IBLL.WMS
         /// <param name="opt"></param>
         /// <param name="saleBillNum"></param>
         /// <returns></returns>
-        string PrintSaleOrder(ref ValidationErrors errors, string opt, string saleBillNum);
+        string PrintSaleOrder(ref ValidationErrors errors, string opt, string saleBillNum, int id);
+
+        /// <summary>
+        /// 取消打印备料销售订单
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="opt"></param>
+        /// <param name="sellBillNum"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        bool UnPrintSaleOrder(ref ValidationErrors errors, string opt, string sellBillNum, int id);
 
         /// <summary>
         /// 确认销售订单

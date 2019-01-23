@@ -326,7 +326,7 @@ namespace Apps.BLL.WMS
             try
             {
                 string releaseBillNum = null;
-                var rtn = m_Rep.PrintFeedList(opt, feedBillNum, ref releaseBillNum, id);
+                var rtn = m_Rep.PrintFeedList(opt, feedBillNum, id, ref releaseBillNum);
                 if (!String.IsNullOrEmpty(rtn))
                 {
                     errors.Add(rtn);
@@ -341,6 +341,20 @@ namespace Apps.BLL.WMS
             {
                 errors.Add(ex.Message);
                 return null;
+            }
+        }
+
+        public bool UnPrintFeedList(ref ValidationErrors errors, string opt, string releaseBillNum, int id)
+        {
+            try
+            {
+                m_Rep.UnPrintFeedList(opt, releaseBillNum, id);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.Message);
+                return false;
             }
         }
 

@@ -8,31 +8,31 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
-<div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
-<form name = "form1" method="post" id="form1">
-    <table>
-        <tr>
-            <th style="padding:20px;"> Excel：</th>
-            <td style="padding:20px;">
-                <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
-                <a href = "javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
-                <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
-                <span class="uploading">@Resource.Uploading</span>
-            </td>
-        </tr>
-        <tr>
-            <th style="padding:20px;"> 导入状态：</th>
-            <td style="padding:20px;">
-                <label id="importMessage"></label>
-                <a id="importResultFile" href="">         点击查看导入结果</a>
-            </td>
-        </tr>
-    </table>
-    <div class="endbtndiv">
-        <a id = "btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
-        <a id = "btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
-    </div>
-</form>
+<div id="uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+    <form name="form1" method="post" id="form1">
+        <table>
+            <tr>
+                <th style="padding:20px;"> Excel：</th>
+                <td style="padding:20px;">
+                    <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                    <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                    <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="padding:20px;"> 导入状态：</th>
+                <td style="padding:20px;">
+                    <label id="importMessage"></label>
+                    <a id="importResultFile" href="">         点击查看导入结果</a>
+                </td>
+            </tr>
+        </table>
+        <div class="endbtndiv">
+            <a id="btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+            <a id="btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+        </div>
+    </form>
 </div>
 <div class="mvctool">
     @*<input id="txtQuery" type="text" class="searchText" />*@
@@ -52,6 +52,7 @@
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
     @Html.ToolButton("btnPrint", "fa fa-level-up", Resource.Print, ref perm, "Create", true)
+    @Html.ToolButton("btnUnPrint", "fa fa-level-up", Resource.UnPrint, ref perm, "Create", true)
     @Html.ToolButton("btnConfirm", "fa fa-search", "确认", ref perm, "Edit", true)
     @Html.ToolButton("btnReport", "fa fa-search", "查看单据", ref perm, "Query", true)
 </div>
@@ -138,13 +139,13 @@
                 $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 800, 600, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }*@
             if (row != null) {
-                if (row.ConfirmStatus == "已确认") {            
+                if (row.ConfirmStatus == "已确认") {
                     $.messager.confirm(index_lang_tip, "单据已确认不能被修改")
             }
             else { $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 800, 600, 'fa fa-pencil');
-            } 
-                
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); } 
+            }
+
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
@@ -172,7 +173,7 @@
             if (subAssemblyPartCode == null) {
                 subAssemblyPartCode = "";
             }
-            
+
             $("#List").datagrid("load", {
                 feedBillNum: feedBillNum, assemblyPartCode: assemblyPartCode, subAssemblyPartCode: subAssemblyPartCode, printStaus: printStaus, confirmStatus: confirmStatus, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
             });
@@ -181,11 +182,11 @@
         $("#btnDelete").click(function () {
 	            //dataDelete("@Url.Action("Delete")", "List");
              var row = $('#List').datagrid('getSelected');
-            if (row.ConfirmStatus == "已确认") {                
+            if (row.ConfirmStatus == "已确认") {
                 $.messager.confirm(index_lang_tip, "单据已确认不能被删除")
             }
             else { dataDelete("@Url.Action("Delete")", "List");
-            }  
+            }
 	        });
         $("#btnImport").click(function() {
              $("#txtExcelPath").val("");
@@ -227,6 +228,36 @@
         $("#btnPrint").click(function() {
             $.modalWindow("单据打印", '@Url.Action("Print")', 1000, 600, 'fa fa-pencil');
         });
+        $("#btnUnPrint").click(function() {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null)
+            {
+                $.messager.confirm(index_lang_tip, '确认是否需要取消打印该行投料单？', function (r)
+                {
+                    if (r)
+                    {
+                        $.ajax({
+                            url: "@Url.Action("UnPrint")",
+                            type: "Post",
+                            data: { releaseBillNum: row.ReleaseBillNum, id: row.Id },
+                            dataType: "json",
+                            success: function (data)
+                            {
+                                if (data.type == 1)
+                                {
+                                    frameReturnByReload(true);
+                                    $.messageBox5s(Lang.Tip, data.message);
+                                }
+                                else
+                                {
+                                    $.messageBox5s(Lang.Tip, data.message);
+                                }
+                            }
+                        });
+                    }
+                });
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
         $("#btnConfirm").click(function () {
             $.modalWindow(Lang.Confirm, '@Url.Action("Confirm")', 1000, 600, 'fa fa-plus');
         });
@@ -251,7 +282,7 @@
             hideLoading();
             $.messageBox5s('提示', data.message);
             $('#importMessage').html(data.message);
-            $('#importResultFile').attr('href', data.value); 
+            $('#importResultFile').attr('href', data.value);
         }, "json");
     }
 </script>

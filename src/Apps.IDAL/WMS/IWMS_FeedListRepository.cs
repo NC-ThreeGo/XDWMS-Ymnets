@@ -17,6 +17,15 @@ namespace Apps.IDAL.WMS
         string PrintFeedList(string opt, string feedBillNum, int id, ref string releaseBillNum);
 
         /// <summary>
+        /// 取消打印备料投料单
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="releaseBillNum"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        string UnPrintFeedList(string opt, string releaseBillNum, int id);
+
+        /// <summary>
         /// 确认投料单
         /// </summary>
         /// <param name="opt"></param>

@@ -1825,6 +1825,15 @@ namespace Apps.Locale {
         }
         
         /// <summary>
+        ///   查找类似 取消打印 的本地化字符串。
+        /// </summary>
+        public static string UnPrint {
+            get {
+                return ResourceManager.GetString("UnPrint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 反选 的本地化字符串。
         /// </summary>
         public static string UnSelect {

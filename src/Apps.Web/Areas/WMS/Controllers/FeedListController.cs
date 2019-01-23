@@ -118,7 +118,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
-        #region 打印
+        #region 打印/取消打印
         [SupportFilter(ActionName = "Create")]
         public ActionResult Print()
         {
@@ -128,20 +128,20 @@ namespace Apps.Web.Areas.WMS.Controllers
         [HttpPost]
         [SupportFilter(ActionName = "Create")]
         [ValidateInput(false)]
-        public JsonResult Print(string feedBillNum)
+        public JsonResult Print(string feedBillNum, int id = 0)
         {
             try
             {
-                var releaseBillNum = m_BLL.PrintFeedList(ref errors, GetUserId(), feedBillNum, 0);
+                var releaseBillNum = m_BLL.PrintFeedList(ref errors, GetUserId(), feedBillNum, id);
                 if (!String.IsNullOrEmpty(releaseBillNum))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功", "成功", "打印", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功，id:" + id.ToString(), "成功", "打印", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNum));
                     //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
                 }
                 else
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), errors.Error, "失败", "打印", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserId(), errors.Error + ",id:" + id.ToString(), "失败", "打印", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
                 }
 
@@ -156,27 +156,26 @@ namespace Apps.Web.Areas.WMS.Controllers
         [HttpPost]
         [SupportFilter(ActionName = "Create")]
         [ValidateInput(false)]
-        public JsonResult PrintLine(string feedBillNum, int id)
+        public JsonResult UnPrint(string releaseBillNum, int id = 0)
         {
             try
             {
-                var releaseBillNum = m_BLL.PrintFeedList(ref errors, GetUserId(), feedBillNum, id);
-                if (!String.IsNullOrEmpty(releaseBillNum))
+                if (m_BLL.UnPrintFeedList(ref errors, GetUserId(), releaseBillNum, id))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功，id:" + id.ToString(), "成功", "打印", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserId(), "取消打印投料单成功，id:" + id.ToString(), "成功", "取消打印", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNum));
                     //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
                 }
                 else
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), errors.Error, "失败,id:" + id.ToString(), "打印", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserId(), errors.Error + ",id:" + id.ToString(), "失败", "取消打印", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
                 }
 
             }
             catch (Exception ex)
             {
-                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "打印", "WMS_Feed_List");
+                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "取消打印", "WMS_Feed_List");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }

@@ -13,7 +13,16 @@ namespace Apps.IDAL.WMS
         /// <param name="saleBillNum"></param>
         /// <param name="sellBillNum"></param>
         /// <returns></returns>
-        string PrintSaleOrder(string opt, string saleBillNum, ref string sellBillNum);
+        string PrintSaleOrder(string opt, string saleBillNum, int id, ref string sellBillNum);
+
+        /// <summary>
+        /// 取消打印备料销售订单
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="sellBillNum"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        string UnPrintSaleOrder(string opt, string sellBillNum, int id);
 
         /// <summary>
         /// 确认销售订单

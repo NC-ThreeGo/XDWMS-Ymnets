@@ -767,6 +767,9 @@
     <value>反审核成功</value>
     <comment>Suggestion</comment>
   </data>
+  <data name="UnPrint" xml:space="preserve">
+    <value>取消打印</value>
+  </data>
   <data name="UnSelect" xml:space="preserve">
     <value>反选</value>
     <comment>Suggestion</comment>
