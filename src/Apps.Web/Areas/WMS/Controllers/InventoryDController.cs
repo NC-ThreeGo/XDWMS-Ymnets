@@ -182,22 +182,30 @@ namespace Apps.Web.Areas.WMS.Controllers
             foreach (var item in list)
             {
                 var jo = new JObject();
-                jo.Add("Id", item.Id);
-                jo.Add("HeadId", item.HeadId);
-                jo.Add("物料", item.PartId);
-                jo.Add("盘点数量", item.InventoryQty);
-                jo.Add("库存", item.InvId);
-                jo.Add("子库存", item.SubInvId);
+                jo.Add("盘点名称", item.Inventory_HName);
+                jo.Add("库房名称", item.InvName);
+                jo.Add("物料编码", item.PartCode);
+                jo.Add("批次号", item.Lot);
+                jo.Add("盘点快照数量", item.SnapshootQty);
                 jo.Add("备注", item.Remark);
-                jo.Add("Attr1", item.Attr1);
-                jo.Add("Attr2", item.Attr2);
-                jo.Add("Attr3", item.Attr3);
-                jo.Add("Attr4", item.Attr4);
-                jo.Add("Attr5", item.Attr5);
-                jo.Add("创建人", item.CreatePerson);
-                jo.Add("创建时间", item.CreateTime);
-                jo.Add("修改人", item.ModifyPerson);
-                jo.Add("修改时间", item.ModifyTime);
+                //jo.Add("物料", item.PartId);
+                //jo.Add("物料", item.PartId);
+                //jo.Add("Id", item.Id);
+                //jo.Add("HeadId", item.HeadId);
+                //jo.Add("物料", item.PartId);
+                //jo.Add("盘点数量", item.InventoryQty);
+                //jo.Add("库存", item.InvId);
+                //jo.Add("子库存", item.SubInvId);
+                //jo.Add("备注", item.Remark);
+                //jo.Add("Attr1", item.Attr1);
+                //jo.Add("Attr2", item.Attr2);
+                //jo.Add("Attr3", item.Attr3);
+                //jo.Add("Attr4", item.Attr4);
+                //jo.Add("Attr5", item.Attr5);
+                //jo.Add("创建人", item.CreatePerson);
+                //jo.Add("创建时间", item.CreateTime);
+                //jo.Add("修改人", item.ModifyPerson);
+                //jo.Add("修改时间", item.ModifyTime);
                 jObjects.Add(jo);
             }
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());

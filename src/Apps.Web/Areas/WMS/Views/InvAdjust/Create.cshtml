@@ -172,7 +172,8 @@ $(function () {
                  @Html.LabelFor(model => model.AdjustType)：
              </th>
              <td>
-                 @Html.EditorFor(model => model.AdjustType)
+                 @*@Html.EditorFor(model => model.AdjustType)*@
+                 @Html.DropDownListFor(model => model.AdjustType, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("AdjustType"))
              </td>
              <td>@Html.ValidationMessageFor(model => model.AdjustType)</td>
          </tr>

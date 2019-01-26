@@ -460,7 +460,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Edit")]
         public JsonResult GetReturnOrderListByNum(GridPager pager, string returnOrderNum)
         {
-            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum == \"" + returnOrderNum + "\"").ToList();
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum == \"" + returnOrderNum + "\"&& PrintStaus <> \"已失效\"").ToList();
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

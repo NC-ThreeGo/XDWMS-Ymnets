@@ -500,11 +500,11 @@ namespace Apps.Web.Areas.WMS.Controllers
 
             if (type == "print")
             {
-                list  = m_BLL.GetListByWhere(ref pager, "FeedBillNum = \"" + billNum + "\"");
+                list  = m_BLL.GetListByWhere(ref pager, "FeedBillNum = \"" + billNum + "\"&& PrintStaus == \"未打印\"");
             }
             else
             {
-                list = m_BLL.GetListByWhere(ref pager, "ReleaseBillNum = \"" + billNum + "\"");
+                list = m_BLL.GetListByWhere(ref pager, "ReleaseBillNum = \"" + billNum + "\"&& PrintStaus == \"已打印\"");
             }
             GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
             grs.rows = list;

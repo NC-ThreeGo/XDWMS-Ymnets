@@ -317,7 +317,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             //TODO:显示有效且未关闭的采购订单。是否需要显示PO的物料信息（还是只显示PO的头信息）？？？
             //List<WMS_POModel> list = m_BLL.GetListByWhere(ref pager, "PO.Contains(\"" + po + "\") && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\") && Status == \"有效\"")
             //    .OrderBy(p => p.PODate).ToList();
-            List<WMS_POModel> list = m_BLL.GetListByWhere(ref pager, "PO.Contains(\"" + po + "\") && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\") && Status == \"有效\"")
+            List<WMS_POModel> list = m_BLL.GetListByWhere(ref pager, "PO.Contains(\"" + po + "\") && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\") && Status <> \"有效\"")
                 .GroupBy(p => new { p.PO })
                 .Select(g => g.First())
                 .OrderBy(p => p.PODate).ToList();

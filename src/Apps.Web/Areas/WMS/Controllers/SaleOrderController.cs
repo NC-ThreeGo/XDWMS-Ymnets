@@ -492,11 +492,11 @@ namespace Apps.Web.Areas.WMS.Controllers
 
             if (type == "print")
             {
-                list = m_BLL.GetListByWhere(ref pager, "SaleBillNum = \"" + billNum + "\"");
+                list = m_BLL.GetListByWhere(ref pager, "SaleBillNum = \"" + billNum + "\"&& PrintStaus == \"未打印\"");
             }
             else
             {
-                list = m_BLL.GetListByWhere(ref pager, "SellBillNum = \"" + billNum + "\"");
+                list = m_BLL.GetListByWhere(ref pager, "SellBillNum = \"" + billNum + "\"&& PrintStaus == \"已打印\"");
             }
             GridRows<WMS_Sale_OrderModel> grs = new GridRows<WMS_Sale_OrderModel>();
             grs.rows = list;

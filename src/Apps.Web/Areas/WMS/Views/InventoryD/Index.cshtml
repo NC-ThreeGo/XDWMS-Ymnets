@@ -43,8 +43,8 @@
                     @*@Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
                     @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)*@
                     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
-                    @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
-                    @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
+                    @Html.ToolButton("btnImport", "fa fa-level-down", "盘点结果导入", ref perm, "Import", true)
+                    @Html.ToolButton("btnExportTemplate", "fa fa-level-up", "盘点模板导出", ref perm, "Export", true)
                     @Html.ToolButton("btnApprove", "fa fa-pencil", "盘点调整", ref perm, "Check", true)
                 </div>
                 <table id="ListParent"></table>
@@ -66,7 +66,7 @@
             $(function () {
                 $('#ListParent').datagrid({
                     url: '@Url.Action("GetListParent")',
-                    width:430,
+                    width:450,
                     methord: 'post',
                     height: SetGridHeightSub(45),
                     fitColumns: true,
@@ -85,7 +85,13 @@
                         { field: 'InventoryBillNum', title: '盘点单号', width: 130,sortable:true },
                         { field: 'InventoryTitle', title: '盘点名称', width: 80,sortable:true },
                         { field: 'InventoryPerson', title: '盘点人', width: 80,sortable:true },
-                        { field: 'InventoryTime', title: '盘点时间', width: 80,sortable:true },
+                        //{ field: 'InventoryTime', title: '盘点时间', width: 80, sortable: true },
+                        {
+                            field: 'InventoryTime', title: '盘点时间', width: 100, sortable: true,
+                            formatter: function (value, row, index) {
+                                return formatterDateNoHour(value);
+                            }
+                        },
                         { field: 'InventoryStatus', title: '盘点状态', width: 80,sortable:true },
                     ]]
                  ,onClickRow: function(index, row) {
@@ -121,7 +127,7 @@
                         { field: 'Id', title: 'Id', width: 80,hidden:true },
                         { field: 'HeadId', title: 'HeadId', width: 80, sortable: true, hidden: true },
                         { field: 'Inventory_HName', title: '盘点名称', width: 80, sortable: true },
-                        { field: 'InvName', title: '库房名称', width: 80, sortable: true },
+                        { field: 'InvName', title: '库房名称', width: 50, sortable: true },
                         //{ field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
                         { field: 'PartCode', title: '物料编码', width: 60, sortable: true },
                         { field: 'PartName', title: '物料名称', width: 60, sortable: true },
