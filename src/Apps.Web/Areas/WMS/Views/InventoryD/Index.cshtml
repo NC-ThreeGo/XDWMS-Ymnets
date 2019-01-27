@@ -40,8 +40,8 @@
             <td style="width:330px;vertical-align: top">
                 <div class="mvctool">
                     @Html.ToolButton("btnCreate", "fa fa-plus", "生成盘点表", ref perm, "Create", true)
-                    @*@Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
-                    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)*@
+                    @*@Html.ToolButton("btnEdit", "fa fa-pencil", "盘点数据清空", ref perm, "Delete", true)*@
+                    @Html.ToolButton("btnDelete", "fa fa-trash", "盘点数据清空", ref perm, "Delete", true)
                     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
                     @Html.ToolButton("btnImport", "fa fa-level-down", "盘点结果导入", ref perm, "Import", true)
                     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", "盘点模板导出", ref perm, "Export", true)
@@ -81,7 +81,8 @@
                     //rownumbers: true,//行号                   
                     onLoadSuccess: function(data) {            },
                     columns: [[
-                        { field: 'Id', title: 'ID', width: 80,hidden:true },
+                        { field: 'Id', title: 'ID', width: 80, hidden: true },
+                        { field: 'HeadId', title: 'HeadId', width: 80, hidden: true },
                         { field: 'InventoryBillNum', title: '盘点单号', width: 130,sortable:true },
                         { field: 'InventoryTitle', title: '盘点名称', width: 80,sortable:true },
                         { field: 'InventoryPerson', title: '盘点人', width: 80,sortable:true },
@@ -195,7 +196,7 @@
 
                 });
                 $("#btnDelete").click(function () {
-                        dataDelete("@Url.Action("Delete")", "List");
+                    dataDelete("@Url.Action("Delete")", "List");
                     });
                 $("#btnImport").click(function() {
                      $("#txtExcelPath").val("");

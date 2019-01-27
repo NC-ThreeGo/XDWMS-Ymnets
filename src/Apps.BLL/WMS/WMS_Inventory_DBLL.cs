@@ -9,6 +9,8 @@ using LinqToExcel;
 using ClosedXML.Excel;
 using Apps.Models.WMS;
 using System.Linq.Expressions;
+using Apps.BLL.Core;
+using Apps.Locale;
 
 namespace Apps.BLL.WMS
 {
@@ -174,7 +176,7 @@ namespace Apps.BLL.WMS
                             }
 
                             //写入数据库
-                            Expression<Func<WMS_Inventory_D, bool>> exp = x => x.PartId == x.PartId && x.InvId == model.InvId && x.Lot == model.Lot;
+                            Expression<Func<WMS_Inventory_D, bool>> exp = x => x.PartId == model.PartId && x.InvId == model.InvId && x.Lot == model.Lot;
                             WMS_Inventory_D entity;
                             entity = db.WMS_Inventory_D.FirstOrDefault(exp);
                             //WMS_Inventory_D entity1 = m_Rep.GetSingleWhere(model.Id);
@@ -208,7 +210,7 @@ namespace Apps.BLL.WMS
                                 entity.ModifyPerson = oper;
                                 entity.ModifyTime = DateTime.Now;
                                 db.WMS_Inventory_D.Add(entity);
-                            }                            
+                            }
                             try
                             {
                                 db.SaveChanges();
@@ -243,11 +245,11 @@ namespace Apps.BLL.WMS
         public void AdditionalCheckExcelData(DBContainer db, ref WMS_Inventory_DModel model)
         {
             //获取数量
-            if (model.InventoryQty< 0)
-                {
-                    throw new Exception("盘点数量不能为负！");
-                }
-            
+            if (model.InventoryQty < 0)
+            {
+                throw new Exception("盘点数量不能为负！");
+            }
+
             //获取总成物料ID
             if (!String.IsNullOrEmpty(model.PartCode))
             {
@@ -323,6 +325,52 @@ namespace Apps.BLL.WMS
             queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
             return CreateModelList(ref queryData);
         }
+        public virtual bool ClearInventoryQty(ref ValidationErrors errors, string opt, int headId)
+        {
+            //清空盘点导入数据
+            try
+            {
+                //WMS_AI entity = m_Rep.GetList().Where();
+                //var customer = model.CustomerType;
+                //Expression<Func<WMS_Inventory_D, bool>> exp = x => x.HeadId == headId && x.WMS_Inventory_H.InventoryStatus == "已生成";
+                IQueryable<WMS_Inventory_D> model = m_Rep.GetList(a => a.HeadId == headId&&a.WMS_Inventory_H.InventoryStatus == "已生成");//.GetSingleWhere(exp);                
+                WMS_Inventory_D entity;
+                if (model == null)
+                {
+                    //errors.Add(Resource.Disable);
+                    errors.Add(" :单据已处理不能修改");
+                    return false;
+                }
+                //entity.Id = aiId;  
+                foreach (var row in model)
+                {
+                    entity = new WMS_Inventory_D();
+                    entity.InventoryQty = 0;
+                    entity.ModifyPerson = opt;
+                    entity.ModifyTime = DateTime.Now;
+                    entity.Id = row.Id;
+                    m_Rep.Edit(entity);
+                }
+                return true;
+                //if (m_Rep.Edit(entity))
+                //{
+                //    return true;
+                //}
+                //else
+                //{
+                //    errors.Add(Resource.NoDataChange);
+                //    return false;
+                //}
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ExceptionHander.WriteException(ex);
+                return false;
+            }
+        }
     }
+
+        
 }
 

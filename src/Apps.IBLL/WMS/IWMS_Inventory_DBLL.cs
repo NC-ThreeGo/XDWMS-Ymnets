@@ -27,5 +27,12 @@ namespace Apps.IBLL.WMS
          /// <param name="pager"></param>
          /// <param name="whereStr"></param>
          List<WMS_Inventory_DModel> GetListByWhere(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 清空盘点导入数据
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="headId"></param>
+        bool ClearInventoryQty(ref ValidationErrors errors, string opt, int headId);
     }
 }
