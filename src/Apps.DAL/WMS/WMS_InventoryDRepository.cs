@@ -1,4 +1,5 @@
-﻿using Apps.Models.WMS;
+﻿using Apps.Common;
+using Apps.Models.WMS;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;

@@ -8,6 +8,7 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
+@*<a href="~/Areas/WMS/Views/InventoryD/Index.cshtml">~/Areas/WMS/Views/InventoryD/Index.cshtml</a>*@
 <div id="uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
     <form name="form1" method="post" id="form1">
         <table>
@@ -78,7 +79,7 @@
                     pagination: true,
                     striped: true, //奇偶行是否区分
                     singleSelect: true,//单选模式
-                    //rownumbers: true,//行号                   
+                    //rownumbers: true,//行号
                     onLoadSuccess: function(data) {            },
                     columns: [[
                         { field: 'Id', title: 'ID', width: 80, hidden: true },
@@ -159,7 +160,7 @@
             $(function () {
                 $("#btnCreate").click(function () {
                     var row = $('#ListParent').datagrid('getSelected');
-                    if (row != null) 
+                    if (row != null)
                     {
                         if (row.InventoryStatus == '未生成')
                         {
@@ -196,7 +197,29 @@
 
                 });
                 $("#btnDelete").click(function () {
-                    dataDelete("@Url.Action("Delete")", "List");
+                    @*dataDelete("@Url.Action("Delete")", "List");*@
+                    var row = $('#ListParent').datagrid('getSelected');
+                    if (row != null && row.InventoryStatus != "已确认")
+                    {
+                        $.messager.confirm(index_lang_tip, '确认是否需要进行盘点清空？', function (r)
+                        {
+                            if (r)
+                            {
+                                $.ajax({
+                                    url: "@Url.Action("Delete")",
+                                    type: "Post",
+                                    data: { headId: row.Id },
+                                    dataType: "json",
+                                    success: function (data)
+                                    {
+                                        $("#ListParent").datagrid('reload');
+                                        $("#List").datagrid('reload');
+                                        $.messageBox5s(Lang.Tip, data.message);
+                                    }
+                                });
+                            }
+                        });
+                    } else { $.messageBox5s(Lang.Tip, '请选择未确认数据'); }
                     });
                 $("#btnImport").click(function() {
                      $("#txtExcelPath").val("");
@@ -243,7 +266,7 @@
                                             $.messageBox5s(Lang.Tip, data.message);
                                         }
                                         else
-                                        {           
+                                        {
                                             $("#List").datagrid('reload');
                                             $.messageBox5s(Lang.Tip, data.message);
                                         }

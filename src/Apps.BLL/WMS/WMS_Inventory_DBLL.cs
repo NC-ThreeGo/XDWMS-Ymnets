@@ -327,10 +327,17 @@ namespace Apps.BLL.WMS
         }
         public virtual bool ClearInventoryQty(ref ValidationErrors errors, string opt, int headId)
         {
-            if(m_Rep.ClearInventoryQty(opt, headId))
+            try
+            {
+                m_Rep.ClearInventoryQty(opt, headId);
                 return true;
-            else
-                throw new Exception("盘点数据清空失败！");
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return false;
+            }
+            
         }
     }
 
