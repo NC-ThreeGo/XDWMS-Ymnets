@@ -327,47 +327,10 @@ namespace Apps.BLL.WMS
         }
         public virtual bool ClearInventoryQty(ref ValidationErrors errors, string opt, int headId)
         {
-            //清空盘点导入数据
-            try
-            {
-                //WMS_AI entity = m_Rep.GetList().Where();
-                //var customer = model.CustomerType;
-                //Expression<Func<WMS_Inventory_D, bool>> exp = x => x.HeadId == headId && x.WMS_Inventory_H.InventoryStatus == "已生成";
-                IQueryable<WMS_Inventory_D> model = m_Rep.GetList(a => a.HeadId == headId&&a.WMS_Inventory_H.InventoryStatus == "已生成");//.GetSingleWhere(exp);                
-                WMS_Inventory_D entity;
-                if (model == null)
-                {
-                    //errors.Add(Resource.Disable);
-                    errors.Add(" :单据已处理不能修改");
-                    return false;
-                }
-                //entity.Id = aiId;  
-                foreach (var row in model)
-                {
-                    entity = new WMS_Inventory_D();
-                    entity.InventoryQty = 0;
-                    entity.ModifyPerson = opt;
-                    entity.ModifyTime = DateTime.Now;
-                    entity.Id = row.Id;
-                    m_Rep.Edit(entity);
-                }
+            if(m_Rep.ClearInventoryQty(opt, headId))
                 return true;
-                //if (m_Rep.Edit(entity))
-                //{
-                //    return true;
-                //}
-                //else
-                //{
-                //    errors.Add(Resource.NoDataChange);
-                //    return false;
-                //}
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
-                ExceptionHander.WriteException(ex);
-                return false;
-            }
+            else
+                throw new Exception("盘点数据清空失败！");
         }
     }
 
