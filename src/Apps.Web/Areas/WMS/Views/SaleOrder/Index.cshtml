@@ -184,8 +184,8 @@
         });
         $("#btnDelete").click(function () {
 	         var row = $('#List').datagrid('getSelected');
-            if (row.ConfirmStatus == "已确认") {                
-                $.messager.confirm(index_lang_tip, "单据已确认不能被删除")
+            if (row.PrintStaus == "已打印") {                
+                $.messager.confirm(index_lang_tip, "单据已打印不能被删除")
             }
             else { dataDelete("@Url.Action("Delete")", "List");
             } 
@@ -233,9 +233,9 @@
         });
         $("#btnUnPrint").click(function() {
             var row = $('#List').datagrid('getSelected');
-            if (row != null)
+            if (row != null && row.ConfirmStatus != "已确认")
             {
-                $.messager.confirm(index_lang_tip, '确认是否需要取消打印该行投料单？', function (r)
+                $.messager.confirm(index_lang_tip, '确认是否需要取消打印该行销售单？', function (r)
                 {
                     if (r)
                     {
@@ -259,7 +259,7 @@
                         });
                     }
                 });
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+            } else { $.messageBox5s(Lang.Tip, "请选择未确认单据"); }
         });
         $("#btnConfirm").click(function () {
             $.modalWindow(Lang.Confirm, '@Url.Action("Confirm")', 1000, 600, 'fa fa-plus');
