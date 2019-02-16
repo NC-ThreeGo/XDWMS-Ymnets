@@ -77,15 +77,15 @@ namespace Apps.Web.Areas.WMS.Controllers
                 aiModel.ArrivalDate = model.ArrivalDate;
                 //到货批次：年+月（根据到货日期）
                 aiModel.Lot = model.ArrivalDate.ToString("yyyyMM");
-                aiModel.ReceiveMan = GetUserId();
+                aiModel.ReceiveMan = GetUserTrueName();
                 aiModel.ReceiveStatus = "已到货";
                 aiModel.CreateTime = ResultHelper.NowTime;
-                aiModel.CreatePerson = GetUserId();
+                aiModel.CreatePerson = GetUserTrueName();
                 aiModel.POId = model.Id;
                 aiModel.PartId = model.PartId;
                 aiModel.BoxQty = model.BoxNum;
                 aiModel.ArrivalQty = model.CurrentQty;
-                aiModel.ReceiveMan = GetUserId();                
+                aiModel.ReceiveMan = GetUserTrueName();                
                 aiModel.InspectStatus = "未送检";
                 aiModel.InStoreStatus = "未入库";
 
@@ -131,7 +131,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             else
             {
                 model.ModifyTime = ResultHelper.NowTime;
-                model.ModifyPerson = GetUserId();
+                model.ModifyPerson = GetUserTrueName();
                 if (model != null && ModelState.IsValid)
                 {
 

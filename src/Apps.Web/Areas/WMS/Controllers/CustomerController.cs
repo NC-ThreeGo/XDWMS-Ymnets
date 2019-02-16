@@ -49,7 +49,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             model.Id = 0;
             model.CreateTime = ResultHelper.NowTime;            
-            model.CreatePerson = GetUserId();
+            model.CreatePerson = GetUserTrueName();
             if (model != null && ModelState.IsValid)
             {
 
@@ -87,7 +87,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Edit(WMS_CustomerModel model)
         {
             model.ModifyTime = ResultHelper.NowTime;
-            model.ModifyPerson = GetUserId();
+            model.ModifyPerson = GetUserTrueName();
             if (model != null && ModelState.IsValid)
             {
 

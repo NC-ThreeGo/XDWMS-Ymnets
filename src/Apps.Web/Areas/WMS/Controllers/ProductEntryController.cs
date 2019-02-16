@@ -58,7 +58,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_Product_EntryModel model)
         {
             model.Id = 0;
-            model.CreatePerson = GetUserId();
+            model.CreatePerson = GetUserTrueName();
             model.CreateTime = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {

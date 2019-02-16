@@ -54,7 +54,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_Inventory_HModel model)
         {
             model.Id = 0;
-            model.InventoryPerson = GetUserId();
+            model.InventoryPerson = GetUserTrueName();
             model.InventoryStatus = "未生成";
             model.CreateTime = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)

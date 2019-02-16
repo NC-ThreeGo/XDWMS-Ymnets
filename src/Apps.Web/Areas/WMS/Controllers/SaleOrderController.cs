@@ -86,7 +86,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_Sale_OrderModel model)
         {
             model.Id = 0;
-            model.CreatePerson = GetUserId();
+            model.CreatePerson = GetUserTrueName();
             model.CreateTime = ResultHelper.NowTime;
             model.PrintStaus = "未打印";
             model.ConfirmStatus = "未确认";

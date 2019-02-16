@@ -90,7 +90,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_Feed_ListModel model)
         {
             model.Id = 0;
-            model.CreatePerson = GetUserId();
+            model.CreatePerson = GetUserTrueName();
             model.CreateTime = ResultHelper.NowTime;
             model.PrintStaus = "未打印";
             model.ConfirmStatus = "未确认";
@@ -241,7 +241,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             else
             {              
                 model.ModifyTime = ResultHelper.NowTime;
-                model.ModifyPerson = GetUserId();
+                model.ModifyPerson = GetUserTrueName();
                 if (model != null && ModelState.IsValid)
                 {
 
