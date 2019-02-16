@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
 using Apps.Common;
 using Apps.Models.WMS;
 
@@ -12,5 +13,7 @@ namespace Apps.IBLL.WMS
         /// </summary>
         /// <returns></returns>
         DataSet GetDataSource(WMS_ReportModel report, List<WMS_ReportParamModel> listParam);
+
+        List<ExpandoObject> GetFeedList(ref GridPager pager);
     }
 }

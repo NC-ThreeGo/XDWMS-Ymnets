@@ -1,104 +1,104 @@
-/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty_BatchUpdate]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty_BatchUpdate]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_UpdateInvQty_BatchUpdate]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_UpdateInvQty]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintSaleOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintSaleOrder]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_UnPrintSaleOrder]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintFeedList]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintFeedList]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_UnPrintFeedList]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnInvStock]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UnInvStock]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_UnInvStock]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessProductEntry]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessProductEntry]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_ProcessProductEntry]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_ProcessInspectBill]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_PrintSaleOrder]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder1]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder1]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_PrintReturnOrder1]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_PrintReturnOrder]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_PrintFeedList]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock_BatchUpdate]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock_BatchUpdate]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_InvStock_BatchUpdate]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_InvStock]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvAdjust]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvAdjust]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_InvAdjust]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InitNumForDay]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InitNumForDay]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_InitNumForDay]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_GetMaxNum]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_GetMaxNum]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_GetMaxNum]
 GO
 
-/****** Object:  StoredProcedure [dbo].[p_wms_deleteTestData]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[p_wms_deleteTestData]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[p_wms_deleteTestData]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReturnOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReturnOrder]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_CreateReturnOrder]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReInspect]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReInspect]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_CreateReInspect]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInventoryLine]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInventoryLine]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_CreateInventoryLine]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInspectBill]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInspectBill]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_CreateInspectBill]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmSaleOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmSaleOrder]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_ConfirmSaleOrder]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmReturnOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmReturnOrder]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_ConfirmReturnOrder]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmInventory]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmInventory]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_ConfirmInventory]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmFeedList]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmFeedList]    Script Date: 2019/1/29 22:42:33 ******/
 DROP PROCEDURE [dbo].[P_WMS_ConfirmFeedList]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmFeedList]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmFeedList]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -179,7 +179,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmInventory]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmInventory]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -226,17 +226,25 @@ BEGIN
 	END;
 
 	--判断盘点表中物料的批次是否冲突：空批次和非空批次同时存在
-	select InvId, SubInvId, PartId,
-			count(*) cnt
+	select InvId, SubInvId, PartId
 		INTO #id_lot
-		from WMS_Inventory_D
-		where HeadId = @HeadId
-		group by InvId, SubInvId, PartId,
-				case when Lot is null then 0
-					 else 1
-					 end;
-	select @Count = count(*) from #id_lot
-		where cnt > 1;
+		from
+		(
+			select InvId, SubInvId, PartId,
+					case when Isnull(Lot, '') = '' then 0
+							 else 1
+							 end LotType
+				--INTO #id_lot
+				from WMS_Inventory_D
+				where HeadId = @HeadId
+				group by InvId, SubInvId, PartId,
+						case when Isnull(Lot, '') = '' then 0
+							 else 1
+							 end
+		) lot
+		group by lot.InvId, lot.SubInvId, lot.PartId
+		having count(*) > 1;
+	select count(*) from #id_lot;
 	IF (@Count > 0)
 	BEGIN
 		update WMS_Inventory_D set ConfirmMessage = '盘点物料的批次存在冲突【空批次和非空批次同时存在】，无法进行盘点调整！'
@@ -245,8 +253,7 @@ BEGIN
 				where id.InvId = id_lot.InvId
 					and isnull(id.SubInvId, 0) = isnull(id_lot.SubInvId, 0)
 					and id.PartId = id_lot.PartId
-					and id.HeadId = @HeadId
-					and id_lot.cnt > 1;
+					and id.HeadId = @HeadId;
 		THROW 51000, '盘点物料的批次存在冲突【空批次和非空批次同时存在】，请确认！', 1;
 		RETURN;
 	END;
@@ -352,7 +359,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmReturnOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmReturnOrder]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -379,21 +386,12 @@ BEGIN
 
 	BEGIN TRAN
 
-	--修改退货单状态
-	update WMS_ReturnOrder set ConfirmStatus = '已确认', ConfirmMan = @UserId, ConfirmDate = @now,
-                ModifyPerson = @UserId, ModifyTime = @now
-          where ReturnOrderNum = @ReturnOrderNum;
-	IF (@@ERROR <> 0)
-	BEGIN
-		;
-		THROW 51000, '修改退货单状态时出错！', 1;
-		RETURN
-	END
-
 	--修改库存：只对InvId不为空的记录修改库存（手工创建的库存退货单），根据不合格数量生成的退货单是没有进入库存的。
 	DECLARE cur_ReturnOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, AdjustQty * -1
 											from WMS_ReturnOrder
 											where ReturnOrderNum = @ReturnOrderNum
+											  and PrintStaus = '已退货'
+											  and ConfirmStatus = '未确认'
 											  and InvId is not null);
     --打开游标--
     open cur_ReturnOrder;
@@ -408,12 +406,26 @@ BEGIN
     close cur_ReturnOrder  --关闭游标
     deallocate cur_ReturnOrder   --释放游标
 
+
+	--修改退货单状态
+	update WMS_ReturnOrder set ConfirmStatus = '已确认', ConfirmMan = @UserId, ConfirmDate = @now,
+                ModifyPerson = @UserId, ModifyTime = @now
+          where ReturnOrderNum = @ReturnOrderNum
+		    and PrintStaus = '已退货'
+			and ConfirmStatus = '未确认';
+	IF (@@ERROR <> 0)
+	BEGIN
+		;
+		THROW 51000, '修改退货单状态时出错！', 1;
+		RETURN
+	END
+
 	COMMIT TRAN
 	RETURN
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmSaleOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmSaleOrder]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -494,7 +506,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInspectBill]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInspectBill]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -541,7 +553,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInventoryLine]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInventoryLine]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -622,7 +634,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReInspect]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReInspect]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -734,7 +746,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReturnOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReturnOrder]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -780,7 +792,8 @@ BEGIN
 								Remark,
 								PrintStaus,
 								CreatePerson,
-								CreateTime) 
+								CreateTime,
+								ConfirmStatus) 
 						VALUES	(--@ReturnOrderNum,
 								@PartId,
 								@Lot,
@@ -792,7 +805,8 @@ BEGIN
 								@Remark,
 								'未退货',
 								@UserId,
-								@now
+								@now,
+								'未确认'
 								);
 	IF (@@ERROR <> 0)
 	BEGIN
@@ -858,7 +872,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[p_wms_deleteTestData]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[p_wms_deleteTestData]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -889,7 +903,7 @@ end
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_GetMaxNum]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_GetMaxNum]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -934,7 +948,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InitNumForDay]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InitNumForDay]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -965,7 +979,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvAdjust]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvAdjust]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -1040,7 +1054,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -1190,7 +1204,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock_BatchUpdate]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock_BatchUpdate]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -1327,7 +1341,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -1373,7 +1387,7 @@ BEGIN
 	--进行库存备料
 	DECLARE cur_FeedList cursor for (select Id, SubAssemblyPartId, InvId, SubInvId, Lot, FeedQty * -1
 											from WMS_Feed_List
-											where IIF(@Id = 0, FeedBillNum, id) = IIF(@Id = 0, @FeedBillNum, @Id)
+											where IIF(@Id = 0, FeedBillNum, CONVERT(VARCHAR, Id)) = IIF(@Id = 0, @FeedBillNum, CONVERT(VARCHAR, @Id))
 											  and PrintStaus = '未打印');
     --打开游标--
     open cur_FeedList;
@@ -1432,7 +1446,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -1514,7 +1528,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder1]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder1]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -1601,7 +1615,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -1647,7 +1661,7 @@ BEGIN
 	--进行库存备料
 	DECLARE cur_SaleOrder cursor for (select Id, PartId, InvId, SubInvId, Lot, Qty * -1
 											from WMS_Sale_Order
-											where IIF(@Id = 0, SaleBillNum, Id) = IIF(@Id = 0, @SaleBillNum, @Id)
+											where IIF(@Id = 0, SaleBillNum, CONVERT(VARCHAR, Id)) = IIF(@Id = 0, @SaleBillNum, CONVERT(VARCHAR, @Id))
 											  and PrintStaus = '未打印');
     --打开游标--
     open cur_SaleOrder;
@@ -1706,7 +1720,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -1886,7 +1900,8 @@ BEGIN
 									AdjustQty,
 									PrintStaus,
 									CreatePerson,
-									CreateTime
+									CreateTime,
+									ConfirmStatus
 									)
 				SELECT ib.Id,
 						ib.PartId,
@@ -1896,7 +1911,8 @@ BEGIN
 						ib.NoQualifyQty,
 						'未退货',
 						@UserId,
-						@now
+						@now,
+						'未确认'
 					FROM #InspectBill ib,
 							WMS_PO po
 					WHERE ib.POId = po.Id
@@ -1911,7 +1927,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessProductEntry]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessProductEntry]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -2050,7 +2066,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnInvStock]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UnInvStock]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -2121,7 +2137,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintFeedList]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintFeedList]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -2146,7 +2162,7 @@ BEGIN
 	--进行库存取消备料
 	DECLARE cur_FeedList cursor for (select Id
 											from WMS_Feed_List
-											where IIF(@Id = 0, ReleaseBillNum, id) = IIF(@Id = 0, @ReleaseBillNum, @Id)
+											where IIF(@Id = 0, ReleaseBillNum, CONVERT(VARCHAR, Id)) = IIF(@Id = 0, @ReleaseBillNum, CONVERT(VARCHAR, @Id))
 											  and PrintStaus = '已打印');
     --打开游标--
     open cur_FeedList;
@@ -2158,7 +2174,7 @@ BEGIN
 			BEGIN TRAN
 
 			--取消备料
-			exec P_WMS_UnInvStock @UserId, @now, '投料', @Id;
+			exec P_WMS_UnInvStock @UserId, @now, '投料', @rowId;
 
 			--修改投料单行的打印状态
 			update WMS_Feed_List set PrintStaus = '未打印', PrintMan = @UserId, PrintDate = @now,
@@ -2199,7 +2215,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintSaleOrder]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintSaleOrder]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -2224,7 +2240,7 @@ BEGIN
 		--进行库存备料
 	DECLARE cur_SaleOrder cursor for (select Id
 											from WMS_Sale_Order
-											where IIF(@Id = 0, SellBillNum, Id) = IIF(@Id = 0, @SellBillNum, @Id)
+											where IIF(@Id = 0, SellBillNum, CONVERT(VARCHAR, Id)) = IIF(@Id = 0, @SellBillNum, CONVERT(VARCHAR, @Id))
 											  and PrintStaus = '已打印');
     --打开游标--
     open cur_SaleOrder;
@@ -2276,7 +2292,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -2313,6 +2329,11 @@ BEGIN
 		RETURN;
 	END;
 	
+	IF (@Lot = '')
+	BEGIN
+		set @Lot = null;
+	END;
+
 	--修改库存现有量
 	--增加库存
 	IF (@Qty > 0)
@@ -2334,13 +2355,13 @@ BEGIN
 		ELSE IF (@AllowAddLot = 1)	--新增批次
 		BEGIN
 			--如果批次不为空，则判断已有的库存现有量是否存在空批次（系统不允许存在空批次和非空批次同时存在的情况）
-			IF (@Lot IS NOT NULL)
+			IF (Isnull(@Lot, '') <> '')
 			BEGIN
 				SELECT @Count = count(*) FROM WMS_Inv
 					WHERE InvId = @InvId
 						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
 						AND PartId = @PartId
-						AND Lot IS NULL;
+						AND Isnull(Lot, '') = '';
 				IF (@Count > 0)
 				BEGIN
 					;
@@ -2349,13 +2370,13 @@ BEGIN
 				END
 			END
 			--如果批次为空，则判断已有的库存现有量是否存在不为空批次（系统不允许存在空批次和非空批次同时存在的情况）
-			IF (@Lot IS NULL)
+			IF (Isnull(@Lot, '') = '')
 			BEGIN
 				SELECT @Count = count(*) FROM WMS_Inv
 					WHERE InvId = @InvId
 						AND Isnull(SubInvId, 0) = Isnull(@SubInvId, 0)
 						AND PartId = @PartId
-						AND Lot IS NOT NULL;
+						AND Isnull(Lot, '') <> '';
 				IF (@Count > 0)
 				BEGIN
 					;
@@ -2437,7 +2458,7 @@ BEGIN
 		END
 		ELSE
 		BEGIN
-			IF (@Lot IS NOT NULL) --批次不为空
+			IF (Isnull(@Lot, '') <> '') --批次不为空
 			BEGIN
 				SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
 					WHERE InvId = @InvId
@@ -2452,7 +2473,7 @@ BEGIN
 				END
 			END
 
-			IF (@Lot IS NULL) --批次为空
+			IF (Isnull(@Lot, '') = '') --批次为空
 			BEGIN
 				SELECT @Count = count(*), @InvQty = SUM(Qty - Isnull(StockQty, 0)) FROM WMS_Inv
 					WHERE InvId = @InvId
@@ -2541,7 +2562,7 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty_BatchUpdate]    Script Date: 2019/1/23 10:38:02 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty_BatchUpdate]    Script Date: 2019/1/29 22:42:33 ******/
 SET ANSI_NULLS ON
 GO
 

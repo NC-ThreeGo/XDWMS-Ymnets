@@ -15,7 +15,7 @@
     <AssemblyName>Apps.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -338,6 +338,7 @@
     <Compile Include="Areas\Spl\Controllers\WareUnitConvertController.cs" />
     <Compile Include="Areas\Spl\SplAreaRegistration.cs" />
     <Compile Include="Areas\WC\Controllers\GroupController.cs" />
+    <Compile Include="Areas\WMS\Controllers\ReportController.cs" />
     <Compile Include="Areas\WMS\Controllers\InventoryHController.cs" />
     <Compile Include="Areas\WC\Controllers\MenuSettingController.cs" />
     <Compile Include="Areas\WC\Controllers\MessageResponseController.cs" />
@@ -857,6 +858,7 @@
     <Content Include="Areas\WMS\Views\InventoryD\Create.cshtml" />
     <Content Include="Areas\WMS\Views\InventoryD\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\InventoryD\Index.cshtml" />
+    <Content Include="Areas\WMS\Views\Report\FeedList.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1346,7 +1348,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>37281</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:6138</IISUrl>
+          <IISUrl>http://localhost:82</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
