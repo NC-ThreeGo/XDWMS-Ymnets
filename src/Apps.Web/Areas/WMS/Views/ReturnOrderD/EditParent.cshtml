@@ -16,14 +16,14 @@ $(function () {
     $("#btnSave").click(function () {
         if ($("form").valid()) {
             $.ajax({
-                url: "@Url.Action("EditParent")",
+                url: "@Url.Action("CreateParent")",
                 type: "Post",
                 data: $("form").serialize(),
                 dataType: "json",
                 success: function (data) {
                     if (data.type == 1) {
                         window.parent.frameReturnByMes(data.message);
-                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByReload(false);
                         window.parent.frameReturnByClose()
                     }
                     else {
@@ -38,7 +38,14 @@ $(function () {
          window.parent.frameReturnByClose();
     });
 });
+function frameReturnByClose() {
+$("#modalwindow").window('close');
+}
+function frameReturnByMes(mes) {
+$.messageBox5s(Lang.Tip, mes);
+}
 </script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
 @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
 @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
@@ -66,15 +73,6 @@ $(function () {
                 @Html.EditorFor(model => model.AIID)
             </td>
             <td>@Html.ValidationMessageFor(model => model.AIID)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ReInspectID)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.ReInspectID)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ReInspectID)</td>
         </tr>
         <tr>
             <th>
@@ -114,15 +112,6 @@ $(function () {
         </tr>
         <tr>
             <th>
-                @Html.LabelFor(model => model.Lot)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.Lot)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Lot)</td>
-        </tr>
-        <tr>
-            <th>
                 @Html.LabelFor(model => model.ReturnQty)：
             </th>
             <td >
@@ -138,15 +127,6 @@ $(function () {
                 @Html.EditorFor(model => model.AdjustQty)
             </td>
             <td>@Html.ValidationMessageFor(model => model.AdjustQty)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Status)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.Status)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Status)</td>
         </tr>
         <tr>
             <th>
@@ -282,24 +262,6 @@ $(function () {
                @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
             </td>
             <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.BatchId)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.BatchId)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.BatchId)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ReturnOderType)：
-            </th>
-            <td >
-                @Html.EditorFor(model => model.ReturnOderType)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ReturnOderType)</td>
         </tr>
     </tbody>
 </table>

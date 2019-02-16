@@ -4,18 +4,10 @@ using System.Linq;
 
 namespace Apps.IDAL.WMS
 {
-    public partial interface IWMS_ReturnOrderRepository
+    public partial interface IWMS_ReturnOrder_DRepository
     {
         /// <summary>
-        /// 批量保存退货单，并返回退货单号，以便打印
-        /// </summary>
-        /// <param name="opt"></param>
-        /// <param name="jsonReturnOrder"></param>
-        /// <returns></returns>
-        //string CreateBatchReturnOrder(string opt, string jsonReturnOrder);
-
-        /// <summary>
-        /// 手工创建库存待退货单
+        /// 手工创建退货单
         /// </summary>
         /// <param name="opt"></param>
         /// <param name="partId"></param>
@@ -32,13 +24,13 @@ namespace Apps.IDAL.WMS
         /// <param name="opt"></param>
         /// <param name="jsonReturnOrder">所选择的退货单行</param>
         /// <returns></returns>
-        //string PrintReturnOrder(string opt, string jsonReturnOrder);
+        string PrintReturnOrder(string opt, string jsonReturnOrder);
 
         /// <summary>
         /// 确认指定单号的退货单
         /// </summary>
         /// <param name="opt"></param>
         /// <param name="returnOrderNum"></param>
-        //void ConfirmReturnOrder(string opt, string returnOrderNum);
+        void ConfirmReturnOrder(string opt, string returnOrderNum);
     }
 }

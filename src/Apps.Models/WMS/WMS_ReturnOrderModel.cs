@@ -21,7 +21,7 @@ namespace Apps.Models.WMS
         [Display(Name = "物料编码")]
         public string PartCode { get; set; }
 
-        [Display(Name = "物料编码")]
+        [Display(Name = "物料名称")]
         public string PartName { get; set; }
 
         [Display(Name = "供应商简称")]
@@ -47,6 +47,9 @@ namespace Apps.Models.WMS
 
         [Display(Name = "不合格数量")]
         public decimal? NoQualifyNum { get; set; }
+
+        [Display(Name = "本次退货数量")]
+        public decimal? Qty { get; set; }
     }
 }
 

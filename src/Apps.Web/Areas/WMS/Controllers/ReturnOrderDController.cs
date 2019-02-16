@@ -21,49 +21,100 @@ namespace Apps.Web.Areas.WMS.Controllers
         public IWMS_ReturnOrder_DBLL m_BLL { get; set; }
         [Dependency]
         public IWMS_ReturnOrderBLL m_ReturnOrderBLL { get; set; }
+
+        [Dependency]
+        public IWMS_SupplierBLL m_SupplierBLL { get; set; }
+
+        [Dependency]
+        public IWMS_InvInfoBLL _InvInfoBll { get; set; }
+
         ValidationErrors errors = new ValidationErrors();
         
         [SupportFilter]
         public ActionResult Index()
         {
+            //定义送货状态下拉框的值
+            List<ReportType> ROTypes = new List<ReportType>();
+            //ROTypes.Add(new ReportType() { Type = 0, Name = "" });
+            ROTypes.Add(new ReportType() { Type = 2, Name = "已退货" });
+            ROTypes.Add(new ReportType() { Type = 1, Name = "未退货" });
+            ROTypes.Add(new ReportType() { Type = 3, Name = "已失效" });
+            ViewBag.ReturnOrderStatus = new SelectList(ROTypes, "Name", "Name");
+
             return View();
         }
+
         [HttpPost]
-        [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr,string parentId)
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetListParent(GridPager pager, string inspectBillNum,
+                string supplierShortName, string returnOrderNum, string partCode,
+                DateTime beginDate, DateTime endDate, string returnOrderStatus)
         {
-            List<WMS_ReturnOrder_DModel> list = m_BLL.GetListByParentId(ref pager, queryStr,parentId);
-            GridRows<WMS_ReturnOrder_DModel> grs = new GridRows<WMS_ReturnOrder_DModel>();
+            string query = "";
+            if (returnOrderStatus == "未退货")
+            {
+                query += " 1=1 ";
+                if (!String.IsNullOrEmpty(inspectBillNum))
+                    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            }
+            if (returnOrderStatus == "已失效")
+            {
+                query += " 1=1 ";
+                if (!String.IsNullOrEmpty(returnOrderNum))
+                    query += "&&ReturnOrderNum.Contains(\"" + returnOrderNum + "\")";
+                if (!String.IsNullOrEmpty(inspectBillNum))
+                    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            }
+
+            if (returnOrderStatus == "已退货")
+            {
+                query = "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")";
+                if (!String.IsNullOrEmpty(inspectBillNum))
+                    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+                query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
+            }
+            //query += " && PrintStaus.Contains(\"" + returnOrderStatus + "\")";
+            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, query);
+            GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
         }
-        #region 创建
-        [SupportFilter]
-        public ActionResult Create()
+
+        #region 手工创建库存待退货单
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult CreateParent()
         {
-         ViewBag.ReturnOrder = new SelectList(m_ReturnOrderBLL.GetList(ref setNoPagerAscById, ""), "Id", "Name");
+            ViewBag.Inv = new SelectList(_InvInfoBll.GetList(ref setNoPagerAscById, ""), "Id", "InvName");
             return View();
         }
 
         [HttpPost]
-        [SupportFilter]
-        public JsonResult Create(WMS_ReturnOrder_DModel model)
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult CreateParent(WMS_ReturnOrderModel model)
         {
             model.Id = 0;
+            //model.PrintStaus = "未退货";
             model.CreateTime = ResultHelper.NowTime;
+            if (model.Lot == "[空]")
+                model.Lot = "";
             if (model != null && ModelState.IsValid)
             {
-
-                if (m_BLL.Create(ref errors, model))
+                if (m_ReturnOrderBLL.CreateReturnOrder(ref errors, GetUserTrueName(), model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnOrderDNum" + model.ReturnOrderDNum, "成功", "创建", "WMS_ReturnOrder_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum, "成功", "创建", "WMS_ReturnOrder");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnOrderDNum" + model.ReturnOrderDNum + "," + ErrorCol, "失败", "创建", "WMS_ReturnOrder_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum + "," + ErrorCol, "失败", "创建", "WMS_ReturnOrder");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
                 }
             }
@@ -74,31 +125,30 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
-        #region 修改
-        [SupportFilter]
-        public ActionResult Edit(long id)
+        #region 修改库存待退货单
+        [SupportFilter(ActionName = "Edit")]
+        public ActionResult EditParent(long id)
         {
-            WMS_ReturnOrder_DModel entity = m_BLL.GetById(id);
-         ViewBag.ReturnOrder = new SelectList(m_ReturnOrderBLL.GetList(ref setNoPagerAscById, ""), "Id", "Name",entity.HeadId);
+            WMS_ReturnOrderModel entity = m_ReturnOrderBLL.GetById(id);
             return View(entity);
         }
 
         [HttpPost]
-        [SupportFilter]
-        public JsonResult Edit(WMS_ReturnOrder_DModel model)
+        [SupportFilter(ActionName = "Edit")]
+        public JsonResult EditParent(WMS_ReturnOrderModel model)
         {
             if (model != null && ModelState.IsValid)
             {
 
-                if (m_BLL.Edit(ref errors, model))
+                if (m_ReturnOrderBLL.Edit(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnOrderDNum" + model.ReturnOrderDNum, "成功", "修改", "WMS_ReturnOrder_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum, "成功", "修改", "WMS_ReturnOrder");
                     return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnOrderDNum" + model.ReturnOrderDNum + "," + ErrorCol, "失败", "修改", "WMS_ReturnOrder_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum + "," + ErrorCol, "失败", "修改", "WMS_ReturnOrder");
                     return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
                 }
             }
@@ -109,32 +159,22 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
-        #region 详细
-        [SupportFilter]
-        public ActionResult Details(long id)
-        {
-            WMS_ReturnOrder_DModel entity = m_BLL.GetById(id);
-            return View(entity);
-        }
-
-        #endregion
-
-        #region 删除
+        #region 删除待退货单
         [HttpPost]
         [SupportFilter]
-        public ActionResult Delete(long id)
+        public ActionResult DeleteParent(int id)
         {
-            if(id!=0)
+            if (id != 0)
             {
-                if (m_BLL.Delete(ref errors, id))
+                if (m_ReturnOrderBLL.CancelReturnOrder(ref errors, GetUserTrueName(), id))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_ReturnOrder_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_ReturnOrder");
                     return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_ReturnOrder_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_ReturnOrder");
                     return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
                 }
             }
@@ -145,19 +185,100 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetList(GridPager pager, string queryStr, string parentId)
+        {
+            List<WMS_ReturnOrder_DModel> list = m_BLL.GetListByParentId(ref pager, queryStr, parentId);
+            GridRows<WMS_ReturnOrder_DModel> grs = new GridRows<WMS_ReturnOrder_DModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+
+        #region 打印
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult Print()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        [ValidateInput(false)]
+        public JsonResult Print(string inserted)
+        {
+            try
+            {
+                var returnOrderNum = m_BLL.PrintReturnOrder(ref errors, GetUserTrueName(), inserted);
+                if (!String.IsNullOrEmpty(returnOrderNum))
+                {
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "打印退货单成功", "成功", "打印", "WMS_ReturnOrder");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnOrderNum));
+                    //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
+                }
+                else
+                {
+                    LogHandler.WriteServiceLog(GetUserTrueName(), errors.Error, "失败", "打印", "WMS_ReturnOrder");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserTrueName(), ex.Message, "失败", "打印", "WMS_ReturnOrder");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+            }
+        }
+        #endregion
+
+        #region 确认
+        [SupportFilter(ActionName = "Edit")]
+        public ActionResult Confirm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Edit")]
+        [ValidateInput(false)]
+        public JsonResult Confirm(string returnOrderNum)
+        {
+            try
+            {
+                if (m_BLL.ConfirmReturnOrder(ref errors, GetUserTrueName(), returnOrderNum))
+                {
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + returnOrderNum, "成功", "确认", "WMS_ReturnOrder");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnOrderNum));
+                }
+                else
+                {
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + returnOrderNum + ", " + errors.Error, "失败", "确认", "WMS_ReturnOrder");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + returnOrderNum + ", " + ex.Message, "失败", "确认", "WMS_ReturnOrder");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+            }
+        }
+        #endregion
+
         #region 导出导入
         [HttpPost]
         [SupportFilter]
-        public ActionResult Import(string filePath)
+        public ActionResult ImportParent(string filePath)
         {
-            if (m_BLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))
+            if (m_ReturnOrderBLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))
             {
-                 LogHandler.WriteImportExcelLog(GetUserId(), "WMS_ReturnOrder_D", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                 LogHandler.WriteImportExcelLog(GetUserId(), "WMS_ReturnOrder", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
                  return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
             }
             else
             {
-                 LogHandler.WriteImportExcelLog(GetUserId(), "WMS_ReturnOrder_D", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                 LogHandler.WriteImportExcelLog(GetUserId(), "WMS_ReturnOrder", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
             }
         }
@@ -165,7 +286,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Export")]
         public JsonResult CheckExportData(string queryStr)
         {
-            List<WMS_ReturnOrder_DModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetList(ref setNoPagerAscById, queryStr);
             if (list.Count().Equals(0))
             {
                 return Json(JsonHandler.CreateMessage(0, "没有可以导出的数据"));
@@ -259,118 +380,87 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         #endregion
 
-        [HttpPost]
-        [SupportFilter(ActionName="Index")]
-        public JsonResult GetListParent(GridPager pager, string queryStr)
-        {
-            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetList(ref pager, queryStr);
-            GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
-            grs.rows = list;
-            grs.total = pager.totalRows;
-            return Json(grs);
-        }
-
-        #region 创建
-        [SupportFilter(ActionName="Create")]
-        public ActionResult CreateParent()
+        #region 弹出当前有退货记录的供应商，以供选择
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult SupplierLookUp(bool mulSelect = false)
         {
             return View();
         }
 
         [HttpPost]
-        [SupportFilter(ActionName="Create")]
-        public JsonResult CreateParent(WMS_ReturnOrderModel model)
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult SupplierGetList(GridPager pager, string supplierCode, string supplierShortName)
         {
-            model.CreateTime = ResultHelper.NowTime;
-            if (model != null && ModelState.IsValid)
-            {
-
-                if (m_ReturnOrderBLL.Create(ref errors, model))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum, "成功", "创建", "WMS_ReturnOrder");
-                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
-                }
-                else
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum + "," + ErrorCol, "失败", "创建", "WMS_ReturnOrder");
-                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
-                }
-            }
-            else
-            {
-                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail));
-            }
+            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "1 = 1")
+                .Where(p => Math.Abs(p.AdjustQty.Value) < Math.Abs(p.ReturnQty.Value))
+                .GroupBy(p => new { p.SupplierId, p.SupplierShortName })
+                .Select(g => g.First())
+                .ToList();
+            GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
         }
         #endregion
 
-        #region 修改
-        [SupportFilter(ActionName="Edit")]
-        public ActionResult EditParent(long id)
+        #region 加载指定供应商的退货信息
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult GetReturnOrderListBySupplier(GridPager pager, string supplierId, string supplierShortName)
         {
-            WMS_ReturnOrderModel entity = m_ReturnOrderBLL.GetById(id);
-            return View(entity);
+            //TODO：指定供应商，且退货单号为空的退货行
+            if (String.IsNullOrEmpty(supplierId) && String.IsNullOrEmpty(supplierShortName))
+                supplierId = "0";
+            //supplierId为空、supplierShortName不为空，则通过supplierShortName获取supplierId
+            if (String.IsNullOrEmpty(supplierId) && !String.IsNullOrEmpty(supplierShortName))
+            {
+                var supplier = m_SupplierBLL.GetListByWhere(ref setNoPagerAscById, "SupplierShortName == \"" + supplierShortName + "\"").First();
+                supplierId = supplier.Id.ToString();
+            }
+            //List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "SupplierId == \"" + supplierId + "\" && Abs(AdjustQty) < Abs(ReturnQty)").ToList();
+            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "1 = 1")
+                .Where(p => p.SupplierId.ToString() == supplierId && Math.Abs(p.AdjustQty.Value) < Math.Abs(p.ReturnQty.Value))
+                .ToList();
+            GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
+
+        #region 弹出已打印的退货单，以便选择
+        [SupportFilter(ActionName = "Edit")]
+        public ActionResult RetunOrderForPrintedLookUp(bool mulSelect = false)
+        {
+            return View();
         }
 
         [HttpPost]
-        [SupportFilter(ActionName="Edit")]
-        public JsonResult EditParent(WMS_ReturnOrderModel model)
+        [SupportFilter(ActionName = "Edit")]
+        public JsonResult RetunOrderForPrintedGetList(GridPager pager)
         {
-            if (model != null && ModelState.IsValid)
-            {
-
-                if (m_ReturnOrderBLL.Edit(ref errors, model))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum, "成功", "修改", "WMS_ReturnOrder_D");
-                    return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
-                }
-                else
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum + "," + ErrorCol, "失败", "修改", "WMS_ReturnOrder_D");
-                    return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
-                }
-            }
-            else
-            {
-                return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
-            }
+            List<WMS_ReturnOrder_DModel> list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"已退货\" && ConfirmStatus == \"未确认\"")
+                .GroupBy(p => new { p.ReturnOrderDNum })
+                .Select(g => g.First())
+                //.Select(p => new WMS_ReturnOrderModel { ReturnOrderNum = p.ReturnOrderNum, SupplierId = p.SupplierId, SupplierShortName = p.SupplierShortName })
+                .ToList();
+            GridRows<WMS_ReturnOrder_DModel> grs = new GridRows<WMS_ReturnOrder_DModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
         }
         #endregion
 
-        #region 详细
-        [SupportFilter(ActionName="Details")]
-        public ActionResult DetailsParent(long id)
-        {
-            WMS_ReturnOrderModel entity = m_ReturnOrderBLL.GetById(id);
-            return View(entity);
-        }
-
-        #endregion
-
-        #region 删除
+        #region 加载指定退货单号的退货信息
         [HttpPost]
-        [SupportFilter(ActionName="Delete")]
-        public ActionResult DeleteParent(long id)
+        [SupportFilter(ActionName = "Edit")]
+        public JsonResult GetReturnOrderListByNum(GridPager pager, string returnOrderNum)
         {
-            if(id!=0)
-            {
-                if (m_ReturnOrderBLL.Delete(ref errors, id))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_ReturnOrder_D");
-                    return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
-                }
-                else
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_ReturnOrder_D");
-                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
-                }
-            }
-            else
-            {
-                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
-            }
+            List<WMS_ReturnOrder_DModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderDNum == \"" + returnOrderNum + "\"").ToList();
+            GridRows<WMS_ReturnOrder_DModel> grs = new GridRows<WMS_ReturnOrder_DModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
         }
         #endregion
     }
