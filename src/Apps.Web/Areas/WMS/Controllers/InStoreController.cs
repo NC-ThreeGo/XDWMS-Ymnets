@@ -53,7 +53,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             //GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "WMS_PO.PO.Contains(\"" + po + "\")&&InspectBillNum.Contains(\"" + inspectBillNum + "\") && WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
               + supplierShortName + "\")&& WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& InStoreStatus=\"已入库\"&& CheckOutDate>=(\""
-              + beginDate + "\")&& InspectDate<=(\"" + endDate + "\")");
+              + beginDate + "\")&& CheckOutDate<=(\"" + endDate + "\")");
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
