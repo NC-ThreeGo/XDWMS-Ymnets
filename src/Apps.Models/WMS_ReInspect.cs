@@ -14,6 +14,11 @@ namespace Apps.Models
     
     public partial class WMS_ReInspect
     {
+        public WMS_ReInspect()
+        {
+            this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
+        }
+    
         public int Id { get; set; }
         public int AIId { get; set; }
         public string OCheckOutResult { get; set; }
@@ -40,5 +45,6 @@ namespace Apps.Models
         public Nullable<System.DateTime> ModifyTime { get; set; }
     
         public virtual WMS_AI WMS_AI { get; set; }
+        public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
     }
 }

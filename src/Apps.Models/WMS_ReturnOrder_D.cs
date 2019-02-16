@@ -12,25 +12,12 @@ namespace Apps.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class WMS_ReturnOrder
+    public partial class WMS_ReturnOrder_D
     {
-        public WMS_ReturnOrder()
-        {
-            this.WMS_ReturnOrder_D = new HashSet<WMS_ReturnOrder_D>();
-        }
-    
         public int Id { get; set; }
-        public string ReturnOrderNum { get; set; }
-        public Nullable<int> AIID { get; set; }
-        public Nullable<int> ReInspectID { get; set; }
-        public Nullable<int> PartID { get; set; }
-        public Nullable<int> SupplierId { get; set; }
-        public Nullable<int> InvId { get; set; }
-        public Nullable<int> SubInvId { get; set; }
-        public string Lot { get; set; }
-        public Nullable<decimal> ReturnQty { get; set; }
-        public Nullable<decimal> AdjustQty { get; set; }
-        public string Status { get; set; }
+        public string ReturnOrderDNum { get; set; }
+        public int HeadId { get; set; }
+        public decimal ReturnQty { get; set; }
         public string Remark { get; set; }
         public string PrintStaus { get; set; }
         public Nullable<System.DateTime> PrintDate { get; set; }
@@ -48,14 +35,7 @@ namespace Apps.Models
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
         public Nullable<int> BatchId { get; set; }
-        public string ReturnOderType { get; set; }
     
-        public virtual WMS_AI WMS_AI { get; set; }
-        public virtual WMS_InvInfo WMS_InvInfo { get; set; }
-        public virtual WMS_Part WMS_Part { get; set; }
-        public virtual WMS_ReInspect WMS_ReInspect { get; set; }
-        public virtual ICollection<WMS_ReturnOrder_D> WMS_ReturnOrder_D { get; set; }
-        public virtual WMS_SubInvInfo WMS_SubInvInfo { get; set; }
-        public virtual WMS_Supplier WMS_Supplier { get; set; }
+        public virtual WMS_ReturnOrder WMS_ReturnOrder { get; set; }
     }
 }

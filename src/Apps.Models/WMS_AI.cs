@@ -59,7 +59,7 @@ namespace Apps.Models
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
         public virtual WMS_SubInvInfo WMS_SubInvInfo { get; set; }
         public virtual ICollection<WMS_ReInspect> WMS_ReInspect { get; set; }
-        public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
         public virtual WMS_Part WMS_Part { get; set; }
+        public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
     }
 }
