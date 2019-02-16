@@ -121,14 +121,23 @@ $.messageBox5s(Lang.Tip, mes);
                 <td>@Html.ValidationMessageFor(model => model.ProductQty)</td>
             </tr>
             @*<tr>
-                    <th>
-                        @Html.LabelFor(model => model.SubInvId)：
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.SubInvId)
-                    </td>
-                    <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
-                </tr>*@
+            <th>
+                @Html.LabelFor(model => model.SubInvId)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.SubInvId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
+            </tr>*@
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Lot)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Lot)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Lot)</td>
+            </tr>
             <tr>
                 <th>
                     @Html.LabelFor(model => model.Remark)：
