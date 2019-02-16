@@ -235,14 +235,14 @@
             var row = $('#List').datagrid('getSelected');
             if (row != null && row.ConfirmStatus != "已确认")
             {
-                $.messager.confirm(index_lang_tip, '确认是否需要取消打印该行销售单？', function (r)
+                $.messager.confirm(index_lang_tip, '确认是否需要取消打印该销售单？', function (r)
                 {
                     if (r)
                     {
                         $.ajax({
                             url: "@Url.Action("UnPrint")",
                             type: "Post",
-                            data: { sellBillNum: row.SellBillNum, id: row.Id },
+                            data: { sellBillNum: row.SellBillNum, id: 0 },
                             dataType: "json",
                             success: function (data)
                             {
