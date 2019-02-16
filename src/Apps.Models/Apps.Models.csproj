@@ -477,6 +477,7 @@
     <Compile Include="WMS\WMS_ReportModel.cs" />
     <Compile Include="WMS\WMS_ReportParamModel.cs" />
     <Compile Include="WMS\WMS_ReturnOrderModel.cs" />
+    <Compile Include="WMS\WMS_ReturnOrder_DModel.cs" />
     <Compile Include="WMS\WMS_Sale_OrderModel.cs" />
     <Compile Include="WMS\WMS_SubInvInfoModel.cs" />
     <Compile Include="WMS\WMS_SupplierModel.cs" />

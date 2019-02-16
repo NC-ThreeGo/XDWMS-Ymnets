@@ -48,9 +48,11 @@ namespace Apps.BLL.WMS
 								
 								
 								
+								
 								|| a.Lot.Contains(queryStr)
 								
 								
+								|| a.Status.Contains(queryStr)
 								|| a.Remark.Contains(queryStr)
 								|| a.PrintStaus.Contains(queryStr)
 								
@@ -100,6 +102,7 @@ namespace Apps.BLL.WMS
 													Id = r.Id,
 													ReturnOrderNum = r.ReturnOrderNum,
 													AIID = r.AIID,
+													ReInspectID = r.ReInspectID,
 													PartID = r.PartID,
 													SupplierId = r.SupplierId,
 													InvId = r.InvId,
@@ -107,6 +110,7 @@ namespace Apps.BLL.WMS
 													Lot = r.Lot,
 													ReturnQty = r.ReturnQty,
 													AdjustQty = r.AdjustQty,
+													Status = r.Status,
 													Remark = r.Remark,
 													PrintStaus = r.PrintStaus,
 													PrintDate = r.PrintDate,
@@ -145,6 +149,7 @@ namespace Apps.BLL.WMS
                				entity.Id = model.Id;
 				entity.ReturnOrderNum = model.ReturnOrderNum;
 				entity.AIID = model.AIID;
+				entity.ReInspectID = model.ReInspectID;
 				entity.PartID = model.PartID;
 				entity.SupplierId = model.SupplierId;
 				entity.InvId = model.InvId;
@@ -152,6 +157,7 @@ namespace Apps.BLL.WMS
 				entity.Lot = model.Lot;
 				entity.ReturnQty = model.ReturnQty;
 				entity.AdjustQty = model.AdjustQty;
+				entity.Status = model.Status;
 				entity.Remark = model.Remark;
 				entity.PrintStaus = model.PrintStaus;
 				entity.PrintDate = model.PrintDate;
@@ -259,6 +265,7 @@ namespace Apps.BLL.WMS
                               				entity.Id = model.Id;
 				entity.ReturnOrderNum = model.ReturnOrderNum;
 				entity.AIID = model.AIID;
+				entity.ReInspectID = model.ReInspectID;
 				entity.PartID = model.PartID;
 				entity.SupplierId = model.SupplierId;
 				entity.InvId = model.InvId;
@@ -266,6 +273,7 @@ namespace Apps.BLL.WMS
 				entity.Lot = model.Lot;
 				entity.ReturnQty = model.ReturnQty;
 				entity.AdjustQty = model.AdjustQty;
+				entity.Status = model.Status;
 				entity.Remark = model.Remark;
 				entity.PrintStaus = model.PrintStaus;
 				entity.PrintDate = model.PrintDate;
@@ -317,6 +325,7 @@ namespace Apps.BLL.WMS
                               				model.Id = entity.Id;
 				model.ReturnOrderNum = entity.ReturnOrderNum;
 				model.AIID = entity.AIID;
+				model.ReInspectID = entity.ReInspectID;
 				model.PartID = entity.PartID;
 				model.SupplierId = entity.SupplierId;
 				model.InvId = entity.InvId;
@@ -324,6 +333,7 @@ namespace Apps.BLL.WMS
 				model.Lot = entity.Lot;
 				model.ReturnQty = entity.ReturnQty;
 				model.AdjustQty = entity.AdjustQty;
+				model.Status = entity.Status;
 				model.Remark = entity.Remark;
 				model.PrintStaus = entity.PrintStaus;
 				model.PrintDate = entity.PrintDate;
@@ -372,6 +382,7 @@ namespace Apps.BLL.WMS
             //对应列头
 			 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ReturnOrderNum, "退货单号");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.AIID, "到货检验单ID");
+				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ReInspectID, "重新送检单ID");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.PartID, "物料编码");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.SupplierId, "代理商编码");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.InvId, "库存编码");
@@ -379,6 +390,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Lot, "批次号：YYYYMM");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ReturnQty, "应退货数量");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.AdjustQty, "实际退货数量");
+				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Status, "单据状态：无效，有效");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Remark, "退货说明");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.PrintStaus, "打印状态");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.PrintDate, "打印时间");
@@ -409,6 +421,7 @@ namespace Apps.BLL.WMS
 						 				  entity.Id = row.Id;
 				  entity.ReturnOrderNum = row.ReturnOrderNum;
 				  entity.AIID = row.AIID;
+				  entity.ReInspectID = row.ReInspectID;
 				  entity.PartID = row.PartID;
 				  entity.SupplierId = row.SupplierId;
 				  entity.InvId = row.InvId;
@@ -416,6 +429,7 @@ namespace Apps.BLL.WMS
 				  entity.Lot = row.Lot;
 				  entity.ReturnQty = row.ReturnQty;
 				  entity.AdjustQty = row.AdjustQty;
+				  entity.Status = row.Status;
 				  entity.Remark = row.Remark;
 				  entity.PrintStaus = row.PrintStaus;
 				  entity.PrintDate = row.PrintDate;
@@ -469,6 +483,7 @@ namespace Apps.BLL.WMS
                        						entity.Id = 0;
 						entity.ReturnOrderNum = model.ReturnOrderNum;
 						entity.AIID = model.AIID;
+						entity.ReInspectID = model.ReInspectID;
 						entity.PartID = model.PartID;
 						entity.SupplierId = model.SupplierId;
 						entity.InvId = model.InvId;
@@ -476,6 +491,7 @@ namespace Apps.BLL.WMS
 						entity.Lot = model.Lot;
 						entity.ReturnQty = model.ReturnQty;
 						entity.AdjustQty = model.AdjustQty;
+						entity.Status = model.Status;
 						entity.Remark = model.Remark;
 						entity.PrintStaus = model.PrintStaus;
 						entity.PrintDate = model.PrintDate;
