@@ -80,13 +80,13 @@ namespace Apps.Web.Areas.WMS.Controllers
 
                 if (m_BLL.Create(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",PO" + model.PO, "成功", "创建", "WMS_PO");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",PO" + model.PO, "成功", "创建", "WMS_PO");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",PO" + model.PO + "," + ErrorCol, "失败", "创建", "WMS_PO");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",PO" + model.PO + "," + ErrorCol, "失败", "创建", "WMS_PO");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
                 }
             }
@@ -125,13 +125,13 @@ namespace Apps.Web.Areas.WMS.Controllers
 
                 if (m_BLL.Edit(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",PO" + model.PO, "成功", "修改", "WMS_PO");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",PO" + model.PO, "成功", "修改", "WMS_PO");
                     return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",PO" + model.PO + "," + ErrorCol, "失败", "修改", "WMS_PO");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",PO" + model.PO + "," + ErrorCol, "失败", "修改", "WMS_PO");
                     return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
                 }
             }
@@ -163,13 +163,13 @@ namespace Apps.Web.Areas.WMS.Controllers
                 
                 if (m_BLL.Delete(ref errors, id))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_PO");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_PO");
                     return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_PO");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_PO");
                     return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
                 }
             }
@@ -185,14 +185,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Import(string filePath)
         {
-            if (m_BLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))
+            if (m_BLL.ImportExcelData(GetUserTrueName(), Utils.GetMapPath(filePath), ref errors))
             {
-                 LogHandler.WriteImportExcelLog(GetUserId(), "WMS_PO", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                 LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_PO", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
                  return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
             }
             else
             {
-                 LogHandler.WriteImportExcelLog(GetUserId(), "WMS_PO", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                 LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_PO", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
             }
         }

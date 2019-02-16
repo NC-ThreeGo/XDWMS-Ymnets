@@ -101,13 +101,13 @@ namespace Apps.Web.Areas.WMS.Controllers
 
                 if (m_BLL.Create(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum, "成功", "创建", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum, "成功", "创建", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum + "," + ErrorCol, "失败", "创建", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum + "," + ErrorCol, "失败", "创建", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
                 }
             }
@@ -132,23 +132,23 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             try
             {
-                var releaseBillNum = m_BLL.PrintFeedList(ref errors, GetUserId(), feedBillNum, id);
+                var releaseBillNum = m_BLL.PrintFeedList(ref errors, GetUserTrueName(), feedBillNum, id);
                 if (!String.IsNullOrEmpty(releaseBillNum))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "打印投料单成功，id:" + id.ToString(), "成功", "打印", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "打印投料单成功，id:" + id.ToString(), "成功", "打印", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNum));
                     //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
                 }
                 else
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), errors.Error + ",id:" + id.ToString(), "失败", "打印", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), errors.Error + ",id:" + id.ToString(), "失败", "打印", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
                 }
 
             }
             catch (Exception ex)
             {
-                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "打印", "WMS_Feed_List");
+                LogHandler.WriteServiceLog(GetUserTrueName(), ex.Message, "失败", "打印", "WMS_Feed_List");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }
@@ -160,22 +160,22 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             try
             {
-                if (m_BLL.UnPrintFeedList(ref errors, GetUserId(), releaseBillNum, id))
+                if (m_BLL.UnPrintFeedList(ref errors, GetUserTrueName(), releaseBillNum, id))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "取消打印投料单成功，id:" + id.ToString(), "成功", "取消打印", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "取消打印投料单成功，id:" + id.ToString(), "成功", "取消打印", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNum));
                     //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
                 }
                 else
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), errors.Error + ",id:" + id.ToString(), "失败", "取消打印", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), errors.Error + ",id:" + id.ToString(), "失败", "取消打印", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
                 }
 
             }
             catch (Exception ex)
             {
-                LogHandler.WriteServiceLog(GetUserId(), ex.Message, "失败", "取消打印", "WMS_Feed_List");
+                LogHandler.WriteServiceLog(GetUserTrueName(), ex.Message, "失败", "取消打印", "WMS_Feed_List");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }
@@ -195,21 +195,21 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             try
             {
-                if (m_BLL.ConfirmFeedList(ref errors, GetUserId(), releaseBillNum))
+                if (m_BLL.ConfirmFeedList(ref errors, GetUserTrueName(), releaseBillNum))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "ReleaseBillNum" + releaseBillNum, "成功", "确认", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "ReleaseBillNum" + releaseBillNum, "成功", "确认", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNum));
                 }
                 else
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "ReleaseBillNum" + releaseBillNum + ", " + errors.Error, "失败", "确认", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "ReleaseBillNum" + releaseBillNum + ", " + errors.Error, "失败", "确认", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
                 }
 
             }
             catch (Exception ex)
             {
-                LogHandler.WriteServiceLog(GetUserId(), "ReturnOrderNum" + releaseBillNum + ", " + ex.Message, "失败", "确认", "WMS_Feed_List");
+                LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + releaseBillNum + ", " + ex.Message, "失败", "确认", "WMS_Feed_List");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }
@@ -247,13 +247,13 @@ namespace Apps.Web.Areas.WMS.Controllers
 
                     if (m_BLL.Edit(ref errors, model))
                     {
-                        LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum, "成功", "修改", "WMS_Feed_List");
+                        LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum, "成功", "修改", "WMS_Feed_List");
                         return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
                     }
                     else
                     {
                         string ErrorCol = errors.Error;
-                        LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum + "," + ErrorCol, "失败", "修改", "WMS_Feed_List");
+                        LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum + "," + ErrorCol, "失败", "修改", "WMS_Feed_List");
                         return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
                     }
                 }
@@ -292,13 +292,13 @@ namespace Apps.Web.Areas.WMS.Controllers
                 {
                     if (m_BLL.Delete(ref errors, id))
                     {
-                        LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_Feed_List");
+                        LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_Feed_List");
                         return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
                     }
                     else
                     {
                         string ErrorCol = errors.Error;
-                        LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Feed_List");
+                        LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Feed_List");
                         return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
                     }
                 }
@@ -316,14 +316,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Import(string filePath)
         {
-            if (m_BLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))
+            if (m_BLL.ImportExcelData(GetUserTrueName(), Utils.GetMapPath(filePath), ref errors))
             {
-                 LogHandler.WriteImportExcelLog(GetUserId(), "WMS_Feed_List", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                 LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Feed_List", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
                  return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
             }
             else
             {
-                 LogHandler.WriteImportExcelLog(GetUserId(), "WMS_Feed_List", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                 LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Feed_List", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
             }
         }

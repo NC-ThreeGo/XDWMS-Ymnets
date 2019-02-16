@@ -59,15 +59,15 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public JsonResult Create(int headId, string invList)
         {
-            if (m_HBLL.CreateInventoryD(ref errors, GetUserId(), headId, invList))
+            if (m_HBLL.CreateInventoryD(ref errors, GetUserTrueName(), headId, invList))
             {
-                LogHandler.WriteServiceLog(GetUserId(), "HeadId" + headId, "成功", "创建", "WMS_Inventory_D");
+                LogHandler.WriteServiceLog(GetUserTrueName(), "HeadId" + headId, "成功", "创建", "WMS_Inventory_D");
                 return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
             }
             else
             {
                 string ErrorCol = errors.Error;
-                LogHandler.WriteServiceLog(GetUserId(), "HeadId" + headId + "," + ErrorCol, "失败", "创建", "WMS_Inventory_D");
+                LogHandler.WriteServiceLog(GetUserTrueName(), "HeadId" + headId + "," + ErrorCol, "失败", "创建", "WMS_Inventory_D");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
             }
         }
@@ -91,13 +91,13 @@ namespace Apps.Web.Areas.WMS.Controllers
 
                 if (m_BLL.Edit(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",HeadId" + model.HeadId, "成功", "修改", "WMS_Inventory_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",HeadId" + model.HeadId, "成功", "修改", "WMS_Inventory_D");
                     return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",HeadId" + model.HeadId + "," + ErrorCol, "失败", "修改", "WMS_Inventory_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",HeadId" + model.HeadId + "," + ErrorCol, "失败", "修改", "WMS_Inventory_D");
                     return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
                 }
             }
@@ -127,15 +127,15 @@ namespace Apps.Web.Areas.WMS.Controllers
             if (id != 0)
             {
                 //if (m_BLL.Delete(ref errors, id))
-                if (m_BLL.ClearInventoryQty(ref errors,GetUserId(),id))
+                if (m_BLL.ClearInventoryQty(ref errors,GetUserTrueName(),id))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_Inventory_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_Inventory_D");
                     return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Inventory_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Inventory_D");
                     return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
                 }
             }
@@ -151,14 +151,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Import(string filePath)
         {
-            if (m_BLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))
+            if (m_BLL.ImportExcelData(GetUserTrueName(), Utils.GetMapPath(filePath), ref errors))
             {
-                LogHandler.WriteImportExcelLog(GetUserId(), "WMS_Inventory_D", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Inventory_D", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
                 return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
             }
             else
             {
-                LogHandler.WriteImportExcelLog(GetUserId(), "WMS_Inventory_D", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Inventory_D", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
             }
         }
