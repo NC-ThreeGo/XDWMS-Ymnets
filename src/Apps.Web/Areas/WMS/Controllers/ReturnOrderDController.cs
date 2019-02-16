@@ -392,7 +392,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult SupplierGetList(GridPager pager, string supplierCode, string supplierShortName)
         {
             List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "1 = 1")
-                .Where(p => Math.Abs(p.AdjustQty.Value) < Math.Abs(p.ReturnQty.Value))
+                .Where(p => Math.Abs(p.AdjustQty) < Math.Abs(p.ReturnQty))
                 .GroupBy(p => new { p.SupplierId, p.SupplierShortName })
                 .Select(g => g.First())
                 .ToList();
@@ -419,7 +419,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
             //List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "SupplierId == \"" + supplierId + "\" && Abs(AdjustQty) < Abs(ReturnQty)").ToList();
             List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "1 = 1")
-                .Where(p => p.SupplierId.ToString() == supplierId && Math.Abs(p.AdjustQty.Value) < Math.Abs(p.ReturnQty.Value))
+                .Where(p => p.SupplierId.ToString() == supplierId && Math.Abs(p.AdjustQty) < Math.Abs(p.ReturnQty))
                 .ToList();
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
