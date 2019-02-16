@@ -27,5 +27,25 @@ namespace Apps.IBLL.WMS
          /// <param name="pager"></param>
          /// <param name="whereStr"></param>
          List<WMS_ReturnOrder_DModel> GetListByWhere(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 打印实际退货单
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="opt"></param>
+        /// <param name="returnOrderNum"></param>
+        /// <returns></returns>
+        string PrintReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
+
+        /// <summary>
+        /// 确认指定单号的实际退货单
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="opt"></param>
+        /// <param name="returnOrderNum"></param>
+        /// <returns></returns>
+        bool ConfirmReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
+
+
     }
 }

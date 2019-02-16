@@ -37,14 +37,11 @@ namespace Apps.IBLL.WMS
         //string CreateBatchReturnOrder(string opt, string jsonReturnOrder);
 
         /// <summary>
-        /// 手工创建退货单，并返回退货单号
+        /// 手工创建库存待退货单
         /// </summary>
+        /// <param name="errors"></param>
         /// <param name="opt"></param>
-        /// <param name="partId"></param>
-        /// <param name="supplierId"></param>
-        /// <param name="invId"></param>
-        /// <param name="qty"></param>
-        /// <param name="remark"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
         bool CreateReturnOrder(ref ValidationErrors errors, string opt, WMS_ReturnOrderModel model);
 
@@ -54,7 +51,7 @@ namespace Apps.IBLL.WMS
         /// <param name="errors"></param>
         /// <param name="returnOrderNum"></param>
         /// <returns></returns>
-        string PrintReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
+        //string PrintReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
 
         /// <summary>
         /// 确认指定单号的退货单
@@ -62,7 +59,8 @@ namespace Apps.IBLL.WMS
         /// <param name="errors"></param>
         /// <param name="opt"></param>
         /// <param name="returnOrderNum"></param>
-        bool ConfirmReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
+        //bool ConfirmReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum);
+
         bool CancelReturnOrder(ref ValidationErrors errors, string opt, int aiId);
     }
 }

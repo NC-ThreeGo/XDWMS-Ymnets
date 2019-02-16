@@ -126,73 +126,73 @@ namespace Apps.Web.Areas.WMS.Controllers
         #endregion
 
         #region 打印
-        [SupportFilter(ActionName = "Create")]
-        public ActionResult Print()
-        {
-            return View();
-        }
+        //[SupportFilter(ActionName = "Create")]
+        //public ActionResult Print()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        [SupportFilter(ActionName = "Create")]
-        [ValidateInput(false)]
-        public JsonResult Print(string inserted)
-        {
-            try
-            {
-                var returnOrderNum = m_BLL.PrintReturnOrder(ref errors, GetUserTrueName(), inserted);
-                if (!String.IsNullOrEmpty(returnOrderNum))
-                {
-                    LogHandler.WriteServiceLog(GetUserTrueName(), "打印退货单成功", "成功", "打印", "WMS_ReturnOrder");
-                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnOrderNum));
-                    //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
-                }
-                else
-                {
-                    LogHandler.WriteServiceLog(GetUserTrueName(), errors.Error, "失败", "打印", "WMS_ReturnOrder");
-                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
-                }
+        //[HttpPost]
+        //[SupportFilter(ActionName = "Create")]
+        //[ValidateInput(false)]
+        //public JsonResult Print(string inserted)
+        //{
+        //    try
+        //    {
+        //        var returnOrderNum = m_BLL.PrintReturnOrder(ref errors, GetUserTrueName(), inserted);
+        //        if (!String.IsNullOrEmpty(returnOrderNum))
+        //        {
+        //            LogHandler.WriteServiceLog(GetUserTrueName(), "打印退货单成功", "成功", "打印", "WMS_ReturnOrder");
+        //            return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnOrderNum));
+        //            //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
+        //        }
+        //        else
+        //        {
+        //            LogHandler.WriteServiceLog(GetUserTrueName(), errors.Error, "失败", "打印", "WMS_ReturnOrder");
+        //            return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+        //        }
 
-            }
-            catch (Exception ex)
-            {
-                LogHandler.WriteServiceLog(GetUserTrueName(), ex.Message, "失败", "打印", "WMS_ReturnOrder");
-                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogHandler.WriteServiceLog(GetUserTrueName(), ex.Message, "失败", "打印", "WMS_ReturnOrder");
+        //        return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+        //    }
+        //}
         #endregion
 
         #region 确认
-        [SupportFilter(ActionName = "Edit")]
-        public ActionResult Confirm()
-        {
-            return View();
-        }
+        //[SupportFilter(ActionName = "Edit")]
+        //public ActionResult Confirm()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        [SupportFilter(ActionName = "Edit")]
-        [ValidateInput(false)]
-        public JsonResult Confirm(string returnOrderNum)
-        {
-            try
-            {
-                if (m_BLL.ConfirmReturnOrder(ref errors, GetUserTrueName(), returnOrderNum))
-                {
-                    LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + returnOrderNum, "成功", "确认", "WMS_ReturnOrder");
-                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnOrderNum));
-                }
-                else
-                {
-                    LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + returnOrderNum + ", " + errors.Error, "失败", "确认", "WMS_ReturnOrder");
-                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
-                }
+        //[HttpPost]
+        //[SupportFilter(ActionName = "Edit")]
+        //[ValidateInput(false)]
+        //public JsonResult Confirm(string returnOrderNum)
+        //{
+        //    try
+        //    {
+        //        if (m_BLL.ConfirmReturnOrder(ref errors, GetUserTrueName(), returnOrderNum))
+        //        {
+        //            LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + returnOrderNum, "成功", "确认", "WMS_ReturnOrder");
+        //            return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnOrderNum));
+        //        }
+        //        else
+        //        {
+        //            LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + returnOrderNum + ", " + errors.Error, "失败", "确认", "WMS_ReturnOrder");
+        //            return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+        //        }
 
-            }
-            catch (Exception ex)
-            {
-                LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + returnOrderNum + ", " + ex.Message, "失败", "确认", "WMS_ReturnOrder");
-                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + returnOrderNum + ", " + ex.Message, "失败", "确认", "WMS_ReturnOrder");
+        //        return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+        //    }
+        //}
         #endregion
 
         #region 修改

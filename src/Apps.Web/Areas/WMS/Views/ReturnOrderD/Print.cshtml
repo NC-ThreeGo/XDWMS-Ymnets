@@ -1,0 +1,332 @@
+﻿@model Apps.Models.WMS.WMS_ReturnOrderModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WMS;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建退货单";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script type="text/javascript">
+    $(function ()
+    {
+        //加载到货单
+        $("#btnLoadSupplier").click(function ()
+        {
+            var supplierId = $("#SupplierId").val();
+            var supplierShortName = $("#Supplier").val();
+            $("#List").datagrid("load", { supplierId: supplierId, supplierShortName: supplierShortName });
+        });
+
+        $("#btnSave").click(function ()
+        {
+            if (!$("form").valid()) {
+                $.messageBox5s('提示', $("#ErrMesList").html());
+                return;
+            }
+            if ($("form").valid())
+            {
+                endEditing();
+                var $dg = $('#List');
+                var rows = $dg.datagrid('getChecked');  //获取被选中的行。
+                //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
+                $("#inserted").val(JSON.stringify(rows));
+                if (rows.length)
+                {
+                    showLoading();
+                    $.ajax({
+                        url: "@Url.Action("Print")",
+                        type: "Post",
+                        data: $("form").serialize(),
+                        dataType: "json",
+                        success: function (data)
+                        {
+                            if (data.type == 1)
+                            {
+                                hideLoading();
+                                //window.parent.frameReturnByMes(data.message);
+                                //window.parent.frameReturnByReload(true);
+                                //window.parent.frameReturnByClose()
+                                //window.parent.frameReturnByMes("保存成功！");
+
+                                //打开报表打印的窗口
+                                self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + data.value;
+                            } else
+                            {
+                                window.parent.frameReturnByMes(data.message);
+                                hideLoading();
+
+                            }
+                        }
+                    })
+                }
+            }
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(30),
+                height: SetGridHeightSub(50)
+            });
+        });
+
+    });
+    $(function ()
+    {
+        $('#List').datagrid({
+            url: '@Url.Action("GetReturnOrderListBySupplier")?supplierId=&supplierShortName=',
+            width: SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(100),
+            fitColumns: true,
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: false,//单选模式
+            selectOnCheck: false,
+            checkOnSelect: false,
+            onClickCell: onClickCell,
+            onEndEdit: onEndEdit,
+            onBeginEdit: onBeginEdit,
+
+            onCheck: onCheck,
+            onUncheck: onUncheck,
+            onCheckAll: onCheckAll,
+            onUncheckAll: onUncheckAll,
+
+            remotesort: false,
+            showFooter: true,
+            columns: [[
+                {
+                    field: 'ck', checkbox: true,
+                },
+                { field: 'SupplierShortName', title: '供应商简称', width: 80, sortable: true },
+                { field: 'ArrivalBillNum', title: '到货单号', width: 80, sortable: true },
+                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'QualifyNum', title: '合格数量', width: 80, sortable: true, align: 'right' },
+                { field: 'NoQualifyNum', title: '不合格数量', width: 80, sortable: true, align: 'right' },
+                { field: 'ReturnQty', title: '应退货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'AdjustQty', title: '已退货数量', width: 80, sortable: true, align: 'right' },
+                {
+                    field: 'Qty', title: '本次退货数量', width: 80, sortable: true, align: 'right',
+                    editor: { type: 'numberbox', options: { required: true, min: 0 } }
+                },
+                { field: 'InvName', title: '库房', width: 80, sortable: true },
+                { field: 'Lot', title: '批次', width: 80, sortable: true },
+                { field: 'Remark', title: '说明', width: 80, sortable: true, editor: { type: 'textbox' } },
+            ]]
+        });
+    })
+
+    //所选择行的退货数求和
+    var sum_Qty = 0;
+    function onCheck(index, row)
+    {
+        endEditing();
+        sum_Qty = sum_Qty + Number(row.Qty);
+        setFooter();
+    }
+    function onUncheck(index, row)
+    {
+        //endEditing();
+        sum_Qty = sum_Qty - Number(row.Qty);
+        setFooter();
+    }
+    function onCheckAll(rows)
+    {
+        endEditing();
+        sum_Qty = 0;
+        for (var i = 0; i < rows.length; i++)
+        {
+            sum_Qty = sum_Qty + Number(rows[i]['Qty']);
+        }
+        setFooter();
+    }
+    function onUncheckAll(rows)
+    {
+        //endEditing();
+        sum_Qty = 0;
+        setFooter();
+    }
+    function setFooter()
+    {
+        $('#List').datagrid('reloadFooter',
+            [
+                { SupplierShortName: '合计：', Qty: sum_Qty },
+            ]
+        );
+    }
+
+
+    //编辑的行
+    var editIndex = undefined;
+    function endEditing()
+    {
+        if (editIndex == undefined) { return true }
+        $('#List').datagrid('endEdit', editIndex);
+
+        editIndex = undefined;
+        return true;
+    }
+    function onClickCell(index, field)
+    {
+        if (editIndex != index)
+        {
+            if (endEditing())
+            {
+                $('#List').datagrid('selectRow', index)
+                    .datagrid('beginEdit', index);
+
+                var ed = $('#List').datagrid('getEditor', { index: index, field: field });
+                if (ed)
+                {
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                }
+                editIndex = index;
+            } else
+            {
+                setTimeout(function ()
+                {
+                    $('#List').datagrid('selectRow', editIndex);
+                }, 0);
+            }
+        }
+    }
+    function onEndEdit(index, row)
+    {
+    }
+
+    //进入编辑前设置
+    function onBeginEdit(index, row)
+    {
+    }
+
+    function removeit()
+    {
+        if (editIndex == undefined) { return }
+        $('#List').datagrid('selectRow', editIndex);
+
+        $('#List').datagrid('cancelEdit', editIndex)
+            .datagrid('deleteRow', editIndex);
+        editIndex = undefined;
+    }
+
+    function reject()
+    {
+        $('#List').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+    function getChanges()
+    {
+        var rows = $('#List').datagrid('getChanges');
+        alert(rows.length + ' rows are changed!');
+    }
+
+    function contains(arr, obj)
+    {
+        var i = arr.length;
+        while (i--)
+        {
+            if (arr[i] === obj)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    //关闭模式窗口
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s('提示', mes);
+    }
+</script>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Print, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+    @*@Html.HiddenFor(model => model.Id)*@
+    <input id="inserted" type="hidden" name="inserted" value="" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.SupplierShortName)：
+                </th>
+                <td>
+                    <div style="height:0;width:0;overflow:hidden">
+                        @Html.TextBoxFor(model => model.SupplierId)
+                    </div>
+                    <input id="Supplier" name="Supplier" type="text" style="width: 200px; display: inline;">
+                    <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelSupplier()"></a>
+                    <script type="text/javascript">
+                        function showSelSupplier()
+                        {
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/ReturnOrderD/SupplierLookUp'></iframe>");
+                            $("#modalwindow").window({ title: '选择供应商', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                        }
+
+                        function SetSelResult(result, resultName)
+                        {
+                            $("#SupplierId").val(result);
+                            $("#Supplier").val(resultName);
+                        }
+
+                    </script>
+                    @Html.ToolButton("btnLoadSupplier", "fa fa-reply", Resource.Load, false)
+                </td>
+                @*<th>
+                        @Html.LabelFor(model => model.InStoreBillNum) （自动生成）：
+                    </th>
+                    <td>
+                        <input id="inStoreBillNum" type="hidden" name="inStoreBillNum" value="@ViewBag.ArrivalBillNum" />
+                        @Html.TextBox("inStoreBillNum", (string)ViewBag.InStoreBillNum, new { @disabled = "disabled" })
+                    </td>*@
+                @*<th>
+                        @Html.LabelFor(model => model.InvCode):
+                    </th>
+                    <td>
+                        @Html.DropDownListFor(model => model.InvCode, ViewBag.Inv as SelectList)
+                    </td>*@
+            </tr>
+
+        </tbody>
+    </table>
+}
+<table>
+    <tr>
+        <td colspan="7" style="padding:4px;">
+            <table id="List"></table>
+        </td>
+    </tr>
+
+</table>

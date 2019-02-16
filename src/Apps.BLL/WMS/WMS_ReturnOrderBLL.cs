@@ -30,9 +30,9 @@ namespace Apps.BLL.WMS
                                                   Attr3 = r.Attr3,
                                                   Attr4 = r.Attr4,
                                                   Attr5 = r.Attr5,
-                                                  ConfirmDate = r.ConfirmDate,
-                                                  ConfirmMan = r.ConfirmMan,
-                                                  ConfirmStatus = r.ConfirmStatus,
+                                                  //ConfirmDate = r.ConfirmDate,
+                                                  //ConfirmMan = r.ConfirmMan,
+                                                  //ConfirmStatus = r.ConfirmStatus,
                                                   CreatePerson = r.CreatePerson,
                                                   CreateTime = r.CreateTime,
                                                   Id = r.Id,
@@ -41,11 +41,11 @@ namespace Apps.BLL.WMS
                                                   ModifyPerson = r.ModifyPerson,
                                                   ModifyTime = r.ModifyTime,
                                                   PartID = r.PartID,
-                                                  PrintDate = r.PrintDate,
-                                                  PrintMan = r.PrintMan,
-                                                  PrintStaus = r.PrintStaus,
-                                                  Remark = r.Remark,
-                                                  ReturnOrderNum = r.ReturnOrderNum,
+                                                  //PrintDate = r.PrintDate,
+                                                  //PrintMan = r.PrintMan,
+                                                  //PrintStaus = r.PrintStaus,
+                                                  //Remark = r.Remark,
+                                                  //ReturnOrderNum = r.ReturnOrderNum,
                                                   ReturnQty = r.ReturnQty,
                                                   SubInvId = r.SubInvId,
                                                   SupplierId = r.SupplierId,
@@ -283,38 +283,39 @@ namespace Apps.BLL.WMS
             }
         }
 
-        public string PrintReturnOrder(ref ValidationErrors errors, string opt, string jsonReturnOrderNum)
-        {
-            try
-            {
-                var rtn = m_Rep.PrintReturnOrder(opt, jsonReturnOrderNum);
-                if (!String.IsNullOrEmpty(rtn))
-                {
-                    return rtn;
-                }
-                else
-                    return null;
-            }
-            catch(Exception ex)
-            {
-                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
-                return null;
-            }
-        }
+        //public string PrintReturnOrder(ref ValidationErrors errors, string opt, string jsonReturnOrderNum)
+        //{
+        //    try
+        //    {
+        //        var rtn = m_Rep.PrintReturnOrder(opt, jsonReturnOrderNum);
+        //        if (!String.IsNullOrEmpty(rtn))
+        //        {
+        //            return rtn;
+        //        }
+        //        else
+        //            return null;
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+        //        return null;
+        //    }
+        //}
 
-        public bool ConfirmReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum)
-        {
-            try
-            {
-                m_Rep.ConfirmReturnOrder(opt, returnOrderNum);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
-                return false;
-            }
-        }
+        //public bool ConfirmReturnOrder(ref ValidationErrors errors, string opt, string returnOrderNum)
+        //{
+        //    try
+        //    {
+        //        m_Rep.ConfirmReturnOrder(opt, returnOrderNum);
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+        //        return false;
+        //    }
+        //}
+
         public virtual bool CancelReturnOrder(ref ValidationErrors errors, string opt, int aiId)
         {
             try

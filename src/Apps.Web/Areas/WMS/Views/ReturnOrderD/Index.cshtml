@@ -37,26 +37,36 @@
 <table style="width:100%">
 <tbody>
     <tr>
+        <td colspan="4">
+            <div class="mvctool">
+                <input id="txtReturnOrderNum" type="text" placeholder="退货单号:" class="searchText" />
+                <input id="txtInspectBillNum" type="text" placeholder="送检单号:" class="searchText" />
+                <input id="txtsupplierShortName" placeholder="供应商简称:" type="text" class="searchText" />
+                <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
+                退货状态：@Html.DropDownList("txtReturnOrderStatus", ViewBag.ReturnOrderStatus as SelectList, new { @style = "width:70px;" })
+                退货日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+                至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+                <br>
+            </div>
+        </td>
+    </tr>
+    <tr>
         <td style="width:330px;vertical-align: top">
-             <div class="mvctool">
-                 @Html.ToolButton("btnQueryParent", "fa fa-search", Resource.Query,ref perm, "Query", true)
-                 @Html.ToolButton("btnCreateParent", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-                 @Html.ToolButton("btnEditParent", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-                 @Html.ToolButton("btnDeleteParent", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
-             </div>
+            <div class="mvctool">
+                @Html.ToolButton("btnQueryParent", "fa fa-search", Resource.Query, ref perm, "Query", true)
+                @Html.ToolButton("btnCreateParent", "fa fa-plus", "库存退货", ref perm, "Create", true)
+                @Html.ToolButton("btnEditParent", "fa fa-plus", Resource.Edit, ref perm, "Create", true)
+                @Html.ToolButton("btnDeleteParent", "fa fa-plus", Resource.Delete, ref perm, "Create", true)
+                @Html.ToolButton("btnImportParent", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
+                @Html.ToolButton("btnExportTemplateParent", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
+            </div>
             <table id="ListParent"></table>
         </td>        <td style="width:3px;"></td>
         <td style="vertical-align:top">
-             <div class="mvctool">
-                 <input id="txtQuery" type="text" class="searchText" />
-                 @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-                 @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-                 @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-                 @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
-                 @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
-                 @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
-                 @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
-             </div>
+            <div class="mvctool">
+                @Html.ToolButton("btnPrint", "fa fa-plus", Resource.Print, ref perm, "Create", true)
+                @Html.ToolButton("btnConfirm", "fa fa-search", "退货单确认", ref perm, "Edit", true)
+            </div>
             <table id="List"></table>
         </td>
     </tr>
@@ -84,43 +94,22 @@
             onLoadSuccess: function(data) {            },
             columns: [[
                 { field: 'Id', title: '退货单ID', width: 80,hidden:true },
-                { field: 'ReturnOrderNum', title: '退货单号', width: 80,sortable:true },
-                { field: 'AIID', title: '到货检验单ID', width: 80,sortable:true },
-                { field: 'ReInspectID', title: '重新送检单ID', width: 80,sortable:true },
-                { field: 'PartID', title: '物料编码', width: 80,sortable:true },
-                { field: 'SupplierId', title: '代理商编码', width: 80,sortable:true },
-                { field: 'InvId', title: '库存编码', width: 80,sortable:true },
-                { field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
+                { field: 'InspectBillNum', title: '检验单号', width: 110, sortable: true },
+                { field: 'PartCode', title: '物料编码', width: 60, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 60, sortable: true },
+                { field: 'SupplierShortName', title: '供应商', width: 80, sortable: true },
+                { field: 'InvName', title: '库房', width: 80, sortable: true },
                 { field: 'Lot', title: '批次号：YYYYMM', width: 80,sortable:true },
                 { field: 'ReturnQty', title: '应退货数量', width: 80,sortable:true },
                 { field: 'AdjustQty', title: '实际退货数量', width: 80,sortable:true },
-                { field: 'Status', title: '单据状态：无效，有效', width: 80,sortable:true },
-                { field: 'Remark', title: '退货说明', width: 80,sortable:true },
-                { field: 'PrintStaus', title: '打印状态', width: 80,sortable:true },
-                { field: 'PrintDate', title: '打印时间', width: 80,sortable:true },
-                { field: 'PrintMan', title: '打印人', width: 80,sortable:true },
-                { field: 'ConfirmStatus', title: '确认状态', width: 80,sortable:true },
-                { field: 'ConfirmMan', title: '确认人', width: 80,sortable:true },
-                { field: 'ConfirmDate', title: '确认时间', width: 80,sortable:true },
-                { field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
-                { field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
-                { field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
-                { field: 'Attr4', title: 'Attr4', width: 80,sortable:true },
-                { field: 'Attr5', title: 'Attr5', width: 80,sortable:true },
-                { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
-                { field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
-                { field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
-                { field: 'ModifyTime', title: '修改时间', width: 80,sortable:true },
-                { field: 'BatchId', title: 'BatchId', width: 80,sortable:true },
-                { field: 'ReturnOderType', title: 'ReturnOderType', width: 80,sortable:true }
-            ]]
-         ,onClickRow: function(index, row) {
-             $('#List').datagrid("load", { ParentId: row.Id });
-}
+                { field: 'Status', title: '单据状态', width: 80,sortable:true },
+            ]],
+            onClickRow: function (index, row)
+            {
+                $('#List').datagrid("load", { ParentId: row.Id });
+            }
         }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
-         $(window).resize(function() {
-             resizeLayout();
-         });
+
         $('#List').datagrid({
             url: '@Url.Action("GetList")?parentId=0',
             width:SetGridWidthSub(450),
@@ -140,8 +129,8 @@
             },
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
+                { field: 'HeadId', title: '头表ID', width: 80, hidden: true },
                 { field: 'ReturnOrderDNum', title: '退货单号', width: 80,sortable:true },
-                { field: 'HeadId', title: '头表ID', width: 80,sortable:true },
                 { field: 'ReturnQty', title: '退货数量', width: 80,sortable:true },
                 { field: 'Remark', title: '备注', width: 80,sortable:true },
                 { field: 'PrintStaus', title: '打印状态', width: 80,sortable:true },
@@ -150,17 +139,6 @@
                 { field: 'ConfirmStatus', title: '确认状态', width: 80,sortable:true },
                 { field: 'ConfirmMan', title: '确认人', width: 80,sortable:true },
                 { field: 'ConfirmDate', title: '确认时间', width: 80,sortable:true },
-                { field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
-                { field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
-                { field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
-                { field: 'Attr4', title: 'Attr4', width: 80,sortable:true },
-                { field: 'Attr5', title: 'Attr5', width: 80,sortable:true },
-                { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
-                { field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
-                { field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
-                { field: 'ModifyTime', title: '修改时间', width: 80,sortable:true },
-                { field: 'BatchId', title: 'BatchId', width: 80,sortable:true },
-                { field: 'ReturnOrderName', title: '类别名称', width: 80 }
             ]]
         });
     });
@@ -182,54 +160,32 @@
         $.messageBox5s(Lang.Tip, mes);
     }
     $(function () {
-        $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
-        });
-        $("#btnEdit").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
-        });
-        $("#btnDetails").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
-            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
-	        });
-        $("#btnQuery").click(function () {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+        $("#btnQueryParent").click(function ()
+        {
+            var inspectBillNum = $("#txtInspectBillNum").val();
+            var supplierShortName = $("#txtsupplierShortName").val();
+            var partCode = $("#txtpartCode").val();
+            var returnOrderNum = $("#txtReturnOrderNum").val();
+            var returnOrderStatus = $("#txtReturnOrderStatus").val();
+            if (returnOrderNum == null)
+            {
+                returnOrderNum = "";
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
-
-        });
-        $("#btnDelete").click(function () {
-	            dataDelete("@Url.Action("Delete")", "List");
-	        });
-        $("#btnImport").click(function() {
-             $("#txtExcelPath").val("");
-             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
-        });
-        $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            if (supplierShortName == null)
+            {
+                supplierShortName = "";
             }
-          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
-                if (data.type == 1)
-                {
-                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
-                }
-                else
-                {
-                $.messageBox5s(Lang.Tip, data.message);
-                }
-            }, "json");
-        });
-        $("#btnExportTemplate").click(function() {
-          window.location = "@Url.Action("ExportTemplate")";
+            if (partCode == null)
+            {
+                partCode = "";
+            }
+            if (inspectBillNum == null)
+            {
+                inspectBillNum = "";
+            }
+            $("#ListParent").datagrid("load", {
+                returnOrderNum: returnOrderNum, inspectBillNum: inspectBillNum, supplierShortName: supplierShortName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val(), returnOrderStatus: returnOrderStatus
+            });
         });
         $("#btnCreateParent").click(function () {
             $.modalWindow(Lang.Create, '@Url.Action("CreateParent")', 700, 400, 'fa fa-plus');
@@ -237,31 +193,53 @@
         $("#btnEditParent").click(function () {
             var row = $('#ListParent').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("EditParent")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
-        });
-        $("#btnDetailsParent").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                $.modalWindow(Lang.Details, '@Url.Action("DetailsParent")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
-            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
-	        });
-        $("#btnQueryParent").click(function () {
-            var queryStr = $("#txtQueryParent").val();
-            if (queryStr == null) {
-                queryStr = "%";
-            }
-            $("#ListParent").datagrid("load", { queryStr: queryStr });
+                if (row.ConfirmStatus == "已确认") {
+                    $.messager.confirm(index_lang_tip, "单据已确认不能被修改")
+                }
+                else {
+                    $.modalWindow(Lang.Edit, '@Url.Action("EditParent")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
+                }
 
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }  
         });
         $("#btnDeleteParent").click(function () {
-	           dataDelete("@Url.Action("Delete")", "ListParent");
-	       });
+            var row = $('#ListParent').datagrid('getSelected');
+            if (row != null) {
+                if (row.ConfirmStatus == "已确认") {                
+                    $.messager.confirm(index_lang_tip, "单据已确认不能被删除")
+                }
+                else
+                {
+                    dataDelete("@Url.Action("DeleteParent")", "ListParent");
+                } 
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+	    });
+        $("#btnImportParent").click(function() {
+            $("#txtExcelPath").val("");
+            $("#FileUpload").val("");
+            $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+        });
+        $("#btnExportTemplate").click(function() {
+            window.location = "@Url.Action("ExportTemplate")";
+        });
+
+        $("#btnPrint").click(function() {
+            $.modalWindow("单据打印", '@Url.Action("Print")', 1000, 600, 'fa fa-pencil');
+        });
+        $("#btnConfirm").click(function () {
+            $.modalWindow(Lang.Confirm, '@Url.Action("Confirm")', 1000, 600, 'fa fa-plus');
+        });
+        $("#btnReport").click(function() {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null && row.PrintStaus!='已失效') {
+                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + row.ReturnOrderNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, '请选择有效单据'); }
+        });
     });
     function ImportData()
     {
         showLoading();
-        var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
+        var url = "@Url.Action("ImportParent")?filePath="+$("#txtExcelPath").val();
         $.post(url, function(data) {
             if (data.type == 1)
             {

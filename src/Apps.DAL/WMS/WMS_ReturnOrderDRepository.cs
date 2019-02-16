@@ -6,20 +6,8 @@ using System.Linq;
 
 namespace Apps.DAL.WMS
 {
-    public partial class WMS_ReturnOrderRepository
+    public partial class WMS_ReturnOrder_DRepository
     {
-        //public string CreateBatchReturnOrder(string opt, string jsonReturnOrder)
-        //{
-        //    ObjectParameter returnOrderNum = new ObjectParameter("ReturnOrderNum", typeof(string));
-        //    ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
-        //    Context.P_WMS_CreateBatchReturnOrder(opt, jsonReturnOrder, returnOrderNum, returnValue);
-
-        //    if (returnValue.Value == DBNull.Value)
-        //        return (string)returnOrderNum.Value;
-        //    else
-        //        return null;
-        //}
-
         public string CreateReturnOrder(string opt, int? partId, int? supplierId, int? invId, string lot, decimal? qty, string remark)
         {
             ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
