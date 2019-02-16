@@ -1365,6 +1365,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ReturnOrderNum" Type="nvarchar" MaxLength="50" />
           <Property Name="AIID" Type="int" />
+          <Property Name="ReInspectID" Type="int" />
           <Property Name="PartID" Type="int" />
           <Property Name="SupplierId" Type="int" />
           <Property Name="InvId" Type="int" />
@@ -1372,6 +1373,7 @@
           <Property Name="Lot" Type="nvarchar" MaxLength="50" />
           <Property Name="ReturnQty" Type="decimal" Precision="10" Scale="3" />
           <Property Name="AdjustQty" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
           <Property Name="Remark" Type="nvarchar" MaxLength="200" />
           <Property Name="PrintStaus" Type="nvarchar" MaxLength="10" />
           <Property Name="PrintDate" Type="datetime" />
@@ -1390,6 +1392,32 @@
           <Property Name="ModifyTime" Type="datetime" />
           <Property Name="BatchId" Type="int" />
           <Property Name="ReturnOderType" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="WMS_ReturnOrder_D">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReturnOrderDNum" Type="nvarchar" MaxLength="50" />
+          <Property Name="HeadId" Type="int" Nullable="false" />
+          <Property Name="ReturnQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="200" />
+          <Property Name="PrintStaus" Type="nvarchar" MaxLength="10" />
+          <Property Name="PrintDate" Type="datetime" />
+          <Property Name="PrintMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="ConfirmStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="ConfirmMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="ConfirmDate" Type="datetime" />
+          <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr3" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr4" Type="nvarchar" MaxLength="50" />
+          <Property Name="Attr5" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifyTime" Type="datetime" />
+          <Property Name="BatchId" Type="int" />
         </EntityType>
         <EntityType Name="WMS_Sale_Order">
           <Key>
@@ -2710,6 +2738,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_ReturnOrder_D_WMS_ReturnOrder">
+          <End Role="WMS_ReturnOrder" Type="Self.WMS_ReturnOrder" Multiplicity="1" />
+          <End Role="WMS_ReturnOrder_D" Type="Self.WMS_ReturnOrder_D" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_ReturnOrder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder_D">
+              <PropertyRef Name="HeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WMS_ReturnOrder_WMS_AI">
           <End Role="WMS_AI" Type="Self.WMS_AI" Multiplicity="0..1" />
           <End Role="WMS_ReturnOrder" Type="Self.WMS_ReturnOrder" Multiplicity="*" />
@@ -2743,6 +2783,18 @@
             </Principal>
             <Dependent Role="WMS_ReturnOrder">
               <PropertyRef Name="PartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_ReturnOrder_WMS_ReInspect">
+          <End Role="WMS_ReInspect" Type="Self.WMS_ReInspect" Multiplicity="0..1" />
+          <End Role="WMS_ReturnOrder" Type="Self.WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_ReInspect">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="ReInspectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3192,6 +3244,7 @@
           <EntitySet Name="WMS_Report" EntityType="Self.WMS_Report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_ReportParam" EntityType="Self.WMS_ReportParam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_ReturnOrder" EntityType="Self.WMS_ReturnOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_ReturnOrder_D" EntityType="Self.WMS_ReturnOrder_D" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Sale_Order" EntityType="Self.WMS_Sale_Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_SubInvInfo" EntityType="Self.WMS_SubInvInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Supplier" EntityType="Self.WMS_Supplier" Schema="dbo" store:Type="Tables" />
@@ -3605,6 +3658,10 @@
             <End Role="WMS_Report" EntitySet="WMS_Report" />
             <End Role="WMS_ReportParam" EntitySet="WMS_ReportParam" />
           </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_D_WMS_ReturnOrder" Association="Self.FK_WMS_ReturnOrder_D_WMS_ReturnOrder">
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+            <End Role="WMS_ReturnOrder_D" EntitySet="WMS_ReturnOrder_D" />
+          </AssociationSet>
           <AssociationSet Name="FK_WMS_ReturnOrder_WMS_AI" Association="Self.FK_WMS_ReturnOrder_WMS_AI">
             <End Role="WMS_AI" EntitySet="WMS_AI" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
@@ -3615,6 +3672,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Part" Association="Self.FK_WMS_ReturnOrder_WMS_Part">
             <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_ReInspect" Association="Self.FK_WMS_ReturnOrder_WMS_ReInspect">
+            <End Role="WMS_ReInspect" EntitySet="WMS_ReInspect" />
             <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
           </AssociationSet>
           <AssociationSet Name="FK_WMS_ReturnOrder_WMS_SubInvInfo" Association="Self.FK_WMS_ReturnOrder_WMS_SubInvInfo">
@@ -4305,23 +4366,6 @@
             <Parameter Name="Remark" Mode="In" Type="String" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
-          <EntitySet Name="WMS_ReturnOrder" EntityType="DB.WMS_ReturnOrder" />
-          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_AI" Association="DB.FK_WMS_ReturnOrder_WMS_AI">
-            <End Role="WMS_AI" EntitySet="WMS_AI" />
-            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
-          </AssociationSet>
-          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_InvInfo" Association="DB.FK_WMS_ReturnOrder_WMS_InvInfo">
-            <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
-            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
-          </AssociationSet>
-          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_SubInvInfo" Association="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo">
-            <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
-            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
-          </AssociationSet>
-          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Supplier" Association="DB.FK_WMS_ReturnOrder_WMS_Supplier">
-            <End Role="WMS_Supplier" EntitySet="WMS_Supplier" />
-            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
-          </AssociationSet>
           <FunctionImport Name="P_WMS_ConfirmReturnOrder">
             <Parameter Name="UserId" Mode="In" Type="String" />
             <Parameter Name="ReturnOrderNum" Mode="In" Type="String" />
@@ -4376,10 +4420,6 @@
           <AssociationSet Name="FK_WMS_Product_Entry_WMS_Part" Association="DB.FK_WMS_Product_Entry_WMS_Part">
             <End Role="WMS_Part" EntitySet="WMS_Part" />
             <End Role="WMS_Product_Entry" EntitySet="WMS_Product_Entry" />
-          </AssociationSet>
-          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Part" Association="DB.FK_WMS_ReturnOrder_WMS_Part">
-            <End Role="WMS_Part" EntitySet="WMS_Part" />
-            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
           </AssociationSet>
           <FunctionImport Name="P_WMS_ConfirmSaleOrder">
             <Parameter Name="UserId" Mode="In" Type="String" />
@@ -4451,6 +4491,36 @@
             <Parameter Name="Id" Mode="In" Type="Int32" />
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
+          <EntitySet Name="WMS_ReturnOrder" EntityType="DB.WMS_ReturnOrder" />
+          <EntitySet Name="WMS_ReturnOrder_D" EntityType="DB.WMS_ReturnOrder_D" />
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_AI" Association="DB.FK_WMS_ReturnOrder_WMS_AI">
+            <End Role="WMS_AI" EntitySet="WMS_AI" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_InvInfo" Association="DB.FK_WMS_ReturnOrder_WMS_InvInfo">
+            <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Part" Association="DB.FK_WMS_ReturnOrder_WMS_Part">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_ReInspect" Association="DB.FK_WMS_ReturnOrder_WMS_ReInspect">
+            <End Role="WMS_ReInspect" EntitySet="WMS_ReInspect" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_D_WMS_ReturnOrder" Association="DB.FK_WMS_ReturnOrder_D_WMS_ReturnOrder">
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+            <End Role="WMS_ReturnOrder_D" EntitySet="WMS_ReturnOrder_D" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_SubInvInfo" Association="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo">
+            <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_ReturnOrder_WMS_Supplier" Association="DB.FK_WMS_ReturnOrder_WMS_Supplier">
+            <End Role="WMS_Supplier" EntitySet="WMS_Supplier" />
+            <End Role="WMS_ReturnOrder" EntitySet="WMS_ReturnOrder" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -6792,10 +6862,10 @@
           <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_SubInvInfo_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_SubInvInfo" />
           <NavigationProperty Name="WMS_Inv" Relationship="DB.FK_Inv_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Inv" />
           <NavigationProperty Name="WMS_Inv_Adjust" Relationship="DB.FK_WMS_Inv_Adjust_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Inv_Adjust" />
-          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Feed_List" Relationship="DB.FK_WMS_Feed_List_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Feed_List" />
           <NavigationProperty Name="WMS_Sale_Order" Relationship="DB.FK_WMS_Sale_Order_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Sale_Order" />
           <NavigationProperty Name="WMS_Inventory_D" Relationship="DB.FK_WMS_Inventory_WMS_Inv" FromRole="WMS_InvInfo" ToRole="WMS_Inventory_D" />
+          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_ReturnOrder" />
         </EntityType>
         <EntityType Name="WMS_PO">
           <Key>
@@ -6882,8 +6952,8 @@
           <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_AI_WMS_SubInvInfo" FromRole="WMS_AI" ToRole="WMS_SubInvInfo" />
           <NavigationProperty Name="WMS_ReInspect" Relationship="DB.FK_WMS_ReInspect_WMS_AI" FromRole="WMS_AI" ToRole="WMS_ReInspect" />
           <Property Name="Lot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_AI" FromRole="WMS_AI" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_AI_WMS_Part" FromRole="WMS_AI" ToRole="WMS_Part" />
+          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_AI" FromRole="WMS_AI" ToRole="WMS_ReturnOrder" />
         </EntityType>
         <Association Name="FK_WMS_AI_WMS_PO">
           <End Type="DB.WMS_PO" Role="WMS_PO" Multiplicity="1" />
@@ -7020,10 +7090,10 @@
           <NavigationProperty Name="WMS_Product_Entry" Relationship="DB.FK_WMS_Product_Entry_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Product_Entry" />
           <NavigationProperty Name="WMS_Inv" Relationship="DB.FK_Inv_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Inv" />
           <NavigationProperty Name="WMS_Inv_Adjust" Relationship="DB.FK_WMS_Inv_Adjust_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Inv_Adjust" />
-          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Feed_List" Relationship="DB.FK_WMS_Feed_List_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Feed_List" />
           <NavigationProperty Name="WMS_Sale_Order" Relationship="DB.FK_WMS_Sale_Order_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Sale_Order" />
           <NavigationProperty Name="WMS_Inventory_D" Relationship="DB.FK_WMS_Inventory_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Inventory_D" />
+          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_ReturnOrder" />
         </EntityType>
         <Association Name="FK_WMS_AI_WMS_SubInvInfo">
           <End Type="DB.WMS_SubInvInfo" Role="WMS_SubInvInfo" Multiplicity="0..1" />
@@ -7213,6 +7283,7 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="WMS_AI" Relationship="DB.FK_WMS_ReInspect_WMS_AI" FromRole="WMS_ReInspect" ToRole="WMS_AI" />
+          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_ReInspect" FromRole="WMS_ReInspect" ToRole="WMS_ReturnOrder" />
         </EntityType>
         <Association Name="FK_WMS_ReInspect_WMS_AI">
           <End Type="DB.WMS_AI" Role="WMS_AI" Multiplicity="1" />
@@ -7223,92 +7294,6 @@
             </Principal>
             <Dependent Role="WMS_ReInspect">
               <PropertyRef Name="AIId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="WMS_ReturnOrder">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ReturnOrderNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AIID" Type="Int32" />
-          <Property Name="PartID" Type="Int32" />
-          <Property Name="SupplierId" Type="Int32" />
-          <Property Name="InvId" Type="Int32" />
-          <Property Name="SubInvId" Type="Int32" />
-          <Property Name="Lot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReturnQty" Type="Decimal" Precision="10" Scale="3" />
-          <Property Name="AdjustQty" Type="Decimal" Precision="10" Scale="3" />
-          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="PrintStaus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="PrintDate" Type="DateTime" Precision="3" />
-          <Property Name="PrintMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ConfirmStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ConfirmMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ConfirmDate" Type="DateTime" Precision="3" />
-          <Property Name="Attr1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Attr2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Attr3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Attr4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Attr5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
-          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
-          <Property Name="BatchId" Type="Int32" />
-          <Property Name="ReturnOderType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="WMS_AI" Relationship="DB.FK_WMS_ReturnOrder_WMS_AI" FromRole="WMS_ReturnOrder" ToRole="WMS_AI" />
-          <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_ReturnOrder_WMS_InvInfo" FromRole="WMS_ReturnOrder" ToRole="WMS_InvInfo" />
-          <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" FromRole="WMS_ReturnOrder" ToRole="WMS_SubInvInfo" />
-          <NavigationProperty Name="WMS_Supplier" Relationship="DB.FK_WMS_ReturnOrder_WMS_Supplier" FromRole="WMS_ReturnOrder" ToRole="WMS_Supplier" />
-          <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_ReturnOrder" ToRole="WMS_Part" />
-        </EntityType>
-        <Association Name="FK_WMS_ReturnOrder_WMS_AI">
-          <End Type="DB.WMS_AI" Role="WMS_AI" Multiplicity="0..1" />
-          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WMS_AI">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="WMS_ReturnOrder">
-              <PropertyRef Name="AIID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_WMS_ReturnOrder_WMS_InvInfo">
-          <End Type="DB.WMS_InvInfo" Role="WMS_InvInfo" Multiplicity="0..1" />
-          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WMS_InvInfo">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="WMS_ReturnOrder">
-              <PropertyRef Name="InvId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_WMS_ReturnOrder_WMS_SubInvInfo">
-          <End Type="DB.WMS_SubInvInfo" Role="WMS_SubInvInfo" Multiplicity="0..1" />
-          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WMS_SubInvInfo">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="WMS_ReturnOrder">
-              <PropertyRef Name="SubInvId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_WMS_ReturnOrder_WMS_Supplier">
-          <End Type="DB.WMS_Supplier" Role="WMS_Supplier" Multiplicity="0..1" />
-          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WMS_Supplier">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="WMS_ReturnOrder">
-              <PropertyRef Name="SupplierId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7402,9 +7387,9 @@
           <NavigationProperty Name="WMS_Inv_Adjust" Relationship="DB.FK_WMS_Inv_Adjust_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Inv_Adjust" />
           <NavigationProperty Name="WMS_PO" Relationship="DB.FK_WMS_PO_WMS_Part" FromRole="WMS_Part" ToRole="WMS_PO" />
           <NavigationProperty Name="WMS_Product_Entry" Relationship="DB.FK_WMS_Product_Entry_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Product_Entry" />
-          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_Part" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Sale_Order" Relationship="DB.FK_WMS_Sale_Order_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Sale_Order" />
           <NavigationProperty Name="WMS_Inventory_D" Relationship="DB.FK_WMS_Inventory_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Inventory_D" />
+          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_Part" ToRole="WMS_ReturnOrder" />
         </EntityType>
         <Association Name="FK_WMS_AI_WMS_Part">
           <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="0..1" />
@@ -7487,18 +7472,6 @@
             </Principal>
             <Dependent Role="WMS_Product_Entry">
               <PropertyRef Name="Partid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_WMS_ReturnOrder_WMS_Part">
-          <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="0..1" />
-          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WMS_Part">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="WMS_ReturnOrder">
-              <PropertyRef Name="PartID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7682,6 +7655,159 @@
             </Principal>
             <Dependent Role="WMS_Inventory_D">
               <PropertyRef Name="HeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="WMS_ReturnOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReturnOrderNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AIID" Type="Int32" />
+          <Property Name="ReInspectID" Type="Int32" />
+          <Property Name="PartID" Type="Int32" />
+          <Property Name="SupplierId" Type="Int32" />
+          <Property Name="InvId" Type="Int32" />
+          <Property Name="SubInvId" Type="Int32" />
+          <Property Name="Lot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReturnQty" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="AdjustQty" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PrintStaus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PrintDate" Type="DateTime" Precision="3" />
+          <Property Name="PrintMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmDate" Type="DateTime" Precision="3" />
+          <Property Name="Attr1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="BatchId" Type="Int32" />
+          <Property Name="ReturnOderType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="WMS_AI" Relationship="DB.FK_WMS_ReturnOrder_WMS_AI" FromRole="WMS_ReturnOrder" ToRole="WMS_AI" />
+          <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_ReturnOrder_WMS_InvInfo" FromRole="WMS_ReturnOrder" ToRole="WMS_InvInfo" />
+          <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_ReturnOrder" ToRole="WMS_Part" />
+          <NavigationProperty Name="WMS_ReInspect" Relationship="DB.FK_WMS_ReturnOrder_WMS_ReInspect" FromRole="WMS_ReturnOrder" ToRole="WMS_ReInspect" />
+          <NavigationProperty Name="WMS_ReturnOrder_D" Relationship="DB.FK_WMS_ReturnOrder_D_WMS_ReturnOrder" FromRole="WMS_ReturnOrder" ToRole="WMS_ReturnOrder_D" />
+          <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" FromRole="WMS_ReturnOrder" ToRole="WMS_SubInvInfo" />
+          <NavigationProperty Name="WMS_Supplier" Relationship="DB.FK_WMS_ReturnOrder_WMS_Supplier" FromRole="WMS_ReturnOrder" ToRole="WMS_Supplier" />
+        </EntityType>
+        <EntityType Name="WMS_ReturnOrder_D">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReturnOrderDNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HeadId" Type="Int32" Nullable="false" />
+          <Property Name="ReturnQty" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+          <Property Name="Remark" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PrintStaus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PrintDate" Type="DateTime" Precision="3" />
+          <Property Name="PrintMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ConfirmDate" Type="DateTime" Precision="3" />
+          <Property Name="Attr1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Attr5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatePerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifyTime" Type="DateTime" Precision="3" />
+          <Property Name="BatchId" Type="Int32" />
+          <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_D_WMS_ReturnOrder" FromRole="WMS_ReturnOrder_D" ToRole="WMS_ReturnOrder" />
+        </EntityType>
+        <Association Name="FK_WMS_ReturnOrder_WMS_AI">
+          <End Type="DB.WMS_AI" Role="WMS_AI" Multiplicity="0..1" />
+          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_AI">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="AIID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_ReturnOrder_WMS_InvInfo">
+          <End Type="DB.WMS_InvInfo" Role="WMS_InvInfo" Multiplicity="0..1" />
+          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_InvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="InvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_ReturnOrder_WMS_Part">
+          <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="0..1" />
+          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="PartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_ReturnOrder_WMS_ReInspect">
+          <End Type="DB.WMS_ReInspect" Role="WMS_ReInspect" Multiplicity="0..1" />
+          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_ReInspect">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="ReInspectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_ReturnOrder_D_WMS_ReturnOrder">
+          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="1" />
+          <End Type="DB.WMS_ReturnOrder_D" Role="WMS_ReturnOrder_D" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_ReturnOrder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder_D">
+              <PropertyRef Name="HeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_ReturnOrder_WMS_SubInvInfo">
+          <End Type="DB.WMS_SubInvInfo" Role="WMS_SubInvInfo" Multiplicity="0..1" />
+          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_SubInvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="SubInvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_ReturnOrder_WMS_Supplier">
+          <End Type="DB.WMS_Supplier" Role="WMS_Supplier" Multiplicity="0..1" />
+          <End Type="DB.WMS_ReturnOrder" Role="WMS_ReturnOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Supplier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_ReturnOrder">
+              <PropertyRef Name="SupplierId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -9334,40 +9460,6 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="P_WMS_CreateReInspect" FunctionName="DB.Store.P_WMS_CreateReInspect" />
-          <EntitySetMapping Name="WMS_ReturnOrder">
-            <EntityTypeMapping TypeName="DB.WMS_ReturnOrder">
-              <MappingFragment StoreEntitySet="WMS_ReturnOrder">
-                <ScalarProperty Name="ReturnOderType" ColumnName="ReturnOderType" />
-                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
-                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
-                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
-                <ScalarProperty Name="Attr5" ColumnName="Attr5" />
-                <ScalarProperty Name="Attr4" ColumnName="Attr4" />
-                <ScalarProperty Name="Attr3" ColumnName="Attr3" />
-                <ScalarProperty Name="Attr2" ColumnName="Attr2" />
-                <ScalarProperty Name="Attr1" ColumnName="Attr1" />
-                <ScalarProperty Name="ConfirmDate" ColumnName="ConfirmDate" />
-                <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
-                <ScalarProperty Name="ConfirmStatus" ColumnName="ConfirmStatus" />
-                <ScalarProperty Name="PrintMan" ColumnName="PrintMan" />
-                <ScalarProperty Name="PrintDate" ColumnName="PrintDate" />
-                <ScalarProperty Name="PrintStaus" ColumnName="PrintStaus" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="AdjustQty" ColumnName="AdjustQty" />
-                <ScalarProperty Name="ReturnQty" ColumnName="ReturnQty" />
-                <ScalarProperty Name="Lot" ColumnName="Lot" />
-                <ScalarProperty Name="SubInvId" ColumnName="SubInvId" />
-                <ScalarProperty Name="InvId" ColumnName="InvId" />
-                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
-                <ScalarProperty Name="PartID" ColumnName="PartID" />
-                <ScalarProperty Name="AIID" ColumnName="AIID" />
-                <ScalarProperty Name="ReturnOrderNum" ColumnName="ReturnOrderNum" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="P_WMS_ConfirmReturnOrder" FunctionName="DB.Store.P_WMS_ConfirmReturnOrder" />
           <FunctionImportMapping FunctionImportName="P_WMS_PrintFeedList" FunctionName="DB.Store.P_WMS_PrintFeedList" />
           <FunctionImportMapping FunctionImportName="P_WMS_ConfirmFeedList" FunctionName="DB.Store.P_WMS_ConfirmFeedList" />
@@ -9516,6 +9608,69 @@
           <FunctionImportMapping FunctionImportName="P_WMS_ConfirmInventory" FunctionName="DB.Store.P_WMS_ConfirmInventory" />
           <FunctionImportMapping FunctionImportName="P_WMS_UnPrintFeedList" FunctionName="DB.Store.P_WMS_UnPrintFeedList" />
           <FunctionImportMapping FunctionImportName="P_WMS_UnPrintSaleOrder" FunctionName="DB.Store.P_WMS_UnPrintSaleOrder" />
+          <EntitySetMapping Name="WMS_ReturnOrder">
+            <EntityTypeMapping TypeName="DB.WMS_ReturnOrder">
+              <MappingFragment StoreEntitySet="WMS_ReturnOrder">
+                <ScalarProperty Name="ReturnOderType" ColumnName="ReturnOderType" />
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Attr5" ColumnName="Attr5" />
+                <ScalarProperty Name="Attr4" ColumnName="Attr4" />
+                <ScalarProperty Name="Attr3" ColumnName="Attr3" />
+                <ScalarProperty Name="Attr2" ColumnName="Attr2" />
+                <ScalarProperty Name="Attr1" ColumnName="Attr1" />
+                <ScalarProperty Name="ConfirmDate" ColumnName="ConfirmDate" />
+                <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
+                <ScalarProperty Name="ConfirmStatus" ColumnName="ConfirmStatus" />
+                <ScalarProperty Name="PrintMan" ColumnName="PrintMan" />
+                <ScalarProperty Name="PrintDate" ColumnName="PrintDate" />
+                <ScalarProperty Name="PrintStaus" ColumnName="PrintStaus" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="AdjustQty" ColumnName="AdjustQty" />
+                <ScalarProperty Name="ReturnQty" ColumnName="ReturnQty" />
+                <ScalarProperty Name="Lot" ColumnName="Lot" />
+                <ScalarProperty Name="SubInvId" ColumnName="SubInvId" />
+                <ScalarProperty Name="InvId" ColumnName="InvId" />
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="PartID" ColumnName="PartID" />
+                <ScalarProperty Name="ReInspectID" ColumnName="ReInspectID" />
+                <ScalarProperty Name="AIID" ColumnName="AIID" />
+                <ScalarProperty Name="ReturnOrderNum" ColumnName="ReturnOrderNum" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WMS_ReturnOrder_D">
+            <EntityTypeMapping TypeName="DB.WMS_ReturnOrder_D">
+              <MappingFragment StoreEntitySet="WMS_ReturnOrder_D">
+                <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+                <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
+                <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreatePerson" ColumnName="CreatePerson" />
+                <ScalarProperty Name="Attr5" ColumnName="Attr5" />
+                <ScalarProperty Name="Attr4" ColumnName="Attr4" />
+                <ScalarProperty Name="Attr3" ColumnName="Attr3" />
+                <ScalarProperty Name="Attr2" ColumnName="Attr2" />
+                <ScalarProperty Name="Attr1" ColumnName="Attr1" />
+                <ScalarProperty Name="ConfirmDate" ColumnName="ConfirmDate" />
+                <ScalarProperty Name="ConfirmMan" ColumnName="ConfirmMan" />
+                <ScalarProperty Name="ConfirmStatus" ColumnName="ConfirmStatus" />
+                <ScalarProperty Name="PrintMan" ColumnName="PrintMan" />
+                <ScalarProperty Name="PrintDate" ColumnName="PrintDate" />
+                <ScalarProperty Name="PrintStaus" ColumnName="PrintStaus" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ReturnQty" ColumnName="ReturnQty" />
+                <ScalarProperty Name="HeadId" ColumnName="HeadId" />
+                <ScalarProperty Name="ReturnOrderDNum" ColumnName="ReturnOrderDNum" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

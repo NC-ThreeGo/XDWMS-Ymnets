@@ -13,41 +13,25 @@ using System.ComponentModel.DataAnnotations;
 namespace Apps.Models.WMS
 {
 
-	public partial class WMS_ReturnOrderModel:Virtual_WMS_ReturnOrderModel
+	public partial class WMS_ReturnOrder_DModel:Virtual_WMS_ReturnOrder_DModel
 	{
 		
 	}
-	public class Virtual_WMS_ReturnOrderModel
+	public class Virtual_WMS_ReturnOrder_DModel
 	{
-		[Display(Name = "退货单ID")]
+		[Display(Name = "未设置")]
 		public virtual int Id { get; set; }
 		[Display(Name = "退货单号")]
-		public virtual string ReturnOrderNum { get; set; }
-		[Display(Name = "到货检验单ID")]
-		public virtual Nullable<int> AIID { get; set; }
-		[Display(Name = "重新送检单ID")]
-		public virtual Nullable<int> ReInspectID { get; set; }
-		[Display(Name = "物料编码")]
-		public virtual Nullable<int> PartID { get; set; }
-		[Display(Name = "代理商编码")]
-		public virtual Nullable<int> SupplierId { get; set; }
-		[Display(Name = "库存编码")]
-		public virtual Nullable<int> InvId { get; set; }
-		[Display(Name = "未设置")]
-		public virtual Nullable<int> SubInvId { get; set; }
-		[Display(Name = "批次号：YYYYMM")]
-		public virtual string Lot { get; set; }
-		[Display(Name = "应退货数量")]
-		public virtual Nullable<decimal> ReturnQty { get; set; }
-		[Display(Name = "实际退货数量")]
-		public virtual Nullable<decimal> AdjustQty { get; set; }
-		[Display(Name = "单据状态：无效，有效")]
-		public virtual string Status { get; set; }
-		[Display(Name = "退货说明")]
+		public virtual string ReturnOrderDNum { get; set; }
+		[Display(Name = "头表ID")]
+		public virtual int HeadId { get; set; }
+		[Display(Name = "退货数量")]
+		public virtual decimal ReturnQty { get; set; }
+		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }
 		[Display(Name = "打印状态")]
 		public virtual string PrintStaus { get; set; }
-		[Display(Name = "打印时间")]
+		[Display(Name = "打印日期")]
 		public virtual Nullable<System.DateTime> PrintDate { get; set; }
 		[Display(Name = "打印人")]
 		public virtual string PrintMan { get; set; }
@@ -77,7 +61,5 @@ namespace Apps.Models.WMS
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> BatchId { get; set; }
-		[Display(Name = "未设置")]
-		public virtual string ReturnOderType { get; set; }
 		}
 }
