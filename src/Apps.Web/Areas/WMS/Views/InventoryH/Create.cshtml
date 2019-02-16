@@ -75,21 +75,24 @@ $.messageBox5s(Lang.Tip, mes);
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.InventoryTitle)</td>
             </tr>
-            @*<tr>
+            <tr>
                     <th>
-                        @Html.LabelFor(model => model.InventoryPerson)：
+                        @Html.LabelFor(model => model.InventoryType)：
                     </th>
                     <td>
-                        @Html.EditorFor(model => model.InventoryPerson)
+                        @*@Html.EditorFor(model => model.InventoryType)*@
+                        @Html.DropDownListFor(model => model.InventoryType, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("InventoryType"))
                     </td>
-                    <td>@Html.ValidationMessageFor(model => model.InventoryPerson)</td>
-                </tr>*@
+                    <td>@Html.ValidationMessageFor(model => model.InventoryType)</td>
+                </tr>
             <tr>
                 <th>
                     @Html.LabelFor(model => model.InventoryTime)：
                 </th>
                 <td>
-                    @Html.TextBoxFor(model => model.InventoryTime, new { @onClick = "WdatePicker()", @style = "width: 105px" })
+                    @*@Html.TextBoxFor(model => model.InventoryTime, new { @onClick = "WdatePicker()", @style = "width: 105px" })*@
+                    @Html.TextBoxFor(model => model.InventoryTime, new { @onClick = "WdatePicker()", @class = "Wdate", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
+
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.InventoryTime)</td>
             </tr>

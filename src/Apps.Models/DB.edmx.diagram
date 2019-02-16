@@ -192,8 +192,6 @@
         <AssociationConnector Association="DB.FK_WMS_Inventory_WMS_Inv" />
         <AssociationConnector Association="DB.FK_WMS_Inventory_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_Inventory_WMS_SubInvInfo" />
-        <EntityTypeShape EntityType="DB.WMS_Inventory_H" Width="1.5" PointX="24.375" PointY="6" />
-        <AssociationConnector Association="DB.FK_WMS_Inventory_D_WMS_Inventory_H" />
         <EntityTypeShape EntityType="DB.WMS_ReturnOrder" Width="1.5" PointX="28.625" PointY="31.375" />
         <EntityTypeShape EntityType="DB.WMS_ReturnOrder_D" Width="1.5" PointX="30.875" PointY="39.75" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_AI" />
@@ -203,6 +201,8 @@
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_D_WMS_ReturnOrder" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" />
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Supplier" />
+        <EntityTypeShape EntityType="DB.WMS_Inventory_H" Width="1.5" PointX="24.375" PointY="6" />
+        <AssociationConnector Association="DB.FK_WMS_Inventory_D_WMS_Inventory_H" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

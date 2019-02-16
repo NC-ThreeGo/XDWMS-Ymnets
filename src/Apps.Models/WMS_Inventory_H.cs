@@ -25,6 +25,7 @@ namespace Apps.Models
         public string InventoryPerson { get; set; }
         public Nullable<System.DateTime> InventoryTime { get; set; }
         public string InventoryStatus { get; set; }
+        public string InventoryType { get; set; }
         public string Remark { get; set; }
         public string Attr1 { get; set; }
         public string Attr2 { get; set; }

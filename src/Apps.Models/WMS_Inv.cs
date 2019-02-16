@@ -21,6 +21,7 @@ namespace Apps.Models
         public decimal Qty { get; set; }
         public string Lot { get; set; }
         public Nullable<decimal> StockQty { get; set; }
+        public Nullable<byte> StockStatus { get; set; }
     
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
         public virtual WMS_SubInvInfo WMS_SubInvInfo { get; set; }

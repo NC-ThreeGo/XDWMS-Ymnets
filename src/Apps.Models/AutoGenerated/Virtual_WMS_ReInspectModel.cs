@@ -42,7 +42,7 @@ namespace Apps.Models.WMS
 		[Display(Name = "新送检单检验结果")]
 		public virtual string NCheckOutRemark { get; set; }
 		[Display(Name = "新送检单检验日期")]
-		public virtual Nullable<System.DateTime> NCheckOutDate { get; set; }
+		public virtual System.DateTime NCheckOutDate { get; set; }
 		[Display(Name = "调整说明")]
 		public virtual string Remark { get; set; }
 		[Display(Name = "调整人")]

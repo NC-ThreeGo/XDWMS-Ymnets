@@ -45,8 +45,9 @@ namespace Apps.BLL.WMS
 								a=>a.InventoryBillNum.Contains(queryStr)
 								|| a.InventoryTitle.Contains(queryStr)
 								|| a.InventoryPerson.Contains(queryStr)
-								
-								|| a.InventoryStatus.Contains(queryStr)
+                                || a.InventoryType.Contains(queryStr)
+
+                                || a.InventoryStatus.Contains(queryStr)
 								|| a.Remark.Contains(queryStr)
 								|| a.Attr1.Contains(queryStr)
 								|| a.Attr2.Contains(queryStr)
@@ -91,6 +92,7 @@ namespace Apps.BLL.WMS
 													InventoryPerson = r.InventoryPerson,
 													InventoryTime = r.InventoryTime,
 													InventoryStatus = r.InventoryStatus,
+                                                    InventoryType = r.InventoryType,
 													Remark = r.Remark,
 													Attr1 = r.Attr1,
 													Attr2 = r.Attr2,
@@ -124,6 +126,7 @@ namespace Apps.BLL.WMS
 				entity.InventoryPerson = model.InventoryPerson;
 				entity.InventoryTime = model.InventoryTime;
 				entity.InventoryStatus = model.InventoryStatus;
+                entity.InventoryType = model.InventoryType;
 				entity.Remark = model.Remark;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
@@ -226,6 +229,7 @@ namespace Apps.BLL.WMS
 				entity.InventoryPerson = model.InventoryPerson;
 				entity.InventoryTime = model.InventoryTime;
 				entity.InventoryStatus = model.InventoryStatus;
+                entity.InventoryType = model.InventoryType;
 				entity.Remark = model.Remark;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
@@ -272,6 +276,7 @@ namespace Apps.BLL.WMS
 				model.InventoryPerson = entity.InventoryPerson;
 				model.InventoryTime = entity.InventoryTime;
 				model.InventoryStatus = entity.InventoryStatus;
+                model.InventoryType = entity.InventoryType;
 				model.Remark = entity.Remark;
 				model.Attr1 = entity.Attr1;
 				model.Attr2 = entity.Attr2;
@@ -315,7 +320,8 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryPerson, "盘点人");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryTime, "盘点时间");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryStatus, "盘点状态");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Remark, "备注");
+            excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryType, "盘点类型");
+            excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Remark, "备注");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr1, "Attr1");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr2, "Attr2");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr3, "Attr3");
@@ -340,6 +346,7 @@ namespace Apps.BLL.WMS
 				  entity.InventoryPerson = row.InventoryPerson;
 				  entity.InventoryTime = row.InventoryTime;
 				  entity.InventoryStatus = row.InventoryStatus;
+                  entity.InventoryType = row.InventoryType;
 				  entity.Remark = row.Remark;
 				  entity.Attr1 = row.Attr1;
 				  entity.Attr2 = row.Attr2;
@@ -388,6 +395,7 @@ namespace Apps.BLL.WMS
 						entity.InventoryPerson = model.InventoryPerson;
 						entity.InventoryTime = model.InventoryTime;
 						entity.InventoryStatus = model.InventoryStatus;
+                        entity.InventoryType = model.InventoryType;
 						entity.Remark = model.Remark;
 						entity.Attr1 = model.Attr1;
 						entity.Attr2 = model.Attr2;

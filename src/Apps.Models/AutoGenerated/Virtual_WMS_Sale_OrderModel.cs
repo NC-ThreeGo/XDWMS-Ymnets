@@ -29,17 +29,17 @@ namespace Apps.Models.WMS
 		public virtual Nullable<System.DateTime> PlanDeliveryDate { get; set; }
 		[Display(Name = "客户")]
 		public virtual int CustomerId { get; set; }
-		[Display(Name = "物料Id")]
+		[Display(Name = "未设置")]
 		public virtual int PartId { get; set; }
 		[Display(Name = "数量")]
 		public virtual decimal Qty { get; set; }
 		[Display(Name = "箱数")]
 		public virtual Nullable<decimal> BoxQty { get; set; }
-		[Display(Name = "库存")]
+		[Display(Name = "库房")]
 		public virtual Nullable<int> InvId { get; set; }
 		[Display(Name = "子库存")]
 		public virtual Nullable<int> SubInvId { get; set; }
-		[Display(Name = "批次号：YYYYMM")]
+		[Display(Name = "未设置")]
 		public virtual string Lot { get; set; }
 		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }

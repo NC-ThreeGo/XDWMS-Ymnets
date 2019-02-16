@@ -31,6 +31,7 @@ namespace Apps.BLL.WMS
                                                   InventoryBillNum = r.InventoryBillNum,
                                                   InventoryPerson = r.InventoryPerson,
                                                   InventoryStatus = r.InventoryStatus,
+                                                  InventoryType = r.InventoryType,
                                                   InventoryTime = r.InventoryTime,
                                                   InventoryTitle = r.InventoryTitle,
                                                   ModifyPerson = r.ModifyPerson,
@@ -65,7 +66,8 @@ namespace Apps.BLL.WMS
 					excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryPerson, "盘点人");
 					excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryTime, "盘点时间");
 					excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryStatus, "盘点状态");
-					excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Remark, "备注");
+                    excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryType, "盘点类型");
+                    excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Remark, "备注");
 					excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr1, "");
 					excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr2, "");
 					excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr3, "");
@@ -97,6 +99,7 @@ namespace Apps.BLL.WMS
 								model.InventoryPerson = row.InventoryPerson;
 								model.InventoryTime = row.InventoryTime;
 								model.InventoryStatus = row.InventoryStatus;
+                                model.InventoryType = row.InventoryType;
 								model.Remark = row.Remark;
 								model.Attr1 = row.Attr1;
 								model.Attr2 = row.Attr2;
@@ -137,6 +140,7 @@ namespace Apps.BLL.WMS
 									entity.InventoryPerson = model.InventoryPerson;
 									entity.InventoryTime = model.InventoryTime;
 									entity.InventoryStatus = model.InventoryStatus;
+                                    entity.InventoryType = model.InventoryType;
 									entity.Remark = model.Remark;
 									entity.Attr1 = model.Attr1;
 									entity.Attr2 = model.Attr2;
