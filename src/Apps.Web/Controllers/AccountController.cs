@@ -39,7 +39,7 @@ namespace Apps.Web.Controllers
             ViewBag.ComName = siteConfig.webcompany;
             //
             ViewBag.CopyRight = siteConfig.webcopyright;
-#if DEBUG
+#if DEBUG1
             if (Request.Url.Host == "localhost")
             {
             
