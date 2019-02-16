@@ -156,7 +156,8 @@ $.messageBox5s(Lang.Tip, mes);
                     @Html.LabelFor(model => model.NCheckOutDate)：
                 </th>
                 <td>
-                    @Html.TextBoxFor(model => model.NCheckOutDate, new { @onClick = "WdatePicker()", @style = "width: 105px" })
+                    @*@Html.TextBoxFor(model => model.NCheckOutDate, new { @onClick = "WdatePicker()", @style = "width: 105px" })*@
+                    @Html.TextBoxFor(model => model.NCheckOutDate, new { @onClick = "WdatePicker()", @class = "Wdate", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.NCheckOutDate)</td>
             </tr>
