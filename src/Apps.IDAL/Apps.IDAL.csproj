@@ -370,6 +370,7 @@
     <Compile Include="WC\IWC_GroupRepository.cs" />
     <Compile Include="WC\IWC_MessageResponseRepository.cs" />
     <Compile Include="WC\IWC_OfficalAccountsRepository.cs" />
+    <Compile Include="WMS\IWMS_InvHistoryRepository.cs" />
     <Compile Include="WMS\IWMS_InventoryDRepository.cs" />
     <Compile Include="WMS\IWMS_InventoryHRepository.cs" />
     <Compile Include="WMS\IWMS_ReturnOrderDRepository.cs" />

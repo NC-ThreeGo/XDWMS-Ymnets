@@ -35,5 +35,15 @@ namespace Apps.IBLL.WMS
         /// <param name="where"></param>
         /// <returns></returns>
         List<WMS_Inv_History_HModel> GetListParent(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 创建历史库存
+        /// </summary>
+        /// <param name="oper"></param>
+        /// <param name="title"></param>
+        /// <param name="status"></param>
+        /// <param name="remark"></param>
+        /// <returns></returns>
+        bool Create(ref ValidationErrors errors, string oper, string title, string status, string remark);
     }
 }

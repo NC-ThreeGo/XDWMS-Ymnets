@@ -3173,6 +3173,13 @@
           <Parameter Name="JsonInvList" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
+        <Function Name="P_WMS_CreateInvHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="InvHistoryTitle" Type="nvarchar" Mode="In" />
+          <Parameter Name="InvHistoryStatus" Type="nvarchar" Mode="In" />
+          <Parameter Name="Remark" Type="nvarchar" Mode="In" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
         <Function Name="P_WMS_CreateReInspect" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="AIID" Type="int" Mode="In" />
@@ -4645,6 +4652,13 @@
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
             <End Role="WMS_Inv" EntitySet="WMS_Inv" />
           </AssociationSet>
+          <FunctionImport Name="P_WMS_CreateInvHistory">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="InvHistoryTitle" Mode="In" Type="String" />
+            <Parameter Name="InvHistoryStatus" Mode="In" Type="String" />
+            <Parameter Name="Remark" Mode="In" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -9935,6 +9949,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="P_WMS_CreateInvHistory" FunctionName="DB.Store.P_WMS_CreateInvHistory" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

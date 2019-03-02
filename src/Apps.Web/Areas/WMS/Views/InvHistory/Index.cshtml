@@ -39,18 +39,7 @@
 <table style="width:100%">
     <tbody>
         <tr>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td style="width:330px;vertical-align: top">
-                <div class="mvctool">
-                </div>
-                <table id="ListParent"></table>
-            </td>
-            <td style="width:3px;"></td>
-            <td style="vertical-align:top">
+            <td style="vertical-align:top" colspan="4">
                 <div class="mvctool">
                     <input id="txtQuery" type="text" class="searchText" />
                     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
@@ -61,6 +50,14 @@
                     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
                     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
                 </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:330px;vertical-align: top">
+                <table id="ListParent"></table>
+            </td>
+            <td style="width:3px;"></td>
+            <td style="vertical-align:top">
                 <table id="List"></table>
             </td>
         </tr>

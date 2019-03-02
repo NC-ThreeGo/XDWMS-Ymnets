@@ -374,6 +374,7 @@
     <Compile Include="WC\WC_MessageResponseRepository.cs" />
     <Compile Include="WC\WC_OfficalAccountsRepository.cs" />
     <Compile Include="WebpartRepository.cs" />
+    <Compile Include="WMS\WMS_InvHistoryRepository.cs" />
     <Compile Include="WMS\WMS_InventoryDRepository.cs" />
     <Compile Include="WMS\WMS_InventoryHRepository.cs" />
     <Compile Include="WMS\WMS_ReturnOrderDRepository.cs" />

@@ -20,6 +20,9 @@ namespace Apps.Web.Areas.WMS.Controllers
         [Dependency]
         public IWMS_Inv_History_DBLL m_BLL { get; set; }
 
+        [Dependency]
+        public IWMS_Inv_History_HBLL m_HeaderBLL { get; set; }
+
         ValidationErrors errors = new ValidationErrors();
         
         [SupportFilter]
@@ -27,42 +30,43 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string queryStr,string parentId)
         {
-            List<WMS_Inv_History_DModel> list = m_BLL.GetListByParentId(ref pager, queryStr,parentId);
+            List<WMS_Inv_History_DModel> list = m_BLL.GetListByParentId(ref pager, queryStr, parentId);
             GridRows<WMS_Inv_History_DModel> grs = new GridRows<WMS_Inv_History_DModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
         #region 创建
         [SupportFilter]
         public ActionResult Create()
         {
-            //ViewBag.History = new SelectList(m_HistoryBLL.GetList(ref setNoPagerAscById, ""), "Id", "Name");
             return View();
         }
 
         [HttpPost]
         [SupportFilter]
-        public JsonResult Create(WMS_Inv_History_DModel model)
+        public JsonResult Create(WMS_Inv_History_HModel model)
         {
             model.Id = 0;
             model.CreateTime = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {
 
-                if (m_BLL.Create(ref errors, model))
+                if (m_BLL.Create(ref errors, GetUserTrueName(), model.InvHistoryTitle, model.InvHistoryStatus, model.Remark))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",HeadId" + model.HeadId, "成功", "创建", "WMS_Inv_History_D");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id, "成功", "创建", "WMS_Inv_History");
                     return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",HeadId" + model.HeadId + "," + ErrorCol, "失败", "创建", "WMS_Inv_History_D");
+                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + "," + ErrorCol, "失败", "创建", "WMS_Inv_History");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
                 }
             }
@@ -77,27 +81,26 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Edit(long id)
         {
-            WMS_Inv_History_DModel entity = m_BLL.GetById(id);
-         //ViewBag.History = new SelectList(m_HistoryBLL.GetList(ref setNoPagerAscById, ""), "Id", "Name",entity.HeadId);
+            WMS_Inv_History_HModel entity = m_HeaderBLL.GetById(id);
             return View(entity);
         }
 
         [HttpPost]
         [SupportFilter]
-        public JsonResult Edit(WMS_Inv_History_DModel model)
+        public JsonResult Edit(WMS_Inv_History_HModel model)
         {
             if (model != null && ModelState.IsValid)
             {
 
-                if (m_BLL.Edit(ref errors, model))
+                if (m_HeaderBLL.Edit(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",HeadId" + model.HeadId, "成功", "修改", "WMS_Inv_History_D");
+                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id, "成功", "修改", "WMS_Inv_History_H");
                     return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",HeadId" + model.HeadId + "," + ErrorCol, "失败", "修改", "WMS_Inv_History_D");
+                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + "," + ErrorCol, "失败", "修改", "WMS_Inv_History_H");
                     return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
                 }
             }

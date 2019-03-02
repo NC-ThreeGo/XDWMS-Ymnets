@@ -975,5 +975,26 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_UnPrintSaleOrder", userIdParameter, sellBillNumParameter, idParameter, returnValue);
         }
+    
+        public virtual int P_WMS_CreateInvHistory(string userId, string invHistoryTitle, string invHistoryStatus, string remark, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var invHistoryTitleParameter = invHistoryTitle != null ?
+                new ObjectParameter("InvHistoryTitle", invHistoryTitle) :
+                new ObjectParameter("InvHistoryTitle", typeof(string));
+    
+            var invHistoryStatusParameter = invHistoryStatus != null ?
+                new ObjectParameter("InvHistoryStatus", invHistoryStatus) :
+                new ObjectParameter("InvHistoryStatus", typeof(string));
+    
+            var remarkParameter = remark != null ?
+                new ObjectParameter("Remark", remark) :
+                new ObjectParameter("Remark", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateInvHistory", userIdParameter, invHistoryTitleParameter, invHistoryStatusParameter, remarkParameter, returnValue);
+        }
     }
 }

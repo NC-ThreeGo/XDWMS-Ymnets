@@ -264,6 +264,28 @@ namespace Apps.BLL.WMS
             queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
             return CreateModelListParent(ref queryData);
         }
+
+        public bool Create(ref ValidationErrors errors, string oper, string title, string status, string remark)
+        {
+            try
+            {
+                var rtn = m_HeaderRep.Create(oper, title, status, remark);
+                if (!String.IsNullOrEmpty(rtn))
+                {
+                    errors.Add(rtn);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return false;
+            }
+        }
     }
 }
 
