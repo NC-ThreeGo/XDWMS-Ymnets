@@ -7,6 +7,19 @@ namespace Apps.Common
 {
     public class DateTimeHelper
     {
+        public static bool CheckYearMonth(string yearMonth)
+        {
+            try
+            {
+                DateTime dateTime = new DateTime(Int32.Parse(yearMonth.Substring(4)), 
+                    Int32.Parse(yearMonth.Substring(4, 2)), 1);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
 
         /// <summary>  
         /// 得到本周第一天(以星期一为第一天)  
