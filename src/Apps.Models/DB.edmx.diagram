@@ -162,9 +162,6 @@
         <AssociationConnector Association="DB.FK_WMS_AI_WMS_SubInvInfo" />
         <AssociationConnector Association="DB.FK_WMS_SubInvInfo_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_WMS_Product_Entry_WMS_SubInvInfo" />
-        <EntityTypeShape EntityType="DB.WMS_Inv" Width="1.5" PointX="21.875" PointY="23.5" />
-        <AssociationConnector Association="DB.FK_Inv_WMS_InvInfo" />
-        <AssociationConnector Association="DB.FK_Inv_WMS_SubInvInfo" />
         <EntityTypeShape EntityType="DB.WMS_Inv_Adjust" Width="1.5" PointX="23.875" PointY="27.375" />
         <AssociationConnector Association="DB.FK_WMS_Inv_Adjust_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_WMS_Inv_Adjust_WMS_SubInvInfo" />
@@ -179,7 +176,6 @@
         <AssociationConnector Association="DB.FK_WMS_AI_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_Part1" />
-        <AssociationConnector Association="DB.FK_Inv_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_Inv_Adjust_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_PO_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_Product_Entry_WMS_Part" />
@@ -203,6 +199,16 @@
         <AssociationConnector Association="DB.FK_WMS_ReturnOrder_WMS_Supplier" />
         <EntityTypeShape EntityType="DB.WMS_Inventory_H" Width="1.5" PointX="24.375" PointY="6" />
         <AssociationConnector Association="DB.FK_WMS_Inventory_D_WMS_Inventory_H" />
+        <EntityTypeShape EntityType="DB.WMS_Inv_History_D" Width="1.5" PointX="31.875" PointY="21.625" />
+        <EntityTypeShape EntityType="DB.WMS_Inv_History_H" Width="1.5" PointX="29.625" PointY="11.25" />
+        <AssociationConnector Association="DB.FK_WMS_Inv_History_D_WMS_Inv_History_D" />
+        <AssociationConnector Association="DB.FK_WMS_Inv_History_D_WMS_InvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_Inv_History_D_WMS_Part" />
+        <AssociationConnector Association="DB.FK_WMS_Inv_History_D_WMS_SubInvInfo" />
+        <EntityTypeShape EntityType="DB.WMS_Inv" Width="1.5" PointX="21.875" PointY="22.5" />
+        <AssociationConnector Association="DB.FK_Inv_WMS_InvInfo" />
+        <AssociationConnector Association="DB.FK_Inv_WMS_Part" />
+        <AssociationConnector Association="DB.FK_Inv_WMS_SubInvInfo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

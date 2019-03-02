@@ -25,9 +25,9 @@ namespace Apps.Models.WMS
 		public virtual string PO { get; set; }
 		[Display(Name = "采购日期")]
 		public virtual Nullable<System.DateTime> PODate { get; set; }
-		[Display(Name = "供应商ID")]
+		[Display(Name = "供应商编码")]
 		public virtual int SupplierId { get; set; }
-		[Display(Name = "物料ID")]
+		[Display(Name = "物料编码")]
 		public virtual int PartId { get; set; }
 		[Display(Name = "数量")]
 		public virtual decimal QTY { get; set; }

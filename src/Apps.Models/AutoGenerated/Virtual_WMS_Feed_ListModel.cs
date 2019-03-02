@@ -31,7 +31,7 @@ namespace Apps.Models.WMS
 		public virtual int AssemblyPartId { get; set; }
 		[Display(Name = "投料物料")]
 		public virtual int SubAssemblyPartId { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "批次号：YYYYMM")]
 		public virtual string Lot { get; set; }
 		[Display(Name = "投料数量")]
 		public virtual decimal FeedQty { get; set; }
