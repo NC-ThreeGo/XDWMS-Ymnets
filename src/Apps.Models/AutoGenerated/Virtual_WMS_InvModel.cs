@@ -27,13 +27,13 @@ namespace Apps.Models.WMS
 		public virtual Nullable<int> SubInvId { get; set; }
 		[Display(Name = "未设置")]
 		public virtual int PartId { get; set; }
+		[Display(Name = "批次号：YYYYMM")]
+		public virtual string Lot { get; set; }
 		[Display(Name = "未设置")]
 		public virtual decimal Qty { get; set; }
-		[Display(Name = "未设置")]
-		public virtual string Lot { get; set; }
+		[Display(Name = "当前出库数量")]
+		public virtual Nullable<decimal> OutQty { get; set; }
 		[Display(Name = "备料数")]
 		public virtual Nullable<decimal> StockQty { get; set; }
-		[Display(Name = "备料状态：1-不适用（直接修改库存现有量）；2-已备料；3-无效备料（取消备料后将2改成3）；4-取消备料（当前操作是取消备料）")]
-		public virtual Nullable<byte> StockStatus { get; set; }
 		}
 }

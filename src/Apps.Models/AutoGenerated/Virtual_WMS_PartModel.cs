@@ -47,11 +47,11 @@ namespace Apps.Models.WMS
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
-		[Display(Name = "单位")]
+		[Display(Name = "未设置")]
 		public virtual string Unit { get; set; }
-		[Display(Name = "体积")]
+		[Display(Name = "未设置")]
 		public virtual Nullable<decimal> Volume { get; set; }
-		[Display(Name = "说明")]
+		[Display(Name = "未设置")]
 		public virtual string Remark { get; set; }
 		}
 }

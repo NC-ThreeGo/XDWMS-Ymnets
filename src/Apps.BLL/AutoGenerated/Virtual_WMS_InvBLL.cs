@@ -45,8 +45,9 @@ namespace Apps.BLL.WMS
 								
 								
 								
-								
 								a=>a.Lot.Contains(queryStr)
+								
+								
 								
 								);
             }
@@ -80,8 +81,9 @@ namespace Apps.BLL.WMS
 													InvId = r.InvId,
 													SubInvId = r.SubInvId,
 													PartId = r.PartId,
-													Qty = r.Qty,
 													Lot = r.Lot,
+													Qty = r.Qty,
+													OutQty = r.OutQty,
 													StockQty = r.StockQty,
           
                                               }).ToList();
@@ -104,8 +106,9 @@ namespace Apps.BLL.WMS
 				entity.InvId = model.InvId;
 				entity.SubInvId = model.SubInvId;
 				entity.PartId = model.PartId;
-				entity.Qty = model.Qty;
 				entity.Lot = model.Lot;
+				entity.Qty = model.Qty;
+				entity.OutQty = model.OutQty;
 				entity.StockQty = model.StockQty;
   
 
@@ -197,8 +200,9 @@ namespace Apps.BLL.WMS
 				entity.InvId = model.InvId;
 				entity.SubInvId = model.SubInvId;
 				entity.PartId = model.PartId;
-				entity.Qty = model.Qty;
 				entity.Lot = model.Lot;
+				entity.Qty = model.Qty;
+				entity.OutQty = model.OutQty;
 				entity.StockQty = model.StockQty;
  
 
@@ -234,8 +238,9 @@ namespace Apps.BLL.WMS
 				model.InvId = entity.InvId;
 				model.SubInvId = entity.SubInvId;
 				model.PartId = entity.PartId;
-				model.Qty = entity.Qty;
 				model.Lot = entity.Lot;
+				model.Qty = entity.Qty;
+				model.OutQty = entity.OutQty;
 				model.StockQty = entity.StockQty;
  
                 return model;
@@ -268,8 +273,9 @@ namespace Apps.BLL.WMS
 			 				 excelFile.AddMapping<WMS_InvModel>(x => x.InvId, "InvId");
 				 excelFile.AddMapping<WMS_InvModel>(x => x.SubInvId, "SubInvId");
 				 excelFile.AddMapping<WMS_InvModel>(x => x.PartId, "PartId");
-				 excelFile.AddMapping<WMS_InvModel>(x => x.Qty, "Qty");
 				 excelFile.AddMapping<WMS_InvModel>(x => x.Lot, "批次号：YYYYMM");
+				 excelFile.AddMapping<WMS_InvModel>(x => x.Qty, "Qty");
+				 excelFile.AddMapping<WMS_InvModel>(x => x.OutQty, "当前出库数量");
 				 excelFile.AddMapping<WMS_InvModel>(x => x.StockQty, "备料数");
  
             //SheetName
@@ -284,8 +290,9 @@ namespace Apps.BLL.WMS
 				  entity.InvId = row.InvId;
 				  entity.SubInvId = row.SubInvId;
 				  entity.PartId = row.PartId;
-				  entity.Qty = row.Qty;
 				  entity.Lot = row.Lot;
+				  entity.Qty = row.Qty;
+				  entity.OutQty = row.OutQty;
 				  entity.StockQty = row.StockQty;
  
                 //=============================================================================
@@ -323,8 +330,9 @@ namespace Apps.BLL.WMS
 						entity.InvId = model.InvId;
 						entity.SubInvId = model.SubInvId;
 						entity.PartId = model.PartId;
-						entity.Qty = model.Qty;
 						entity.Lot = model.Lot;
+						entity.Qty = model.Qty;
+						entity.OutQty = model.OutQty;
 						entity.StockQty = model.StockQty;
  
                         db.WMS_Inv.Add(entity);

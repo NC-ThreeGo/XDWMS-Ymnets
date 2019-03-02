@@ -24,30 +24,25 @@ using Apps.Models.WMS;
 using Apps.IBLL.WMS;
 namespace Apps.BLL.WMS
 {
-	public partial class WMS_Inventory_HBLL: Virtual_WMS_Inventory_HBLL,IWMS_Inventory_HBLL
+	public partial class WMS_Inv_History_HBLL: Virtual_WMS_Inv_History_HBLL,IWMS_Inv_History_HBLL
 	{
         
 
 	}
-	public class Virtual_WMS_Inventory_HBLL
+	public class Virtual_WMS_Inv_History_HBLL
 	{
         [Dependency]
-        public IWMS_Inventory_HRepository m_Rep { get; set; }
+        public IWMS_Inv_History_HRepository m_Rep { get; set; }
 
-		public virtual List<WMS_Inventory_HModel> GetList(ref GridPager pager, string queryStr)
+		public virtual List<WMS_Inv_History_HModel> GetList(ref GridPager pager, string queryStr)
         {
 
-            IQueryable<WMS_Inventory_H> queryData = null;
+            IQueryable<WMS_Inv_History_H> queryData = null;
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
 								
-								a=>a.InventoryBillNum.Contains(queryStr)
-								|| a.InventoryTitle.Contains(queryStr)
-								|| a.InventoryPerson.Contains(queryStr)
-								
-								|| a.InventoryStatus.Contains(queryStr)
-								|| a.InventoryType.Contains(queryStr)
+								a=>a.InvHistoryTitle.Contains(queryStr)
 								|| a.Remark.Contains(queryStr)
 								|| a.Attr1.Contains(queryStr)
 								|| a.Attr2.Contains(queryStr)
@@ -70,29 +65,24 @@ namespace Apps.BLL.WMS
             return CreateModelList(ref queryData);
         }
 
-		public virtual List<WMS_Inventory_HModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
+		public virtual List<WMS_Inv_History_HModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
 		{
-			return new List<WMS_Inventory_HModel>();
+			return new List<WMS_Inv_History_HModel>();
 		}
 		
-		public virtual List<WMS_Inventory_HModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
+		public virtual List<WMS_Inv_History_HModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
         {
-			return new List<WMS_Inventory_HModel>();
+			return new List<WMS_Inv_History_HModel>();
 		}
 
-        public virtual List<WMS_Inventory_HModel> CreateModelList(ref IQueryable<WMS_Inventory_H> queryData)
+        public virtual List<WMS_Inv_History_HModel> CreateModelList(ref IQueryable<WMS_Inv_History_H> queryData)
         {
 
-            List<WMS_Inventory_HModel> modelList = (from r in queryData
-                                              select new WMS_Inventory_HModel
+            List<WMS_Inv_History_HModel> modelList = (from r in queryData
+                                              select new WMS_Inv_History_HModel
                                               {
 													Id = r.Id,
-													InventoryBillNum = r.InventoryBillNum,
-													InventoryTitle = r.InventoryTitle,
-													InventoryPerson = r.InventoryPerson,
-													InventoryTime = r.InventoryTime,
-													InventoryStatus = r.InventoryStatus,
-													InventoryType = r.InventoryType,
+													InvHistoryTitle = r.InvHistoryTitle,
 													Remark = r.Remark,
 													Attr1 = r.Attr1,
 													Attr2 = r.Attr2,
@@ -109,24 +99,19 @@ namespace Apps.BLL.WMS
             return modelList;
         }
 
-        public virtual bool Create(ref ValidationErrors errors, WMS_Inventory_HModel model)
+        public virtual bool Create(ref ValidationErrors errors, WMS_Inv_History_HModel model)
         {
             try
             {
-                WMS_Inventory_H entity = m_Rep.GetById(model.Id);
+                WMS_Inv_History_H entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
-                entity = new WMS_Inventory_H();
+                entity = new WMS_Inv_History_H();
                				entity.Id = model.Id;
-				entity.InventoryBillNum = model.InventoryBillNum;
-				entity.InventoryTitle = model.InventoryTitle;
-				entity.InventoryPerson = model.InventoryPerson;
-				entity.InventoryTime = model.InventoryTime;
-				entity.InventoryStatus = model.InventoryStatus;
-				entity.InventoryType = model.InventoryType;
+				entity.InvHistoryTitle = model.InvHistoryTitle;
 				entity.Remark = model.Remark;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
@@ -213,23 +198,18 @@ namespace Apps.BLL.WMS
 		
        
 
-        public virtual bool Edit(ref ValidationErrors errors, WMS_Inventory_HModel model)
+        public virtual bool Edit(ref ValidationErrors errors, WMS_Inv_History_HModel model)
         {
             try
             {
-                WMS_Inventory_H entity = m_Rep.GetById(model.Id);
+                WMS_Inv_History_H entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
                               				entity.Id = model.Id;
-				entity.InventoryBillNum = model.InventoryBillNum;
-				entity.InventoryTitle = model.InventoryTitle;
-				entity.InventoryPerson = model.InventoryPerson;
-				entity.InventoryTime = model.InventoryTime;
-				entity.InventoryStatus = model.InventoryStatus;
-				entity.InventoryType = model.InventoryType;
+				entity.InvHistoryTitle = model.InvHistoryTitle;
 				entity.Remark = model.Remark;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
@@ -264,19 +244,14 @@ namespace Apps.BLL.WMS
 
       
 
-        public virtual WMS_Inventory_HModel GetById(object id)
+        public virtual WMS_Inv_History_HModel GetById(object id)
         {
             if (IsExists(id))
             {
-                WMS_Inventory_H entity = m_Rep.GetById(id);
-                WMS_Inventory_HModel model = new WMS_Inventory_HModel();
+                WMS_Inv_History_H entity = m_Rep.GetById(id);
+                WMS_Inv_History_HModel model = new WMS_Inv_History_HModel();
                               				model.Id = entity.Id;
-				model.InventoryBillNum = entity.InventoryBillNum;
-				model.InventoryTitle = entity.InventoryTitle;
-				model.InventoryPerson = entity.InventoryPerson;
-				model.InventoryTime = entity.InventoryTime;
-				model.InventoryStatus = entity.InventoryStatus;
-				model.InventoryType = entity.InventoryType;
+				model.InvHistoryTitle = entity.InvHistoryTitle;
 				model.Remark = entity.Remark;
 				model.Attr1 = entity.Attr1;
 				model.Attr2 = entity.Attr2;
@@ -300,7 +275,7 @@ namespace Apps.BLL.WMS
 		 /// <summary>
         /// 校验Excel数据,这个方法一般用于重写校验逻辑
         /// </summary>
-        public virtual bool CheckImportData(string fileName, List<WMS_Inventory_HModel> list,ref ValidationErrors errors )
+        public virtual bool CheckImportData(string fileName, List<WMS_Inv_History_HModel> list,ref ValidationErrors errors )
         {
           
             var targetFile = new FileInfo(fileName);
@@ -315,38 +290,28 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryBillNum, "盘点单号");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryTitle, "盘点名称");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryPerson, "盘点人");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryTime, "盘点时间");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryStatus, "盘点状态");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryType, "盘点类型：抽检，全检");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Remark, "备注");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr1, "Attr1");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr2, "Attr2");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr3, "Attr3");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr4, "Attr4");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr5, "Attr5");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.CreatePerson, "创建人");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.CreateTime, "创建时间");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.ModifyPerson, "修改人");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.ModifyTime, "修改时间");
+			 				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.InvHistoryTitle, "InvHistoryTitle");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Remark, "Remark");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Attr1, "Attr1");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Attr2, "Attr2");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Attr3, "Attr3");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Attr4, "Attr4");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Attr5, "Attr5");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.CreatePerson, "CreatePerson");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.CreateTime, "CreateTime");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.ModifyPerson, "ModifyPerson");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.ModifyTime, "ModifyTime");
  
             //SheetName
-            var excelContent = excelFile.Worksheet<WMS_Inventory_HModel>(0);
+            var excelContent = excelFile.Worksheet<WMS_Inv_History_HModel>(0);
             int rowIndex = 1;
             //检查数据正确性
             foreach (var row in excelContent)
             {
                 var errorMessage = new StringBuilder();
-                var entity = new WMS_Inventory_HModel();
+                var entity = new WMS_Inv_History_HModel();
 						 				  entity.Id = row.Id;
-				  entity.InventoryBillNum = row.InventoryBillNum;
-				  entity.InventoryTitle = row.InventoryTitle;
-				  entity.InventoryPerson = row.InventoryPerson;
-				  entity.InventoryTime = row.InventoryTime;
-				  entity.InventoryStatus = row.InventoryStatus;
-				  entity.InventoryType = row.InventoryType;
+				  entity.InvHistoryTitle = row.InvHistoryTitle;
 				  entity.Remark = row.Remark;
 				  entity.Attr1 = row.Attr1;
 				  entity.Attr2 = row.Attr2;
@@ -380,7 +345,7 @@ namespace Apps.BLL.WMS
         /// <summary>
         /// 保存数据
         /// </summary>
-        public virtual void SaveImportData(IEnumerable<WMS_Inventory_HModel> list)
+        public virtual void SaveImportData(IEnumerable<WMS_Inv_History_HModel> list)
         {
             try
             {
@@ -388,14 +353,9 @@ namespace Apps.BLL.WMS
                 {
                     foreach (var model in list)
                     {
-                        WMS_Inventory_H entity = new WMS_Inventory_H();
+                        WMS_Inv_History_H entity = new WMS_Inv_History_H();
                        						entity.Id = 0;
-						entity.InventoryBillNum = model.InventoryBillNum;
-						entity.InventoryTitle = model.InventoryTitle;
-						entity.InventoryPerson = model.InventoryPerson;
-						entity.InventoryTime = model.InventoryTime;
-						entity.InventoryStatus = model.InventoryStatus;
-						entity.InventoryType = model.InventoryType;
+						entity.InvHistoryTitle = model.InvHistoryTitle;
 						entity.Remark = model.Remark;
 						entity.Attr1 = model.Attr1;
 						entity.Attr2 = model.Attr2;
@@ -407,7 +367,7 @@ namespace Apps.BLL.WMS
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
  
-                        db.WMS_Inventory_H.Add(entity);
+                        db.WMS_Inv_History_H.Add(entity);
                     }
                     db.SaveChanges();
                 }
