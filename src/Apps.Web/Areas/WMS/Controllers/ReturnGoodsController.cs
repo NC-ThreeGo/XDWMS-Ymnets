@@ -15,7 +15,7 @@ using System.Data;
 
 namespace Apps.Web.Areas.WMS.Controllers
 {
-    public class InvAdjustController : BaseController
+    public class ReturnGoodsController : BaseController
     {
         [Dependency]
         public IWMS_Inv_AdjustBLL m_BLL { get; set; }
@@ -28,18 +28,21 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Index()
         {
-            //ViewBag.Type = 0;
-            ViewBag.AdjustType = Apps.BLL.Sys.SysParamBLL.GetSysParamByType("AdjustType", true);
-            return View("~/Areas/WMS/Views/InvAdjust/Index.cshtml");
+            //ViewBag.Type = "0";
+           
+            ViewBag.AdjustType = Apps.BLL.Sys.SysParamBLL.GetSysParamByType("ReturnGoodsType",true);
+            
+            return View("~/Areas/WMS/Views/InvAdjust/Index.cshtml");            
         }
-        [HttpPost]
+        
+       [HttpPost]
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string invAdjustBillNum, string partCode, string partName, string adjustType, DateTime beginDate, DateTime endDate)
         {
             //List<WMS_Inv_AdjustModel> list = m_BLL.GetList(ref pager, queryStr);
             List<WMS_Inv_AdjustModel> list = m_BLL.GetListByWhere(ref pager, "InvAdjustBillNum.Contains(\"" + invAdjustBillNum + "\") && WMS_Part.PartName.Contains(\""
               + partName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& AdjustType.Contains(\"" + adjustType + "\")&& CreateTime>=(\""
-              + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")&& !AdjustType.Contains(\"售\")");
+              + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")&& AdjustType.Contains(\"售\")");
             GridRows<WMS_Inv_AdjustModel> grs = new GridRows<WMS_Inv_AdjustModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -50,13 +53,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Create()
         {
+            ViewBag.Type = "0";
             ViewBag.Inv = new SelectList(_InvInfoBll.GetList(ref setNoPagerAscById, ""), "Id", "InvName");
             WMS_Inv_AdjustModel model = new WMS_Inv_AdjustModel()
             {
                 InvAdjustBillNum = "TZ" + DateTime.Now.ToString("yyyyMMddHHmmssff"),
 
             };
-            return View(model);
+            return View("~/Areas/WMS/Views/InvAdjust/Create.cshtml",model);
         }
 
         [HttpPost]
@@ -66,7 +70,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.Id = 0;
             model.CreatePerson = GetUserTrueName();
             model.CreateTime = ResultHelper.NowTime;
-            if (model != null && ModelState.IsValid)
+            if (model != null && ModelState.IsValid && model.Lot != null)
             {
 
                 if (m_BLL.Create(ref errors, model))
@@ -191,10 +195,9 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Export(string invAdjustBillNum, string partCode, string partName, string adjustType, DateTime beginDate, DateTime endDate)
         {
-            //List<WMS_Inv_AdjustModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
             List<WMS_Inv_AdjustModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "InvAdjustBillNum.Contains(\"" + invAdjustBillNum + "\") && WMS_Part.PartName.Contains(\""
               + partName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& AdjustType.Contains(\"" + adjustType + "\")&& CreateTime>=(\""
-              + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")&& !AdjustType.Contains(\"售\")");
+              + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")&& AdjustType.Contains(\"售\")");
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
@@ -217,7 +220,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("操作时间", item.CreateTime);
                     //jo.Add("修改人", item.ModifyPerson);
                     //jo.Add("修改时间", item.ModifyTime);
-                    jObjects.Add(jo);
+                jObjects.Add(jo);
                 }
                 var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
                 var exportFileName = string.Concat(

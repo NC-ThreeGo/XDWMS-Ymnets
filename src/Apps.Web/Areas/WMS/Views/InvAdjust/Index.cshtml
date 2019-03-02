@@ -8,6 +8,7 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
 <div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
 <form name = "form1" method="post" id="form1">
     <table>
@@ -35,11 +36,18 @@
 </form>
 </div>
 <div class="mvctool">
-    <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+    @*<input id="txtQuery" type="text" class="searchText" />*@
+    <input id="txtInvAdjustBillNum" type="text" placeholder="单据号:" class="searchText" />
+    <input id="txtPartCode" type="text" placeholder="物料编码:" class="searchText" />
+    <input id="txtPartName" type="text" placeholder="物料名称:" class="searchText" />
+    类型：@Html.DropDownList("txtAdjustType", ViewBag.AdjustType as SelectList, new { @style = "width:90px;" })
+    日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    <br>
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
@@ -68,12 +76,13 @@
             onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
             },
             columns: [[
-                { field: 'Id', title: 'Id', width: 80,hidden:true },
-                { field: 'InvAdjustBillNum', title: '调帐单据号', width: 120,sortable:true },
-                { field: 'PartCode', title: '物料编码', width: 80,sortable:true },
-                { field: 'AdjustQty', title: '调整数量', width: 80,sortable:true },
-                { field: 'AdjustType', title: '调整类型', width: 80,sortable:true },
-                { field: 'InvCode', title: '库存', width: 80,sortable:true },
+                { field: 'Id', title: 'Id', width: 80, hidden: true },            
+                { field: 'InvAdjustBillNum', title: '单据号', width: 120,sortable:true },
+                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 80, sortable: true },
+                { field: 'AdjustQty', title: '数量', width: 80,sortable:true },
+                { field: 'AdjustType', title: '类型', width: 80,sortable:true },
+                { field: 'InvName', title: '库存', width: 80,sortable:true },
                 //{ field: 'SubInvId', title: '子库存', width: 80,sortable:true },
                 { field: 'Remark', title: '备注', width: 80,sortable:true },
                 //{ field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
@@ -81,8 +90,8 @@
                 //{ field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
                 //{ field: 'Attr4', title: 'Attr4', width: 80,sortable:true },
                 //{ field: 'Attr5', title: 'Attr5', width: 80,sortable:true },
-                //{ field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
-                //{ field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
+                { field: 'CreatePerson', title: '操作人', width: 80,sortable:true },
+                { field: 'CreateTime', title: '操作时间', width: 80,sortable:true },
                 //{ field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
                 //{ field: 'ModifyTime', title: '修改时间', width: 80,sortable:true }
             ]]
@@ -118,11 +127,27 @@
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            //var queryStr = $("#txtQuery").val();
+            //if (queryStr == null) {
+            //    queryStr = "%";
+            //}
+            //$("#List").datagrid("load", { queryStr: queryStr });
+            var invAdjustBillNum = $("#txtInvAdjustBillNum").val();
+            var partCode = $("#txtPartCode").val();
+            var partName = $("#txtPartName").val();
+            var adjustType = $("#txtAdjustType").val();           
+            if (invAdjustBillNum == null) {
+                invAdjustBillNum = "";
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (partName == null) {
+                partName = "";
+            }
+            $("#List").datagrid("load", {
+                invAdjustBillNum: invAdjustBillNum, partCode: partCode, partName: partName, adjustType: adjustType, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+            });
 
         });
         $("#btnDelete").click(function () {
@@ -134,14 +159,27 @@
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            var invAdjustBillNum = $("#txtInvAdjustBillNum").val();
+            var partCode = $("#txtPartCode").val();
+            var partName = $("#txtPartName").val();
+            var adjustType = $("#txtAdjustType").val();
+            if (invAdjustBillNum == null) {
+                invAdjustBillNum = "";
             }
-          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (partName == null) {
+                partName = "";
+            }
+            $.post("@Url.Action("CheckExportData")?invAdjustBillNum=" + invAdjustBillNum + "&partCode=" + partCode + "&partName=" + partName
+                + "&adjustType=" + adjustType + "&beginDate=" + $("#beginDate").val()
+                + "&endDate= " + $("#endDate").val(), function(data) {
                 if (data.type == 1)
                 {
-                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                    window.location = "@Url.Action("Export")?invAdjustBillNum=" + invAdjustBillNum + "&partCode=" + partCode + "&partName=" + partName 
+                        + "&adjustType=" + adjustType + "&beginDate=" + $("#beginDate").val()
+                        + "&endDate= " + $("#endDate").val();
                 }
                 else
                 {

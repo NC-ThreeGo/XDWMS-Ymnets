@@ -338,6 +338,7 @@
     <Compile Include="Areas\Spl\Controllers\WareUnitConvertController.cs" />
     <Compile Include="Areas\Spl\SplAreaRegistration.cs" />
     <Compile Include="Areas\WC\Controllers\GroupController.cs" />
+    <Compile Include="Areas\WMS\Controllers\ReturnGoodsController.cs" />
     <Compile Include="Areas\WMS\Controllers\ReportController.cs" />
     <Compile Include="Areas\WMS\Controllers\InventoryHController.cs" />
     <Compile Include="Areas\WC\Controllers\MenuSettingController.cs" />

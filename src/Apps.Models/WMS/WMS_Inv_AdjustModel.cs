@@ -8,8 +8,14 @@ namespace Apps.Models.WMS
         [Display(Name = "物料编码")]
         public string PartCode { get; set; }
 
-        [Display(Name = "库房")]
+        [Display(Name = "物料名称")]
+        public string PartName { get; set; }
+
+        [Display(Name = "库房代码")]
         public string InvCode { get; set; }
+
+        [Display(Name = "库房名称")]
+        public string InvName { get; set; }
     }
 }
 

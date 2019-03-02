@@ -94,7 +94,8 @@ $(function () {
      <tbody>
          <tr>
              <th>
-                 @Html.LabelFor(model => model.InvAdjustBillNum)：
+                 @*@Html.LabelFor(model => model.InvAdjustBillNum)：*@
+                 单据号：
              </th>
              <td>
                  @Model.InvAdjustBillNum（自动生成）
@@ -173,7 +174,7 @@ $(function () {
              </th>
              <td>
                  @*@Html.EditorFor(model => model.AdjustType)*@
-                 @Html.DropDownListFor(model => model.AdjustType, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("AdjustType"))
+                 @Html.DropDownListFor(model => model.AdjustType, Apps.BLL.Sys.SysParamBLL.GetSysParamByType((String)ViewBag.Type == "0" ? "ReturnGoodsType" : "AdjustType"))
              </td>
              <td>@Html.ValidationMessageFor(model => model.AdjustType)</td>
          </tr>
