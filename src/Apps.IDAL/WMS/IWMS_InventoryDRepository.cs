@@ -13,6 +13,8 @@ namespace Apps.IDAL.WMS
         /// <param name="headId"></param>
         /// <param name="invList"></param>
         bool ClearInventoryQty(string opt, int headId);
-      
+
+        string SpecialInventory(string opt, int headId);
+
     }
 }

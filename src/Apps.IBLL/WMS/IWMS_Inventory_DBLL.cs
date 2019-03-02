@@ -34,5 +34,12 @@ namespace Apps.IBLL.WMS
         /// <param name="opt"></param>
         /// <param name="headId"></param>
         bool ClearInventoryQty(ref ValidationErrors errors, string opt, int headId);
+
+        /// <summary>
+        /// 抽检盘点导入数据
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="headId"></param>
+        string SpecialInventory(ref ValidationErrors errors, string opt, int headId);
     }
 }

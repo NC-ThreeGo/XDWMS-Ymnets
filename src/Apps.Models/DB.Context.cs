@@ -996,5 +996,18 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateInvHistory", userIdParameter, invHistoryTitleParameter, invHistoryStatusParameter, remarkParameter, returnValue);
         }
+    
+        public virtual int P_WMS_SpecialInventory(string userName, Nullable<int> headId, ObjectParameter returnValue)
+        {
+            var userNameParameter = userName != null ?
+                new ObjectParameter("UserName", userName) :
+                new ObjectParameter("UserName", typeof(string));
+    
+            var headIdParameter = headId.HasValue ?
+                new ObjectParameter("HeadId", headId) :
+                new ObjectParameter("HeadId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_SpecialInventory", userNameParameter, headIdParameter, returnValue);
+        }
     }
 }

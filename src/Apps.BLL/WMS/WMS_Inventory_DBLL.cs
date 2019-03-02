@@ -73,6 +73,7 @@ namespace Apps.BLL.WMS
                                                         Lot = r.Lot,
                                                         SnapshootQty = r.SnapshootQty,
                                                         Inventory_HName = r.WMS_Inventory_H.InventoryTitle,
+                                                        InventoryType = r.WMS_Inventory_H.InventoryType,
 
                                                         PartCode = r.WMS_Part.PartCode,
                                                         PartName = r.WMS_Part.PartName,
@@ -98,8 +99,12 @@ namespace Apps.BLL.WMS
 
             var excelFile = new ExcelQueryFactory(filePath);
 
+           
+
             using (XLWorkbook wb = new XLWorkbook(filePath))
             {
+                int headId=0;
+                var inventoryType = "抽检1";
                 //第一个Sheet
                 using (IXLWorksheet wws = wb.Worksheets.First())
                 {
@@ -175,12 +180,14 @@ namespace Apps.BLL.WMS
                                 wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
                                 continue;
                             }
-
+                            headId = model.HeadId;
+                            inventoryType = model.InventoryType;
                             //写入数据库
                             Expression<Func<WMS_Inventory_D, bool>> exp = x => x.PartId == model.PartId && x.InvId == model.InvId && x.Lot == model.Lot;
                             WMS_Inventory_D entity;
                             entity = db.WMS_Inventory_D.FirstOrDefault(exp);
                             //WMS_Inventory_D entity1 = m_Rep.GetSingleWhere(model.Id);
+                            
                             if (entity != null)
                             {
                                 entity.InventoryQty = model.InventoryQty;
@@ -229,7 +236,25 @@ namespace Apps.BLL.WMS
 
                         if (rtn)
                         {
-                            tran.Commit();  //必须调用Commit()，不然数据不会保存
+                            if (inventoryType == "抽检")
+                            {
+                                tran.Commit();
+                                //if (SpecialInventory(ref errors, oper, headId))
+                                //{
+                                //    tran.Commit();  //必须调用Commit()，不然数据不会保存
+                                //}
+                                //else
+                                //{
+                                //    tran.Rollback();    //出错就回滚       
+                                //}
+
+                            }
+                               
+                            else
+                            {
+                                tran.Commit();  //必须调用Commit()，不然数据不会保存
+                            }
+                            
                         }
                         else
                         {
@@ -240,6 +265,7 @@ namespace Apps.BLL.WMS
                 wb.Save();
             }
 
+            
             return rtn;
         }
 
@@ -309,6 +335,7 @@ namespace Apps.BLL.WMS
                 else
                 {
                     model.HeadId = inventoryH.Id;
+                    model.InventoryType = inventoryH.InventoryType;
                 }
             }
             else
@@ -339,6 +366,29 @@ namespace Apps.BLL.WMS
                 return false;
             }
             
+        }
+        public string SpecialInventory(ref ValidationErrors errors, string opt, int headId)
+        {
+            string result = String.Empty;
+            try
+            {
+                result = m_Rep.SpecialInventory(opt, headId);
+                return "";
+                //if (String.IsNullOrEmpty(result))
+                //{
+                //    return true;
+                //}
+                //else
+                //{
+                //    errors.Add(result);
+                //    return false;
+                //}
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return "";
+            }
         }
     }
 

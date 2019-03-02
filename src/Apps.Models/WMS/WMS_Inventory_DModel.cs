@@ -20,6 +20,9 @@ namespace Apps.Models.WMS
 
         [Display(Name = "子库房")]
         public string SubInvName { get; set; }
+
+        [Display(Name = "盘点类型")]
+        public string InventoryType { get; set; }
     }
 }
 
