@@ -131,10 +131,12 @@ $.messageBox5s(Lang.Tip, mes);
             </tr>*@
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.Lot)：
+                    批次号：
                 </th>
                 <td>
-                    @Html.EditorFor(model => model.Lot)
+                    @*@Html.EditorFor(model => model.Lot)*@
+                    @Html.TextBoxFor(model => model.Lot, new {@Value = DateTime.Now.ToString("yyyyMM") })
+
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.Lot)</td>
             </tr>

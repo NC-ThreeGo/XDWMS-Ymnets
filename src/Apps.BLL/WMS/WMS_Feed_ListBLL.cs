@@ -308,6 +308,11 @@ namespace Apps.BLL.WMS
             {
                 throw new Exception("库房不能为空！");
             }
+            //校验批次号
+            if (String.IsNullOrEmpty(model.Lot))
+            {
+                throw new Exception("批次号不能为空！");
+            }
 
         }
 

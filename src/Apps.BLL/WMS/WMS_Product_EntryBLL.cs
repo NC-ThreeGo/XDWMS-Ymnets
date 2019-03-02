@@ -50,6 +50,7 @@ namespace Apps.BLL.WMS
                                                           ProductQty = r.ProductQty,
                                                           Remark = r.Remark,
                                                           SubInvId = r.SubInvId,
+                                                          Lot = r.Lot,
 
                                                           PartCode = r.WMS_Part.PartCode,
                                                           PartName = r.WMS_Part.PartName,
@@ -85,6 +86,7 @@ namespace Apps.BLL.WMS
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Partid, "物料");
                     excelFile.AddMapping<WMS_Product_EntryModel>(x => x.PartCode, "物料编码");
                     excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ProductQty, "数量");
+                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Lot, "批次");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvId, "库存");
                     excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvName, "库房");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.SubInvId, "子库存");
@@ -123,6 +125,7 @@ namespace Apps.BLL.WMS
                             //model.Partid = row.Partid;
                             model.PartCode = row.PartCode;
                             model.ProductQty = row.ProductQty;
+                            model.Lot = row.Lot;
                             //model.InvId = row.InvId;
                             model.InvName = row.InvName;
                             //model.SubInvId = row.SubInvId;
@@ -169,6 +172,7 @@ namespace Apps.BLL.WMS
                             entity.Partid = model.Partid;
                             entity.ProductQty = model.ProductQty;
                             entity.InvId = model.InvId;
+                            entity.Lot = model.Lot;
                             //entity.SubInvId = model.SubInvId;
                             entity.Remark = model.Remark;
                             //entity.Attr1 = model.Attr1;
@@ -286,7 +290,14 @@ namespace Apps.BLL.WMS
             else
             {
                 throw new Exception("入库单号不能为空！");
-            }           
+            }
+
+            //校验批次号
+            if (String.IsNullOrEmpty(model.Lot))
+            {
+                throw new Exception("批次号不能为空！");
+            }
+           
         }
 
         public List<WMS_Product_EntryModel> GetListByWhere(ref GridPager pager, string where)
@@ -318,6 +329,7 @@ namespace Apps.BLL.WMS
                     entity.Remark = model.Remark;
                     entity.CreatePerson = model.CreatePerson;
                     entity.CreateTime = model.CreateTime;
+                    entity.Lot = model.Lot;
 
                     db.WMS_Product_Entry.Add(entity);
 
