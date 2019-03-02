@@ -28,7 +28,9 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Index()
         {
-            return View();
+            ViewBag.Type = 0;
+
+            return View("~/Areas/WMS/Views/InvAdjust/Index.cshtml");
         }
         [HttpPost]
         [SupportFilter(ActionName="Index")]
