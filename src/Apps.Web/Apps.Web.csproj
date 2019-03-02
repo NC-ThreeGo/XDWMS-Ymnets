@@ -338,6 +338,7 @@
     <Compile Include="Areas\Spl\Controllers\WareUnitConvertController.cs" />
     <Compile Include="Areas\Spl\SplAreaRegistration.cs" />
     <Compile Include="Areas\WC\Controllers\GroupController.cs" />
+    <Compile Include="Areas\WMS\Controllers\InvHistoryController.cs" />
     <Compile Include="Areas\WMS\Controllers\ReportController.cs" />
     <Compile Include="Areas\WMS\Controllers\InventoryHController.cs" />
     <Compile Include="Areas\WC\Controllers\MenuSettingController.cs" />
@@ -867,6 +868,9 @@
     <Content Include="Areas\WMS\Views\ReturnOrderD\Print.cshtml" />
     <Content Include="Areas\WMS\Views\ReturnOrderD\RetunOrderForPrintedLookUp.cshtml" />
     <Content Include="Areas\WMS\Views\ReturnOrderD\SupplierLookUp.cshtml" />
+    <Content Include="Areas\WMS\Views\InvHistory\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\InvHistory\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\InvHistory\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -479,6 +479,7 @@
     <Compile Include="WMS\WMS_Inventory_HBLL.cs" />
     <Compile Include="WMS\WMS_InvInfoBLL.cs" />
     <Compile Include="WMS\WMS_Inv_AdjustBLL.cs" />
+    <Compile Include="WMS\WMS_Inv_History_DBLL.cs" />
     <Compile Include="WMS\WMS_LineBLL.cs" />
     <Compile Include="WMS\WMS_PartBLL.cs" />
     <Compile Include="WMS\WMS_POBLL.cs" />

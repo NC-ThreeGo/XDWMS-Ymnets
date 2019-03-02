@@ -379,6 +379,7 @@
     <Compile Include="WMS\IWMS_Inventory_DBLL.cs" />
     <Compile Include="WMS\IWMS_Inventory_HBLL.cs" />
     <Compile Include="WMS\IWMS_Inv_AdjustBLL.cs" />
+    <Compile Include="WMS\IWMS_Inv_History_DBLL.cs" />
     <Compile Include="WMS\IWMS_PartBLL.cs" />
     <Compile Include="WMS\IWMS_CustomerBLL.cs" />
     <Compile Include="WMS\IWMS_InvInfoBLL.cs" />

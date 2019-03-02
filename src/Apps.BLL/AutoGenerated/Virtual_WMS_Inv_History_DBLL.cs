@@ -41,12 +41,6 @@ namespace Apps.BLL.WMS
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
-								
-								
-								
-								
-								
-								
 								a=>a.Remark.Contains(queryStr)
 								|| a.Attr1.Contains(queryStr)
 								|| a.Attr2.Contains(queryStr)

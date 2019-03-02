@@ -470,6 +470,8 @@
     <Compile Include="WMS\WMS_Inventory_HModel.cs" />
     <Compile Include="WMS\WMS_InvModel.cs" />
     <Compile Include="WMS\WMS_Inv_AdjustModel.cs" />
+    <Compile Include="WMS\WMS_Inv_History_HModel.cs" />
+    <Compile Include="WMS\WMS_Inv_History_DModel.cs" />
     <Compile Include="WMS\WMS_POForAIModel.cs" />
     <Compile Include="WMS\WMS_AIModel.cs" />
     <Compile Include="WMS\WMS_CustomerModel.cs" />

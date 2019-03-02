@@ -31,6 +31,7 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+        public string InvHistoryStatus { get; set; }
     
         public virtual ICollection<WMS_Inv_History_D> WMS_Inv_History_D { get; set; }
     }

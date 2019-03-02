@@ -21,9 +21,9 @@ namespace Apps.Models.WMS
 	{
 		[Display(Name = "未设置")]
 		public virtual int Id { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "标题")]
 		public virtual string InvHistoryTitle { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string Attr1 { get; set; }
@@ -35,13 +35,15 @@ namespace Apps.Models.WMS
 		public virtual string Attr4 { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string Attr5 { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "创建人")]
 		public virtual string CreatePerson { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "创建时间")]
 		public virtual Nullable<System.DateTime> CreateTime { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "修改人")]
 		public virtual string ModifyPerson { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
+		[Display(Name = "状态")]
+		public virtual string InvHistoryStatus { get; set; }
 		}
 }

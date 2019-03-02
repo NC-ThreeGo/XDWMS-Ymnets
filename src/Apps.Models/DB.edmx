@@ -1180,6 +1180,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="InvHistoryTitle" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="InvHistoryStatus" Type="nvarchar" MaxLength="10" />
           <Property Name="Remark" Type="nvarchar" MaxLength="100" />
           <Property Name="Attr1" Type="nvarchar" MaxLength="50" />
           <Property Name="Attr2" Type="nvarchar" MaxLength="50" />
@@ -7929,6 +7930,7 @@
           <Property Name="ModifyPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="WMS_Inv_History_D" Relationship="DB.FK_WMS_Inv_History_D_WMS_Inv_History_D" FromRole="WMS_Inv_History_H" ToRole="WMS_Inv_History_D" />
+          <Property Name="InvHistoryStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_WMS_Inv_History_D_WMS_Inv_History_D">
           <End Type="DB.WMS_Inv_History_H" Role="WMS_Inv_History_H" Multiplicity="1" />
@@ -9903,6 +9905,7 @@
           <EntitySetMapping Name="WMS_Inv_History_H">
             <EntityTypeMapping TypeName="DB.WMS_Inv_History_H">
               <MappingFragment StoreEntitySet="WMS_Inv_History_H">
+                <ScalarProperty Name="InvHistoryStatus" ColumnName="InvHistoryStatus" />
                 <ScalarProperty Name="ModifyTime" ColumnName="ModifyTime" />
                 <ScalarProperty Name="ModifyPerson" ColumnName="ModifyPerson" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
