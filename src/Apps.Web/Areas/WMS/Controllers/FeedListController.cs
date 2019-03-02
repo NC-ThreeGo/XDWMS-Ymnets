@@ -96,7 +96,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.ConfirmStatus = "未确认";
             if (model.Lot == "[空]")
                 model.Lot = "";
-            if (model != null && ModelState.IsValid)
+            if (model != null && ModelState.IsValid && model.Lot !=null)
             {
 
                 if (m_BLL.Create(ref errors, model))

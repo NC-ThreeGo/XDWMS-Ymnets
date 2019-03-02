@@ -60,7 +60,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.Id = 0;
             model.CreatePerson = GetUserTrueName();
             model.CreateTime = ResultHelper.NowTime;
-            if (model != null && ModelState.IsValid)
+            if (model != null && ModelState.IsValid && model.Lot !=null)
             {
                 if (m_BLL.Create(ref errors, model))
                 {
@@ -233,6 +233,7 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("本货部门", "");
               jo.Add("物料编码", "");
               jo.Add("数量", "");
+              jo.Add("批次", "");
               jo.Add("库房", "");
               //jo.Add("子库存", "");
               jo.Add("备注", "");
