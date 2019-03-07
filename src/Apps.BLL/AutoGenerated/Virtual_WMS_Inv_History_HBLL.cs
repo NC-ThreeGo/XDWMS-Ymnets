@@ -53,6 +53,7 @@ namespace Apps.BLL.WMS
 								
 								|| a.ModifyPerson.Contains(queryStr)
 								
+								|| a.InvHistoryStatus.Contains(queryStr)
 								);
             }
             else
@@ -93,6 +94,7 @@ namespace Apps.BLL.WMS
 													CreateTime = r.CreateTime,
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
+													InvHistoryStatus = r.InvHistoryStatus,
           
                                               }).ToList();
 
@@ -122,6 +124,7 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
+				entity.InvHistoryStatus = model.InvHistoryStatus;
   
 
                 if (m_Rep.Create(entity))
@@ -220,6 +223,7 @@ namespace Apps.BLL.WMS
 				entity.CreateTime = model.CreateTime;
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
+				entity.InvHistoryStatus = model.InvHistoryStatus;
  
 
 
@@ -262,6 +266,7 @@ namespace Apps.BLL.WMS
 				model.CreateTime = entity.CreateTime;
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
+				model.InvHistoryStatus = entity.InvHistoryStatus;
  
                 return model;
             }
@@ -290,17 +295,18 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.InvHistoryTitle, "InvHistoryTitle");
-				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Remark, "Remark");
+			 				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.InvHistoryTitle, "标题");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Remark, "备注");
 				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Attr1, "Attr1");
 				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Attr2, "Attr2");
 				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Attr3, "Attr3");
 				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Attr4, "Attr4");
 				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.Attr5, "Attr5");
-				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.CreatePerson, "CreatePerson");
-				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.ModifyPerson, "ModifyPerson");
-				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.ModifyTime, "ModifyTime");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.CreatePerson, "创建人");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.ModifyPerson, "修改人");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.ModifyTime, "修改时间");
+				 excelFile.AddMapping<WMS_Inv_History_HModel>(x => x.InvHistoryStatus, "状态");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_Inv_History_HModel>(0);
@@ -322,6 +328,7 @@ namespace Apps.BLL.WMS
 				  entity.CreateTime = row.CreateTime;
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
+				  entity.InvHistoryStatus = row.InvHistoryStatus;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -366,6 +373,7 @@ namespace Apps.BLL.WMS
 						entity.CreateTime = ResultHelper.NowTime;
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
+						entity.InvHistoryStatus = model.InvHistoryStatus;
  
                         db.WMS_Inv_History_H.Add(entity);
                     }

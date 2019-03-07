@@ -118,6 +118,7 @@ namespace Apps.Models
         public virtual DbSet<WMS_Inv_History_D> WMS_Inv_History_D { get; set; }
         public virtual DbSet<WMS_Inv_History_H> WMS_Inv_History_H { get; set; }
         public virtual DbSet<WMS_Inv> WMS_Inv { get; set; }
+        public virtual DbSet<V_WMS_InvHistoryAvg> V_WMS_InvHistoryAvg { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {

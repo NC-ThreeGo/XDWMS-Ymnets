@@ -1,0 +1,67 @@
+﻿@model Apps.Models.WMS.WMS_Inv_History_DModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WMS;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "显示近3期的库存平均值";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#btnExport").click(function() {
+            window.location = "@Url.Action("Export")";
+        });
+        $("#btnReturn").click(function ()
+        {
+            window.parent.frameReturnByClose();
+        });
+
+        $('#List').datagrid({
+            url: '@Url.Action("GetListAvg")',
+            width:SetGridWidthSub(50),
+            methord: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'InvCode',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'InvCode', title: '库房编码', width: 80, sortable: true },
+                { field: 'InvName', title: '库房名称', width: 80, sortable: true },
+                //{ field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
+                { field: 'PartCode', title: '物料编码', width: 60, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 60, sortable: true },
+                { field: 'Qty', title: '库存数', width: 80, sortable: true, align: 'right' },
+            ]]
+        });
+    });
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+}
+<table>
+    <tr>
+        <td colspan="7" style="padding:4px;">
+            <table id="List"></table>
+        </td>
+    </tr>
+
+</table>
+
+

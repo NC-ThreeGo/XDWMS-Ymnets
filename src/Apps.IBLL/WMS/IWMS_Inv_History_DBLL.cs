@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Apps.Common;
+using Apps.Models;
+using Apps.Models.V;
 using Apps.Models.WMS;
 
 namespace Apps.IBLL.WMS
@@ -45,5 +47,11 @@ namespace Apps.IBLL.WMS
         /// <param name="remark"></param>
         /// <returns></returns>
         bool Create(ref ValidationErrors errors, string oper, string title, string status, string remark);
+
+        /// <summary>
+        /// 获取历史库存的平均值
+        /// </summary>
+        /// <returns></returns>
+        List<V_WMS_InvHistoryAvg> GetInvHistoryAvg(ref GridPager pager);
     }
 }

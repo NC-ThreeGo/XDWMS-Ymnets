@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
 using System.Data;
+using Apps.Models;
 
 namespace Apps.Web.Areas.WMS.Controllers
 {
@@ -33,14 +34,33 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         [HttpPost]
         [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr,string parentId)
+        public JsonResult GetList(GridPager pager, string queryStr,string headId)
         {
-            List<WMS_Inv_History_DModel> list = m_BLL.GetListByParentId(ref pager, queryStr, parentId);
+            List<WMS_Inv_History_DModel> list = m_BLL.GetListByParentId(ref pager, queryStr, headId);
             GridRows<WMS_Inv_History_DModel> grs = new GridRows<WMS_Inv_History_DModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
+        #region 查看近3期的历史库存平均值
+        [SupportFilter(ActionName = "Index")]
+        public ActionResult ListAvg()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetListAvg(GridPager pager)
+        {
+            List<V_WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref pager);
+            GridRows<V_WMS_InvHistoryAvg> grs = new GridRows<V_WMS_InvHistoryAvg>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
 
         #region 创建
         [SupportFilter]
@@ -91,7 +111,6 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             if (model != null && ModelState.IsValid)
             {
-
                 if (m_HeaderBLL.Edit(ref errors, model))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id, "成功", "修改", "WMS_Inv_History_H");
@@ -255,7 +274,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetListParent(GridPager pager, string queryStr)
         {
-            List<WMS_Inv_History_HModel> list = m_BLL.GetListParent(ref pager, queryStr);
+            List<WMS_Inv_History_HModel> list = m_BLL.GetListParent(ref pager, "1 == 1");
             GridRows<WMS_Inv_History_HModel> grs = new GridRows<WMS_Inv_History_HModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

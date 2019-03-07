@@ -10,6 +10,7 @@ using ClosedXML.Excel;
 using Apps.Models.WMS;
 using Unity.Attributes;
 using Apps.IDAL.WMS;
+using Apps.Models.V;
 
 namespace Apps.BLL.WMS
 {
@@ -70,6 +71,13 @@ namespace Apps.BLL.WMS
                                                           Remark = r.Remark,
                                                           SnapshootQty = r.SnapshootQty,
                                                           SubInvId = r.SubInvId,
+
+                                                          InvHistoryTitle = r.WMS_Inv_History_H.InvHistoryTitle,
+                                                          PartCode = r.WMS_Part.PartCode,
+                                                          PartName = r.WMS_Part.PartName,
+                                                          InvCode = r.WMS_InvInfo.InvCode,
+                                                          InvName = r.WMS_InvInfo.InvName,
+                                                          SubInvName = r.WMS_SubInvInfo.SubInvName,
                                                       }).ToList();
             return modelList;
         }
@@ -284,6 +292,20 @@ namespace Apps.BLL.WMS
             {
                 errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
                 return false;
+            }
+        }
+
+        public List<V_WMS_InvHistoryAvg> GetInvHistoryAvg(ref GridPager pager)
+        {
+            using (DBContainer db = new DBContainer())
+            {
+                IQueryable<V_WMS_InvHistoryAvg> queryData = null;
+                queryData = db.V_WMS_InvHistoryAvg.AsQueryable();
+                pager.totalRows = queryData.Count();
+                //排序
+                queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+
+                return queryData.ToList();
             }
         }
     }

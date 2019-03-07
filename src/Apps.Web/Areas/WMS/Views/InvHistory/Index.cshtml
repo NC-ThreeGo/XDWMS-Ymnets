@@ -45,7 +45,7 @@
                     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
                     @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
                     @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
-                    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+                    @Html.ToolButton("btnListAvg", "fa fa-trash", "查看近3期平均库存", ref perm, "Query", true)
                     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
                     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
                     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
@@ -53,7 +53,7 @@
             </td>
         </tr>
         <tr>
-            <td style="width:330px;vertical-align: top">
+            <td style="width:530px;vertical-align: top">
                 <table id="ListParent"></table>
             </td>
             <td style="width:3px;"></td>
@@ -84,21 +84,18 @@
             //rownumbers: true,//行号
             columns: [[
                 { field: 'Id', title: 'Id', width: 80, hidden: true },
-                { field: 'InvHistoryTitle', title: '标题', width: 80, sortable: true },
+                { field: 'InvHistoryTitle', title: '标题', width: 120, sortable: true },
                 { field: 'InvHistoryStatus', title: '状态', width: 80, sortable: true },
                 { field: 'Remark', title: '备注', width: 80, sortable: true },
                 { field: 'CreatePerson', title: '创建人', width: 80, sortable: true },
-                { field: 'CreateTime', title: '创建时间', width: 80, sortable: true },
+                { field: 'CreateTime', title: '创建时间', width: 150, sortable: true },
             ]]
-         ,onClickRow: function(index, row) {
+            ,onClickRow: function(index, row) {
              $('#List').datagrid("load", { ParentId: row.Id });
-}
+            }
         }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
-         $(window).resize(function() {
-             resizeLayout();
-         });
         $('#List').datagrid({
-            url: '@Url.Action("GetList")?parentId=0',
+            url: '@Url.Action("GetList")?headId=0',
             width:SetGridWidthSub(450),
             methord: 'post',
             height: SetGridHeightSub(45),
@@ -122,7 +119,6 @@
                 { field: 'PartCode', title: '物料编码', width: 60, sortable: true },
                 { field: 'PartName', title: '物料名称', width: 60, sortable: true },
                 { field: 'SnapshootQty', title: '库存数', width: 80, sortable: true, align: 'right' },
-                { field: 'Remark', title: 'Remark', width: 80,sortable:true },
             ]]
         });
     });
@@ -148,7 +144,7 @@
             $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
-            var row = $('#List').datagrid('getSelected');
+            var row = $('#ListParent').datagrid('getSelected');
             if (row != null) {
                 $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
@@ -167,9 +163,9 @@
             $("#List").datagrid("load", { queryStr: queryStr });
 
         });
-        $("#btnDelete").click(function () {
-	            dataDelete("@Url.Action("Delete")", "List");
-	        });
+        $("#btnListAvg").click(function () {
+            $.modalWindow(Lang.Create, '@Url.Action("ListAvg")', 700, $(window).height() - 50, 'fa fa-plus');
+	    });
         $("#btnImport").click(function() {
              $("#txtExcelPath").val("");
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
