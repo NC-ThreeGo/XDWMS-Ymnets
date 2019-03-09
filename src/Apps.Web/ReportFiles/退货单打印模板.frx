@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="03/08/2019 15:45:58" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="03/09/2019 13:44:45" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiI7k6yQmJWa72UqMnzqeiGw==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEirT9yeWgsUrPg9Cf9eLfnzQ==">
       <TableDataSource Name="V_WMS_ReturnOrder" DataType="System.Int32" Enabled="true" TableName="V_WMS_ReturnOrder" SelectCommand="select * from V_WMS_ReturnOrder where ReturnOrderDNum=@ReturnOrderDNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="ReturnOrderNum" DataType="System.String"/>
@@ -82,7 +82,7 @@
       <TextObject Name="Text10" Left="207.9" Width="94.5" Height="28.35" Border.Lines="All" Text="[V_WMS_ReturnOrder.PartCode]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text11" Left="302.38" Width="85.05" Height="28.35" Border.Lines="All" Text="[V_WMS_ReturnOrder.PO]" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text12" Left="387.43" Width="75.6" Height="28.35" Border.Lines="All" Text="[V_WMS_ReturnOrder.QTY]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text13" Left="538.63" Width="94.5" Height="28.35" Border.Lines="All" Text="[V_WMS_ReturnOrder.CheckOutResult]"/>
+      <TextObject Name="Text13" Left="538.63" Width="94.5" Height="28.35" Border.Lines="All" Text="[V_WMS_ReturnOrder.CheckOutResult]" HorzAlign="Center" VertAlign="Center" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text14" Left="633.15" Width="85.05" Height="28.35" Border.Lines="All"/>
       <TextObject Name="Text40" Left="463.04" Width="75.6" Height="28.35" Border.Lines="All" Text="[V_WMS_ReturnOrder.ReturnQty]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>

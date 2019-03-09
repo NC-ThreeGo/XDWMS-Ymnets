@@ -53,7 +53,7 @@
                                 //window.parent.frameReturnByMes("保存成功！");
 
                                 //打开报表打印的窗口
-                                self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&ReturnOrderDNum=' + data.value;
+                                self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + data.value;
                             } else
                             {
                                 window.parent.frameReturnByMes(data.message);
