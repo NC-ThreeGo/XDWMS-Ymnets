@@ -72,7 +72,7 @@ namespace Apps.Web.Areas.WMS.Controllers
 
             if (returnOrderStatus == "已退货")
             {
-                query = "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")";
+                query = "WMS_ReturnOrder_D.ReturnOrderDNum.Contains(\"" + returnOrderNum + "\")";
                 if (!String.IsNullOrEmpty(inspectBillNum))
                     query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
                 query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
@@ -104,6 +104,10 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.CreateTime = ResultHelper.NowTime;
             if (model.Lot == "[空]")
                 model.Lot = "";
+            if (model.Lot == "" || model.Lot == null || !DateTimeHelper.CheckYearMonth(model.Lot))
+            {
+                return Json(JsonHandler.CreateMessage(0, "批次录入不符合规范"));
+            }
             if (model != null && ModelState.IsValid)
             {
                 if (m_BLL.CreateReturnOrder(ref errors, GetUserTrueName(), model))

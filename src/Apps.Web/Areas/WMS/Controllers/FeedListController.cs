@@ -96,7 +96,11 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.ConfirmStatus = "未确认";
             if (model.Lot == "[空]")
                 model.Lot = "";
-            if (model != null && ModelState.IsValid && model.Lot !=null)
+            if (model.Lot == "" || model.Lot == null || !DateTimeHelper.CheckYearMonth(model.Lot))
+            {
+                return Json(JsonHandler.CreateMessage(0, "批次录入不符合规范"));
+            }
+            if (model != null && ModelState.IsValid )
             {
 
                 if (m_BLL.Create(ref errors, model))

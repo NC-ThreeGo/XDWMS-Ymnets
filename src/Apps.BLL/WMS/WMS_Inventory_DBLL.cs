@@ -11,6 +11,7 @@ using Apps.Models.WMS;
 using System.Linq.Expressions;
 using Apps.BLL.Core;
 using Apps.Locale;
+using System.Data.Entity.Core.Objects;
 
 namespace Apps.BLL.WMS
 {
@@ -104,7 +105,7 @@ namespace Apps.BLL.WMS
             using (XLWorkbook wb = new XLWorkbook(filePath))
             {
                 int headId=0;
-                var inventoryType = "抽检1";
+                var inventoryType = "抽检";
                 //第一个Sheet
                 using (IXLWorksheet wws = wb.Worksheets.First())
                 {
@@ -183,7 +184,7 @@ namespace Apps.BLL.WMS
                             headId = model.HeadId;
                             inventoryType = model.InventoryType;
                             //写入数据库
-                            Expression<Func<WMS_Inventory_D, bool>> exp = x => x.PartId == model.PartId && x.InvId == model.InvId && x.Lot == model.Lot;
+                            Expression<Func<WMS_Inventory_D, bool>> exp = x => x.PartId == model.PartId && x.InvId == model.InvId && x.Lot == model.Lot && x.HeadId == model.HeadId;
                             WMS_Inventory_D entity;
                             entity = db.WMS_Inventory_D.FirstOrDefault(exp);
                             //WMS_Inventory_D entity1 = m_Rep.GetSingleWhere(model.Id);
@@ -236,25 +237,37 @@ namespace Apps.BLL.WMS
 
                         if (rtn)
                         {
+                            //tran.Commit();
                             if (inventoryType == "抽检")
                             {
-                                tran.Commit();
-                                //if (SpecialInventory(ref errors, oper, headId))
+                                ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
+                                db.Configuration.EnsureTransactionsForFunctionsAndCommands = false;
+
+                                db.P_WMS_SpecialInventory(oper, headId, returnValue);
+
+                                if (returnValue.Value == DBNull.Value)
+                                {
+                                    tran.Commit();
+                                }
+                                else
+                                    tran.Rollback();
+                                //db.P_WMS_SpecialInventory(oper, headId, returnValue);
+                                //if (String.IsNullOrEmpty(SpecialInventory(ref errors, oper, headId)))
+                                //if (String.IsNullOrEmpty(db.P_WMS_SpecialInventory(oper, headId, returnValue))
                                 //{
-                                //    tran.Commit();  //必须调用Commit()，不然数据不会保存
+                                //    tran.Commit();   //必须调用Commit()，不然数据不会保存
                                 //}
                                 //else
                                 //{
-                                //    tran.Rollback();    //出错就回滚       
+                                //    tran.Rollback();   //出错就回滚       
                                 //}
 
                             }
-                               
                             else
                             {
-                                tran.Commit();  //必须调用Commit()，不然数据不会保存
+                                tran.Commit();
                             }
-                            
+
                         }
                         else
                         {
@@ -263,10 +276,25 @@ namespace Apps.BLL.WMS
                     }
                 }
                 wb.Save();
+
+                //if (inventoryType == "抽检")
+                //{
+                //    if (String.IsNullOrEmpty(SpecialInventory(ref errors, oper, headId)))
+                //    {
+                //        rtn = true;  //必须调用Commit()，不然数据不会保存
+                //    }
+                //    else
+                //    {
+                //        rtn = false; ;    //出错就回滚       
+                //    }
+
+                //}
+
+                return rtn;              
+
             }
 
             
-            return rtn;
         }
 
         public void AdditionalCheckExcelData(DBContainer db, ref WMS_Inventory_DModel model)
@@ -276,10 +304,15 @@ namespace Apps.BLL.WMS
             {
                 throw new Exception("盘点数量不能为负！");
             }
+            //校验批次号
+            if (String.IsNullOrEmpty(model.Lot) || !DateTimeHelper.CheckYearMonth(model.Lot))
+            {
+                throw new Exception("批次号不合符规范！");
+            }
 
             //获取总成物料ID
             if (!String.IsNullOrEmpty(model.PartCode))
-            {
+            {                
                 var partCode = model.PartCode;
                 Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
 
@@ -369,25 +402,20 @@ namespace Apps.BLL.WMS
         }
         public string SpecialInventory(ref ValidationErrors errors, string opt, int headId)
         {
-            string result = String.Empty;
             try
             {
-                result = m_Rep.SpecialInventory(opt, headId);
-                return "";
-                //if (String.IsNullOrEmpty(result))
-                //{
-                //    return true;
-                //}
-                //else
-                //{
-                //    errors.Add(result);
-                //    return false;
-                //}
+                var rtn = m_Rep.SpecialInventory(opt, headId);
+                if (!String.IsNullOrEmpty(rtn))
+                {
+                    return rtn;
+                }
+                else
+                    return null;
             }
             catch (Exception ex)
             {
                 errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
-                return "";
+                return "失败";
             }
         }
     }
