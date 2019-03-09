@@ -32,6 +32,8 @@ namespace Apps.Models.V
 		[Display(Name = "未设置")]
 		public virtual string InvName { get; set; }
 		[Display(Name = "未设置")]
-		public virtual Nullable<decimal> Qty { get; set; }
+		public virtual Nullable<decimal> AvgQty { get; set; }
+		[Display(Name = "未设置")]
+		public virtual Nullable<decimal> InvQty { get; set; }
 		}
 }
