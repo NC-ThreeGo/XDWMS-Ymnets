@@ -90,7 +90,7 @@
             idField: 'Id',
             pageSize: 15,
             pageList: [15, 20, 30, 40, 50],
-            pagination: true,
+            pagination: false
             striped: true, //奇偶行是否区分
             singleSelect: false,//单选模式
             selectOnCheck: false,
@@ -99,13 +99,32 @@
             onEndEdit: onEndEdit,
             onBeginEdit: onBeginEdit,
 
-            onCheck: onCheck,
-            onUncheck: onUncheck,
-            onCheckAll: onCheckAll,
-            onUncheckAll: onUncheckAll,
+            //onCheck: onCheck,
+            //onUncheck: onUncheck,
+            //onCheckAll: onCheckAll,
+            //onUncheckAll: onUncheckAll,
 
             remotesort: false,
             showFooter: true,
+
+            onLoadSuccess: function (data)
+            {
+                if (data.rows.length > 0)
+                {
+                    $("input[type='checkbox']")[0].disabled = true;
+                    //循环判断操作为新增的不能选择
+                    for (var i = 0; i < data.rows.length; i++)
+                    {
+                        $("input[type='checkbox']")[i + 1].disabled = true;
+                    }
+                }
+                else
+                {
+                    if ($("#Supplier").val() != '')
+                        alert('没有需要处理的数据！');
+                }
+            },
+
             columns: [[
                 {
                     field: 'ck', checkbox: true,
@@ -131,34 +150,35 @@
 
     //所选择行的退货数求和
     var sum_Qty = 0;
-    function onCheck(index, row)
-    {
-        endEditing();
-        sum_Qty = sum_Qty + Number(row.Qty);
-        setFooter();
-    }
-    function onUncheck(index, row)
-    {
-        //endEditing();
-        sum_Qty = sum_Qty - Number(row.Qty);
-        setFooter();
-    }
-    function onCheckAll(rows)
-    {
-        endEditing();
-        sum_Qty = 0;
-        for (var i = 0; i < rows.length; i++)
-        {
-            sum_Qty = sum_Qty + Number(rows[i]['Qty']);
-        }
-        setFooter();
-    }
-    function onUncheckAll(rows)
-    {
-        //endEditing();
-        sum_Qty = 0;
-        setFooter();
-    }
+    //function onCheck(index, row)
+    //{
+    //    endEditing();
+    //    sum_Qty = sum_Qty + Number(row.Qty);
+    //    setFooter();
+    //}
+    //function onUncheck(index, row)
+    //{
+    //    //endEditing();
+    //    sum_Qty = sum_Qty - Number(row.Qty);
+    //    setFooter();
+    //}
+    //function onCheckAll(rows)
+    //{
+    //    endEditing();
+    //    sum_Qty = 0;
+    //    for (var i = 0; i < rows.length; i++)
+    //    {
+    //        sum_Qty = sum_Qty + Number(rows[i]['Qty']);
+    //    }
+    //    setFooter();
+    //}
+    //function onUncheckAll(rows)
+    //{
+    //    //endEditing();
+    //    sum_Qty = 0;
+    //    setFooter();
+    //}
+
     function setFooter()
     {
         $('#List').datagrid('reloadFooter',
@@ -166,6 +186,30 @@
                 { SupplierShortName: '合计：', Qty: sum_Qty },
             ]
         );
+    }
+
+    function setKeyUpValue(sender)
+    {
+        var row = $('#List').datagrid('getSelected');
+        var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
+        var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'Qty' }).target;
+        var thisTarget_Input = $(thisTarget).data('numberbox') ? $(thisTarget).numberbox('textbox') : $(thisTarget);
+        var oldValue = Number(thisTarget.numberbox('getValue'));
+
+        if (thisTarget_Input.val() != 0)
+        {
+            datagrid.datagrid('checkRow', rowIndex);
+        }
+        else
+        {
+            datagrid.datagrid('uncheckRow', rowIndex);
+        }
+
+        sum_Qty = sum_Qty - oldValue + Number(thisTarget_Input.val())
+
+        $("input[type='checkbox']")[rowIndex + 1].disabled = true;
+
+        setFooter();
     }
 
 
@@ -192,6 +236,16 @@
                 if (ed)
                 {
                     ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+
+                    if (field == 'Qty')
+                    {
+                        var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                        target.attr("field", ed.field)
+                        target.bind("keyup", function ()
+                        {
+                            return setKeyUpValue($(this));
+                        });
+                    }
                 }
                 editIndex = index;
             } else
