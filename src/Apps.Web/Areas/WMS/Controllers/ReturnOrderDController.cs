@@ -434,7 +434,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Create")]
         public JsonResult SupplierGetList(GridPager pager, string supplierCode, string supplierShortName)
         {
-            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "1 = 1")
+            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "Status != \"无效\"")
                 .Where(p => Math.Abs(p.AdjustQty) < Math.Abs(p.ReturnQty))
                 .GroupBy(p => new { p.SupplierId, p.SupplierShortName })
                 .Select(g => g.First())
@@ -461,7 +461,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                 supplierId = supplier.Id.ToString();
             }
             //List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "SupplierId == \"" + supplierId + "\" && Abs(AdjustQty) < Abs(ReturnQty)").ToList();
-            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref setNoPagerAscById, "1 = 1")
+            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref setNoPagerAscById, "Status != \"无效\"")
                 .Where(p => p.SupplierId.ToString() == supplierId && Math.Abs(p.AdjustQty) < Math.Abs(p.ReturnQty))
                 .ToList();
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
