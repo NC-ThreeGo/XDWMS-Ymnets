@@ -49,6 +49,7 @@ namespace Apps.BLL.WMS
                                                   ReturnQty = r.ReturnQty,
                                                   SubInvId = r.SubInvId,
                                                   SupplierId = r.SupplierId,
+                                                  Status = r.Status,
 
                                                   ArrivalBillNum = r.WMS_AI.ArrivalBillNum,
                                                   InspectBillNum = r.WMS_AI.InspectBillNum,
