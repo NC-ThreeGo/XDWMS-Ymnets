@@ -67,7 +67,7 @@
             $(function () {
                 $('#ListParent').datagrid({
                     url: '@Url.Action("GetListParent")',
-                    width:450,
+                    width:600,
                     methord: 'post',
                     height: SetGridHeightSub(45),
                     fitColumns: true,
@@ -104,7 +104,7 @@
                  //    resizeLayout();
                  //});
                 $('#List').datagrid({
-                    url: '@Url.Action("GetList")?parentId=0',
+                    url: '@Url.Action("GetList")?parentId=-1',
                     width:SetGridWidthSub(450),
                     methord: 'post',
                     height: SetGridHeightSub(45),
@@ -224,23 +224,31 @@
                 $("#btnImport").click(function() {
                      $("#txtExcelPath").val("");
                     $("#FileUpload").val("");
-                     $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+                    $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+                    
                 });
                 $("#btnExport").click(function() {
                     var queryStr = $("#txtQuery").val();
                     if (queryStr == null) {
                         queryStr = "%";
                     }
-                  $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
+                    var row = $('#ListParent').datagrid('getSelected');
+                    if (row != null) {
+                         $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
                         if (data.type == 1)
                         {
-                            window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                            window.location = "@Url.Action("Export")?headId=" + row.Id;
                         }
                         else
                         {
                         $.messageBox5s(Lang.Tip, data.message);
                         }
                     }, "json");
+                    }
+                    else {
+                        $.messageBox5s(Lang.Tip, '请选择数据');
+                    }
+                 
                 });
                 $("#btnExportTemplate").click(function() {
                   window.location = "@Url.Action("ExportTemplate")";
@@ -287,11 +295,13 @@
                      $("#List").datagrid('load');
                      $('#uploadExcel').window('close');
                      $('#FileUpload').val('');
+                     $("#List,#ListParent").datagrid('reload');
                     }
                     hideLoading();
                     $.messageBox5s('提示', data.message);
                     $('#importMessage').html(data.message);
                     $('#importResultFile').attr('href', data.value);
+                    
                 }, "json");
             }
 </script>

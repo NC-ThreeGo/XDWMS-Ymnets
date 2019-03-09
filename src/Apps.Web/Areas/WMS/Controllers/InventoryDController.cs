@@ -167,6 +167,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult CheckExportData(string queryStr)
         {
             List<WMS_Inventory_DModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            
             if (list.Count().Equals(0))
             {
                 return Json(JsonHandler.CreateMessage(0, "没有可以导出的数据"));
@@ -177,9 +178,10 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         }
         [SupportFilter]
-        public ActionResult Export(string queryStr)
+        public ActionResult Export(int headid)
         {
-            List<WMS_Inventory_DModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            //List<WMS_Inventory_DModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            List<WMS_Inventory_DModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "HeadId = "+ headid +"");
             JArray jObjects = new JArray();
             foreach (var item in list)
             {
