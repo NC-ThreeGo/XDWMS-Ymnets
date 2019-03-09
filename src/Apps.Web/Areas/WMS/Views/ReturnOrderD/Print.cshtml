@@ -11,6 +11,11 @@
     List<permModel> perm = null;
 }
 <script type="text/javascript">
+    //所选择行的退货数求和
+    var sum_Qty = 0;
+    //编辑的行
+    var editIndex = undefined;
+
     $(function ()
     {
         //加载到货单
@@ -18,7 +23,11 @@
         {
             var supplierId = $("#SupplierId").val();
             var supplierShortName = $("#Supplier").val();
+            sum_Qty = 0;
+            editIndex = undefined;
             $("#List").datagrid("load", { supplierId: supplierId, supplierShortName: supplierShortName });
+            $("#List").datagrid("uncheckAll");
+            setFooter();
         });
 
         $("#btnSave").click(function ()
@@ -139,7 +148,7 @@
                 { field: 'AdjustQty', title: '已退货数量', width: 80, sortable: true, align: 'right' },
                 {
                     field: 'Qty', title: '本次退货数量', width: 80, sortable: true, align: 'right',
-                    editor: { type: 'numberbox', options: { required: true, min: 0 } }
+                    editor: { type: 'numberbox' }
                 },
                 { field: 'InvName', title: '库房', width: 80, sortable: true },
                 { field: 'Lot', title: '批次', width: 80, sortable: true },
@@ -148,8 +157,6 @@
         });
     })
 
-    //所选择行的退货数求和
-    var sum_Qty = 0;
     //function onCheck(index, row)
     //{
     //    endEditing();
@@ -194,7 +201,6 @@
         var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
         var thisTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'Qty' }).target;
         var thisTarget_Input = $(thisTarget).data('numberbox') ? $(thisTarget).numberbox('textbox') : $(thisTarget);
-        var oldValue = Number(thisTarget.numberbox('getValue'));
 
         if (thisTarget_Input.val() != 0)
         {
@@ -209,12 +215,13 @@
     }
 
 
-    //编辑的行
-    var editIndex = undefined;
     function endEditing()
     {
         if (editIndex == undefined) { return true }
         $('#List').datagrid('endEdit', editIndex);
+
+        //执行上面的代码会使得checkbox可编辑，需要手工再次设置disabled = true
+        $("input[type='checkbox']")[editIndex + 1].disabled = true;
 
         editIndex = undefined;
         return true;
