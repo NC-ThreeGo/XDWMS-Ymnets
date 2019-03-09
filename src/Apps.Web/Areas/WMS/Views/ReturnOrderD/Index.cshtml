@@ -114,7 +114,7 @@
         }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
 
         $('#List').datagrid({
-            url: '@Url.Action("GetList")?parentId=0',
+            url: '@Url.Action("GetList")?parentId=-1',
             width:SetGridWidthSub(550),
             methord: 'post',
             height: SetGridHeightSub(45),
@@ -133,7 +133,8 @@
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
                 { field: 'HeadId', title: '头表ID', width: 80, hidden: true },
-                { field: 'ReturnOrderDNum', title: '退货单号', width: 100,sortable:true },
+                { field: 'ReturnOrderDNum', title: '退货单号', width: 100, sortable: true },
+                { field: 'PartCode', title: '物料代码', width: 60, sortable: true },
                 { field: 'ReturnQty', title: '退货数量', width: 40,sortable:true },
                 //{ field: 'Remark', title: '备注', width: 80,sortable:true },
                 { field: 'PrintStaus', title: '打印状态', width: 50,sortable:true },

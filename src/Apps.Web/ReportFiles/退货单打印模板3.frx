@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="03/09/2019 19:05:57" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="03/09/2019 16:26:43" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEivtXGxEDRhAoDRnEgCp7qHQ==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEidRkfmS8pJzoooBXZA9ks+Q==">
       <TableDataSource Name="V_WMS_ReturnOrder" Alias="Table" DataType="System.Int32" Enabled="true" TableName="V_WMS_ReturnOrder" SelectCommand="SELECT V.Id, V.ReturnOrderNum, V.AIID, V.PartID, V.SupplierId, V.InvId, V.SubInvId, V.AdjustQty, V.Remark, V.ConfirmStatus, V.ConfirmMan, V.ConfirmDate, V.Attr1, V.Attr2, V.Attr3, V.Attr4, V.Attr5, V.CreatePerson, V.CreateTime, V.ModifyPerson, V.ModifyTime, V.BatchId, V.ArrivalBillNum, V.ArrivalQty, V.InspectBillNum, V.QualifyQty, V.NoQualifyQty, V.PartCode, V.PartName, V.SupplierCode, V.SupplierShortName, V.SupplierName, V.PO, V.LogisticsCode, V.LinkMan, V.LinkManTel, V.ReturnOrderDNum, V.ReturnQty, V.PrintDate, V.PrintMan, V.QTY, V.CheckOutResult, V.PrintStaus&#13;&#10;FROM &quot;V_WMS_ReturnOrder&quot; V&#13;&#10;">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="ReturnOrderNum" DataType="System.String"/>
@@ -70,18 +70,18 @@
       <TextObject Name="Text18" Width="75.6" Height="28.35" Border.Lines="All" Text="物流号" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
       <TextObject Name="Text19" Left="75.57" Width="132.3" Height="28.35" Border.Lines="All" Text="物料名称" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
       <TextObject Name="Text20" Left="207.85" Width="94.5" Height="28.35" Border.Lines="All" Text="物料代码" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
-      <TextObject Name="Text21" Left="302.33" Width="94.5" Height="28.35" Border.Lines="All" Text="采购订单" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
-      <TextObject Name="Text23" Left="396.78" Width="66.15" Height="28.35" Border.Lines="All" Text="发货数" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text21" Left="302.33" Width="85.05" Height="28.35" Border.Lines="All" Text="采购订单" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text23" Left="387.33" Width="75.6" Height="28.35" Border.Lines="All" Text="发货数" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
       <TextObject Name="Text24" Left="538.54" Width="94.5" Height="28.35" Border.Lines="All" Text="检验结论" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
       <TextObject Name="Text25" Left="633.05" Width="85.05" Height="28.35" Border.Lines="All" Text="保管员" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
       <TextObject Name="Text39" Left="463.04" Width="75.6" Height="28.35" Border.Lines="All" Text="退货数" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
     </ColumnHeaderBand>
-    <DataBand Name="Data1" Top="191.53" Width="748.44" Height="28.35" DataSource="V_WMS_ReturnOrder">
+    <DataBand Name="Data1" Top="191.53" Width="748.44" Height="28.35">
       <TextObject Name="Text7" Width="75.6" Height="28.35" Border.Lines="All" Text="[Table.LogisticsCode]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text9" Left="75.6" Width="132.3" Height="28.35" Border.Lines="All" Text="[Table.PartName]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text10" Left="207.9" Width="94.5" Height="28.35" Border.Lines="All" Text="[Table.PartCode]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text11" Left="302.38" Width="94.5" Height="28.35" Border.Lines="All" Text="[Table.PO]" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
-      <TextObject Name="Text12" Left="396.88" Width="66.15" Height="28.35" Border.Lines="All" Text="[Table.QTY]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text11" Left="302.38" Width="85.05" Height="28.35" Border.Lines="All" Text="[Table.PO]" Format="Currency" Format.UseLocale="true" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
+      <TextObject Name="Text12" Left="387.43" Width="75.6" Height="28.35" Border.Lines="All" Text="[Table.QTY]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text13" Left="538.63" Width="94.5" Height="28.35" Border.Lines="All" Text="[Table.CheckOutResult]" HorzAlign="Center" VertAlign="Center" Trimming="EllipsisCharacter"/>
       <TextObject Name="Text14" Left="633.15" Width="85.05" Height="28.35" Border.Lines="All"/>
       <TextObject Name="Text40" Left="463.04" Width="75.6" Height="28.35" Border.Lines="All" Text="[Table.ReturnQty]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
