@@ -92,7 +92,7 @@
             pageList: [15, 20, 30, 40, 50],
             pagination: false,
             striped: true, //奇偶行是否区分
-            singleSelect: false,//单选模式
+            singleSelect: true,//单选模式
             selectOnCheck: false,
             checkOnSelect: false,
             onClickCell: onClickCell,
@@ -192,24 +192,20 @@
     {
         var row = $('#List').datagrid('getSelected');
         var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
-        var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'Qty' }).target;
+        var thisTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'Qty' }).target;
         var thisTarget_Input = $(thisTarget).data('numberbox') ? $(thisTarget).numberbox('textbox') : $(thisTarget);
         var oldValue = Number(thisTarget.numberbox('getValue'));
 
         if (thisTarget_Input.val() != 0)
         {
-            datagrid.datagrid('checkRow', rowIndex);
+            $('#List').datagrid('checkRow', rowIndex);
         }
         else
         {
-            datagrid.datagrid('uncheckRow', rowIndex);
+            $('#List').datagrid('uncheckRow', rowIndex);
         }
 
-        sum_Qty = sum_Qty - oldValue + Number(thisTarget_Input.val())
-
         $("input[type='checkbox']")[rowIndex + 1].disabled = true;
-
-        setFooter();
     }
 
 
@@ -259,7 +255,14 @@
     }
     function onEndEdit(index, row)
     {
-    }
+        var rows = $('#List').datagrid("getChecked");
+        sum_Qty = 0;
+        for (var i = 0; i < rows.length; i++)
+        {
+            sum_Qty = sum_Qty + Number(rows[i]['Qty']);
+        }
+        setFooter();
+   }
 
     //进入编辑前设置
     function onBeginEdit(index, row)
