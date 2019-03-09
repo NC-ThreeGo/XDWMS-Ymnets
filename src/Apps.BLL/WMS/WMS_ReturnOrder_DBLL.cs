@@ -271,6 +271,67 @@ namespace Apps.BLL.WMS
             return CreateModelList(ref queryData);
         }
 
+        public List<WMS_ReturnOrderModel> GetListParentByWhere(ref GridPager pager, string selfWhere, string where)
+        {
+            IQueryable<WMS_ReturnOrder> queryData = null;
+            queryData = m_Rep.GetList().Where(selfWhere)
+                .Select(p => p.WMS_ReturnOrder).Distinct().Where(where);
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return CreateParentModelList(ref queryData);
+        }
+
+        public List<WMS_ReturnOrderModel> CreateParentModelList(ref IQueryable<WMS_ReturnOrder> queryData)
+        {
+
+            List<WMS_ReturnOrderModel> modelList = (from r in queryData
+                                                    select new WMS_ReturnOrderModel
+                                                    {
+                                                        AdjustQty = r.AdjustQty,
+                                                        AIID = r.AIID,
+                                                        Attr1 = r.Attr1,
+                                                        Attr2 = r.Attr2,
+                                                        Attr3 = r.Attr3,
+                                                        Attr4 = r.Attr4,
+                                                        Attr5 = r.Attr5,
+                                                        //ConfirmDate = r.ConfirmDate,
+                                                        //ConfirmMan = r.ConfirmMan,
+                                                        //ConfirmStatus = r.ConfirmStatus,
+                                                        CreatePerson = r.CreatePerson,
+                                                        CreateTime = r.CreateTime,
+                                                        Id = r.Id,
+                                                        InvId = r.InvId,
+                                                        Lot = r.Lot,
+                                                        ModifyPerson = r.ModifyPerson,
+                                                        ModifyTime = r.ModifyTime,
+                                                        PartID = r.PartID,
+                                                        //PrintDate = r.PrintDate,
+                                                        //PrintMan = r.PrintMan,
+                                                        //PrintStaus = r.PrintStaus,
+                                                        //Remark = r.Remark,
+                                                        //ReturnOrderNum = r.ReturnOrderNum,
+                                                        ReturnQty = r.ReturnQty,
+                                                        SubInvId = r.SubInvId,
+                                                        SupplierId = r.SupplierId,
+                                                        Status = r.Status,
+
+                                                        ArrivalBillNum = r.WMS_AI.ArrivalBillNum,
+                                                        InspectBillNum = r.WMS_AI.InspectBillNum,
+                                                        SupplierShortName = r.WMS_Supplier.SupplierShortName,
+                                                        PartCode = r.WMS_Part.PartCode,
+                                                        PartName = r.WMS_Part.PartName,
+                                                        InvCode = r.WMS_InvInfo.InvCode,
+                                                        InvName = r.WMS_InvInfo.InvName,
+                                                        ArrivalQty = r.WMS_AI.ArrivalQty,
+                                                        QualifyNum = r.WMS_AI.QualifyQty,
+                                                        NoQualifyNum = r.WMS_AI.NoQualifyQty,
+                                                        SupplierCode = r.WMS_Supplier.SupplierCode,
+                                                        SupplierName = r.WMS_Supplier.SupplierName
+                                                    }).ToList();
+            return modelList;
+        }
+
         public string PrintReturnOrder(ref ValidationErrors errors, string opt, string jsonReturnOrderNum)
         {
             try

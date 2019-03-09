@@ -50,7 +50,9 @@ namespace Apps.Web.Areas.WMS.Controllers
                 string supplierShortName, string returnOrderNum, string partCode,
                 DateTime beginDate, DateTime endDate, string returnOrderStatus)
         {
+            
             string query = "";
+            string selfQuery = " 1=1";
             if (returnOrderStatus == "未退货")
             {
                 query += " 1=1 ";
@@ -61,26 +63,37 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
             if (returnOrderStatus == "已失效")
             {
-                query += " 1=1 ";
-                if (!String.IsNullOrEmpty(returnOrderNum))
-                    query += "&&ReturnOrderNum.Contains(\"" + returnOrderNum + "\")";
+                query += " 1=1 ";                
                 if (!String.IsNullOrEmpty(inspectBillNum))
                     query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
                 query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
                 query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+                query += " && Status == \"无效\"";
             }
 
             if (returnOrderStatus == "已退货")
             {
-                query = "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")";
+                query = " 1=1 ";
                 if (!String.IsNullOrEmpty(inspectBillNum))
                     query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
                 query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
                 query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
-                query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
             }
             //query += " && PrintStaus.Contains(\"" + returnOrderStatus + "\")";
-            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, query);
+
+            if (returnOrderNum != "")
+            {
+                selfQuery += " && ReturnOrderDNum.Contains(\"" + returnOrderNum + "\")";
+            }
+            
+            if (returnOrderStatus == "已退货")
+            {
+                selfQuery += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
+            }
+
+                
+
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListParentByWhere(ref pager, selfQuery, query);
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

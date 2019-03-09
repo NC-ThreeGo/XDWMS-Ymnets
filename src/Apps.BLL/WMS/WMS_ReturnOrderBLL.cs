@@ -248,6 +248,9 @@ namespace Apps.BLL.WMS
             {
                 IQueryable<WMS_ReturnOrder> queryData = null;
                 queryData = m_Rep.GetList().Where(where);
+
+                //var a = queryData.Select(p => p.WMS_Part);
+
                 pager.totalRows = queryData.Count();
                 //排序
                 queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
