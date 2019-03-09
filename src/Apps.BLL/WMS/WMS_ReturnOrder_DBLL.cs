@@ -8,6 +8,8 @@ using System.IO;
 using LinqToExcel;
 using ClosedXML.Excel;
 using Apps.Models.WMS;
+using Apps.Locale;
+using Apps.BLL.Core;
 
 namespace Apps.BLL.WMS
 {
@@ -301,6 +303,41 @@ namespace Apps.BLL.WMS
                 return false;
             }
         }
+        public virtual bool CancelReturnOrderD(ref ValidationErrors errors, string opt, int id)
+        {
+            try
+            {
+                System.Linq.Expressions.Expression<Func<WMS_ReturnOrder_D, bool>> exp = x => x.Id == id;
+                WMS_ReturnOrder_D entity = m_Rep.GetSingleWhere(exp);
+                if (entity == null)
+                {
+                    //errors.Add(Resource.Disable);
+                    errors.Add(" :单据不存在");
+                    return false;
+                }
+                //entity.PrintStaus = "已失效";
+                entity.PrintStaus = "无效";
+                entity.ModifyPerson = opt;
+                entity.ModifyTime = DateTime.Now;
+
+                if (m_Rep.Edit(entity))
+                {
+                    return true;
+                }
+                else
+                {
+                    errors.Add(Resource.NoDataChange);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ExceptionHander.WriteException(ex);
+                return false;
+            }
+        }
+
     }
 }
 

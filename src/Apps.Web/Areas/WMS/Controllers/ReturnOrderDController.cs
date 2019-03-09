@@ -161,7 +161,7 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         #region 删除待退货单
         [HttpPost]
-        [SupportFilter]
+        [SupportFilter(ActionName = "Delete")]
         public ActionResult DeleteParent(int id)
         {
             if (id != 0)
@@ -169,7 +169,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                 if (m_ReturnOrderBLL.CancelReturnOrder(ref errors, GetUserTrueName(), id))
                 {
                     LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_ReturnOrder");
-                    return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+                    return Json(JsonHandler.CreateMessage(1, "单据已失效"));
                 }
                 else
                 {
@@ -182,6 +182,36 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
             }
+        }
+        public ActionResult Delete(int id)
+        {
+            List<WMS_ReturnOrder_DModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Id = " + id + " &&ConfirmStatus = \"已确认\"");
+            if (list.Count() > 0)
+            {
+                return Json(JsonHandler.CreateMessage(0, "已确认单据不能失效"));
+            }
+            else
+            {
+                if (id != 0)
+                {
+                    if (m_BLL.CancelReturnOrderD(ref errors, GetUserTrueName(), id))
+                    {
+                        LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_ReturnOrder");
+                        return Json(JsonHandler.CreateMessage(1, "单据已失效"));
+                    }
+                    else
+                    {
+                        string ErrorCol = errors.Error;
+                        LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_ReturnOrder");
+                        return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                    }
+                }
+                else
+                {
+                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+                }
+            }
+                
         }
         #endregion
 

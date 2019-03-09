@@ -49,6 +49,7 @@ namespace Apps.BLL.WMS
                                                   ReturnQty = r.ReturnQty,
                                                   SubInvId = r.SubInvId,
                                                   SupplierId = r.SupplierId,
+                                                  Status = r.Status,
 
                                                   ArrivalBillNum = r.WMS_AI.ArrivalBillNum,
                                                   InspectBillNum = r.WMS_AI.InspectBillNum,
@@ -316,19 +317,21 @@ namespace Apps.BLL.WMS
         //    }
         //}
 
-        public virtual bool CancelReturnOrder(ref ValidationErrors errors, string opt, int aiId)
+        public virtual bool CancelReturnOrder(ref ValidationErrors errors, string opt, int id)
         {
             try
-            {                
-                Expression<Func<WMS_ReturnOrder, bool>> exp = x => x.Id == aiId && x.ConfirmStatus == "未确认";
+            {
+                //Expression<Func<WMS_ReturnOrder, bool>> exp = x => x.Id == aiId && x.ConfirmStatus == "未确认";
+                Expression<Func<WMS_ReturnOrder, bool>> exp = x => x.Id == id;
                 WMS_ReturnOrder entity = m_Rep.GetSingleWhere(exp);
                 if (entity == null)
                 {
                     //errors.Add(Resource.Disable);
-                    errors.Add(" :单据已确认不能失效");
+                    errors.Add(" :单据不存在");
                     return false;
                 }
-                entity.PrintStaus = "已失效";
+                //entity.PrintStaus = "已失效";
+                entity.Status = "无效";
                 entity.ModifyPerson = opt;
                 entity.ModifyTime = DateTime.Now;
 
