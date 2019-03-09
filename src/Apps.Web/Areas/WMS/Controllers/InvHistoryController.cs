@@ -199,27 +199,18 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Export(string queryStr)
         {
-            List<WMS_Inv_History_DModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            List<V_WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref setNoPagerAscById);
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
                     var jo = new JObject();
-                    jo.Add("Id", item.Id);
-                    jo.Add("HeadId", item.HeadId);
-                    jo.Add("PartId", item.PartId);
-                    jo.Add("SnapshootQty", item.SnapshootQty);
-                    jo.Add("InvId", item.InvId);
-                    jo.Add("SubInvId", item.SubInvId);
-                    jo.Add("Remark", item.Remark);
-                    jo.Add("Attr1", item.Attr1);
-                    jo.Add("Attr2", item.Attr2);
-                    jo.Add("Attr3", item.Attr3);
-                    jo.Add("Attr4", item.Attr4);
-                    jo.Add("Attr5", item.Attr5);
-                    jo.Add("CreatePerson", item.CreatePerson);
-                    jo.Add("CreateTime", item.CreateTime);
-                    jo.Add("ModifyPerson", item.ModifyPerson);
-                    jo.Add("ModifyTime", item.ModifyTime);
+                    jo.Add("库房ID", item.InvId);
+                    jo.Add("库房名称", item.InvCode);
+                    jo.Add("物料ID", item.PartId);
+                    jo.Add("物料编码", item.PartCode);
+                    jo.Add("物料名称", item.PartName);
+                    jo.Add("平均库存", item.AvgQty);
+                    jo.Add("当前库存", item.InvQty);
                     jObjects.Add(jo);
                 }
                 var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
