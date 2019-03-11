@@ -20,6 +20,7 @@ namespace Apps.Models
         public string PartName { get; set; }
         public string InvCode { get; set; }
         public string InvName { get; set; }
-        public Nullable<decimal> Qty { get; set; }
+        public Nullable<decimal> AvgQty { get; set; }
+        public Nullable<decimal> InvQty { get; set; }
     }
 }
