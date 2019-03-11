@@ -53,32 +53,39 @@ namespace Apps.Web.Areas.WMS.Controllers
             
             string query = "";
             string selfQuery = " 1=1";
-            if (returnOrderStatus == "未退货")
-            {
-                query += " 1=1 ";
-                if (!String.IsNullOrEmpty(inspectBillNum))
-                    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
-                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
-                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
-            }
-            if (returnOrderStatus == "已失效")
-            {
-                query += " 1=1 ";                
-                if (!String.IsNullOrEmpty(inspectBillNum))
-                    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
-                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
-                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
-                query += " && Status == \"无效\"";
-            }
 
-            if (returnOrderStatus == "已退货")
-            {
-                query = " 1=1 ";
-                if (!String.IsNullOrEmpty(inspectBillNum))
-                    query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
-                query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
-                query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
-            }
+            query += " 1=1 ";
+            if (!String.IsNullOrEmpty(inspectBillNum))
+                query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+            query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+            query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+
+            //if (returnOrderStatus == "未退货")
+            //{
+            //    query += " 1=1 ";
+            //    if (!String.IsNullOrEmpty(inspectBillNum))
+            //        query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+            //    query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+            //    query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            //}
+            //if (returnOrderStatus == "已失效")
+            //{
+            //    query += " 1=1 ";                
+            //    if (!String.IsNullOrEmpty(inspectBillNum))
+            //        query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+            //    query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+            //    query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            //    query += " && Status == \"无效\"";
+            //}
+
+            //if (returnOrderStatus == "已退货")
+            //{
+            //    query = " 1=1 ";
+            //    if (!String.IsNullOrEmpty(inspectBillNum))
+            //        query += " && WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")";
+            //    query += " && WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\")";
+            //    query += " && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            //}
             //query += " && PrintStaus.Contains(\"" + returnOrderStatus + "\")";
 
             if (returnOrderNum != "")

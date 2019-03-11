@@ -44,7 +44,7 @@
                 <input id="txtInspectBillNum" type="text" placeholder="送检单号:" class="searchText" />
                 <input id="txtsupplierShortName" placeholder="供应商简称:" type="text" class="searchText" />
                 <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
-                退货状态：@Html.DropDownList("txtReturnOrderStatus", ViewBag.ReturnOrderStatus as SelectList, new { @style = "width:70px;" })
+                @*退货状态：@Html.DropDownList("txtReturnOrderStatus", ViewBag.ReturnOrderStatus as SelectList, new { @style = "width:70px;" })*@
                 退货日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
                 至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
                 <br>
@@ -65,7 +65,7 @@
         </td>        <td style="width:3px;"></td>
         <td style="vertical-align:top">
             <div class="mvctool">
-                @Html.ToolButton("btnPrint", "fa fa-plus", Resource.Print, ref perm, "Create", true)
+                @Html.ToolButton("btnPrint", "fa fa-plus", "退货单生成", ref perm, "Create", true)
                 @Html.ToolButton("btnConfirm", "fa fa-search", "退货单确认", ref perm, "Edit", true)
                 @Html.ToolButton("btnDelete", "fa fa-plus", "失效", ref perm, "Delete", true)
                 @Html.ToolButton("btnReport", "fa fa-search", "查看单据", ref perm, "Query", true)
