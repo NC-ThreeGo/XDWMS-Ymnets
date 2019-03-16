@@ -235,12 +235,13 @@
                 $('#List').datagrid('selectRow', index)
                     .datagrid('beginEdit', index);
 
-                var ed = $('#List').datagrid('getEditor', { index: index, field: field });
-                if (ed)
+                //给numberbox增加keyup事件，以便自动计算合格数量和不合格数量
+                var eds = $('#List').datagrid('getEditors', index);
+                for (var i = 0; i < eds.length; i++)
                 {
-                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
-
-                    if (field == 'Qty')
+                    var ed = eds[i];
+                    //alert(ed.field);
+                    if (ed.field == 'Qty')
                     {
                         var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
                         target.attr("field", ed.field)
@@ -248,8 +249,11 @@
                         {
                             return setKeyUpValue($(this));
                         });
+
+                        ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
                     }
                 }
+
                 editIndex = index;
             } else
             {
