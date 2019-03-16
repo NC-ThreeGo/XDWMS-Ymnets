@@ -47,43 +47,44 @@ $.messageBox5s(Lang.Tip, mes);
 </script>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
-@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
-@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
 </div>
 @using (Html.BeginForm())
 {
-             @Html.HiddenFor(model => model.Id)
-             @Html.HiddenFor(model => model.CreateTime)
- <table class="formtable">
-     <tbody>
-         <tr>
-             <th>
-                 @Html.LabelFor(model => model.InvHistoryTitle)：
-             </th>
-             <td>
-                 @Html.EditorFor(model => model.InvHistoryTitle)
-             </td>
-             <td>@Html.ValidationMessageFor(model => model.InvHistoryTitle)</td>
-         </tr>
-         <tr>
-             <th>
-                 @Html.LabelFor(model => model.InvHistoryStatus)：
-             </th>
-             <td>
-                 @Html.DropDownListFor(model => model.InvHistoryStatus, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("Status"))
-             </td>
-             <td>@Html.ValidationMessageFor(model => model.InvHistoryStatus)</td>
-         </tr>
-         <tr>
-             <th>
-                 @Html.LabelFor(model => model.Remark)：
-             </th>
-             <td>
-                 @Html.EditorFor(model => model.Remark)
-             </td>
-             <td>@Html.ValidationMessageFor(model => model.Remark)</td>
-         </tr>
-     </tbody>
-</table>
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CreateTime)
+    @Html.HiddenFor(model => model.CreatePerson)
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.InvHistoryTitle)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.InvHistoryTitle)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.InvHistoryTitle)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.InvHistoryStatus)：
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.InvHistoryStatus, Apps.BLL.Sys.SysParamBLL.GetSysParamByType("Status"))
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.InvHistoryStatus)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Remark)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Remark)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+            </tr>
+        </tbody>
+    </table>
 }
 
