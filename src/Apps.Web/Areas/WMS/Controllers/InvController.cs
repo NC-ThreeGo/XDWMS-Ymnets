@@ -224,7 +224,7 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         #region 获取指定库房、物料的现有批次号
         [HttpPost]
-        [SupportFilter(ActionName = "Create")]
+        //[SupportFilter(ActionName = "Create")]
         public JsonResult GetLotsByPart(int partId, int invId, int? subInvId = null)
         {
             var list = m_BLL.GetLotsByPart(invId, subInvId, partId);
