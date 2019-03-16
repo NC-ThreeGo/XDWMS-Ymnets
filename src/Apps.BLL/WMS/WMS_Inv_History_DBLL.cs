@@ -295,12 +295,24 @@ namespace Apps.BLL.WMS
             }
         }
 
-        public List<V_WMS_InvHistoryAvg> GetInvHistoryAvg(ref GridPager pager)
+        public List<WMS_InvHistoryAvg> GetInvHistoryAvg(ref GridPager pager)
         {
             using (DBContainer db = new DBContainer())
             {
-                IQueryable<V_WMS_InvHistoryAvg> queryData = null;
-                queryData = db.V_WMS_InvHistoryAvg.AsQueryable();
+                IQueryable<WMS_InvHistoryAvg> queryData = null;
+                queryData = from d in db.V_WMS_InvHistoryAvg
+                            select new WMS_InvHistoryAvg()
+                            {
+                                PartId = d.PartId,
+                                InvId = d.InvId,
+                                PartCode = d.PartCode,
+                                PartName = d.PartName,
+                                InvCode = d.InvCode,
+                                InvName = d.InvName,
+                                AvgQty = d.AvgQty,
+                                InvQty = d.InvQty,
+                                BalanceQty = d.InvQty - d.AvgQty,
+                            };
                 pager.totalRows = queryData.Count();
                 //排序
                 queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
