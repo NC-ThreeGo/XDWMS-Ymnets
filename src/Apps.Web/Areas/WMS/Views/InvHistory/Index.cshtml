@@ -91,11 +91,11 @@
                 { field: 'CreateTime', title: '创建时间', width: 150, sortable: true },
             ]]
             ,onClickRow: function(index, row) {
-             $('#List').datagrid("load", { ParentId: row.Id });
+                $('#List').datagrid("load", { headId: row.Id });
             }
         }).datagrid('getPager').pagination({ showPageList: false, showRefresh: false });
         $('#List').datagrid({
-            url: '@Url.Action("GetList")?headId=0',
+            url: '@Url.Action("GetList")?headId=-1',
             width:SetGridWidthSub(450),
             methord: 'post',
             height: SetGridHeightSub(45),
@@ -160,7 +160,7 @@
             if (queryStr == null) {
                 queryStr = "%";
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
+            $("#ListParent").datagrid("load", { queryStr: queryStr });
 
         });
         $("#btnListAvg").click(function () {
