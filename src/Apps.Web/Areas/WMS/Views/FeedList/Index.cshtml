@@ -193,6 +193,7 @@
             $("#txtExcelPath").val("");
             $("#FileUpload").val("");
             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+            window.parent.frameReturnByReload(true);
         });
         $("#btnExport").click(function() {
             var feedBillNum = $("#txtFeedBillNum").val();

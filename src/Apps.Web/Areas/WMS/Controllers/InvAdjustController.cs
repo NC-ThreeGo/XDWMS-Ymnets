@@ -209,7 +209,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("物料名称", item.PartCode);
                     jo.Add("数量", item.AdjustQty);
                     jo.Add("类型", item.AdjustType);
-                    jo.Add("库存", item.InvId);
+                    jo.Add("库存", item.InvName);
                     //jo.Add("子库存", item.SubInvId);
                     jo.Add("备注", item.Remark);
                     //jo.Add("Attr1", item.Attr1);
