@@ -84,7 +84,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Check")]
         public ActionResult Confirm(int headId)
         {
-            if (headId != 0)
+            WMS_Inventory_HModel entity = m_BLL.GetById(headId);            
+            if (headId != 0 && entity.InventoryStatus != "已失效")
             {
                 if (m_BLL.ConfirmInventory(ref errors, GetUserTrueName(), headId))
                 {
@@ -154,9 +155,11 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Delete(long id)
         {
-            if(id!=0)
+            WMS_Inventory_HModel entity = m_BLL.GetById(id);
+            entity.InventoryStatus = "已失效";
+            if (id!=0)
             {
-                if (m_BLL.Delete(ref errors, id))
+                if (m_BLL.Edit(ref errors, entity))
                 {
                     LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_Inventory_H");
                     return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
