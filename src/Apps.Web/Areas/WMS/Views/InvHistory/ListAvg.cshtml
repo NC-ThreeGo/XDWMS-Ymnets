@@ -14,8 +14,15 @@
 <script type="text/javascript">
     $(function ()
     {
+        $("#btnQuery").click(function ()
+        {
+            var queryStr = $("#txtQuery").val();
+            $("#List").datagrid("load", { partCode: queryStr });
+
+        });
         $("#btnExport").click(function() {
-            window.location = "@Url.Action("Export")";
+            var queryStr = $("#txtQuery").val();
+            window.location = "@Url.Action("Export")?queryStr=" + queryStr;
         });
         $("#btnReturn").click(function ()
         {
@@ -28,7 +35,7 @@
             methord: 'post',
             height: SetGridHeightSub(45),
             fitColumns: true,
-            sortName: 'InvCode',
+            sortName: 'Id',
             sortOrder: 'desc',
             idField: 'Id',
             pageSize: 15,
@@ -38,26 +45,33 @@
             singleSelect: true,//单选模式
             //rownumbers: true,//行号
             columns: [[
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
                 { field: 'InvCode', title: '库房编码', width: 80, sortable: true },
                 { field: 'InvName', title: '库房名称', width: 80, sortable: true },
                 //{ field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
-                { field: 'PartCode', title: '物料编码', width: 60, sortable: true },
-                { field: 'PartName', title: '物料名称', width: 60, sortable: true },
+                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 80, sortable: true },
                 { field: 'AvgQty', title: '平均库存', width: 80, sortable: true, align: 'right' },
                 { field: 'InvQty', title: '当前库存', width: 80, sortable: true, align: 'right' },
-                { field: 'BalanceQty', title: '差额', width: 80, sortable: true, align: 'right' },
+                { field: 'BalanceQty', title: '差额', width: 60, sortable: true, align: 'right' },
             ]]
         });
     });
 </script>
-<div class="mvctool bgb">
-    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
-    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
-</div>
 @using (Html.BeginForm())
 {
 }
 <table>
+    <tr>
+        <td style="vertical-align:top" colspan="7">
+            <div class="mvctool bgb">
+                物料编码：<input id="txtQuery" type="text" class="searchText" />
+                @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+                @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
+                @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+            </div>
+        </td>
+    </tr>
     <tr>
         <td colspan="7" style="padding:4px;">
             <table id="List"></table>

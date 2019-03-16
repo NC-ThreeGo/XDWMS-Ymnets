@@ -20,6 +20,8 @@ namespace Apps.Models.V
 	public class Virtual_V_WMS_InvHistoryAvgModel
 	{
 		[Display(Name = "未设置")]
+		public virtual Nullable<long> Id { get; set; }
+		[Display(Name = "未设置")]
 		public virtual int PartId { get; set; }
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> InvId { get; set; }

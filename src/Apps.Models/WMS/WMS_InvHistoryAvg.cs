@@ -8,6 +8,7 @@ namespace Apps.Models.WMS
 {
     public partial class WMS_InvHistoryAvg
     {
+        public Nullable<long> Id { get; set; }
         public int PartId { get; set; }
         public Nullable<int> InvId { get; set; }
         public string PartCode { get; set; }

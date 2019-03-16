@@ -1538,6 +1538,7 @@
             <PropertyRef Name="InvCode" />
             <PropertyRef Name="InvName" />
           </Key>
+          <Property Name="Id" Type="bigint" />
           <Property Name="PartId" Type="int" Nullable="false" />
           <Property Name="InvId" Type="int" />
           <Property Name="PartCode" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -3381,6 +3382,7 @@
           </EntitySet>
           <EntitySet Name="V_WMS_InvHistoryAvg" EntityType="Self.V_WMS_InvHistoryAvg" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
+    [V_WMS_InvHistoryAvg].[Id] AS [Id], 
     [V_WMS_InvHistoryAvg].[PartId] AS [PartId], 
     [V_WMS_InvHistoryAvg].[InvId] AS [InvId], 
     [V_WMS_InvHistoryAvg].[PartCode] AS [PartCode], 
@@ -8096,6 +8098,7 @@
             <PropertyRef Name="InvCode" />
             <PropertyRef Name="InvName" />
           </Key>
+          <Property Name="Id" Type="Int64" />
           <Property Name="PartId" Type="Int32" Nullable="false" />
           <Property Name="InvId" Type="Int32" />
           <Property Name="PartCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -10021,6 +10024,7 @@
                 <ScalarProperty Name="PartCode" ColumnName="PartCode" />
                 <ScalarProperty Name="InvId" ColumnName="InvId" />
                 <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -52,9 +52,9 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         [HttpPost]
         [SupportFilter(ActionName = "Index")]
-        public JsonResult GetListAvg(GridPager pager)
+        public JsonResult GetListAvg(GridPager pager, string partCode)
         {
-            List<WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref pager);
+            List<WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref pager, "PartCode.Contains(\"" + partCode + "\")");
             GridRows<WMS_InvHistoryAvg> grs = new GridRows<WMS_InvHistoryAvg>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -199,7 +199,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Export(string queryStr)
         {
-            List<WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref setNoPagerAscById);
+            List<WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref setNoPagerAscById, "PartCode.Contains(\"" + queryStr + "\")");
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {

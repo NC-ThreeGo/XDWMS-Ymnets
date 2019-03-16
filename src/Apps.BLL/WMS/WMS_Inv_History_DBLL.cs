@@ -295,29 +295,30 @@ namespace Apps.BLL.WMS
             }
         }
 
-        public List<WMS_InvHistoryAvg> GetInvHistoryAvg(ref GridPager pager)
+        public List<WMS_InvHistoryAvg> GetInvHistoryAvg(ref GridPager pager, string where)
         {
             using (DBContainer db = new DBContainer())
             {
-                IQueryable<WMS_InvHistoryAvg> queryData = null;
-                queryData = from d in db.V_WMS_InvHistoryAvg
-                            select new WMS_InvHistoryAvg()
-                            {
-                                PartId = d.PartId,
-                                InvId = d.InvId,
-                                PartCode = d.PartCode,
-                                PartName = d.PartName,
-                                InvCode = d.InvCode,
-                                InvName = d.InvName,
-                                AvgQty = d.AvgQty,
-                                InvQty = d.InvQty,
-                                BalanceQty = d.InvQty - d.AvgQty,
-                            };
-                pager.totalRows = queryData.Count();
+                IQueryable<V_WMS_InvHistoryAvg> queryData = db.V_WMS_InvHistoryAvg.Where(where);
+                var queryData1 = from d in queryData
+                                 select new WMS_InvHistoryAvg()
+                                 {
+                                     Id = d.Id,
+                                     PartId = d.PartId,
+                                     InvId = d.InvId,
+                                     PartCode = d.PartCode,
+                                     PartName = d.PartName,
+                                     InvCode = d.InvCode,
+                                     InvName = d.InvName,
+                                     AvgQty = d.AvgQty,
+                                     InvQty = d.InvQty,
+                                     BalanceQty = d.InvQty - d.AvgQty,
+                                 };
+                pager.totalRows = queryData1.Count();
                 //排序
-                queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+                queryData1 = LinqHelper.SortingAndPaging(queryData1, pager.sort, pager.order, pager.page, pager.rows);
 
-                return queryData.ToList();
+                return queryData1.ToList();
             }
         }
     }
