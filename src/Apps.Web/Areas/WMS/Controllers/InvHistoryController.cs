@@ -54,8 +54,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetListAvg(GridPager pager)
         {
-            List<V_WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref pager);
-            GridRows<V_WMS_InvHistoryAvg> grs = new GridRows<V_WMS_InvHistoryAvg>();
+            List<WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref pager);
+            GridRows<WMS_InvHistoryAvg> grs = new GridRows<WMS_InvHistoryAvg>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
@@ -199,7 +199,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Export(string queryStr)
         {
-            List<V_WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref setNoPagerAscById);
+            List<WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref setNoPagerAscById);
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
@@ -211,6 +211,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("物料名称", item.PartName);
                     jo.Add("平均库存", item.AvgQty);
                     jo.Add("当前库存", item.InvQty);
+                    jo.Add("差额", item.BalanceQty);
                     jObjects.Add(jo);
                 }
                 var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
@@ -230,22 +231,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             JArray jObjects = new JArray();
             var jo = new JObject();
-              jo.Add("Id", "");
-              jo.Add("HeadId", "");
-              jo.Add("PartId", "");
-              jo.Add("SnapshootQty", "");
-              jo.Add("InvId", "");
-              jo.Add("SubInvId", "");
-              jo.Add("Remark", "");
-              jo.Add("Attr1", "");
-              jo.Add("Attr2", "");
-              jo.Add("Attr3", "");
-              jo.Add("Attr4", "");
-              jo.Add("Attr5", "");
-              jo.Add("CreatePerson", "");
-              jo.Add("CreateTime", "");
-              jo.Add("ModifyPerson", "");
-              jo.Add("ModifyTime", "");
+            jo.Add("库房ID", "");
+            jo.Add("库房名称", "");
+            jo.Add("物料ID", "");
+            jo.Add("物料编码", "");
+            jo.Add("物料名称", "");
+            jo.Add("平均库存", "");
+            jo.Add("当前库存", "");
+            jo.Add("差额", "");
             jo.Add("导入的错误信息", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());

@@ -474,6 +474,7 @@
     <Compile Include="WMS\WMS_Feed_ListModel.cs" />
     <Compile Include="WMS\WMS_Inventory_DModel.cs" />
     <Compile Include="WMS\WMS_Inventory_HModel.cs" />
+    <Compile Include="WMS\WMS_InvHistoryAvg.cs" />
     <Compile Include="WMS\WMS_InvModel.cs" />
     <Compile Include="WMS\WMS_Inv_AdjustModel.cs" />
     <Compile Include="WMS\WMS_Inv_History_HModel.cs" />
