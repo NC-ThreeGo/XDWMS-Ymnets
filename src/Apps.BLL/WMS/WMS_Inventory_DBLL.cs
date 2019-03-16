@@ -75,6 +75,7 @@ namespace Apps.BLL.WMS
                                                         SnapshootQty = r.SnapshootQty,
                                                         Inventory_HName = r.WMS_Inventory_H.InventoryTitle,
                                                         InventoryType = r.WMS_Inventory_H.InventoryType,
+                                                        InventoryStatus = r.WMS_Inventory_H.InventoryStatus,
 
                                                         PartCode = r.WMS_Part.PartCode,
                                                         PartName = r.WMS_Part.PartName,
@@ -369,11 +370,27 @@ namespace Apps.BLL.WMS
                 {
                     model.HeadId = inventoryH.Id;
                     model.InventoryType = inventoryH.InventoryType;
+                    model.InventoryStatus = inventoryH.InventoryStatus;
                 }
             }
             else
             {
                 throw new Exception("盘点名称不能为空！");
+            }
+            //已确认的盘点不能重复导入
+            if (model.InventoryStatus == "已确认")
+            {
+                throw new Exception("已确认盘点不能重复导入！");
+            }
+            //已失效的盘点不能重复导入
+            if (model.InventoryStatus == "已失效")
+            {
+                throw new Exception("已失效盘点不能导入！");
+            }
+            //全检盘点不能在未生产状态下导入
+            if (model.InventoryStatus == "未生成" && model.InventoryType=="全检")
+            {
+                throw new Exception("请先生成盘点表！");
             }
         }
 
