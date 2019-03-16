@@ -202,6 +202,9 @@
             $("#ListParent").datagrid("load", {
                 returnOrderNum: returnOrderNum, inspectBillNum: inspectBillNum, supplierShortName: supplierShortName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val(), returnOrderStatus: returnOrderStatus
             });
+            $("#List").datagrid("load", {
+                parentId : -1
+            });
         });
         $("#btnCreateParent").click(function () {
             $.modalWindow(Lang.Create, '@Url.Action("CreateParent")', 700, 400, 'fa fa-plus');
