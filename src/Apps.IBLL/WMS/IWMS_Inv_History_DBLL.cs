@@ -52,6 +52,6 @@ namespace Apps.IBLL.WMS
         /// 获取历史库存的平均值
         /// </summary>
         /// <returns></returns>
-        List<V_WMS_InvHistoryAvg> GetInvHistoryAvg(ref GridPager pager);
+        List<WMS_InvHistoryAvg> GetInvHistoryAvg(ref GridPager pager);
     }
 }

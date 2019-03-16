@@ -54,8 +54,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetListAvg(GridPager pager)
         {
-            List<V_WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref pager);
-            GridRows<V_WMS_InvHistoryAvg> grs = new GridRows<V_WMS_InvHistoryAvg>();
+            List<WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref pager);
+            GridRows<WMS_InvHistoryAvg> grs = new GridRows<WMS_InvHistoryAvg>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
@@ -199,7 +199,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Export(string queryStr)
         {
-            List<V_WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref setNoPagerAscById);
+            List<WMS_InvHistoryAvg> list = m_BLL.GetInvHistoryAvg(ref setNoPagerAscById);
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
@@ -211,6 +211,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("物料名称", item.PartName);
                     jo.Add("平均库存", item.AvgQty);
                     jo.Add("当前库存", item.InvQty);
+                    jo.Add("差额", item.BalanceQty);
                     jObjects.Add(jo);
                 }
                 var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
