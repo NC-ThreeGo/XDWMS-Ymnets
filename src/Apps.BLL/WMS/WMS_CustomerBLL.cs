@@ -68,10 +68,10 @@ namespace Apps.BLL.WMS
 				using (IXLWorksheet wws = wb.Worksheets.First())
 				{
 					//对应列头
-					excelFile.AddMapping<WMS_CustomerModel>(x => x.CustomerCode, "客户编码");
-					excelFile.AddMapping<WMS_CustomerModel>(x => x.CustomerShortName, "客户简称");
-					excelFile.AddMapping<WMS_CustomerModel>(x => x.CustomerName, "客户名称");
-					excelFile.AddMapping<WMS_CustomerModel>(x => x.CustomerType, "客户类型");
+					excelFile.AddMapping<WMS_CustomerModel>(x => x.CustomerCode, "客户编码(必输)");
+					excelFile.AddMapping<WMS_CustomerModel>(x => x.CustomerShortName, "客户简称(必输)");
+					excelFile.AddMapping<WMS_CustomerModel>(x => x.CustomerName, "客户名称(必输)");
+					excelFile.AddMapping<WMS_CustomerModel>(x => x.CustomerType, "客户类型(必输)");
 					excelFile.AddMapping<WMS_CustomerModel>(x => x.LinkMan, "联系人");
 					excelFile.AddMapping<WMS_CustomerModel>(x => x.LinkManTel, "联系电话");
 					excelFile.AddMapping<WMS_CustomerModel>(x => x.LinkManAddress, "联系地址");
@@ -209,7 +209,7 @@ namespace Apps.BLL.WMS
             {
                 throw new Exception("客户编码不能为空！");
             }
-            //获取物料类型
+            //获取客户类型
             if (!String.IsNullOrEmpty(model.CustomerType))
             {
                 var customer = model.CustomerType;
@@ -220,6 +220,21 @@ namespace Apps.BLL.WMS
                 {
                     throw new Exception("客户类型不存在！");
                 }
+            }
+            //客户类型不能为空
+            if (String.IsNullOrEmpty(model.CustomerType))
+            {
+                throw new Exception("客户类型不能为空！");
+            }
+            //客户名称不能为空
+            if (String.IsNullOrEmpty(model.CustomerName))
+            {
+                throw new Exception("客户名称不能为空！");
+            }
+            //客户简称不能为空
+            if (String.IsNullOrEmpty(model.CustomerShortName))
+            {
+                throw new Exception("客户简称不能为空！");
             }
         }
 

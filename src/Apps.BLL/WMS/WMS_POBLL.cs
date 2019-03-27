@@ -12,12 +12,15 @@ using Unity.Attributes;
 using Apps.IDAL.WMS;
 using System.Linq.Expressions;
 using System.Linq.Dynamic.Core;
-
+using Apps.IDAL.Sys;
 
 namespace Apps.BLL.WMS
 {
     public partial class WMS_POBLL
     {
+        [Dependency]
+        public ISysParamRepository m_SysParamRep { get; set; }
+
         [Dependency]
         public IWMS_PartRepository m_PartRep { get; set; }
         [Dependency]
@@ -82,13 +85,13 @@ namespace Apps.BLL.WMS
                 using (IXLWorksheet wws = wb.Worksheets.First())
                 {
                     //对应列头
-                    excelFile.AddMapping<WMS_POModel>(x => x.PO, "采购订单");
-                    excelFile.AddMapping<WMS_POModel>(x => x.PODate, "采购日期");
-                    excelFile.AddMapping<WMS_POModel>(x => x.SupplierShortName, "供应商简称");
-                    excelFile.AddMapping<WMS_POModel>(x => x.PartCode, "物料编码");
-                    excelFile.AddMapping<WMS_POModel>(x => x.QTY, "数量");
+                    excelFile.AddMapping<WMS_POModel>(x => x.PO, "采购订单(必输)");
+                    excelFile.AddMapping<WMS_POModel>(x => x.PODate, "采购日期(必输格式:YYYY-MM-DD)");
+                    excelFile.AddMapping<WMS_POModel>(x => x.SupplierShortName, "供应商简称(必输)");
+                    excelFile.AddMapping<WMS_POModel>(x => x.PartCode, "物料编码(必输)");
+                    excelFile.AddMapping<WMS_POModel>(x => x.QTY, "数量(必输)");
                     excelFile.AddMapping<WMS_POModel>(x => x.PlanDate, "计划到货日期");
-                    excelFile.AddMapping<WMS_POModel>(x => x.POType, "采购订单类型");
+                    excelFile.AddMapping<WMS_POModel>(x => x.POType, "采购订单类型(必输)");
                     //excelFile.AddMapping<WMS_POModel>(x => x.Status, "状态");
                     excelFile.AddMapping<WMS_POModel>(x => x.Remark, "说明");
                     //excelFile.AddMapping<WMS_POModel>(x => x.Attr1, "");
@@ -290,7 +293,30 @@ namespace Apps.BLL.WMS
                     throw new Exception("同订单存在不同供应商！");
                 }
             }
+            //采购日期不能为空
+            if (String.IsNullOrEmpty(model.PODate.ToString()))
+            {
+                throw new Exception("采购日期不能为空！");
+            }
+            //采购数量不能为空
+            if (model.QTY==0)
+            {
+                throw new Exception("采购数量不能为空！");
+            }
+            //采购订单类型判断
+            if (!String.IsNullOrEmpty(model.POType))
+            {
+                var potype = model.POType;
+                Expression<Func<SysParam, bool>> exp = x => x.ParamName == potype && x.TypeCode == "POType";
 
+                var part = m_SysParamRep.GetSingleWhere(exp);
+                if (part == null)
+                {
+                    throw new Exception("采购订单类型不存在！");
+                }
+                
+            }
+            else { throw new Exception("采购订单类型不能为空！"); }
 
         }
         public List<WMS_POModel> GetListByWhere(ref GridPager pager, string where)
