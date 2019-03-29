@@ -81,16 +81,16 @@ namespace Apps.BLL.WMS
 				using (IXLWorksheet wws = wb.Worksheets.First())
 				{
 					//对应列头
-					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.FeedBillNum, "投料单号（业务）");
+					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.FeedBillNum, "投料单号（业务）(必输)");
 					//excelFile.AddMapping<WMS_Feed_ListModel>(x => x.ReleaseBillNum, "投料单号（系统）");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Department, "投料部门");
-					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.AssemblyPartCode, "总成物料");
-					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.SubAssemblyPartCode, "投料物料");
-                    excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Lot, "批次号");
-                    excelFile.AddMapping<WMS_Feed_ListModel>(x => x.FeedQty, "投料数量");
+					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.AssemblyPartCode, "总成物料(必输)");
+					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.SubAssemblyPartCode, "投料物料(必输)");
+                    excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Lot, "批次号(格式：YYYY-MM-DD)");
+                    excelFile.AddMapping<WMS_Feed_ListModel>(x => x.FeedQty, "投料数量(必输)");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.BoxQty, "箱数");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Capacity, "体积");
-					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.InvName, "库房");
+					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.InvName, "库房(必输)");
 					//excelFile.AddMapping<WMS_Feed_ListModel>(x => x.SubInvId, "子库存");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Remark, "备注");
 					//excelFile.AddMapping<WMS_Feed_ListModel>(x => x.PrintStaus, "打印状态");
@@ -308,10 +308,24 @@ namespace Apps.BLL.WMS
             {
                 throw new Exception("库房不能为空！");
             }
-            //校验批次号            
-            if (String.IsNullOrEmpty(model.Lot) || !DateTimeHelper.CheckYearMonth(model.Lot))
+           
+            //校验批次号,没有批次号自动赋值为当前月
+            if (!String.IsNullOrEmpty(model.Lot))
             {
-                throw new Exception("批次号不合符规范！");
+                if (!DateTimeHelper.CheckYearMonth(model.Lot))
+                {
+                    throw new Exception("批次号不合符规范！");
+                }
+            }
+            //投料单号不能为空
+            if (String.IsNullOrEmpty(model.FeedBillNum))
+            {
+                throw new Exception("投料单号不能为空！");
+            }
+            //投料数量不能为空
+            if (model.FeedQty == 0)
+            {
+                throw new Exception("投料数量不能为空！");
             }
 
         }

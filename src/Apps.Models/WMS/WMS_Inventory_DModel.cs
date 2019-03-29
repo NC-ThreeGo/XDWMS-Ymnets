@@ -14,6 +14,9 @@ namespace Apps.Models.WMS
         [Display(Name = "物料名称")]
         public string PartName { get; set; }
 
+        [Display(Name = "保管员")]
+        public string StoreMan { get; set; }
+
         [Display(Name = "库房")]
         public string InvCode { get; set; }
         public string InvName { get; set; }

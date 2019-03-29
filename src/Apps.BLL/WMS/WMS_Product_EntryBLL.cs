@@ -80,15 +80,15 @@ namespace Apps.BLL.WMS
                 using (IXLWorksheet wws = wb.Worksheets.First())
                 {
                     //对应列头
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ProductBillNum, "入库单号（业务）");
+                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ProductBillNum, "入库单号（业务）(必输)");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.EntryBillNum, "入库单号（系统）");
                     excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Department, "本货部门");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Partid, "物料");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.PartCode, "物料编码");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ProductQty, "数量");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Lot, "批次");
+                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.PartCode, "物料编码(必输)");
+                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ProductQty, "数量(必输)");
+                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Lot, "批次(格式：YYYY-MM-DD)");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvId, "库存");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvName, "库房");
+                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvName, "库房(必输)");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.SubInvId, "子库存");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Remark, "备注");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr1, "");
@@ -292,12 +292,21 @@ namespace Apps.BLL.WMS
                 throw new Exception("入库单号不能为空！");
             }
 
-            //校验批次号
-            if (String.IsNullOrEmpty(model.Lot)|| !DateTimeHelper.CheckYearMonth(model.Lot))
+            //校验批次号,没有批次号自动赋值为当前月
+            if (!String.IsNullOrEmpty(model.Lot))
             {
-                throw new Exception("批次号不合符规范！");
+                if (!DateTimeHelper.CheckYearMonth(model.Lot))
+                {
+                    throw new Exception("批次号不合符规范！");
+                }
             }
-           
+            else { model.Lot = DateTime.Now.ToString("yyyyMM"); }
+
+            if (model.ProductQty == 0)
+            {
+                throw new Exception("数量不能为空！");
+            }
+
         }
 
         public List<WMS_Product_EntryModel> GetListByWhere(ref GridPager pager, string where)

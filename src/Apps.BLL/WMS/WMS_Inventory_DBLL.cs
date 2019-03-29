@@ -83,6 +83,7 @@ namespace Apps.BLL.WMS
                                                         InvName = r.WMS_InvInfo.InvName,
                                                         SubInvName = r.WMS_SubInvInfo.SubInvName,
                                                         ConfirmMessage = r.ConfirmMessage,
+                                                        StoreMan = r.WMS_Part.StoreMan,
                                                     }).ToList();
             return modelList;
         }

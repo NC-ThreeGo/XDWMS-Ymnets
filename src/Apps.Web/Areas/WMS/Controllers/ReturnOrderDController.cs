@@ -441,7 +441,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Create")]
         public JsonResult SupplierGetList(GridPager pager, string supplierCode, string supplierShortName)
         {
-            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "Status != \"无效\"")
+            List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "WMS_Supplier.SupplierCode.Contains(\"" + supplierCode + "\") && WMS_Supplier.SupplierShortName.Contains(\""
+                + supplierShortName + "\")&&Status != \"无效\"")
                 .Where(p => Math.Abs(p.AdjustQty) < Math.Abs(p.ReturnQty))
                 .GroupBy(p => new { p.SupplierId, p.SupplierShortName })
                 .Select(g => g.First())
