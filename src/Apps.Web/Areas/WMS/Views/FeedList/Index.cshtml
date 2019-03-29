@@ -67,7 +67,7 @@
             url: '@Url.Action("GetList")',
             width:SetGridWidthSub(10),
             methord: 'post',
-            height: SetGridHeightSub(45),
+            height: SetGridHeightSub(60),
             fitColumns: true,
             sortName: 'CreateTime',
             sortOrder: 'desc',
@@ -78,6 +78,7 @@
             striped: true, //奇偶行是否区分
             singleSelect: true,//单选模式
             //rownumbers: true,//行号
+            showFooter: true,
             onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
             },
             columns: [[

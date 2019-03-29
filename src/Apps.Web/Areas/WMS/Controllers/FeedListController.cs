@@ -65,8 +65,17 @@ namespace Apps.Web.Areas.WMS.Controllers
             //  + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")");
 
             List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, query);
-            GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>(); 
+            GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
+
+            List<WMS_Feed_ListModel> footerList = new List<WMS_Feed_ListModel>();
+            footerList.Add(new WMS_Feed_ListModel()
+            {
+                FeedBillNum = "<div style='text-align:right;color:#444'>合计：</div>",
+                FeedQty = list.Sum(p => p.FeedQty),
+            });
+
             grs.rows = list;
+            grs.footer = footerList;
             grs.total = pager.totalRows;
             return Json(grs);
         }
