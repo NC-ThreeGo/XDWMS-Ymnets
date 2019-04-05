@@ -5,6 +5,9 @@ namespace Apps.Models.WMS
 {
     public partial class WMS_AIModel
     {
+        [Display(Name = "到货日期")]
+        public override DateTime? ArrivalDate { get; set; }
+
         public string PartCode { get; set; }
         public string PartName { get; set; }
         public string PO { get; set; }

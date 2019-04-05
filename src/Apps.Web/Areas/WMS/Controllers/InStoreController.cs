@@ -310,7 +310,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetInspectBillList(GridPager pager, string inspectBillNum)
         {
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectBillNum == \"" + inspectBillNum + "\" && InStoreStatus == \"" + "未入库" + "\"").ToList();
+            List<WMS_AIModel> list = m_BLL.GetInspectBillList(ref pager, "InspectBillNum == \"" + inspectBillNum + "\" && InStoreStatus == \"" + "未入库" + "\"").ToList();
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

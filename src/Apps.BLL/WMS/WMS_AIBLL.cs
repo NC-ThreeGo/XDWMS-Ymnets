@@ -14,10 +14,8 @@ namespace Apps.BLL.WMS
 {
     public partial class WMS_AIBLL
     {
-
         public override List<WMS_AIModel> CreateModelList(ref IQueryable<WMS_AI> queryData)
         {
-
             List<WMS_AIModel> modelList = (from r in queryData
                                            select new WMS_AIModel
                                            {
@@ -52,6 +50,57 @@ namespace Apps.BLL.WMS
                                                PartId = r.PartId,
                                                Lot = r.Lot,
                                                QualifyQty = r.QualifyQty,
+                                               ReceiveMan = r.ReceiveMan,
+                                               ReceiveStatus = r.ReceiveStatus,
+                                               ReInspectBillNum = r.ReInspectBillNum,
+
+                                               PartCode = r.WMS_PO.WMS_Part.PartCode,
+                                               PartName = r.WMS_PO.WMS_Part.PartName,
+                                               SupplierShortName = r.WMS_PO.WMS_Supplier.SupplierShortName,
+                                               PO = r.WMS_PO.PO,
+                                               PlanDate = r.WMS_PO.PlanDate,
+                                               InvName = r.WMS_InvInfo.InvName,
+                                               SubInvName = r.WMS_SubInvInfo.SubInvName,
+                                           }).ToList();
+            return modelList;
+        }
+
+        private List<WMS_AIModel> CreateModelListForInspect(ref IQueryable<WMS_AI> queryData)
+        {
+            List<WMS_AIModel> modelList = (from r in queryData
+                                           select new WMS_AIModel
+                                           {
+                                               ArrivalBillNum = r.ArrivalBillNum,
+                                               ArrivalDate = r.ArrivalDate,
+                                               ArrivalQty = r.ArrivalQty,
+                                               Attr1 = r.Attr1,
+                                               Attr2 = r.Attr2,
+                                               Attr3 = r.Attr3,
+                                               Attr4 = r.Attr4,
+                                               Attr5 = r.Attr5,
+                                               BoxQty = r.BoxQty,
+                                               CheckOutDate = DateTime.Now,
+                                               CheckOutRemark = r.CheckOutRemark,
+                                               CheckOutResult = "合格",
+                                               CreatePerson = r.CreatePerson,
+                                               CreateTime = r.CreateTime,
+                                               Id = r.Id,
+                                               InspectBillNum = r.InspectBillNum,
+                                               InspectDate = r.InspectDate,
+                                               InspectMan = r.InspectMan,
+                                               InspectStatus = r.InspectStatus,
+                                               InStoreBillNum = r.InStoreBillNum,
+                                               InStoreMan = r.InStoreMan,
+                                               InStoreStatus = r.InStoreStatus,
+                                               InvId = r.InvId,
+                                               SubInvId = r.SubInvId,
+                                               ModifyPerson = r.ModifyPerson,
+                                               ModifyTime = r.ModifyTime,
+                                               NoQualifyQty = 0,
+                                               POId = r.POId,
+                                               PartId = r.PartId,
+                                               Lot = r.Lot,
+                                               QualifyQty = r.ArrivalQty,
                                                ReceiveMan = r.ReceiveMan,
                                                ReceiveStatus = r.ReceiveStatus,
                                                ReInspectBillNum = r.ReInspectBillNum,
@@ -123,19 +172,18 @@ namespace Apps.BLL.WMS
                     //SheetName，第一个Sheet
                     var excelContent = excelFile.Worksheet<WMS_AIModel>(0);
 
-                    try
+                    //开启事务
+                    using (DBContainer db = new DBContainer())
                     {
-                        //开启事务
-                        using (DBContainer db = new DBContainer())
-                        {
-                            var tran = db.Database.BeginTransaction();  //开启事务
-                            int rowIndex = 0;
+                        var tran = db.Database.BeginTransaction();  //开启事务
+                        int rowIndex = 1;
+                        string errorMessage = String.Empty;
 
+                        try
+                        {
                             //检查数据正确性
                             foreach (var row in excelContent)
                             {
-                                rowIndex += 1;
-                                string errorMessage = String.Empty;
                                 var model = new WMS_AIModel();
                                 model.Id = row.Id;
                                 model.ArrivalBillNum = row.ArrivalBillNum;
@@ -205,7 +253,7 @@ namespace Apps.BLL.WMS
                                 entity.PartId = model.PartId;
                                 entity.BoxQty = model.BoxQty;
                                 entity.ArrivalQty = model.ArrivalQty;
-                                entity.ArrivalDate = model.ArrivalDate;
+                                entity.ArrivalDate = model.ArrivalDate.Value;
                                 entity.ReceiveMan = model.ReceiveMan;
                                 entity.Lot = model.Lot;
                                 entity.ReceiveStatus = model.ReceiveStatus;
@@ -252,24 +300,30 @@ namespace Apps.BLL.WMS
                                     errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
                                     wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
                                 }
-                            }
 
-                            if (rtn)
-                            {
-                                tran.Commit();  //必须调用Commit()，不然数据不会保存
-                            }
-                            else
-                            {
-                                tran.Rollback();    //出错就回滚       
+                                rowIndex += 1;
                             }
                         }
-                    }
-                    catch (Exception)
-                    {
-                        errors.Add("导入的数据文件存在错误，请确认EXCEL文件格式是否正确。");
-                        return false;
+                        catch (Exception ex)
+                        {
+                            rtn = false;
+                            //将当前报错的entity状态改为分离，类似EF的回滚（忽略之前的Add操作）
+                            errorMessage = ex.Message;
+                            errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
+                            wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                        }
+
+                        if (rtn)
+                        {
+                            tran.Commit();  //必须调用Commit()，不然数据不会保存
+                        }
+                        else
+                        {
+                            tran.Rollback();    //出错就回滚       
+                        }
                     }
                 }
+
                 wb.Save();
             }
 
@@ -320,11 +374,11 @@ namespace Apps.BLL.WMS
             //校验入库日期
             if (!String.IsNullOrEmpty(model.ArrivalDate.ToString()))
             {
-                if (!DateTimeHelper.CheckYearMonth(model.ArrivalDate.ToString("yyyyMM")))
+                if (!DateTimeHelper.CheckYearMonth(model.ArrivalDate.Value.ToString("yyyyMM")))
                 {
                     throw new Exception("批次号不合符规范！");
                 }
-                else { model.Lot = model.ArrivalDate.ToString("yyyyMM"); }
+                else { model.Lot = model.ArrivalDate.Value.ToString("yyyyMM"); }
             }
             else
             {
@@ -367,6 +421,22 @@ namespace Apps.BLL.WMS
                 //排序
                 queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
                 return CreateModelList(ref queryData);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<WMS_AIModel> GetInspectBillList(ref GridPager pager, string where)
+        {
+            try
+            {
+                IQueryable<WMS_AI> queryData = m_Rep.GetList().Where(where);
+                pager.totalRows = queryData.Count();
+                //排序
+                queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+                return CreateModelListForInspect(ref queryData);
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿using Apps.Common;
 using Apps.Models.WMS;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Apps.IBLL.WMS
@@ -43,5 +44,6 @@ namespace Apps.IBLL.WMS
         /// <param name="arrivalBillNum"></param>
         bool CancelInspectBill(ref ValidationErrors errors, string opt, int aiId);
 
+        List<WMS_AIModel> GetInspectBillList(ref GridPager pager, string where);
     }
 }
