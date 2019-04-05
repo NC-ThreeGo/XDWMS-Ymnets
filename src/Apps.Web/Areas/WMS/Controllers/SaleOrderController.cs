@@ -63,7 +63,16 @@ namespace Apps.Web.Areas.WMS.Controllers
             query += " && WMS_Customer.CustomerShortName.Contains(\"" + customerShortName + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
             List<WMS_Sale_OrderModel> list = m_BLL.GetListByWhere(ref pager, query);
             GridRows<WMS_Sale_OrderModel> grs = new GridRows<WMS_Sale_OrderModel>();
+
+            List<WMS_Sale_OrderModel> footerList = new List<WMS_Sale_OrderModel>();
+            footerList.Add(new WMS_Sale_OrderModel()
+            {
+                SaleBillNum = "<div style='text-align:right;color:#444'>合计：</div>",
+                Qty = list.Sum(p => p.Qty),
+            });
+
             grs.rows = list;
+            grs.footer = footerList;
             grs.total = pager.totalRows;
             return Json(grs);
         }
