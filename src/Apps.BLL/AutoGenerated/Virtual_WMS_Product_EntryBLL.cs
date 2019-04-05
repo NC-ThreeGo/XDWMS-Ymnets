@@ -342,7 +342,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Lot, "批次号：YYYYMM");
+				 excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Lot, "Lot");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_Product_EntryModel>(0);

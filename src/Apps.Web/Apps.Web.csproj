@@ -339,6 +339,7 @@
     <Compile Include="Areas\Spl\SplAreaRegistration.cs" />
     <Compile Include="Areas\WC\Controllers\GroupController.cs" />
     <Compile Include="Areas\WMS\Controllers\InvHistoryController.cs" />
+    <Compile Include="Areas\WMS\Controllers\InvRecordController.cs" />
     <Compile Include="Areas\WMS\Controllers\ReturnGoodsController.cs" />
     <Compile Include="Areas\WMS\Controllers\ReportController.cs" />
     <Compile Include="Areas\WMS\Controllers\InventoryHController.cs" />
@@ -875,6 +876,9 @@
     <Content Include="Areas\WMS\Views\InvHistory\Index.cshtml" />
     <Content Include="Areas\WMS\Views\InvHistory\ListAvg.cshtml" />
     <Content Include="Areas\WMS\Views\Report\InvAmount.cshtml" />
+    <Content Include="Areas\WMS\Views\InvRecord\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\InvRecord\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\InvRecord\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -288,7 +288,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_InvInfoModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_InvInfoModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_InvInfoModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_InvInfoModel>(x => x.IsDefault, "是否是默认库房");
+				 excelFile.AddMapping<WMS_InvInfoModel>(x => x.IsDefault, "IsDefault");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_InvInfoModel>(0);

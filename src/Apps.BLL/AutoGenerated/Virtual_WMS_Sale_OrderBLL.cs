@@ -58,9 +58,8 @@ namespace Apps.BLL.WMS
 								|| a.PrintMan.Contains(queryStr)
 								|| a.ConfirmStatus.Contains(queryStr)
 								|| a.ConfirmMan.Contains(queryStr)
-                                
-
-                                || a.Attr1.Contains(queryStr)
+								
+								|| a.Attr1.Contains(queryStr)
 								|| a.Attr2.Contains(queryStr)
 								|| a.Attr3.Contains(queryStr)
 								|| a.Attr4.Contains(queryStr)
@@ -70,6 +69,7 @@ namespace Apps.BLL.WMS
 								|| a.ModifyPerson.Contains(queryStr)
 								
 								|| a.ConfirmMessage.Contains(queryStr)
+								
 								);
             }
             else
@@ -96,20 +96,19 @@ namespace Apps.BLL.WMS
         {
 
             List<WMS_Sale_OrderModel> modelList = (from r in queryData
-                                                   select new WMS_Sale_OrderModel
-                                                   {
-                                                       Id = r.Id,
-                                                       SaleBillNum = r.SaleBillNum,
-                                                       SellBillNum = r.SellBillNum,
-                                                       PlanDeliveryDate = r.PlanDeliveryDate,
-                                                       CustomerId = r.CustomerId,
-                                                       PartId = r.PartId,
-                                                       Qty = r.Qty,
-                                                       BoxQty = r.BoxQty,
-                                                       InvId = r.InvId,
-                                                       SubInvId = r.SubInvId,
-                                                       Lot = r.Lot,
-                                                       Volume = r.Volume,
+                                              select new WMS_Sale_OrderModel
+                                              {
+													Id = r.Id,
+													SaleBillNum = r.SaleBillNum,
+													SellBillNum = r.SellBillNum,
+													PlanDeliveryDate = r.PlanDeliveryDate,
+													CustomerId = r.CustomerId,
+													PartId = r.PartId,
+													Qty = r.Qty,
+													BoxQty = r.BoxQty,
+													InvId = r.InvId,
+													SubInvId = r.SubInvId,
+													Lot = r.Lot,
 													Remark = r.Remark,
 													PrintStaus = r.PrintStaus,
 													PrintDate = r.PrintDate,
@@ -127,6 +126,7 @@ namespace Apps.BLL.WMS
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
 													ConfirmMessage = r.ConfirmMessage,
+													Volume = r.Volume,
           
                                               }).ToList();
 
@@ -162,7 +162,6 @@ namespace Apps.BLL.WMS
 				entity.ConfirmStatus = model.ConfirmStatus;
 				entity.ConfirmMan = model.ConfirmMan;
 				entity.ConfirmDate = model.ConfirmDate;
-                entity.Volume = model.Volume;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
 				entity.Attr3 = model.Attr3;
@@ -173,6 +172,7 @@ namespace Apps.BLL.WMS
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
 				entity.ConfirmMessage = model.ConfirmMessage;
+				entity.Volume = model.Volume;
   
 
                 if (m_Rep.Create(entity))
@@ -277,7 +277,6 @@ namespace Apps.BLL.WMS
 				entity.ConfirmStatus = model.ConfirmStatus;
 				entity.ConfirmMan = model.ConfirmMan;
 				entity.ConfirmDate = model.ConfirmDate;
-                entity.Volume = model.Volume;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
 				entity.Attr3 = model.Attr3;
@@ -288,6 +287,7 @@ namespace Apps.BLL.WMS
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
 				entity.ConfirmMessage = model.ConfirmMessage;
+				entity.Volume = model.Volume;
  
 
 
@@ -336,7 +336,6 @@ namespace Apps.BLL.WMS
 				model.ConfirmStatus = entity.ConfirmStatus;
 				model.ConfirmMan = entity.ConfirmMan;
 				model.ConfirmDate = entity.ConfirmDate;
-                model.Volume = entity.Volume;
 				model.Attr1 = entity.Attr1;
 				model.Attr2 = entity.Attr2;
 				model.Attr3 = entity.Attr3;
@@ -347,6 +346,7 @@ namespace Apps.BLL.WMS
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
 				model.ConfirmMessage = entity.ConfirmMessage;
+				model.Volume = entity.Volume;
  
                 return model;
             }
@@ -379,12 +379,12 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SellBillNum, "销售单号（系统）");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PlanDeliveryDate, "计划发货日期");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CustomerId, "客户");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartId, "物料Id");
+				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartId, "PartId");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Qty, "数量");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.BoxQty, "箱数");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvId, "库存");
+				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvId, "库房");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SubInvId, "子库存");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Lot, "批次号：YYYYMM");
+				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Lot, "Lot");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Remark, "备注");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintStaus, "打印状态");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintDate, "打印日期");
@@ -402,6 +402,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ModifyTime, "修改时间");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmMessage, "ConfirmMessage");
+				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Volume, "体积");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_Sale_OrderModel>(0);
@@ -439,6 +440,7 @@ namespace Apps.BLL.WMS
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
 				  entity.ConfirmMessage = row.ConfirmMessage;
+				  entity.Volume = row.Volume;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -499,6 +501,7 @@ namespace Apps.BLL.WMS
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
 						entity.ConfirmMessage = model.ConfirmMessage;
+						entity.Volume = model.Volume;
  
                         db.WMS_Sale_Order.Add(entity);
                     }

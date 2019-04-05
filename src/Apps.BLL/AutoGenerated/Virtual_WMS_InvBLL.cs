@@ -273,9 +273,9 @@ namespace Apps.BLL.WMS
 			 				 excelFile.AddMapping<WMS_InvModel>(x => x.InvId, "InvId");
 				 excelFile.AddMapping<WMS_InvModel>(x => x.SubInvId, "SubInvId");
 				 excelFile.AddMapping<WMS_InvModel>(x => x.PartId, "PartId");
-				 excelFile.AddMapping<WMS_InvModel>(x => x.Lot, "批次号：YYYYMM");
-				 excelFile.AddMapping<WMS_InvModel>(x => x.Qty, "Qty");
-				 excelFile.AddMapping<WMS_InvModel>(x => x.OutQty, "当前出库数量");
+				 excelFile.AddMapping<WMS_InvModel>(x => x.Lot, "Lot");
+				 excelFile.AddMapping<WMS_InvModel>(x => x.Qty, "现有量");
+				 excelFile.AddMapping<WMS_InvModel>(x => x.OutQty, "当前出库数");
 				 excelFile.AddMapping<WMS_InvModel>(x => x.StockQty, "备料数");
  
             //SheetName

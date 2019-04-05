@@ -287,14 +287,14 @@ namespace Apps.BLL.WMS
             //对应列头
 			 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvCode, "库位编码");
 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.SubInvName, "库位名称");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.InvId, "库房编码");
+				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.InvId, "所属库房");
 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Status, "状态");
 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.Remark, "说明");
 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreatePerson, "创建人");
 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.IsDefault, "是否是默认库房");
+				 excelFile.AddMapping<WMS_SubInvInfoModel>(x => x.IsDefault, "IsDefault");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_SubInvInfoModel>(0);

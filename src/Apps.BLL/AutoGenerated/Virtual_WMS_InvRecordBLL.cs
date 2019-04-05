@@ -24,41 +24,36 @@ using Apps.Models.WMS;
 using Apps.IBLL.WMS;
 namespace Apps.BLL.WMS
 {
-	public partial class WMS_Inv_AdjustBLL: Virtual_WMS_Inv_AdjustBLL,IWMS_Inv_AdjustBLL
+	public partial class WMS_InvRecordBLL: Virtual_WMS_InvRecordBLL,IWMS_InvRecordBLL
 	{
         
 
 	}
-	public class Virtual_WMS_Inv_AdjustBLL
+	public class Virtual_WMS_InvRecordBLL
 	{
         [Dependency]
-        public IWMS_Inv_AdjustRepository m_Rep { get; set; }
+        public IWMS_InvRecordRepository m_Rep { get; set; }
 
-		public virtual List<WMS_Inv_AdjustModel> GetList(ref GridPager pager, string queryStr)
+		public virtual List<WMS_InvRecordModel> GetList(ref GridPager pager, string queryStr)
         {
 
-            IQueryable<WMS_Inv_Adjust> queryData = null;
+            IQueryable<WMS_InvRecord> queryData = null;
             if (!string.IsNullOrWhiteSpace(queryStr))
             {
                 queryData = m_Rep.GetList(
 								
-								a=>a.InvAdjustBillNum.Contains(queryStr)
 								
 								
-								|| a.AdjustType.Contains(queryStr)
 								
 								
-								|| a.Remark.Contains(queryStr)
-								|| a.Attr1.Contains(queryStr)
-								|| a.Attr2.Contains(queryStr)
-								|| a.Attr3.Contains(queryStr)
-								|| a.Attr4.Contains(queryStr)
-								|| a.Attr5.Contains(queryStr)
-								|| a.CreatePerson.Contains(queryStr)
 								
-								|| a.ModifyPerson.Contains(queryStr)
+								a=>a.SourceBill.Contains(queryStr)
 								
 								|| a.Lot.Contains(queryStr)
+								|| a.Type.Contains(queryStr)
+								|| a.OperateMan.Contains(queryStr)
+								
+								
 								);
             }
             else
@@ -71,75 +66,65 @@ namespace Apps.BLL.WMS
             return CreateModelList(ref queryData);
         }
 
-		public virtual List<WMS_Inv_AdjustModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
+		public virtual List<WMS_InvRecordModel> GetListByUserId(ref GridPager pager, string userId,string queryStr)
 		{
-			return new List<WMS_Inv_AdjustModel>();
+			return new List<WMS_InvRecordModel>();
 		}
 		
-		public virtual List<WMS_Inv_AdjustModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
+		public virtual List<WMS_InvRecordModel> GetListByParentId(ref GridPager pager, string queryStr,object parentId)
         {
-			return new List<WMS_Inv_AdjustModel>();
+			return new List<WMS_InvRecordModel>();
 		}
 
-        public virtual List<WMS_Inv_AdjustModel> CreateModelList(ref IQueryable<WMS_Inv_Adjust> queryData)
+        public virtual List<WMS_InvRecordModel> CreateModelList(ref IQueryable<WMS_InvRecord> queryData)
         {
 
-            List<WMS_Inv_AdjustModel> modelList = (from r in queryData
-                                              select new WMS_Inv_AdjustModel
+            List<WMS_InvRecordModel> modelList = (from r in queryData
+                                              select new WMS_InvRecordModel
                                               {
 													Id = r.Id,
-													InvAdjustBillNum = r.InvAdjustBillNum,
 													PartId = r.PartId,
-													AdjustQty = r.AdjustQty,
-													AdjustType = r.AdjustType,
+													QTY = r.QTY,
 													InvId = r.InvId,
 													SubInvId = r.SubInvId,
-													Remark = r.Remark,
-													Attr1 = r.Attr1,
-													Attr2 = r.Attr2,
-													Attr3 = r.Attr3,
-													Attr4 = r.Attr4,
-													Attr5 = r.Attr5,
-													CreatePerson = r.CreatePerson,
-													CreateTime = r.CreateTime,
-													ModifyPerson = r.ModifyPerson,
-													ModifyTime = r.ModifyTime,
+													BillId = r.BillId,
+													SourceBill = r.SourceBill,
+													OperateDate = r.OperateDate,
 													Lot = r.Lot,
+													Type = r.Type,
+													OperateMan = r.OperateMan,
+													Stock_InvId = r.Stock_InvId,
+													StockStatus = r.StockStatus,
           
                                               }).ToList();
 
             return modelList;
         }
 
-        public virtual bool Create(ref ValidationErrors errors, WMS_Inv_AdjustModel model)
+        public virtual bool Create(ref ValidationErrors errors, WMS_InvRecordModel model)
         {
             try
             {
-                WMS_Inv_Adjust entity = m_Rep.GetById(model.Id);
+                WMS_InvRecord entity = m_Rep.GetById(model.Id);
                 if (entity != null)
                 {
                     errors.Add(Resource.PrimaryRepeat);
                     return false;
                 }
-                entity = new WMS_Inv_Adjust();
+                entity = new WMS_InvRecord();
                				entity.Id = model.Id;
-				entity.InvAdjustBillNum = model.InvAdjustBillNum;
 				entity.PartId = model.PartId;
-				entity.AdjustQty = model.AdjustQty;
-				entity.AdjustType = model.AdjustType;
+				entity.QTY = model.QTY;
 				entity.InvId = model.InvId;
 				entity.SubInvId = model.SubInvId;
-				entity.Remark = model.Remark;
-				entity.Attr1 = model.Attr1;
-				entity.Attr2 = model.Attr2;
-				entity.Attr3 = model.Attr3;
-				entity.Attr4 = model.Attr4;
-				entity.Attr5 = model.Attr5;
-				entity.CreatePerson = model.CreatePerson;
-				entity.CreateTime = model.CreateTime;
-				entity.ModifyPerson = model.ModifyPerson;
-				entity.ModifyTime = model.ModifyTime;
+				entity.BillId = model.BillId;
+				entity.SourceBill = model.SourceBill;
+				entity.OperateDate = model.OperateDate;
 				entity.Lot = model.Lot;
+				entity.Type = model.Type;
+				entity.OperateMan = model.OperateMan;
+				entity.Stock_InvId = model.Stock_InvId;
+				entity.StockStatus = model.StockStatus;
   
 
                 if (m_Rep.Create(entity))
@@ -216,34 +201,29 @@ namespace Apps.BLL.WMS
 		
        
 
-        public virtual bool Edit(ref ValidationErrors errors, WMS_Inv_AdjustModel model)
+        public virtual bool Edit(ref ValidationErrors errors, WMS_InvRecordModel model)
         {
             try
             {
-                WMS_Inv_Adjust entity = m_Rep.GetById(model.Id);
+                WMS_InvRecord entity = m_Rep.GetById(model.Id);
                 if (entity == null)
                 {
                     errors.Add(Resource.Disable);
                     return false;
                 }
                               				entity.Id = model.Id;
-				entity.InvAdjustBillNum = model.InvAdjustBillNum;
 				entity.PartId = model.PartId;
-				entity.AdjustQty = model.AdjustQty;
-				entity.AdjustType = model.AdjustType;
+				entity.QTY = model.QTY;
 				entity.InvId = model.InvId;
 				entity.SubInvId = model.SubInvId;
-				entity.Remark = model.Remark;
-				entity.Attr1 = model.Attr1;
-				entity.Attr2 = model.Attr2;
-				entity.Attr3 = model.Attr3;
-				entity.Attr4 = model.Attr4;
-				entity.Attr5 = model.Attr5;
-				entity.CreatePerson = model.CreatePerson;
-				entity.CreateTime = model.CreateTime;
-				entity.ModifyPerson = model.ModifyPerson;
-				entity.ModifyTime = model.ModifyTime;
+				entity.BillId = model.BillId;
+				entity.SourceBill = model.SourceBill;
+				entity.OperateDate = model.OperateDate;
 				entity.Lot = model.Lot;
+				entity.Type = model.Type;
+				entity.OperateMan = model.OperateMan;
+				entity.Stock_InvId = model.Stock_InvId;
+				entity.StockStatus = model.StockStatus;
  
 
 
@@ -268,30 +248,25 @@ namespace Apps.BLL.WMS
 
       
 
-        public virtual WMS_Inv_AdjustModel GetById(object id)
+        public virtual WMS_InvRecordModel GetById(object id)
         {
             if (IsExists(id))
             {
-                WMS_Inv_Adjust entity = m_Rep.GetById(id);
-                WMS_Inv_AdjustModel model = new WMS_Inv_AdjustModel();
+                WMS_InvRecord entity = m_Rep.GetById(id);
+                WMS_InvRecordModel model = new WMS_InvRecordModel();
                               				model.Id = entity.Id;
-				model.InvAdjustBillNum = entity.InvAdjustBillNum;
 				model.PartId = entity.PartId;
-				model.AdjustQty = entity.AdjustQty;
-				model.AdjustType = entity.AdjustType;
+				model.QTY = entity.QTY;
 				model.InvId = entity.InvId;
 				model.SubInvId = entity.SubInvId;
-				model.Remark = entity.Remark;
-				model.Attr1 = entity.Attr1;
-				model.Attr2 = entity.Attr2;
-				model.Attr3 = entity.Attr3;
-				model.Attr4 = entity.Attr4;
-				model.Attr5 = entity.Attr5;
-				model.CreatePerson = entity.CreatePerson;
-				model.CreateTime = entity.CreateTime;
-				model.ModifyPerson = entity.ModifyPerson;
-				model.ModifyTime = entity.ModifyTime;
+				model.BillId = entity.BillId;
+				model.SourceBill = entity.SourceBill;
+				model.OperateDate = entity.OperateDate;
 				model.Lot = entity.Lot;
+				model.Type = entity.Type;
+				model.OperateMan = entity.OperateMan;
+				model.Stock_InvId = entity.Stock_InvId;
+				model.StockStatus = entity.StockStatus;
  
                 return model;
             }
@@ -305,7 +280,7 @@ namespace Apps.BLL.WMS
 		 /// <summary>
         /// 校验Excel数据,这个方法一般用于重写校验逻辑
         /// </summary>
-        public virtual bool CheckImportData(string fileName, List<WMS_Inv_AdjustModel> list,ref ValidationErrors errors )
+        public virtual bool CheckImportData(string fileName, List<WMS_InvRecordModel> list,ref ValidationErrors errors )
         {
           
             var targetFile = new FileInfo(fileName);
@@ -320,50 +295,40 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.InvAdjustBillNum, "调帐单据号");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.PartId, "物料");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.AdjustQty, "调整数量");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.AdjustType, "调整类型");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.InvId, "库存");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.SubInvId, "子库存");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Remark, "备注");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Attr1, "Attr1");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Attr2, "Attr2");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Attr3, "Attr3");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Attr4, "Attr4");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Attr5, "Attr5");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.CreatePerson, "创建人");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.CreateTime, "创建时间");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.ModifyPerson, "修改人");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Lot, "Lot");
+			 				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.PartId, "物料编码");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.QTY, "数量");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.InvId, "库房编码");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.SubInvId, "SubInvId");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.BillId, "单据ID");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.SourceBill, "单据来源");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.OperateDate, "操作时间");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.Lot, "Lot");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.Type, "出入库类型");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.OperateMan, "操作人");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.Stock_InvId, "备料库存");
+				 excelFile.AddMapping<WMS_InvRecordModel>(x => x.StockStatus, "备料状态：1-不适用（直接修改库存现有量）；2-已备料；3-无效备料（取消备料后将2改成3）；4-取消备料（当前操作是取消备料）");
  
             //SheetName
-            var excelContent = excelFile.Worksheet<WMS_Inv_AdjustModel>(0);
+            var excelContent = excelFile.Worksheet<WMS_InvRecordModel>(0);
             int rowIndex = 1;
             //检查数据正确性
             foreach (var row in excelContent)
             {
                 var errorMessage = new StringBuilder();
-                var entity = new WMS_Inv_AdjustModel();
+                var entity = new WMS_InvRecordModel();
 						 				  entity.Id = row.Id;
-				  entity.InvAdjustBillNum = row.InvAdjustBillNum;
 				  entity.PartId = row.PartId;
-				  entity.AdjustQty = row.AdjustQty;
-				  entity.AdjustType = row.AdjustType;
+				  entity.QTY = row.QTY;
 				  entity.InvId = row.InvId;
 				  entity.SubInvId = row.SubInvId;
-				  entity.Remark = row.Remark;
-				  entity.Attr1 = row.Attr1;
-				  entity.Attr2 = row.Attr2;
-				  entity.Attr3 = row.Attr3;
-				  entity.Attr4 = row.Attr4;
-				  entity.Attr5 = row.Attr5;
-				  entity.CreatePerson = row.CreatePerson;
-				  entity.CreateTime = row.CreateTime;
-				  entity.ModifyPerson = row.ModifyPerson;
-				  entity.ModifyTime = row.ModifyTime;
+				  entity.BillId = row.BillId;
+				  entity.SourceBill = row.SourceBill;
+				  entity.OperateDate = row.OperateDate;
 				  entity.Lot = row.Lot;
+				  entity.Type = row.Type;
+				  entity.OperateMan = row.OperateMan;
+				  entity.Stock_InvId = row.Stock_InvId;
+				  entity.StockStatus = row.StockStatus;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -387,7 +352,7 @@ namespace Apps.BLL.WMS
         /// <summary>
         /// 保存数据
         /// </summary>
-        public virtual void SaveImportData(IEnumerable<WMS_Inv_AdjustModel> list)
+        public virtual void SaveImportData(IEnumerable<WMS_InvRecordModel> list)
         {
             try
             {
@@ -395,27 +360,22 @@ namespace Apps.BLL.WMS
                 {
                     foreach (var model in list)
                     {
-                        WMS_Inv_Adjust entity = new WMS_Inv_Adjust();
+                        WMS_InvRecord entity = new WMS_InvRecord();
                        						entity.Id = 0;
-						entity.InvAdjustBillNum = model.InvAdjustBillNum;
 						entity.PartId = model.PartId;
-						entity.AdjustQty = model.AdjustQty;
-						entity.AdjustType = model.AdjustType;
+						entity.QTY = model.QTY;
 						entity.InvId = model.InvId;
 						entity.SubInvId = model.SubInvId;
-						entity.Remark = model.Remark;
-						entity.Attr1 = model.Attr1;
-						entity.Attr2 = model.Attr2;
-						entity.Attr3 = model.Attr3;
-						entity.Attr4 = model.Attr4;
-						entity.Attr5 = model.Attr5;
-						entity.CreatePerson = model.CreatePerson;
-						entity.CreateTime = ResultHelper.NowTime;
-						entity.ModifyPerson = model.ModifyPerson;
-						entity.ModifyTime = model.ModifyTime;
+						entity.BillId = model.BillId;
+						entity.SourceBill = model.SourceBill;
+						entity.OperateDate = model.OperateDate;
 						entity.Lot = model.Lot;
+						entity.Type = model.Type;
+						entity.OperateMan = model.OperateMan;
+						entity.Stock_InvId = model.Stock_InvId;
+						entity.StockStatus = model.StockStatus;
  
-                        db.WMS_Inv_Adjust.Add(entity);
+                        db.WMS_InvRecord.Add(entity);
                     }
                     db.SaveChanges();
                 }
