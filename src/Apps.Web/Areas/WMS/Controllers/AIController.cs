@@ -297,42 +297,42 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             JArray jObjects = new JArray();
             var jo = new JObject();
-              jo.Add("Id", "");
-              jo.Add("到货单据号", "");
-              jo.Add("采购订单ID", "");
-              jo.Add("到货箱数", "");
-              jo.Add("到货数量", "");
-              jo.Add("到货日期", "");
+              //jo.Add("Id", "");
+              jo.Add("到货单据号(必输)", "");
+              jo.Add("采购订单号(必输)", "");
+            jo.Add("物料编码(必输)", "");
+            jo.Add("到货箱数", "");
+              jo.Add("到货数量(必输)", "");
+              jo.Add("到货日期(格式:年-月-日)(必输)", "");
               jo.Add("接收人", "");
-              jo.Add("到货状态", "");
-              jo.Add("送检单号", "");
-              jo.Add("送检人", "");
-              jo.Add("送检日期", "");
-              jo.Add("送检状体", "");
-              jo.Add("检验日期", "");
-              jo.Add("检验结果", "");
-              jo.Add("合格数量", "");
-              jo.Add("不合格数量", "");
-              jo.Add("检验说明", "");
-              jo.Add("重新送检单", "");
-              jo.Add("入库单号", "");
-              jo.Add("InStoreMan", "");
-              jo.Add("入库仓库", "");
-              jo.Add("入库状态", "");
-              jo.Add("Attr1", "");
-              jo.Add("Attr2", "");
-              jo.Add("Attr3", "");
-              jo.Add("Attr4", "");
-              jo.Add("Attr5", "");
-              jo.Add("创建人", "");
-              jo.Add("创建时间", "");
-              jo.Add("修改人", "");
-              jo.Add("修改时间", "");
+              //jo.Add("到货状态", "");
+              //jo.Add("送检单号", "");
+              //jo.Add("送检人", "");
+              //jo.Add("送检日期", "");
+              //jo.Add("送检状体", "");
+              //jo.Add("检验日期", "");
+              //jo.Add("检验结果", "");
+              //jo.Add("合格数量", "");
+              //jo.Add("不合格数量", "");
+              //jo.Add("检验说明", "");
+              //jo.Add("重新送检单", "");
+              //jo.Add("入库单号", "");
+              //jo.Add("InStoreMan", "");
+              //jo.Add("入库仓库", "");
+              //jo.Add("入库状态", "");
+              //jo.Add("Attr1", "");
+              //jo.Add("Attr2", "");
+              //jo.Add("Attr3", "");
+              //jo.Add("Attr4", "");
+              //jo.Add("Attr5", "");
+              //jo.Add("创建人", "");
+              //jo.Add("创建时间", "");
+              //jo.Add("修改人", "");
+              //jo.Add("修改时间", "");
             jo.Add("导入的错误信息", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
-            var exportFileName = string.Concat(
-                    RouteData.Values["controller"].ToString() + "_Template",
+            var exportFileName = string.Concat("到货导入模板",
                     ".xlsx");
                 return new ExportExcelResult
                 {

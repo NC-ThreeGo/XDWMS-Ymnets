@@ -26,7 +26,7 @@ namespace Apps.Models
         public Nullable<int> PartId { get; set; }
         public Nullable<decimal> BoxQty { get; set; }
         public Nullable<decimal> ArrivalQty { get; set; }
-        public Nullable<System.DateTime> ArrivalDate { get; set; }
+        public System.DateTime ArrivalDate { get; set; }
         public string ReceiveMan { get; set; }
         public string ReceiveStatus { get; set; }
         public string InspectBillNum { get; set; }
