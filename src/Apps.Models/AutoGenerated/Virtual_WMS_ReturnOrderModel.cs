@@ -35,13 +35,13 @@ namespace Apps.Models.WMS
 		public virtual Nullable<int> InvId { get; set; }
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> SubInvId { get; set; }
-		[Display(Name = "批次号：YYYYMM")]
+		[Display(Name = "未设置")]
 		public virtual string Lot { get; set; }
 		[Display(Name = "应退货数量")]
 		public virtual decimal ReturnQty { get; set; }
 		[Display(Name = "实际退货数量")]
 		public virtual decimal AdjustQty { get; set; }
-		[Display(Name = "单据状态：无效，有效")]
+		[Display(Name = "单据状态:有效/无效")]
 		public virtual string Status { get; set; }
 		[Display(Name = "退货说明")]
 		public virtual string Remark { get; set; }
@@ -77,7 +77,7 @@ namespace Apps.Models.WMS
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> BatchId { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "退货单类型")]
 		public virtual string ReturnOderType { get; set; }
 		}
 }

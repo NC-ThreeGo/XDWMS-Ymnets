@@ -21,7 +21,7 @@ namespace Apps.Models.WMS
 	{
 		[Display(Name = "未设置")]
 		public virtual int Id { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "盘点头表ID")]
 		public virtual int HeadId { get; set; }
 		[Display(Name = "物料")]
 		public virtual int PartId { get; set; }
@@ -33,11 +33,11 @@ namespace Apps.Models.WMS
 		public virtual int InvId { get; set; }
 		[Display(Name = "子库存")]
 		public virtual Nullable<int> SubInvId { get; set; }
-		[Display(Name = "批次号：YYYYMM")]
+		[Display(Name = "批次")]
 		public virtual string Lot { get; set; }
 		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "确认信息")]
 		public virtual string ConfirmMessage { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string Attr1 { get; set; }

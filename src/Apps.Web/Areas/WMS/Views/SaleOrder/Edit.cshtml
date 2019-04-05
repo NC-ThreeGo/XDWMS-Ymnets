@@ -126,7 +126,7 @@ function LoadLot() {
             <tr>
                 <th>
                     @Html.LabelFor(model => model.CustomerId)：
-                </th>                
+                </th>
                 <td>
                     <div style="height:0;width:0;overflow:hidden">
                         @Html.EditorFor(model => model.CustomerId)
@@ -144,18 +144,18 @@ function LoadLot() {
                             $("#CustomerList").val(resultName);
                         }
                     </script>
-                </td>                
+                </td>
                 <td>@Html.ValidationMessageFor(model => model.CustomerId)</td>
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.PartId)：
+                    物料编码:
                 </th>
                 <td>
                     <div style="height:0;width:0;overflow:hidden">
                         @Html.EditorFor(model => model.PartId)
                     </div>
-                    <input id="PartList" name="PartList" value="@Model.PartCode"  readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
+                    <input id="PartList" name="PartList" value="@Model.PartCode" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
                     <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelPart()"></a>
                     <script type="text/javascript">
                         function showSelPart() {
@@ -199,23 +199,32 @@ function LoadLot() {
                 <td>@Html.ValidationMessageFor(model => model.InvId)</td>
             </tr>
             @*<tr>
-                <th>
-                    @Html.LabelFor(model => model.SubInvId)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.SubInvId)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
-            </tr>*@
+            <th>
+                @Html.LabelFor(model => model.SubInvId)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.SubInvId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
+        </tr>*@
             <tr>
                 <th>
                     批次号：
                 </th>
                 <td>
-                    <input id="Lot" name="Lot" value="value="@Model.Lot"">
+                    <input id="Lot" name="Lot" value="value=" @Model.Lot "">
                     <label id="Qty" for="Lot" name="Qty"></label>
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.Lot)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Volume)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Volume)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Volume)</td>
             </tr>
             <tr>
                 <th>
@@ -227,131 +236,131 @@ function LoadLot() {
                 <td>@Html.ValidationMessageFor(model => model.Remark)</td>
             </tr>
             @*<tr>
-                <th>
-                    @Html.LabelFor(model => model.PrintStaus)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.PrintStaus)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.PrintStaus)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.PrintDate)：
-                </th>
-                <td>
-                    @Html.TextBoxFor(model => model.PrintDate, new { @onClick = "WdatePicker()", @style = "width: 105px" })
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.PrintDate)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.PrintMan)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.PrintMan)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.PrintMan)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.ConfirmStatus)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.ConfirmStatus)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.ConfirmStatus)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.ConfirmMan)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.ConfirmMan)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.ConfirmMan)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.ConfirmDate)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.ConfirmDate)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.ConfirmDate)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.Attr1)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.Attr1)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.Attr1)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.Attr2)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.Attr2)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.Attr2)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.Attr3)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.Attr3)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.Attr3)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.Attr4)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.Attr4)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.Attr4)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.Attr5)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.Attr5)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.Attr5)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.CreatePerson)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.CreatePerson)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.CreatePerson)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.ModifyPerson)：
-                </th>
-                <td>
-                    @Html.EditorFor(model => model.ModifyPerson)
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.ModifyPerson)</td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.ModifyTime)：
-                </th>
-                <td>
-                    @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()", @style = "width: 105px" })
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
-            </tr>*@
+            <th>
+                @Html.LabelFor(model => model.PrintStaus)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.PrintStaus)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PrintStaus)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PrintDate)：
+            </th>
+            <td>
+                @Html.TextBoxFor(model => model.PrintDate, new { @onClick = "WdatePicker()", @style = "width: 105px" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PrintDate)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PrintMan)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.PrintMan)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PrintMan)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ConfirmStatus)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.ConfirmStatus)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ConfirmStatus)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ConfirmMan)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.ConfirmMan)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ConfirmMan)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ConfirmDate)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.ConfirmDate)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ConfirmDate)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attr1)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Attr1)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attr1)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attr2)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Attr2)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attr2)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attr3)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Attr3)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attr3)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attr4)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Attr4)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attr4)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attr5)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Attr5)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attr5)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CreatePerson)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.CreatePerson)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.CreatePerson)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ModifyPerson)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.ModifyPerson)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ModifyPerson)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ModifyTime)：
+            </th>
+            <td>
+                @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()", @style = "width: 105px" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
+        </tr>*@
         </tbody>
     </table>
 }

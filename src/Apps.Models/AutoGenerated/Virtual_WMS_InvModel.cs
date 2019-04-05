@@ -27,11 +27,11 @@ namespace Apps.Models.WMS
 		public virtual Nullable<int> SubInvId { get; set; }
 		[Display(Name = "未设置")]
 		public virtual int PartId { get; set; }
-		[Display(Name = "批次号：YYYYMM")]
-		public virtual string Lot { get; set; }
 		[Display(Name = "未设置")]
+		public virtual string Lot { get; set; }
+		[Display(Name = "现有量")]
 		public virtual decimal Qty { get; set; }
-		[Display(Name = "当前出库数量")]
+		[Display(Name = "当前出库数")]
 		public virtual Nullable<decimal> OutQty { get; set; }
 		[Display(Name = "备料数")]
 		public virtual Nullable<decimal> StockQty { get; set; }
