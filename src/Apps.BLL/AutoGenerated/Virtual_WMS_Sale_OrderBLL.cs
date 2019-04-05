@@ -58,8 +58,9 @@ namespace Apps.BLL.WMS
 								|| a.PrintMan.Contains(queryStr)
 								|| a.ConfirmStatus.Contains(queryStr)
 								|| a.ConfirmMan.Contains(queryStr)
-								
-								|| a.Attr1.Contains(queryStr)
+                                
+
+                                || a.Attr1.Contains(queryStr)
 								|| a.Attr2.Contains(queryStr)
 								|| a.Attr3.Contains(queryStr)
 								|| a.Attr4.Contains(queryStr)
@@ -95,19 +96,20 @@ namespace Apps.BLL.WMS
         {
 
             List<WMS_Sale_OrderModel> modelList = (from r in queryData
-                                              select new WMS_Sale_OrderModel
-                                              {
-													Id = r.Id,
-													SaleBillNum = r.SaleBillNum,
-													SellBillNum = r.SellBillNum,
-													PlanDeliveryDate = r.PlanDeliveryDate,
-													CustomerId = r.CustomerId,
-													PartId = r.PartId,
-													Qty = r.Qty,
-													BoxQty = r.BoxQty,
-													InvId = r.InvId,
-													SubInvId = r.SubInvId,
-													Lot = r.Lot,
+                                                   select new WMS_Sale_OrderModel
+                                                   {
+                                                       Id = r.Id,
+                                                       SaleBillNum = r.SaleBillNum,
+                                                       SellBillNum = r.SellBillNum,
+                                                       PlanDeliveryDate = r.PlanDeliveryDate,
+                                                       CustomerId = r.CustomerId,
+                                                       PartId = r.PartId,
+                                                       Qty = r.Qty,
+                                                       BoxQty = r.BoxQty,
+                                                       InvId = r.InvId,
+                                                       SubInvId = r.SubInvId,
+                                                       Lot = r.Lot,
+                                                       Volume = r.Volume,
 													Remark = r.Remark,
 													PrintStaus = r.PrintStaus,
 													PrintDate = r.PrintDate,
@@ -160,6 +162,7 @@ namespace Apps.BLL.WMS
 				entity.ConfirmStatus = model.ConfirmStatus;
 				entity.ConfirmMan = model.ConfirmMan;
 				entity.ConfirmDate = model.ConfirmDate;
+                entity.Volume = model.Volume;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
 				entity.Attr3 = model.Attr3;
@@ -274,6 +277,7 @@ namespace Apps.BLL.WMS
 				entity.ConfirmStatus = model.ConfirmStatus;
 				entity.ConfirmMan = model.ConfirmMan;
 				entity.ConfirmDate = model.ConfirmDate;
+                entity.Volume = model.Volume;
 				entity.Attr1 = model.Attr1;
 				entity.Attr2 = model.Attr2;
 				entity.Attr3 = model.Attr3;
@@ -332,6 +336,7 @@ namespace Apps.BLL.WMS
 				model.ConfirmStatus = entity.ConfirmStatus;
 				model.ConfirmMan = entity.ConfirmMan;
 				model.ConfirmDate = entity.ConfirmDate;
+                model.Volume = entity.Volume;
 				model.Attr1 = entity.Attr1;
 				model.Attr2 = entity.Attr2;
 				model.Attr3 = entity.Attr3;
