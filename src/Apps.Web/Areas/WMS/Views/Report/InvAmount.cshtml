@@ -8,31 +8,31 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
-<div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
-<form name = "form1" method="post" id="form1">
-    <table>
-        <tr>
-            <th style="padding:20px;"> Excel：</th>
-            <td style="padding:20px;">
-                <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
-                <a href = "javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
-                <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
-                <span class="uploading">@Resource.Uploading</span>
-            </td>
-        </tr>
-        <tr>
-            <th style="padding:20px;"> 导入状态：</th>
-            <td style="padding:20px;">
-                <label id="importMessage"></label>
-                <a id="importResultFile" href="">         点击查看导入结果</a>
-            </td>
-        </tr>
-    </table>
-    <div class="endbtndiv">
-        <a id = "btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
-        <a id = "btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
-    </div>
-</form>
+<div id="uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+    <form name="form1" method="post" id="form1">
+        <table>
+            <tr>
+                <th style="padding:20px;"> Excel：</th>
+                <td style="padding:20px;">
+                    <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                    <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                    <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="padding:20px;"> 导入状态：</th>
+                <td style="padding:20px;">
+                    <label id="importMessage"></label>
+                    <a id="importResultFile" href="">         点击查看导入结果</a>
+                </td>
+            </tr>
+        </table>
+        <div class="endbtndiv">
+            <a id="btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+            <a id="btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+        </div>
+    </form>
 </div>
 <div class="mvctool">
     <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
@@ -42,7 +42,7 @@
         @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
         @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
         @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)*@
-    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
+    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, true)
     @*@Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)*@
 </div>
 <table id="List"></table>
@@ -133,20 +133,31 @@
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            //获取Datagride的所有数据集合
+            var rows = $('#List').datagrid("getRows");
+            var columns = $('#List').datagrid("options").columns[0];
+            //创建AX对象excel
+            var oXL = new ActiveXObject("Excel.Application");
+            //获取workbook对象
+            var oWB = oXL.Workbooks.Add();
+            //激活当前sheet
+            var oSheet = oWB.ActiveSheet;
+            //设置工作薄名称
+            oSheet.name = "库存报表";
+            for (var i = 0; i < columns.length; i++) {
+                oSheet.Cells(1, i + 1).value = columns[i].title;
             }
-          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
-                if (data.type == 1)
-                {
-                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+            for (var i = 0; i < rows.length; i++) {
+                for (var j = 0; j < columns.length; j++) {
+                    if (rows[i][columns[j].field] != null) {
+                        oSheet.Cells(i + 2, j + 1).value = rows[i][columns[j].field].toString();
+                    } else {
+                        oSheet.Cells(i + 2, j + 1).value = "";
+                    }
                 }
-                else
-                {
-                $.messageBox5s(Lang.Tip, data.message);
-                }
-            }, "json");
+            }
+            //设置excel可见属性
+            oXL.Visible = true;
         });
         $("#btnExportTemplate").click(function() {
           window.location = "@Url.Action("ExportTemplate")";
@@ -166,7 +177,7 @@
             hideLoading();
             $.messageBox5s('提示', data.message);
             $('#importMessage').html(data.message);
-            $('#importResultFile').attr('href', data.value); 
+            $('#importResultFile').attr('href', data.value);
         }, "json");
     }
 </script>
