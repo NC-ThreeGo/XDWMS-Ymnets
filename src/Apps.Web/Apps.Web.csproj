@@ -479,6 +479,7 @@
     <Content Include="Content\themes\skin-coolblacklight_bak.css" />
     <Content Include="Content\themes\skin-coolblack_bak.css" />
     <Content Include="Scripts\ChinesePY.js" />
+    <Content Include="Scripts\datagrid-export.js" />
     <Content Include="Scripts\easyui.combobox.py.js" />
     <Content Include="Scripts\easyui\easyui-lang-en-US.js" />
     <Content Include="Scripts\easyui\easyui-lang-zh-CN.js" />
