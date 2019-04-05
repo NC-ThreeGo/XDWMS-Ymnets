@@ -160,7 +160,7 @@ namespace Apps.BLL.WMS
 				entity.PartId = model.PartId;
 				entity.BoxQty = model.BoxQty;
 				entity.ArrivalQty = model.ArrivalQty;
-				entity.ArrivalDate = model.ArrivalDate;
+				entity.ArrivalDate = model.ArrivalDate.Value;
 				entity.ReceiveMan = model.ReceiveMan;
 				entity.ReceiveStatus = model.ReceiveStatus;
 				entity.InspectBillNum = model.InspectBillNum;
@@ -280,7 +280,7 @@ namespace Apps.BLL.WMS
 				entity.PartId = model.PartId;
 				entity.BoxQty = model.BoxQty;
 				entity.ArrivalQty = model.ArrivalQty;
-				entity.ArrivalDate = model.ArrivalDate;
+				entity.ArrivalDate = model.ArrivalDate.Value;
 				entity.ReceiveMan = model.ReceiveMan;
 				entity.ReceiveStatus = model.ReceiveStatus;
 				entity.InspectBillNum = model.InspectBillNum;
@@ -514,7 +514,7 @@ namespace Apps.BLL.WMS
 						entity.PartId = model.PartId;
 						entity.BoxQty = model.BoxQty;
 						entity.ArrivalQty = model.ArrivalQty;
-						entity.ArrivalDate = model.ArrivalDate;
+						entity.ArrivalDate = model.ArrivalDate.Value;
 						entity.ReceiveMan = model.ReceiveMan;
 						entity.ReceiveStatus = model.ReceiveStatus;
 						entity.InspectBillNum = model.InspectBillNum;

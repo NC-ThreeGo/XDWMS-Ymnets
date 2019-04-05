@@ -123,19 +123,18 @@ namespace Apps.BLL.WMS
                     //SheetName，第一个Sheet
                     var excelContent = excelFile.Worksheet<WMS_AIModel>(0);
 
-                    try
+                    //开启事务
+                    using (DBContainer db = new DBContainer())
                     {
-                        //开启事务
-                        using (DBContainer db = new DBContainer())
-                        {
-                            var tran = db.Database.BeginTransaction();  //开启事务
-                            int rowIndex = 0;
+                        var tran = db.Database.BeginTransaction();  //开启事务
+                        int rowIndex = 1;
+                        string errorMessage = String.Empty;
 
+                        try
+                        {
                             //检查数据正确性
                             foreach (var row in excelContent)
                             {
-                                rowIndex += 1;
-                                string errorMessage = String.Empty;
                                 var model = new WMS_AIModel();
                                 model.Id = row.Id;
                                 model.ArrivalBillNum = row.ArrivalBillNum;
@@ -205,7 +204,7 @@ namespace Apps.BLL.WMS
                                 entity.PartId = model.PartId;
                                 entity.BoxQty = model.BoxQty;
                                 entity.ArrivalQty = model.ArrivalQty;
-                                entity.ArrivalDate = model.ArrivalDate;
+                                entity.ArrivalDate = model.ArrivalDate.Value;
                                 entity.ReceiveMan = model.ReceiveMan;
                                 entity.Lot = model.Lot;
                                 entity.ReceiveStatus = model.ReceiveStatus;
@@ -252,24 +251,30 @@ namespace Apps.BLL.WMS
                                     errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
                                     wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
                                 }
-                            }
 
-                            if (rtn)
-                            {
-                                tran.Commit();  //必须调用Commit()，不然数据不会保存
-                            }
-                            else
-                            {
-                                tran.Rollback();    //出错就回滚       
+                                rowIndex += 1;
                             }
                         }
-                    }
-                    catch (Exception)
-                    {
-                        errors.Add("导入的数据文件存在错误，请确认EXCEL文件格式是否正确。");
-                        return false;
+                        catch (Exception ex)
+                        {
+                            rtn = false;
+                            //将当前报错的entity状态改为分离，类似EF的回滚（忽略之前的Add操作）
+                            errorMessage = ex.Message;
+                            errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
+                            wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                        }
+
+                        if (rtn)
+                        {
+                            tran.Commit();  //必须调用Commit()，不然数据不会保存
+                        }
+                        else
+                        {
+                            tran.Rollback();    //出错就回滚       
+                        }
                     }
                 }
+
                 wb.Save();
             }
 
@@ -320,11 +325,11 @@ namespace Apps.BLL.WMS
             //校验入库日期
             if (!String.IsNullOrEmpty(model.ArrivalDate.ToString()))
             {
-                if (!DateTimeHelper.CheckYearMonth(model.ArrivalDate.ToString("yyyyMM")))
+                if (!DateTimeHelper.CheckYearMonth(model.ArrivalDate.Value.ToString("yyyyMM")))
                 {
                     throw new Exception("批次号不合符规范！");
                 }
-                else { model.Lot = model.ArrivalDate.ToString("yyyyMM"); }
+                else { model.Lot = model.ArrivalDate.Value.ToString("yyyyMM"); }
             }
             else
             {
