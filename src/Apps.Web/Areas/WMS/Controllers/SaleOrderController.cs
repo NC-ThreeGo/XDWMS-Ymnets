@@ -405,7 +405,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                 jo.Add("库房", item.InvId);
                     //jo.Add("子库存", item.SubInvId);
                     jo.Add("批次号", item.Lot);
-                    jo.Add("备注", item.Remark);
+                jo.Add("体积", item.Volume);
+                jo.Add("备注", item.Remark);
                     jo.Add("打印状态", item.PrintStaus);
                     jo.Add("打印日期", item.PrintDate);
                     jo.Add("打印人", item.PrintMan);
@@ -452,7 +453,8 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("库房(必输)", "");
               //jo.Add("子库存", "");
               jo.Add("批次号(格式：YYYY-MM-DD)", "");
-              jo.Add("备注", "");
+            jo.Add("体积", "");
+            jo.Add("备注", "");
               //jo.Add("打印状态", "");
               //jo.Add("打印日期", "");
               //jo.Add("打印人", "");

@@ -32,7 +32,7 @@ namespace Apps.Models.WMS
 		[Display(Name = "到货数量")]
 		public virtual Nullable<decimal> ArrivalQty { get; set; }
 		[Display(Name = "到货日期")]
-		public virtual System.DateTime? ArrivalDate { get; set; }
+		public virtual Nullable<System.DateTime> ArrivalDate { get; set; }
 		[Display(Name = "接收人")]
 		public virtual string ReceiveMan { get; set; }
 		[Display(Name = "到货状态")]
@@ -43,7 +43,7 @@ namespace Apps.Models.WMS
 		public virtual string InspectMan { get; set; }
 		[Display(Name = "送检日期")]
 		public virtual Nullable<System.DateTime> InspectDate { get; set; }
-		[Display(Name = "送检状体")]
+		[Display(Name = "送检状态")]
 		public virtual string InspectStatus { get; set; }
 		[Display(Name = "检验日期")]
 		public virtual Nullable<System.DateTime> CheckOutDate { get; set; }
@@ -63,7 +63,7 @@ namespace Apps.Models.WMS
 		public virtual string InStoreMan { get; set; }
 		[Display(Name = "入库仓库")]
 		public virtual Nullable<int> InvId { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "入库子库存")]
 		public virtual Nullable<int> SubInvId { get; set; }
 		[Display(Name = "入库状态")]
 		public virtual string InStoreStatus { get; set; }
@@ -85,7 +85,7 @@ namespace Apps.Models.WMS
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
-		[Display(Name = "批次号：YYYYMM")]
+		[Display(Name = "未设置")]
 		public virtual string Lot { get; set; }
 		}
 }
