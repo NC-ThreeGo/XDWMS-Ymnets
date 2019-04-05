@@ -873,6 +873,7 @@
     <Content Include="Areas\WMS\Views\InvHistory\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\InvHistory\Index.cshtml" />
     <Content Include="Areas\WMS\Views\InvHistory\ListAvg.cshtml" />
+    <Content Include="Areas\WMS\Views\Report\InvAmount.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

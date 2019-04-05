@@ -27,12 +27,26 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             return View();
         }
+        public ActionResult InvAmount()
+        {
+            return View();
+        }
+
 
         //[SupportFilter(ActionName = "FeedList")]
         public JsonResult GetFeedList(GridPager pager)
         {
             List<WMS_Feed_ListModel> list = m_BLL.GetFeedList(ref pager);
             GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetInvAmount(GridPager pager, string partcode, string partname)
+        {
+            List<WMS_InvModel> list = m_BLL.InvAmount(ref pager,partcode,partname);
+            GridRows<WMS_InvModel> grs = new GridRows<WMS_InvModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs, JsonRequestBehavior.AllowGet);
