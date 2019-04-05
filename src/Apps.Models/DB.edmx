@@ -1253,6 +1253,24 @@
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
           <Property Name="ModifyTime" Type="datetime" />
         </EntityType>
+        <EntityType Name="WMS_InvRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PartId" Type="int" Nullable="false" />
+          <Property Name="QTY" Type="numeric" Precision="10" Scale="3" Nullable="false" />
+          <Property Name="InvId" Type="int" />
+          <Property Name="SubInvId" Type="int" />
+          <Property Name="BillId" Type="int" />
+          <Property Name="SourceBill" Type="nvarchar" MaxLength="50" />
+          <Property Name="OperateDate" Type="datetime" />
+          <Property Name="Lot" Type="nvarchar" MaxLength="50" />
+          <Property Name="Type" Type="nvarchar" MaxLength="10" />
+          <Property Name="OperateMan" Type="nvarchar" MaxLength="10" />
+          <Property Name="Stock_InvId" Type="int" />
+          <Property Name="StockStatus" Type="tinyint" />
+        </EntityType>
         <EntityType Name="WMS_Line">
           <Key>
             <PropertyRef Name="Id" />
@@ -2763,6 +2781,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_InvRecord_WMS_InvInfo">
+          <End Role="WMS_InvInfo" Type="Self.WMS_InvInfo" Multiplicity="0..1" />
+          <End Role="WMS_InvRecord" Type="Self.WMS_InvRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_InvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_InvRecord">
+              <PropertyRef Name="InvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_InvRecord_WMS_SubInvInfo">
+          <End Role="WMS_SubInvInfo" Type="Self.WMS_SubInvInfo" Multiplicity="0..1" />
+          <End Role="WMS_InvRecord" Type="Self.WMS_InvRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_SubInvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_InvRecord">
+              <PropertyRef Name="SubInvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WMS_Line_WMS_Header1">
           <End Role="WMS_Header" Type="Self.WMS_Header" Multiplicity="1" />
           <End Role="WMS_Line" Type="Self.WMS_Line" Multiplicity="*" />
@@ -3371,6 +3413,7 @@
           <EntitySet Name="WMS_Inventory_D" EntityType="Self.WMS_Inventory_D" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Inventory_H" EntityType="Self.WMS_Inventory_H" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_InvInfo" EntityType="Self.WMS_InvInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WMS_InvRecord" EntityType="Self.WMS_InvRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Line" EntityType="Self.WMS_Line" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_Part" EntityType="Self.WMS_Part" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WMS_PO" EntityType="Self.WMS_PO" Schema="dbo" store:Type="Tables" />
@@ -3793,6 +3836,14 @@
           <AssociationSet Name="FK_WMS_Inventory_WMS_SubInvInfo" Association="Self.FK_WMS_Inventory_WMS_SubInvInfo">
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
             <End Role="WMS_Inventory_D" EntitySet="WMS_Inventory_D" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_InvRecord_WMS_InvInfo" Association="Self.FK_WMS_InvRecord_WMS_InvInfo">
+            <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
+            <End Role="WMS_InvRecord" EntitySet="WMS_InvRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_InvRecord_WMS_SubInvInfo" Association="Self.FK_WMS_InvRecord_WMS_SubInvInfo">
+            <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+            <End Role="WMS_InvRecord" EntitySet="WMS_InvRecord" />
           </AssociationSet>
           <AssociationSet Name="FK_WMS_Line_WMS_Header1" Association="Self.FK_WMS_Line_WMS_Header1">
             <End Role="WMS_Header" EntitySet="WMS_Header" />
@@ -4720,6 +4771,15 @@
             <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
           </FunctionImport>
           <EntitySet Name="V_WMS_InvHistoryAvg" EntityType="DB.V_WMS_InvHistoryAvg" />
+          <EntitySet Name="WMS_InvRecord" EntityType="DB.WMS_InvRecord" />
+          <AssociationSet Name="FK_WMS_InvRecord_WMS_InvInfo" Association="DB.FK_WMS_InvRecord_WMS_InvInfo">
+            <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
+            <End Role="WMS_InvRecord" EntitySet="WMS_InvRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_InvRecord_WMS_SubInvInfo" Association="DB.FK_WMS_InvRecord_WMS_SubInvInfo">
+            <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+            <End Role="WMS_InvRecord" EntitySet="WMS_InvRecord" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -7066,6 +7126,7 @@
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Inv_History_D" Relationship="DB.FK_WMS_Inv_History_D_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Inv_History_D" />
           <NavigationProperty Name="WMS_Inv" Relationship="DB.FK_Inv_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_Inv" />
+          <NavigationProperty Name="WMS_InvRecord" Relationship="DB.FK_WMS_InvRecord_WMS_InvInfo" FromRole="WMS_InvInfo" ToRole="WMS_InvRecord" />
         </EntityType>
         <EntityType Name="WMS_PO">
           <Key>
@@ -7295,6 +7356,7 @@
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Inv_History_D" Relationship="DB.FK_WMS_Inv_History_D_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Inv_History_D" />
           <NavigationProperty Name="WMS_Inv" Relationship="DB.FK_Inv_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_Inv" />
+          <NavigationProperty Name="WMS_InvRecord" Relationship="DB.FK_WMS_InvRecord_WMS_SubInvInfo" FromRole="WMS_SubInvInfo" ToRole="WMS_InvRecord" />
         </EntityType>
         <Association Name="FK_WMS_AI_WMS_SubInvInfo">
           <End Type="DB.WMS_SubInvInfo" Role="WMS_SubInvInfo" Multiplicity="0..1" />
@@ -8126,6 +8188,50 @@
           <Property Name="AvgQty" Type="Decimal" Precision="38" Scale="6" />
           <Property Name="InvQty" Type="Decimal" Precision="38" Scale="6" />
         </EntityType>
+        <EntityType Name="WMS_InvRecord">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartId" Type="Int32" Nullable="false" />
+          <Property Name="QTY" Type="Decimal" Nullable="false" Precision="10" Scale="3" />
+          <Property Name="InvId" Type="Int32" />
+          <Property Name="SubInvId" Type="Int32" />
+          <Property Name="BillId" Type="Int32" />
+          <Property Name="SourceBill" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OperateDate" Type="DateTime" Precision="3" />
+          <Property Name="Lot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OperateMan" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Stock_InvId" Type="Int32" />
+          <Property Name="StockStatus" Type="Byte" />
+          <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_InvRecord_WMS_InvInfo" FromRole="WMS_InvRecord" ToRole="WMS_InvInfo" />
+          <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_InvRecord_WMS_SubInvInfo" FromRole="WMS_InvRecord" ToRole="WMS_SubInvInfo" />
+        </EntityType>
+        <Association Name="FK_WMS_InvRecord_WMS_InvInfo">
+          <End Type="DB.WMS_InvInfo" Role="WMS_InvInfo" Multiplicity="0..1" />
+          <End Type="DB.WMS_InvRecord" Role="WMS_InvRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_InvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_InvRecord">
+              <PropertyRef Name="InvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_InvRecord_WMS_SubInvInfo">
+          <End Type="DB.WMS_SubInvInfo" Role="WMS_SubInvInfo" Multiplicity="0..1" />
+          <End Type="DB.WMS_InvRecord" Role="WMS_InvRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_SubInvInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_InvRecord">
+              <PropertyRef Name="SubInvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10042,6 +10148,25 @@
                 <ScalarProperty Name="PartName" ColumnName="PartName" />
                 <ScalarProperty Name="PartCode" ColumnName="PartCode" />
                 <ScalarProperty Name="InvId" ColumnName="InvId" />
+                <ScalarProperty Name="PartId" ColumnName="PartId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WMS_InvRecord">
+            <EntityTypeMapping TypeName="DB.WMS_InvRecord">
+              <MappingFragment StoreEntitySet="WMS_InvRecord">
+                <ScalarProperty Name="StockStatus" ColumnName="StockStatus" />
+                <ScalarProperty Name="Stock_InvId" ColumnName="Stock_InvId" />
+                <ScalarProperty Name="OperateMan" ColumnName="OperateMan" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Lot" ColumnName="Lot" />
+                <ScalarProperty Name="OperateDate" ColumnName="OperateDate" />
+                <ScalarProperty Name="SourceBill" ColumnName="SourceBill" />
+                <ScalarProperty Name="BillId" ColumnName="BillId" />
+                <ScalarProperty Name="SubInvId" ColumnName="SubInvId" />
+                <ScalarProperty Name="InvId" ColumnName="InvId" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
                 <ScalarProperty Name="PartId" ColumnName="PartId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

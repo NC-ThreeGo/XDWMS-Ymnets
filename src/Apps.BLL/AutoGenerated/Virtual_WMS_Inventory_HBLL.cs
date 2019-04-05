@@ -315,13 +315,13 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryBillNum, "盘点单号");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryTitle, "盘点名称");
+			 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryBillNum, "盘点单据号");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryTitle, "盘点标题");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryPerson, "盘点人");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryTime, "盘点时间");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryStatus, "盘点状态");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryType, "盘点类型：抽检，全检");
-				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Remark, "备注");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.InventoryType, "盘点类型");
+				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Remark, "Remark");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr1, "Attr1");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr2, "Attr2");
 				 excelFile.AddMapping<WMS_Inventory_HModel>(x => x.Attr3, "Attr3");

@@ -210,6 +210,9 @@
         <AssociationConnector Association="DB.FK_Inv_WMS_Part" />
         <AssociationConnector Association="DB.FK_Inv_WMS_SubInvInfo" />
         <EntityTypeShape EntityType="DB.V_WMS_InvHistoryAvg" Width="1.5" PointX="12.375" PointY="17.75" />
+        <EntityTypeShape EntityType="DB.WMS_InvRecord" Width="1.5" PointX="31.875" PointY="16.875" />
+        <AssociationConnector Association="DB.FK_WMS_InvRecord_WMS_InvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_InvRecord_WMS_SubInvInfo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
