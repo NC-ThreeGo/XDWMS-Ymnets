@@ -16,6 +16,7 @@
         //加载PO
         $("#btnLoadInspectBill").click(function ()
         {
+            endEditing();
             var inspectBillNum = $("#InspectBillNum").val();
             $("#List").datagrid("load", { inspectBillNum: inspectBillNum });
         });

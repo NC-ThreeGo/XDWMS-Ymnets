@@ -14,10 +14,8 @@ namespace Apps.BLL.WMS
 {
     public partial class WMS_AIBLL
     {
-
         public override List<WMS_AIModel> CreateModelList(ref IQueryable<WMS_AI> queryData)
         {
-
             List<WMS_AIModel> modelList = (from r in queryData
                                            select new WMS_AIModel
                                            {
@@ -52,6 +50,57 @@ namespace Apps.BLL.WMS
                                                PartId = r.PartId,
                                                Lot = r.Lot,
                                                QualifyQty = r.QualifyQty,
+                                               ReceiveMan = r.ReceiveMan,
+                                               ReceiveStatus = r.ReceiveStatus,
+                                               ReInspectBillNum = r.ReInspectBillNum,
+
+                                               PartCode = r.WMS_PO.WMS_Part.PartCode,
+                                               PartName = r.WMS_PO.WMS_Part.PartName,
+                                               SupplierShortName = r.WMS_PO.WMS_Supplier.SupplierShortName,
+                                               PO = r.WMS_PO.PO,
+                                               PlanDate = r.WMS_PO.PlanDate,
+                                               InvName = r.WMS_InvInfo.InvName,
+                                               SubInvName = r.WMS_SubInvInfo.SubInvName,
+                                           }).ToList();
+            return modelList;
+        }
+
+        private List<WMS_AIModel> CreateModelListForInspect(ref IQueryable<WMS_AI> queryData)
+        {
+            List<WMS_AIModel> modelList = (from r in queryData
+                                           select new WMS_AIModel
+                                           {
+                                               ArrivalBillNum = r.ArrivalBillNum,
+                                               ArrivalDate = r.ArrivalDate,
+                                               ArrivalQty = r.ArrivalQty,
+                                               Attr1 = r.Attr1,
+                                               Attr2 = r.Attr2,
+                                               Attr3 = r.Attr3,
+                                               Attr4 = r.Attr4,
+                                               Attr5 = r.Attr5,
+                                               BoxQty = r.BoxQty,
+                                               CheckOutDate = DateTime.Now,
+                                               CheckOutRemark = r.CheckOutRemark,
+                                               CheckOutResult = "合格",
+                                               CreatePerson = r.CreatePerson,
+                                               CreateTime = r.CreateTime,
+                                               Id = r.Id,
+                                               InspectBillNum = r.InspectBillNum,
+                                               InspectDate = r.InspectDate,
+                                               InspectMan = r.InspectMan,
+                                               InspectStatus = r.InspectStatus,
+                                               InStoreBillNum = r.InStoreBillNum,
+                                               InStoreMan = r.InStoreMan,
+                                               InStoreStatus = r.InStoreStatus,
+                                               InvId = r.InvId,
+                                               SubInvId = r.SubInvId,
+                                               ModifyPerson = r.ModifyPerson,
+                                               ModifyTime = r.ModifyTime,
+                                               NoQualifyQty = 0,
+                                               POId = r.POId,
+                                               PartId = r.PartId,
+                                               Lot = r.Lot,
+                                               QualifyQty = r.ArrivalQty,
                                                ReceiveMan = r.ReceiveMan,
                                                ReceiveStatus = r.ReceiveStatus,
                                                ReInspectBillNum = r.ReInspectBillNum,
@@ -372,6 +421,22 @@ namespace Apps.BLL.WMS
                 //排序
                 queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
                 return CreateModelList(ref queryData);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<WMS_AIModel> GetInspectBillList(ref GridPager pager, string where)
+        {
+            try
+            {
+                IQueryable<WMS_AI> queryData = m_Rep.GetList().Where(where);
+                pager.totalRows = queryData.Count();
+                //排序
+                queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+                return CreateModelListForInspect(ref queryData);
             }
             catch (Exception ex)
             {
