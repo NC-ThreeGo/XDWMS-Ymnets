@@ -42,7 +42,16 @@ namespace Apps.Web.Areas.WMS.Controllers
                 + partName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
                 + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
             GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
+
+            List<WMS_Product_EntryModel> footerList = new List<WMS_Product_EntryModel>();
+            footerList.Add(new WMS_Product_EntryModel()
+            {
+                ProductBillNum = "<div style='text-align:right;color:#444'>合计：</div>",
+                ProductQty = list.Sum(p => p.ProductQty),
+            });
+
             grs.rows = list;
+            grs.footer = footerList;
             grs.total = pager.totalRows;
             return Json(grs);
         }

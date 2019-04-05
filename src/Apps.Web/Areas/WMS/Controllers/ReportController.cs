@@ -27,14 +27,15 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             return View();
         }
+
         //[SupportFilter(ActionName = "FeedList")]
         public JsonResult GetFeedList(GridPager pager)
         {
-            List<ExpandoObject> list = m_BLL.GetFeedList(ref pager);
-            GridRows<ExpandoObject> grs = new GridRows<ExpandoObject>();
+            List<WMS_Feed_ListModel> list = m_BLL.GetFeedList(ref pager);
+            GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
-            return Json(grs);
+            return Json(grs, JsonRequestBehavior.AllowGet);
         }
     }
 }

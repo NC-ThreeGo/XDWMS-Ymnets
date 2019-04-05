@@ -14,6 +14,6 @@ namespace Apps.IBLL.WMS
         /// <returns></returns>
         DataSet GetDataSource(WMS_ReportModel report, List<WMS_ReportParamModel> listParam);
 
-        List<ExpandoObject> GetFeedList(ref GridPager pager);
+        List<WMS_Feed_ListModel> GetFeedList(ref GridPager pager);
     }
 }

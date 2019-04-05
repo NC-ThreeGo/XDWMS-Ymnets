@@ -123,143 +123,151 @@ namespace Apps.BLL.WMS
                     //SheetName，第一个Sheet
                     var excelContent = excelFile.Worksheet<WMS_AIModel>(0);
 
-                    //开启事务
-                    using (DBContainer db = new DBContainer())
+                    try
                     {
-                        var tran = db.Database.BeginTransaction();  //开启事务
-                        int rowIndex = 0;
-
-                        //检查数据正确性
-                        foreach (var row in excelContent)
+                        //开启事务
+                        using (DBContainer db = new DBContainer())
                         {
-                            rowIndex += 1;
-                            string errorMessage = String.Empty;
-                            var model = new WMS_AIModel();
-                            model.Id = row.Id;
-                            model.ArrivalBillNum = row.ArrivalBillNum;
-                            //model.POId = row.POId;
-                            model.PO = row.PO;
-                            //model.PartId = row.PartId;
-                            model.PartCode = row.PartCode;
-                            model.BoxQty = row.BoxQty;
-                            model.ArrivalQty = row.ArrivalQty;
-                            model.ArrivalDate = row.ArrivalDate;
-                            model.ReceiveMan = row.ReceiveMan;
-                            //model.Lot = row.ArrivalDate.ToString("yyyyMM");
-                            model.ReceiveStatus = "已到货";
-                            //model.InspectBillNum = row.InspectBillNum;
-                            //model.InspectMan = row.InspectMan;
-                            //model.InspectDate = row.InspectDate;
-                            model.InspectStatus = "未送检";
-                            //model.CheckOutDate = row.CheckOutDate;
-                            //model.CheckOutResult = row.CheckOutResult;
-                            //model.QualifyQty = row.QualifyQty;
-                            //model.NoQualifyQty = row.NoQualifyQty;
-                            //model.CheckOutRemark = row.CheckOutRemark;
-                            //model.ReInspectBillNum = row.ReInspectBillNum;
-                            //model.InStoreBillNum = row.InStoreBillNum;
-                            //model.InStoreMan = row.InStoreMan;
-                            //model.InvId = row.InvId;
-                            //model.SubInvId = row.SubInvId;
-                            model.InStoreStatus = "未入库";
-                            //model.Attr1 = row.Attr1;
-                            //model.Attr2 = row.Attr2;
-                            //model.Attr3 = row.Attr3;
-                            //model.Attr4 = row.Attr4;
-                            //model.Attr5 = row.Attr5;
-                            //model.CreatePerson = row.CreatePerson;
-                            //model.CreateTime = row.CreateTime;
-                            //model.ModifyPerson = row.ModifyPerson;
-                            //model.ModifyTime = row.ModifyTime;
+                            var tran = db.Database.BeginTransaction();  //开启事务
+                            int rowIndex = 0;
 
-                            if (!String.IsNullOrEmpty(errorMessage))
+                            //检查数据正确性
+                            foreach (var row in excelContent)
                             {
-                                rtn = false;
-                                errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-                                wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
-                                continue;
+                                rowIndex += 1;
+                                string errorMessage = String.Empty;
+                                var model = new WMS_AIModel();
+                                model.Id = row.Id;
+                                model.ArrivalBillNum = row.ArrivalBillNum;
+                                //model.POId = row.POId;
+                                model.PO = row.PO;
+                                //model.PartId = row.PartId;
+                                model.PartCode = row.PartCode;
+                                model.BoxQty = row.BoxQty;
+                                model.ArrivalQty = row.ArrivalQty;
+                                model.ArrivalDate = row.ArrivalDate;
+                                model.ReceiveMan = row.ReceiveMan;
+                                //model.Lot = row.ArrivalDate.ToString("yyyyMM");
+                                model.ReceiveStatus = "已到货";
+                                //model.InspectBillNum = row.InspectBillNum;
+                                //model.InspectMan = row.InspectMan;
+                                //model.InspectDate = row.InspectDate;
+                                model.InspectStatus = "未送检";
+                                //model.CheckOutDate = row.CheckOutDate;
+                                //model.CheckOutResult = row.CheckOutResult;
+                                //model.QualifyQty = row.QualifyQty;
+                                //model.NoQualifyQty = row.NoQualifyQty;
+                                //model.CheckOutRemark = row.CheckOutRemark;
+                                //model.ReInspectBillNum = row.ReInspectBillNum;
+                                //model.InStoreBillNum = row.InStoreBillNum;
+                                //model.InStoreMan = row.InStoreMan;
+                                //model.InvId = row.InvId;
+                                //model.SubInvId = row.SubInvId;
+                                model.InStoreStatus = "未入库";
+                                //model.Attr1 = row.Attr1;
+                                //model.Attr2 = row.Attr2;
+                                //model.Attr3 = row.Attr3;
+                                //model.Attr4 = row.Attr4;
+                                //model.Attr5 = row.Attr5;
+                                //model.CreatePerson = row.CreatePerson;
+                                //model.CreateTime = row.CreateTime;
+                                //model.ModifyPerson = row.ModifyPerson;
+                                //model.ModifyTime = row.ModifyTime;
+
+                                if (!String.IsNullOrEmpty(errorMessage))
+                                {
+                                    rtn = false;
+                                    errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
+                                    wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                                    continue;
+                                }
+
+                                //执行额外的数据校验
+                                try
+                                {
+                                    AdditionalCheckExcelData(db, ref model);
+                                }
+                                catch (Exception ex)
+                                {
+                                    rtn = false;
+                                    errorMessage = ex.Message;
+                                    errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
+                                    wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                                    continue;
+                                }
+
+                                //写入数据库
+                                WMS_AI entity = new WMS_AI();
+                                entity.Id = model.Id;
+                                entity.ArrivalBillNum = model.ArrivalBillNum;
+                                //entity.ArrivalBillNum = "DH" + DateTime.Now.ToString("yyyyMMddHHmmssff");
+                                entity.POId = model.POId;
+                                entity.PartId = model.PartId;
+                                entity.BoxQty = model.BoxQty;
+                                entity.ArrivalQty = model.ArrivalQty;
+                                entity.ArrivalDate = model.ArrivalDate;
+                                entity.ReceiveMan = model.ReceiveMan;
+                                entity.Lot = model.Lot;
+                                entity.ReceiveStatus = model.ReceiveStatus;
+                                //entity.InspectBillNum = model.InspectBillNum;
+                                //entity.InspectMan = model.InspectMan;
+                                //entity.InspectDate = model.InspectDate;
+                                entity.InspectStatus = model.InspectStatus;
+                                //entity.CheckOutDate = model.CheckOutDate;
+                                //entity.CheckOutResult = model.CheckOutResult;
+                                //entity.QualifyQty = model.QualifyQty;
+                                //entity.NoQualifyQty = model.NoQualifyQty;
+                                //entity.CheckOutRemark = model.CheckOutRemark;
+                                //entity.ReInspectBillNum = model.ReInspectBillNum;
+                                //entity.InStoreBillNum = model.InStoreBillNum;
+                                //entity.InStoreMan = model.InStoreMan;
+                                //entity.InvId = model.InvId;
+                                //entity.SubInvId = model.SubInvId;
+                                entity.InStoreStatus = model.InStoreStatus;
+                                //entity.Attr1 = model.Attr1;
+                                //entity.Attr2 = model.Attr2;
+                                //entity.Attr3 = model.Attr3;
+                                //entity.Attr4 = model.Attr4;
+                                //entity.Attr5 = model.Attr5;
+                                //entity.CreatePerson = model.CreatePerson;
+                                //entity.CreateTime = model.CreateTime;
+                                //entity.ModifyPerson = model.ModifyPerson;
+                                //entity.ModifyTime = model.ModifyTime;
+                                entity.CreatePerson = oper;
+                                entity.CreateTime = DateTime.Now;
+                                entity.ModifyPerson = oper;
+                                entity.ModifyTime = DateTime.Now;
+
+                                db.WMS_AI.Add(entity);
+                                try
+                                {
+                                    db.SaveChanges();
+                                }
+                                catch (Exception ex)
+                                {
+                                    rtn = false;
+                                    //将当前报错的entity状态改为分离，类似EF的回滚（忽略之前的Add操作）
+                                    db.Entry(entity).State = System.Data.Entity.EntityState.Detached;
+                                    errorMessage = ex.InnerException.InnerException.Message;
+                                    errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
+                                    wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                                }
                             }
 
-                            //执行额外的数据校验
-                            try
+                            if (rtn)
                             {
-                                AdditionalCheckExcelData(db,ref model);
+                                tran.Commit();  //必须调用Commit()，不然数据不会保存
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                rtn = false;
-                                errorMessage = ex.Message;
-                                errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-                                wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
-                                continue;
-                            }
-
-                            //写入数据库
-                            WMS_AI entity = new WMS_AI();
-                            entity.Id = model.Id;
-                            entity.ArrivalBillNum = model.ArrivalBillNum;
-                            //entity.ArrivalBillNum = "DH" + DateTime.Now.ToString("yyyyMMddHHmmssff");
-                            entity.POId = model.POId;
-                            entity.PartId = model.PartId;
-                            entity.BoxQty = model.BoxQty;
-                            entity.ArrivalQty = model.ArrivalQty;
-                            entity.ArrivalDate = model.ArrivalDate;
-                            entity.ReceiveMan = model.ReceiveMan;
-                            entity.Lot = model.Lot;
-                            entity.ReceiveStatus = model.ReceiveStatus;
-                            //entity.InspectBillNum = model.InspectBillNum;
-                            //entity.InspectMan = model.InspectMan;
-                            //entity.InspectDate = model.InspectDate;
-                            entity.InspectStatus = model.InspectStatus;
-                            //entity.CheckOutDate = model.CheckOutDate;
-                            //entity.CheckOutResult = model.CheckOutResult;
-                            //entity.QualifyQty = model.QualifyQty;
-                            //entity.NoQualifyQty = model.NoQualifyQty;
-                            //entity.CheckOutRemark = model.CheckOutRemark;
-                            //entity.ReInspectBillNum = model.ReInspectBillNum;
-                            //entity.InStoreBillNum = model.InStoreBillNum;
-                            //entity.InStoreMan = model.InStoreMan;
-                            //entity.InvId = model.InvId;
-                            //entity.SubInvId = model.SubInvId;
-                            entity.InStoreStatus = model.InStoreStatus;
-                            //entity.Attr1 = model.Attr1;
-                            //entity.Attr2 = model.Attr2;
-                            //entity.Attr3 = model.Attr3;
-                            //entity.Attr4 = model.Attr4;
-                            //entity.Attr5 = model.Attr5;
-                            //entity.CreatePerson = model.CreatePerson;
-                            //entity.CreateTime = model.CreateTime;
-                            //entity.ModifyPerson = model.ModifyPerson;
-                            //entity.ModifyTime = model.ModifyTime;
-                            entity.CreatePerson = oper;
-                            entity.CreateTime = DateTime.Now;
-                            entity.ModifyPerson = oper;
-                            entity.ModifyTime = DateTime.Now;
-
-                            db.WMS_AI.Add(entity);
-                            try
-                            {
-                                db.SaveChanges();
-                            }
-                            catch (Exception ex)
-                            {
-                                rtn = false;
-                                //将当前报错的entity状态改为分离，类似EF的回滚（忽略之前的Add操作）
-                                db.Entry(entity).State = System.Data.Entity.EntityState.Detached;
-                                errorMessage = ex.InnerException.InnerException.Message;
-                                errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-                                wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                                tran.Rollback();    //出错就回滚       
                             }
                         }
-
-                        if (rtn)
-                        {
-                            tran.Commit();  //必须调用Commit()，不然数据不会保存
-                        }
-                        else
-                        {
-                            tran.Rollback();    //出错就回滚       
-                        }
+                    }
+                    catch (Exception)
+                    {
+                        errors.Add("导入的数据文件存在错误，请确认EXCEL文件格式是否正确。");
+                        return false;
                     }
                 }
                 wb.Save();
@@ -293,11 +301,11 @@ namespace Apps.BLL.WMS
             }
             //采购订单号
             if (!String.IsNullOrEmpty(model.PO))
-            {     
+            {
                 var po = model.PO;
                 var partid = model.PartId;
-                Expression<Func<WMS_PO, bool>> exp = x => x.PO == po && x.PartId == partid  && x.Status == "有效";
-                
+                Expression<Func<WMS_PO, bool>> exp = x => x.PO == po && x.PartId == partid && x.Status == "有效";
+
                 var result = db.WMS_PO.FirstOrDefault(exp);
                 if (result != null)
                 {
@@ -343,9 +351,9 @@ namespace Apps.BLL.WMS
             //不允许超量接受
 
             //投料数量不能为空
-            if (model.ArrivalQty == 0)
+            if (model.ArrivalQty > 0)
             {
-                throw new Exception("到货数量不能为空！");
+                throw new Exception("到货数量必须大于0！");
             }
         }
 
