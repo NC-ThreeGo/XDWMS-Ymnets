@@ -84,7 +84,7 @@ namespace Apps.BLL.WMS
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SaleBillNum, "销售单号（业务）(必输)");
 					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SellBillNum, "销售单号（系统）");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PlanDeliveryDate, "计划发货日期");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CustomerShortName, "客户简称(必输)");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CustomerShortName, "客户名称(必输)");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartCode, "物料编码(必输)");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Qty, "数量(必输)");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.BoxQty, "箱数");
@@ -268,7 +268,7 @@ namespace Apps.BLL.WMS
             if (!String.IsNullOrEmpty(model.CustomerShortName))
             {
                 var customerShortName = model.CustomerShortName;
-                Expression<Func<WMS_Customer, bool>> exp = x => x.CustomerShortName == customerShortName;
+                Expression<Func<WMS_Customer, bool>> exp = x => x.CustomerName == customerShortName;
 
                 //var part = m_PartRep.GetSingleWhere(exp);
                 var customer = db.WMS_Customer.FirstOrDefault(exp);

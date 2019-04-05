@@ -32,7 +32,7 @@ namespace Apps.Models.WMS
 		[Display(Name = "到货数量")]
 		public virtual Nullable<decimal> ArrivalQty { get; set; }
 		[Display(Name = "到货日期")]
-		public virtual Nullable<System.DateTime> ArrivalDate { get; set; }
+		public virtual System.DateTime ArrivalDate { get; set; }
 		[Display(Name = "接收人")]
 		public virtual string ReceiveMan { get; set; }
 		[Display(Name = "到货状态")]

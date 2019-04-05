@@ -38,6 +38,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             PrintTypes.Add(new ReportType() { Type = 0, Name = "" });
             PrintTypes.Add(new ReportType() { Type = 1, Name = "未打印" });
             PrintTypes.Add(new ReportType() { Type = 2, Name = "已打印" });
+            PrintTypes.Add(new ReportType() { Type = 2, Name = "已失效" });
             ViewBag.PrintStaus = new SelectList(PrintTypes, "Name", "Name");
 
             //定义打印状态下拉框的值
@@ -298,17 +299,40 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 if (id != 0)
                 {
-                    if (m_BLL.Delete(ref errors, id))
+                    WMS_Sale_OrderModel model = m_BLL.GetById(id);
+                    model.ModifyTime = ResultHelper.NowTime;
+                    model.ModifyPerson = GetUserTrueName();
+                    model.PrintStaus = "已失效";
+                    if (model != null && ModelState.IsValid)
                     {
-                        LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_Sale_Order");
-                        return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+
+                        if (m_BLL.Edit(ref errors, model))
+                        {
+                            LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",SaleBillNum" + model.SaleBillNum, "成功", "修改", "WMS_Sale_Order");
+                            return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
+                        }
+                        else
+                        {
+                            string ErrorCol = errors.Error;
+                            LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",SaleBillNum" + model.SaleBillNum + "," + ErrorCol, "失败", "修改", "WMS_Sale_Order");
+                            return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
+                        }
                     }
                     else
                     {
-                        string ErrorCol = errors.Error;
-                        LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Sale_Order");
-                        return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                        return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
                     }
+                    //if (m_BLL.Delete(ref errors, id))
+                    //{
+                    //    LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_Sale_Order");
+                    //    return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+                    //}
+                    //else
+                    //{
+                    //    string ErrorCol = errors.Error;
+                    //    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Sale_Order");
+                    //    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                    //}
                 }
                 else
                 {
@@ -421,7 +445,7 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("销售单号（业务）(必输)", "");
               //jo.Add("销售单号（系统）", "");
               jo.Add("计划发货日期", "");
-              jo.Add("客户简称(必输)", "");
+              jo.Add("客户名称(必输)", "");
               jo.Add("物料编码(必输)", "");
               jo.Add("数量(必输)", "");
               jo.Add("箱数", "");
