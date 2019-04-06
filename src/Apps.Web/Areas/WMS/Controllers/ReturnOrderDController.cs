@@ -145,6 +145,52 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
+        #region 手工创建库存待退货单—DataGrid
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult CreateParentForDataGrid()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult CreateParentForDataGrid(string inserted)
+        {
+            var detailsList = JsonHandler.DeserializeJsonToList<WMS_ReturnOrderModel>(inserted);
+            foreach (var model in detailsList)
+            {
+                model.Id = 0;
+                //model.PrintStaus = "未退货";
+                model.CreateTime = ResultHelper.NowTime;
+                if (model.Lot == "[空]")
+                    model.Lot = "";
+                try
+                {
+                    m_ReturnOrderBLL.CreateReturnOrder(ref errors, GetUserTrueName(), model);
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum, "成功", "创建", "WMS_ReturnOrder");
+                }
+                catch (Exception ex)
+                {
+                    string ErrorCol = errors.Error;
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum + "," + ErrorCol, "失败", "创建", "WMS_ReturnOrder");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+                }
+            }
+            return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult GetReturnOrderList(GridPager pager, string returnOrderNum)
+        {
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListParentByWhere(ref pager, "1 = 2", "ReturnOrderNum = \"" + returnOrderNum + "\"").ToList();
+            GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
+
         #region 修改库存待退货单
         [SupportFilter(ActionName = "Edit")]
         public ActionResult EditParent(long id)

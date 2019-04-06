@@ -304,6 +304,22 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetPartByCode(string partCode)
+        {
+            List<WMS_PartModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Status == \"有效\" && PartCode == \""
+                + partCode + "\"");
+            if (list.Count() == 0)
+            {
+                return Json(JsonHandler.CreateMessage(0, "物料编码不存在！"));
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(1, Resource.CheckSucceed, JsonHandler.SerializeObject(list.First())));
+            }
+        }
         #endregion
     }
 }

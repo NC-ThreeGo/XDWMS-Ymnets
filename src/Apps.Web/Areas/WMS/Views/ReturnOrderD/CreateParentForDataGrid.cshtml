@@ -1,0 +1,603 @@
+﻿@model Apps.Models.WMS.WMS_ReturnOrderModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Spl;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建库存退货";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#btnSave").click(function ()
+        {
+            if (!$("form").valid()) {
+                $.messageBox5s('提示', $("#ErrMesList").html());
+                return;
+            }
+            if ($("form").valid())
+            {
+                endEditing_mList();
+                var $dg = $('#mList');
+                var rows = $dg.datagrid('getRows');  //获取所有的行
+                for (var i = 0; i < rows.length; i++)
+                {
+                    if (!rows[i]['Id'])
+                    {
+                        alert("存在无效的物料，请确认！");
+                        return;
+                    }
+                }
+
+                //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
+                $("#inserted").val(JSON.stringify(rows));
+
+                if (rows.length) {
+                    showLoading();
+                    $.ajax({
+                        url: "@Url.Action("CreateParentForDataGrid")",
+                        type: "Post",
+                        data: $("form").serialize(),
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.type == 1) {
+                                hideLoading();
+                                window.parent.frameReturnByMes(data.message);
+                                window.parent.frameReturnByReload(true);
+                                window.parent.frameReturnByMes("保存成功！");
+                                //保存后不关闭当前对话框，但把控件数据清空
+                                window.parent.frameReturnByRefresh();
+                                //clear();
+
+                            } else {
+                                window.parent.frameReturnByMes(data.message);
+                                hideLoading();
+
+                            }
+                        }
+                    });
+                } else {
+                    $.messageBox5s('提示', "没有数据需要保存！");
+                }
+            }
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(30),
+                height: SetGridHeightSub(50)
+            });
+        });
+
+    });
+    $(function ()
+    {
+        $('#mList').datagrid({
+            url: '@Url.Action("GetReturnOrderList")?returnOrderNum=""',
+            methord: 'post',
+            width: SetGridWidthSub(10),
+            height: SetGridHeightSub(202),
+            fitColumns: true,
+            idField: 'Id',
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            selectOnCheck: false,
+            checkOnSelect: false,
+            onClickCell: onClickCell_mList,
+            onEndEdit: onEndEdit_mList,
+            onBeginEdit: onBeginEdit_mList,
+            remotesort: false,
+            showFooter: false,
+            onLoadSuccess: function (data)
+            {
+                append();
+            },
+            columns: [[
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
+                {
+                    field: 'oper', title: '操作', width: 50, formatter: function (value)
+                    {
+                        if (value == null)
+                            return "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-red' href='javascript:removeit()'><a>";
+                        else
+                            return value;
+                    }
+                },
+
+                { field: 'PartId', title: '物料ID', width: 80, hidden: true },
+                {
+                    field: 'PartCode', title: '物料编码', width: 100,
+                    editor: { type: 'textbox', options: { required: true } }
+                },
+                { field: 'PartName', title: '物料名称', width: 100 },
+
+                { field: 'SupplierId', title: '供应商ID', width: 80, hidden: true },
+                {
+                    field: 'SupplierCode', title: '供应商编码', width: 100,
+                    editor: { type: 'textbox', options: { required: true } }
+                },
+                { field: 'SupplierShortName', title: '供应商简称', width: 100 },
+
+                { field: 'InvName', title: '仓库名称', width: 80, hidden: true },
+                {
+                    field: 'InvId', title: '入库仓库', width: 80, sortable: true,
+                    formatter: function (value, row)
+                    {
+                        return row.InvName;
+                    },
+                    editor:
+                    {
+                        type: 'combobox',
+                        options:
+                        {
+                            valueField: 'Value',
+                            textField: 'Text',
+                            method: 'post',
+                            url: '/WMS/InvInfo/GetInvList',
+                            onSelect: function (data)
+                            {
+                                var row = $('#mList').datagrid('getSelected');
+                                var rowIndex = $('#mList').datagrid('getRowIndex', row);//获取行号
+                                var lotTarget = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'Lot' }).target;
+                                var lotTarget_Grid = $(lotTarget).combogrid('grid');
+                                lotTarget_Grid.datagrid('load', { PartId: row.PartId, InvId: data.Value });
+                            },
+                            required: true,
+                            editable: false
+                        }
+                    }
+                },
+
+                {
+                    field: 'Lot', title: '批次号', width: 80,
+                    editor:
+                    {
+                        type: 'combogrid',
+                        options:
+                        {
+                            panelWidth: 300,
+                            panelHeight: 150,
+                            idField: 'LotDisp',
+                            textField: 'LotDisp',
+                            url: '@Url.Action("GetLotsByPart", "Inv")',
+                            method: 'post',
+                            editable: false,
+                            //onSelect: onSelect,
+                            //onShowPanel: onShowPanel,
+                            columns: [[
+                                { field: 'Lot', title: '批次号', width: 50, hidden: true },
+                                {
+                                    field: 'LotDisp', title: '批次号', width: 50
+                                },
+                                {field:'Qty',title:'现有量',width:50},
+                                { field: 'StockQty', title: '备料数', width: 80, sortable: true, align: 'right' },
+                                { field: 'AvailableQty', title: '可用数量', width: 80, sortable: true, align: 'right' }
+                            ]],
+                            fitColumns: true
+                        }
+                    }
+                },
+
+                {
+                    field: 'AdjustQty', title: '实际退货数量', width: 80,
+                    editor: { type: 'numberbox', options: { required: true, min: 0 } }, align: 'right'
+                },
+                { field: 'Remark', title: '退货说明', width: 80, editor: { type: 'textbox' }},
+
+            ]]
+        });
+    });
+
+    //#region 手动加载DataGrid的事件
+    //编辑的行
+    var editIndex_mList = undefined;
+    function endEditing_mList()
+    {
+        if (editIndex_mList == undefined) { return true }
+        $('#mList').datagrid('endEdit', editIndex_mList);
+
+        editIndex_mList = undefined;
+        return true;
+    }
+
+    //添加空行—手动加载
+    function append()
+    {
+        var index = $('#mList').datagrid('getRowIndex', $('#mList').datagrid('getSelected'));
+        if (index == -1)
+            index = 0;
+        $("#mList").datagrid("insertRow", {
+            index: index + 1,
+            row: {
+                oper: "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-red' href='javascript:removeit()'><a>",
+            }
+        });
+    }
+
+    //删除一行—手动加载
+    function removeit()
+    {
+        if (editIndex_mList == undefined) { return }
+        $('#mList').datagrid('selectRow', editIndex_mList);
+
+        $('#mList').datagrid('cancelEdit', editIndex_mList)
+            .datagrid('deleteRow', editIndex_mList);
+        editIndex_mList = undefined;
+    }
+
+    function onEndEdit_mList(index, row)
+    {
+        var ed = $(this).datagrid('getEditor', {
+            index: index,
+            field: 'InvId'
+        });
+        row.InvName = $(ed.target).combobox('getText');
+    }
+
+    //进入编辑前设置
+    function onBeginEdit_mList(index, row)
+    {
+    }
+
+    function onClickCell_mList(index, field)
+    {
+        if (editIndex_mList != index)
+        {
+            if (endEditing_mList())
+            {
+                $('#mList').datagrid('selectRow', index)
+                    .datagrid('beginEdit', index);
+
+                //给numberbox增加keyup事件，以便自动计算合格数量和不合格数量
+                var eds = $('#mList').datagrid('getEditors', index);
+                for (var i = 0; i < eds.length; i++)
+                {
+                    var ed = eds[i];
+                    //给字段PartCode增加setKeyUpValue事件
+                    if (ed.field == 'PartCode')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForPartCode(e, $(this), $('#mList'));
+                        });
+                    }
+
+                    //给字段SupplierCode增加setKeyUpValue事件
+                    if (ed.field == 'SupplierCode')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForSupplierCode(e, $(this), $('#mList'));
+                        });
+                    }
+
+                    //给字段InvId增加focus事件和setKeyUpValue事件
+                    if (ed.field == 'InvId')
+                    {
+                        var target = $(ed.target).combobox('textbox');
+                        target.bind("focus", function ()
+                        {
+                            return setFocusForInvId($(ed.target));
+                        });
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForInvId(e, index);
+                        });
+                    }
+
+                    //给字段Lot增加focus事件和setKeyUpValue事件
+                    if (ed.field == 'Lot')
+                    {
+                        var target = $(ed.target).combobox('textbox');
+                        target.bind("focus", function ()
+                        {
+                            return setFocusForLot($(ed.target));
+                        });
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForLot(e, index);
+                        });
+                    }
+
+                    //给字段AdjustQty增加setKeyUpValue事件
+                    if (ed.field == 'AdjustQty')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                        target.bind("focus", function ()
+                        {
+                            return setFocusForAdjustQty($(ed.target));
+                        });
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForAdjustQty(e, index);
+                        });
+                    }
+                    //给字段Remark增加setKeyUpValue事件
+                    if (ed.field == 'Remark')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForRemark(e, index);
+                        });
+                    }
+                }
+
+                var ed = $('#mList').datagrid('getEditor', { index: index, field: field });
+                if (ed)
+                {
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).select();
+                }
+                editIndex_mList = index;
+            } else
+            {
+                setTimeout(function ()
+                {
+                    $('#mList').datagrid('selectRow', editIndex);
+                }, 0);
+            }
+        }
+    }
+
+    function setKeyUpValueForPartCode(e, sender, datagrid)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            var row = datagrid.datagrid('getSelected');
+            var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
+            var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'PartCode' }).target;
+            var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
+
+            var thisTarget_Supplier = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierCode' }).target;
+            thisTarget_Supplier.textbox('clear');
+            var thisTarget_Inv = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'InvId' }).target;
+            thisTarget_Inv.combobox('clear');
+            var thisTarget_Lot = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'Lot' }).target;
+            thisTarget_Lot.textbox('clear');
+            var thisTarget_Qty = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'AdjustQty' }).target;
+            thisTarget_Qty.textbox('clear');
+            var thisTarget_Remark = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'Remark' }).target;
+            thisTarget_Remark.textbox('clear');
+
+            //向后台申请当前物料信息
+            $.ajax({
+                url: "@Url.Action("GetPartByCode", "Part")",
+                type: "Post",
+                data: { partCode: thisTarget_Input.val()},
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1)
+                    {
+                        //alert(JSON.parse(data.value));
+                        getRow = JSON.parse(data.value);
+                        datagrid.datagrid('updateRow', {
+                            index: rowIndex,
+                            row: {
+                                PartId: getRow.Id,
+                                PartCode: getRow.PartCode,
+                                PartName: getRow.PartName,
+                                SupplierId: '',
+                                SupplierCode: '',
+                                SupplierShortName: '',
+                                InvName: '',
+                                InvId: '',
+                                Lot: '',
+                                AdjustQty: 0,
+                                Remark: '',
+                            },
+                        });
+                        endEditing_mList();
+                        onClickCell_mList(rowIndex, "SupplierCode");
+                    } else
+                    {
+                        datagrid.datagrid('updateRow', {
+                            index: rowIndex,
+                            row: {
+                                PartId: '',
+                                PartCode: '',
+                                PartName: '',
+                                SupplierId: '',
+                                SupplierCode: '',
+                                SupplierShortName: '',
+                                InvName: '',
+                                InvId: '',
+                                Lot: '',
+                                AdjustQty: 0,
+                                Remark: '',
+                           },
+                        });
+                        endEditing_mList();
+                    }
+                }
+            });
+        }
+    }
+
+    function setKeyUpValueForSupplierCode(e, sender, datagrid)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            var row = datagrid.datagrid('getSelected');
+            var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
+            var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierCode' }).target;
+            var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
+
+            //向后台申请当前供应商信息
+            $.ajax({
+                url: "@Url.Action("GetSupplierByCode", "Supplier")",
+                type: "Post",
+                data: { supplierCode: thisTarget_Input.val()},
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1)
+                    {
+                        //alert(JSON.parse(data.value));
+                        getRow = JSON.parse(data.value);
+                        datagrid.datagrid('updateRow', {
+                            index: rowIndex,
+                            row: {
+                                SupplierId: getRow.Id,
+                                SupplierCode: getRow.SupplierCode,
+                                SupplierShortName: getRow.SupplierShortName,
+                            },
+                        });
+                        endEditing_mList();
+                        onClickCell_mList(rowIndex, "InvId");
+                    } else
+                    {
+                        datagrid.datagrid('updateRow', {
+                            index: rowIndex,
+                            row: {
+                                SupplierId: '',
+                                SupplierCode: '',
+                                SupplierShortName: '',
+                           },
+                        });
+                        endEditing_mList();
+                    }
+                }
+            });
+        }
+    }
+
+    function setFocusForInvId(sender)
+    {
+        //alert("InvId");
+        sender.combobox('showPanel');
+    }
+    function setKeyUpValueForInvId(e, rowIndex)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            endEditing_mList();
+            onClickCell_mList(rowIndex, "Lot");
+        }
+    }
+
+    function setFocusForLot(sender)
+    {
+        //alert("Lot");
+        sender.combobox('showPanel');
+    }
+    function setKeyUpValueForLot(e, rowIndex)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            endEditing_mList();
+            onClickCell_mList(rowIndex, "AdjustQty");
+        }
+    }
+
+    function setFocusForAdjustQty(sender)
+    {
+        sender.select();
+    }
+    function setKeyUpValueForAdjustQty(e, rowIndex)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            endEditing_mList();
+            onClickCell_mList(rowIndex, "Remark");
+        }
+    }
+
+    function setKeyUpValueForRemark(e, rowIndex)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            var addNewLine = false;
+            var rows = $('#mList').datagrid('getRows');
+            if (rowIndex == rows.length - 1)
+            {
+                append();
+                addNewLine = true;
+            }
+            endEditing_mList();
+
+            if (addNewLine)
+                onClickCell_mList(rowIndex + 1, "PartCode");
+        }
+    }
+    //#endregion
+
+    //关闭模式窗口
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+
+    function reject() {
+        $('#List').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+    function getChanges() {
+        var rows = $('#List').datagrid('getChanges');
+        alert(rows.length + ' rows are changed!');
+    }
+
+    function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            if (arr[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s('提示', mes);
+    }
+
+    //清空控件的数据（暂时没用）。
+    function clear()
+    {
+        $('#PONo').val("");
+        $('#List').datagrid("Load");
+
+    }
+</script>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+    @*@Html.HiddenFor(model => model.Id)*@
+    <input id="inserted" type="hidden" name="inserted" value="" />
+}
+<table id="mList">
+
+</table>

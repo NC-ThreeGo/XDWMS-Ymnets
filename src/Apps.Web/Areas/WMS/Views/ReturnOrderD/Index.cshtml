@@ -207,7 +207,7 @@
             });
         });
         $("#btnCreateParent").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("CreateParent")', 700, 400, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("CreateParentForDataGrid")', $(window).width() - 50, $(window).height() - 50, 'fa fa-plus');
         });
         $("#btnEditParent").click(function () {
             var row = $('#ListParent').datagrid('getSelected');
