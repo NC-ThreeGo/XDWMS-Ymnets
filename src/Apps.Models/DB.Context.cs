@@ -1011,5 +1011,18 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_SpecialInventory", userNameParameter, headIdParameter, returnValue);
         }
+    
+        public virtual int P_WMS_CreateBatchReturnOrder(string userId, string jsonReturnOrder, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var jsonReturnOrderParameter = jsonReturnOrder != null ?
+                new ObjectParameter("JsonReturnOrder", jsonReturnOrder) :
+                new ObjectParameter("JsonReturnOrder", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateBatchReturnOrder", userIdParameter, jsonReturnOrderParameter, returnValue);
+        }
     }
 }

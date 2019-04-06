@@ -145,6 +145,43 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
+        #region 手工创建库存待退货单—DataGrid
+        [SupportFilter(ActionName = "Create")]
+        public ActionResult CreateParentForDataGrid()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        [ValidateInput(false)]
+        public JsonResult CreateParentForDataGrid(string inserted)
+        {
+            if (m_ReturnOrderBLL.CreateBatchReturnOrder(ref errors, GetUserTrueName(), inserted))
+            { 
+                LogHandler.WriteServiceLog(GetUserTrueName(), "", "成功", "创建", "WMS_ReturnOrder");
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+            }
+            else
+            {
+                string ErrorCol = errors.Error;
+                LogHandler.WriteServiceLog(GetUserTrueName(), ErrorCol, "失败", "创建", "WMS_ReturnOrder");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
+            }
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Create")]
+        public JsonResult GetReturnOrderList(GridPager pager, string returnOrderNum)
+        {
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListParentByWhere(ref pager, "1 = 2", "ReturnOrderNum = \"" + returnOrderNum + "\"").ToList();
+            GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
+
         #region 修改库存待退货单
         [SupportFilter(ActionName = "Edit")]
         public ActionResult EditParent(long id)

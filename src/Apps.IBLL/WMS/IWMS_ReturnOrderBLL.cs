@@ -29,12 +29,12 @@ namespace Apps.IBLL.WMS
          List<WMS_ReturnOrderModel> GetListByWhere(ref GridPager pager, string where);
 
         /// <summary>
-        /// 批量保存退货记录，并返回退货单号
+        /// 批量保存库存退货记录
         /// </summary>
         /// <param name="opt"></param>
         /// <param name="jsonReturnOrder"></param>
         /// <returns></returns>
-        //string CreateBatchReturnOrder(string opt, string jsonReturnOrder);
+        bool CreateBatchReturnOrder(ref ValidationErrors errors, string opt, string jsonReturnOrder);
 
         /// <summary>
         /// 手工创建库存待退货单

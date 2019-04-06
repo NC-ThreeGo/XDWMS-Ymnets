@@ -19,11 +19,11 @@ namespace Apps.Models.WMS
 	}
 	public class Virtual_WMS_Inventory_HModel
 	{
-		[Display(Name = "未设置")]
+		[Display(Name = "ID")]
 		public virtual int Id { get; set; }
-		[Display(Name = "盘点单据号")]
+		[Display(Name = "盘点单号")]
 		public virtual string InventoryBillNum { get; set; }
-		[Display(Name = "盘点标题")]
+		[Display(Name = "盘点名称")]
 		public virtual string InventoryTitle { get; set; }
 		[Display(Name = "盘点人")]
 		public virtual string InventoryPerson { get; set; }
@@ -31,9 +31,9 @@ namespace Apps.Models.WMS
 		public virtual Nullable<System.DateTime> InventoryTime { get; set; }
 		[Display(Name = "盘点状态")]
 		public virtual string InventoryStatus { get; set; }
-		[Display(Name = "盘点类型")]
+		[Display(Name = "盘点类型：抽检，全检")]
 		public virtual string InventoryType { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "备注")]
 		public virtual string Remark { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string Attr1 { get; set; }

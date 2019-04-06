@@ -3249,6 +3249,11 @@
           <Parameter Name="SellBillNum" Type="varchar" Mode="In" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
+        <Function Name="P_WMS_CreateBatchReturnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="JsonReturnOrder" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
         <Function Name="P_WMS_CreateInspectBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="ArrivalBillNum" Type="varchar" Mode="In" />
@@ -4800,6 +4805,11 @@
             <End Role="WMS_Part" EntitySet="WMS_Part" />
             <End Role="WMS_InvRecord" EntitySet="WMS_InvRecord" />
           </AssociationSet>
+          <FunctionImport Name="P_WMS_CreateBatchReturnOrder">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="JsonReturnOrder" Mode="In" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -10206,6 +10216,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="P_WMS_CreateBatchReturnOrder" FunctionName="DB.Store.P_WMS_CreateBatchReturnOrder" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
