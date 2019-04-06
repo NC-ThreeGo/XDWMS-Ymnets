@@ -25,9 +25,16 @@
                 endEditing_mList();
                 var $dg = $('#mList');
                 var rows = $dg.datagrid('getRows');  //获取所有的行
+
+                //对最后一行进行判断，如果PartId为空则删除最后一行
+                if (!rows[rows.length - 1]['PartId'])
+                {
+                    rows.pop();
+                }
+                //判断是否存在PartId为空的行
                 for (var i = 0; i < rows.length; i++)
                 {
-                    if (!rows[i]['Id'])
+                    if (!rows[i]['PartId'])
                     {
                         alert("存在无效的物料，请确认！");
                         return;
@@ -49,11 +56,7 @@
                                 hideLoading();
                                 window.parent.frameReturnByMes(data.message);
                                 window.parent.frameReturnByReload(true);
-                                window.parent.frameReturnByMes("保存成功！");
-                                //保存后不关闭当前对话框，但把控件数据清空
-                                window.parent.frameReturnByRefresh();
-                                //clear();
-
+                                window.parent.frameReturnByClose()
                             } else {
                                 window.parent.frameReturnByMes(data.message);
                                 hideLoading();

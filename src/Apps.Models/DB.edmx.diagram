@@ -213,6 +213,7 @@
         <EntityTypeShape EntityType="DB.WMS_InvRecord" Width="1.5" PointX="31.875" PointY="16.875" />
         <AssociationConnector Association="DB.FK_WMS_InvRecord_WMS_InvInfo" />
         <AssociationConnector Association="DB.FK_WMS_InvRecord_WMS_SubInvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_InvRecord_WMS_Part" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -35,13 +35,13 @@ namespace Apps.Models.WMS
 		public virtual string SourceBill { get; set; }
 		[Display(Name = "操作时间")]
 		public virtual Nullable<System.DateTime> OperateDate { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "批次号：YYYYMM")]
 		public virtual string Lot { get; set; }
 		[Display(Name = "出入库类型")]
 		public virtual string Type { get; set; }
 		[Display(Name = "操作人")]
 		public virtual string OperateMan { get; set; }
-		[Display(Name = "备料库存")]
+		[Display(Name = "备料时的库存ID")]
 		public virtual Nullable<int> Stock_InvId { get; set; }
 		[Display(Name = "备料状态：1-不适用（直接修改库存现有量）；2-已备料；3-无效备料（取消备料后将2改成3）；4-取消备料（当前操作是取消备料）")]
 		public virtual Nullable<byte> StockStatus { get; set; }

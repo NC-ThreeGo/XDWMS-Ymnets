@@ -154,29 +154,20 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         [HttpPost]
         [SupportFilter(ActionName = "Create")]
+        [ValidateInput(false)]
         public JsonResult CreateParentForDataGrid(string inserted)
         {
-            var detailsList = JsonHandler.DeserializeJsonToList<WMS_ReturnOrderModel>(inserted);
-            foreach (var model in detailsList)
-            {
-                model.Id = 0;
-                //model.PrintStaus = "未退货";
-                model.CreateTime = ResultHelper.NowTime;
-                if (model.Lot == "[空]")
-                    model.Lot = "";
-                try
-                {
-                    m_ReturnOrderBLL.CreateReturnOrder(ref errors, GetUserTrueName(), model);
-                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum, "成功", "创建", "WMS_ReturnOrder");
-                }
-                catch (Exception ex)
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",ReturnOrderNum" + model.ReturnOrderNum + "," + ErrorCol, "失败", "创建", "WMS_ReturnOrder");
-                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
-                }
+            if (m_ReturnOrderBLL.CreateBatchReturnOrder(ref errors, GetUserTrueName(), inserted))
+            { 
+                LogHandler.WriteServiceLog(GetUserTrueName(), "", "成功", "创建", "WMS_ReturnOrder");
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
             }
-            return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+            else
+            {
+                string ErrorCol = errors.Error;
+                LogHandler.WriteServiceLog(GetUserTrueName(), ErrorCol, "失败", "创建", "WMS_ReturnOrder");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
+            }
         }
 
         [HttpPost]
