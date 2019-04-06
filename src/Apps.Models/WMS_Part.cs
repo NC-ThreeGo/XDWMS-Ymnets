@@ -27,6 +27,7 @@ namespace Apps.Models
             this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
             this.WMS_Inv_History_D = new HashSet<WMS_Inv_History_D>();
             this.WMS_Inv = new HashSet<WMS_Inv>();
+            this.WMS_InvRecord = new HashSet<WMS_InvRecord>();
         }
     
         public int Id { get; set; }
@@ -46,7 +47,8 @@ namespace Apps.Models
         public string Unit { get; set; }
         public Nullable<decimal> Volume { get; set; }
         public string Remark { get; set; }
-    
+        
+
         public virtual ICollection<WMS_AI> WMS_AI { get; set; }
         public virtual ICollection<WMS_Feed_List> WMS_Feed_List { get; set; }
         public virtual ICollection<WMS_Feed_List> WMS_Feed_List1 { get; set; }
@@ -58,5 +60,6 @@ namespace Apps.Models
         public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
         public virtual ICollection<WMS_Inv_History_D> WMS_Inv_History_D { get; set; }
         public virtual ICollection<WMS_Inv> WMS_Inv { get; set; }
+        public virtual ICollection<WMS_InvRecord> WMS_InvRecord { get; set; }
     }
 }

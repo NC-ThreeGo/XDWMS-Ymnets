@@ -29,6 +29,7 @@ namespace Apps.Models.WMS
 
         [Display(Name = "盘点状态")]
         public string InventoryStatus { get; set; }
+
     }
 }
 

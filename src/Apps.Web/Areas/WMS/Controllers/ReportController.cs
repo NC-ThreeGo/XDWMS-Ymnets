@@ -51,6 +51,42 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ExportInvAmount(GridPager pager, string partCode, string partName)
+        {
+            //List<WMS_InvRecordModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            //string query = " 1=1 ";
+            //query += " && WMS_Part.PartName.Contains(\"" + partName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            
+
+            //List<WMS_Sale_OrderModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            List<WMS_InvModel> list = m_BLL.InvAmount(ref pager, partCode, partName);//m_BLL.GetListByWhere(ref setNoPagerAscById, query);
+
+            JArray jObjects = new JArray();
+            foreach (var item in list)
+            {
+                var jo = new JObject();
+                jo.Add("库房名称", item.InvName);
+                jo.Add("物料编码", item.PartId);
+                jo.Add("物料名称", item.PartName);
+                jo.Add("现有量", item.Qty);
+                jo.Add("备料数", item.StockQty);
+                //jo.Add("批次", item.Lot);
+                //jo.Add("出入库类型", item.Type);
+                //jo.Add("操作人", item.OperateMan);
+                jObjects.Add(jo);
+            }
+            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+            var exportFileName = string.Concat(
+                RouteData.Values["controller"].ToString() + "_",
+                DateTime.Now.ToString("yyyyMMddHHmmss"),
+                ".xlsx");
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
     }
 }
 

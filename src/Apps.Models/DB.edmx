@@ -1287,7 +1287,7 @@
           <Property Name="PartCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PartName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="PartType" Type="nvarchar" MaxLength="50" />
-          <Property Name="CustomerCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerCode" Type="nvarchar" MaxLength="200" />
           <Property Name="LogisticsCode" Type="nvarchar" MaxLength="50" />
           <Property Name="OtherCode" Type="nvarchar" MaxLength="50" />
           <Property Name="PCS" Type="decimal" Precision="10" Scale="3" />
@@ -2793,6 +2793,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WMS_InvRecord_WMS_Part">
+          <End Role="WMS_Part" Type="Self.WMS_Part" Multiplicity="1" />
+          <End Role="WMS_InvRecord" Type="Self.WMS_InvRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_InvRecord">
+              <PropertyRef Name="PartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WMS_InvRecord_WMS_SubInvInfo">
           <End Role="WMS_SubInvInfo" Type="Self.WMS_SubInvInfo" Multiplicity="0..1" />
           <End Role="WMS_InvRecord" Type="Self.WMS_InvRecord" Multiplicity="*" />
@@ -3841,6 +3853,10 @@
             <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
             <End Role="WMS_InvRecord" EntitySet="WMS_InvRecord" />
           </AssociationSet>
+          <AssociationSet Name="FK_WMS_InvRecord_WMS_Part" Association="Self.FK_WMS_InvRecord_WMS_Part">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
+            <End Role="WMS_InvRecord" EntitySet="WMS_InvRecord" />
+          </AssociationSet>
           <AssociationSet Name="FK_WMS_InvRecord_WMS_SubInvInfo" Association="Self.FK_WMS_InvRecord_WMS_SubInvInfo">
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
             <End Role="WMS_InvRecord" EntitySet="WMS_InvRecord" />
@@ -4778,6 +4794,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_WMS_InvRecord_WMS_SubInvInfo" Association="DB.FK_WMS_InvRecord_WMS_SubInvInfo">
             <End Role="WMS_SubInvInfo" EntitySet="WMS_SubInvInfo" />
+            <End Role="WMS_InvRecord" EntitySet="WMS_InvRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WMS_InvRecord_WMS_Part" Association="DB.FK_WMS_InvRecord_WMS_Part">
+            <End Role="WMS_Part" EntitySet="WMS_Part" />
             <End Role="WMS_InvRecord" EntitySet="WMS_InvRecord" />
           </AssociationSet>
           </EntityContainer>
@@ -7591,7 +7611,7 @@
           <Property Name="PartCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PartName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PartType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="LogisticsCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OtherCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PCS" Type="Decimal" Precision="10" Scale="3" />
@@ -7615,6 +7635,7 @@
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_WMS_Part" FromRole="WMS_Part" ToRole="WMS_ReturnOrder" />
           <NavigationProperty Name="WMS_Inv_History_D" Relationship="DB.FK_WMS_Inv_History_D_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Inv_History_D" />
           <NavigationProperty Name="WMS_Inv" Relationship="DB.FK_Inv_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Inv" />
+          <NavigationProperty Name="WMS_InvRecord" Relationship="DB.FK_WMS_InvRecord_WMS_Part" FromRole="WMS_Part" ToRole="WMS_InvRecord" />
         </EntityType>
         <Association Name="FK_WMS_AI_WMS_Part">
           <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="0..1" />
@@ -8207,6 +8228,7 @@
           <Property Name="StockStatus" Type="Byte" />
           <NavigationProperty Name="WMS_InvInfo" Relationship="DB.FK_WMS_InvRecord_WMS_InvInfo" FromRole="WMS_InvRecord" ToRole="WMS_InvInfo" />
           <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_InvRecord_WMS_SubInvInfo" FromRole="WMS_InvRecord" ToRole="WMS_SubInvInfo" />
+          <NavigationProperty Name="WMS_Part" Relationship="DB.FK_WMS_InvRecord_WMS_Part" FromRole="WMS_InvRecord" ToRole="WMS_Part" />
         </EntityType>
         <Association Name="FK_WMS_InvRecord_WMS_InvInfo">
           <End Type="DB.WMS_InvInfo" Role="WMS_InvInfo" Multiplicity="0..1" />
@@ -8229,6 +8251,18 @@
             </Principal>
             <Dependent Role="WMS_InvRecord">
               <PropertyRef Name="SubInvId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WMS_InvRecord_WMS_Part">
+          <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="1" />
+          <End Type="DB.WMS_InvRecord" Role="WMS_InvRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WMS_Part">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WMS_InvRecord">
+              <PropertyRef Name="PartId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

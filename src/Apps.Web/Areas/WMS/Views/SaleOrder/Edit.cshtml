@@ -72,7 +72,7 @@ function onSelect(index, row) {
 function LoadLot() {
         var invId = $("#InvId").val();
         var subInvId = "";
-        var partId = $("#SubAssemblyPartId").val();
+        var partId = $("#PartId").val();
         $("#Lot").combogrid('grid').datagrid("load", { partId: partId, invId: invId });
     };
 </script>
@@ -166,6 +166,7 @@ function LoadLot() {
                         function SetSelResultForPart(result, resultName) {
                             $("#PartId").val(result);
                             $("#PartList").val(resultName);
+                            LoadLot();
                         }
                     </script>
                 </td>
@@ -212,7 +213,7 @@ function LoadLot() {
                     批次号：
                 </th>
                 <td>
-                    <input id="Lot" name="Lot" value="value=" @Model.Lot "">
+                    <input id="Lot" name="Lot" value="@Model.Lot">
                     <label id="Qty" for="Lot" name="Qty"></label>
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.Lot)</td>

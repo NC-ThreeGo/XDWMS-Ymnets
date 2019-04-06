@@ -24,15 +24,44 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Index()
         {
+            //定义打印状态下拉框的值
+            List<ReportType> Type = new List<ReportType>();
+            Type.Add(new ReportType() { Type = 0, Name = "" });
+            Type.Add(new ReportType() { Type = 1, Name = "盘点调整" });
+            Type.Add(new ReportType() { Type = 2, Name = "入库" });
+            Type.Add(new ReportType() { Type = 2, Name = "投料" });
+            Type.Add(new ReportType() { Type = 2, Name = "销售" });
+            Type.Add(new ReportType() { Type = 2, Name = "重新送检" });
+
+            ViewBag.Types = new SelectList(Type, "Name", "Name");
+
             return View();
         }
         [HttpPost]
         [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr)
+        public JsonResult GetList(GridPager pager, string sourceBill, string partCode, string partName, string type,  DateTime beginDate, DateTime endDate)
         {
-            List<WMS_InvRecordModel> list = m_BLL.GetList(ref pager, queryStr);
+            //List<WMS_InvRecordModel> list = m_BLL.GetList(ref pager, queryStr);
+            //GridRows<WMS_InvRecordModel> grs = new GridRows<WMS_InvRecordModel>();
+            //grs.rows = list;
+            //grs.total = pager.totalRows;
+            //return Json(grs);
+            string query = " 1=1 ";
+            query += " && SourceBill.Contains(\"" + sourceBill + "\")&&WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            query += " && WMS_Part.PartName.Contains(\"" + partName + "\")&& Type.Contains(\"" + type + "\")";
+            query += " && OperateDate>=(\"" + beginDate + "\")&& OperateDate<=(\"" + endDate + "\")";
+            List<WMS_InvRecordModel> list = m_BLL.GetListByWhere(ref pager, query);
             GridRows<WMS_InvRecordModel> grs = new GridRows<WMS_InvRecordModel>();
+
+            List<WMS_InvRecordModel> footerList = new List<WMS_InvRecordModel>();
+            footerList.Add(new WMS_InvRecordModel()
+            {
+                SourceBill = "<div style='text-align:right;color:#444'>合计：</div>",
+                QTY = list.Sum(p => p.QTY),
+            });
+
             grs.rows = list;
+            grs.footer = footerList;
             grs.total = pager.totalRows;
             return Json(grs);
         }
@@ -172,26 +201,35 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         }
         [SupportFilter]
-        public ActionResult Export(string queryStr)
+        public ActionResult Export(string sourceBill, string partCode, string partName, string type, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_InvRecordModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            //List<WMS_InvRecordModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            string query = " 1=1 ";
+            query += " && SourceBill.Contains(\"" + sourceBill + "\")&&WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            query += " && WMS_Part.PartName.Contains(\"" + partName + "\")&& Type.Contains(\"" + type + "\")";
+            query += " && OperateDate>=(\"" + beginDate + "\")&& OperateDate<=(\"" + endDate + "\")";
+
+            //List<WMS_Sale_OrderModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            List<WMS_InvRecordModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, query);
+            
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
                     var jo = new JObject();
-                    jo.Add("出入库明细ID", item.Id);
+                    jo.Add("单据编号", item.SourceBill);
                     jo.Add("物料编码", item.PartId);
+                    jo.Add("物料名称", item.PartName);
                     jo.Add("数量", item.QTY);
-                    jo.Add("库房编码", item.InvId);
-                    jo.Add("SubInvId", item.SubInvId);
-                    jo.Add("单据ID", item.BillId);
-                    jo.Add("单据来源", item.SourceBill);
                     jo.Add("操作时间", item.OperateDate);
-                    jo.Add("Lot", item.Lot);
+                    jo.Add("批次", item.Lot);
                     jo.Add("出入库类型", item.Type);
                     jo.Add("操作人", item.OperateMan);
-                    jo.Add("备料库存", item.Stock_InvId);
-                    jo.Add("备料状态：1-不适用（直接修改库存现有量）；2-已备料；3-无效备料（取消备料后将2改成3）；4-取消备料（当前操作是取消备料）", item.StockStatus);
+                //jo.Add("库房编码", item.InvId);
+                //    jo.Add("SubInvId", item.SubInvId);
+                //    jo.Add("单据ID", item.BillId);
+                //    jo.Add("单据来源", item.SourceBill);
+                //    jo.Add("备料库存", item.Stock_InvId);
+                //    jo.Add("备料状态：1-不适用（直接修改库存现有量）；2-已备料；3-无效备料（取消备料后将2改成3）；4-取消备料（当前操作是取消备料）", item.StockStatus);
                     jObjects.Add(jo);
                 }
                 var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());

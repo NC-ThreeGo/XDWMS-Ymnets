@@ -33,6 +33,9 @@ namespace Apps.BLL.WMS
                                                   StockStatus = r.StockStatus,
                                                   SubInvId = r.SubInvId,
                                                   Type = r.Type,
+
+                                                  PartCode = r.WMS_Part.PartCode,
+                                                  PartName = r.WMS_Part.PartName,
                                               }).ToList();
             return modelList;
         }

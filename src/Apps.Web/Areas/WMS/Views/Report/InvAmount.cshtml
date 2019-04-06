@@ -168,7 +168,27 @@
 
             //JSONToCSVConvertor(data, "Download", true);
 
-            $('#List').datagrid('toExcel', 'dg.xls');
+            //$('#List').datagrid('toExcel', 'dg.xls');
+            var partName = $("#txtpartName").val();
+            var partCode = $("#txtpartCode").val();
+            if (partName == null) {
+                partName = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            @*$.post("@Url.Action("ExportInvAmount")?partCode=" + partCode                 
+                + "&partName= " + partName, function(data) {*@
+                //if (data.type == 1)
+                //{
+                    window.location = "@Url.Action("ExportInvAmount")?partCode=" + partCode                       
+                        + "&partName= " + partName;
+                //}
+                //else
+                //{
+                //$.messageBox5s(Lang.Tip, data.message);
+                //}
+            //}, "json");
         });
         $("#btnExportTemplate").click(function() {
           window.location = "@Url.Action("ExportTemplate")";

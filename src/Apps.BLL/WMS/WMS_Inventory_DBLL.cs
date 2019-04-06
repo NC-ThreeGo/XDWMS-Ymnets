@@ -152,6 +152,7 @@ namespace Apps.BLL.WMS
                             model.Lot = row.Lot;
                             //model.SubInvId = row.SubInvId;
                             model.Remark = row.Remark;
+                            model.Attr1 = row.Inventory_HName;//用来标记是这次新增的记录，为了做验证检查
                             //model.Attr1 = row.Attr1;
                             //model.Attr2 = row.Attr2;
                             //model.Attr3 = row.Attr3;
@@ -194,6 +195,7 @@ namespace Apps.BLL.WMS
                             if (entity != null)
                             {
                                 entity.InventoryQty = model.InventoryQty;
+                                entity.Attr1 = model.Attr1;
                             }
                             else
                             {
@@ -207,7 +209,7 @@ namespace Apps.BLL.WMS
                                 entity.InvId = model.InvId;
                                 entity.SubInvId = model.SubInvId;
                                 entity.Remark = model.Remark;
-                                //entity.Attr1 = model.Attr1;
+                                entity.Attr1 = model.Attr1;
                                 //entity.Attr2 = model.Attr2;
                                 //entity.Attr3 = model.Attr3;
                                 //entity.Attr4 = model.Attr4;
@@ -392,6 +394,24 @@ namespace Apps.BLL.WMS
             if (model.InventoryStatus == "未生成" && model.InventoryType=="全检")
             {
                 throw new Exception("请先生成盘点表！");
+            }
+
+            //校验盘点表内物料批次重复            
+            if (!String.IsNullOrEmpty(model.PartCode))
+            {
+                int partId = model.PartId;
+                var lot = model.Lot;
+                int headId = model.HeadId;
+                int invId= model.InvId;
+                var inventory_HName = model.Inventory_HName;
+                Expression<Func<WMS_Inventory_D, bool>> exp = x => x.PartId == partId && x.HeadId == headId && x.Lot == lot && x.InvId == invId && x.Attr1 == inventory_HName;
+
+                //var part = m_PORep.GetSingleWhere(exp);
+                var part = db.WMS_Inventory_D.FirstOrDefault(exp);
+                if (part != null)
+                {
+                    throw new Exception("盘点表内物料批次重复！");
+                }
             }
         }
 
