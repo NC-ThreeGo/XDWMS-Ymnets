@@ -38,6 +38,7 @@
 <div class="mvctool">
     @*<input id="txtQuery" type="text" class="searchText" />*@
     <input id="txtSaleBillNum" type="text" placeholder="销售单号(业务):" class="searchText" />
+    <input id="txtSellBillNum" type="text" placeholder="销售单号(系统):" class="searchText" />
     <input id="txtPartCode" type="text" placeholder="物料编码:" class="searchText" />
     <input id="txtCustomerShortName" placeholder="客户简称:" type="text" class="searchText" />
     打印状态：@Html.DropDownList("txtPrintStaus", ViewBag.PrintStaus as SelectList, new { @style = "width:70px;" })
@@ -83,8 +84,8 @@
             },
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
-                { field: 'SaleBillNum', title: '销售单号（业务）', width: 80,sortable:true },
-                //{ field: 'SellBillNum', title: '销售单号（系统）', width: 80,sortable:true },
+                { field: 'SaleBillNum', title: '销售单号（业务）', width: 80, sortable: true },
+                { field: 'SellBillNum', title: '销售单号（系统）', width: 80, sortable: true },//{ field: 'SellBillNum', title: '销售单号（系统）', width: 80,sortable:true },
                 //{ field: 'PlanDeliveryDate', title: '计划发货日期', width: 80, sortable: true },
                 {
                     field: 'PlanDeliveryDate', title: '计划发货日期', width: 80, sortable: true,
@@ -98,7 +99,7 @@
                 { field: 'Qty', title: '数量', width: 80,sortable:true },
                 { field: 'BoxQty', title: '箱数', width: 80, sortable: true },
                 { field: 'BoxVolume', title: '体积', width: 80, sortable: true },
-                { field: 'InvName', title: '库房', width: 80,sortable:true },
+                //{ field: 'InvName', title: '库房', width: 80,sortable:true },
                 //{ field: 'SubInvId', title: '子库存', width: 80,sortable:true },
                 { field: 'Lot', title: '批次号', width: 80, sortable: true },
                 { field: 'Volume', title: '体积', width: 80, sortable: true },
@@ -111,9 +112,9 @@
                         return formatterDateNoHour(value);
                     }
                 },
-                { field: 'PrintMan', title: '打印人', width: 80,sortable:true },
+                //{ field: 'PrintMan', title: '打印人', width: 80,sortable:true },
                 { field: 'ConfirmStatus', title: '确认状态', width: 80,sortable:true },
-                { field: 'ConfirmMan', title: '确认人', width: 80,sortable:true },
+                //{ field: 'ConfirmMan', title: '确认人', width: 80,sortable:true },
                 //{ field: 'ConfirmDate', title: '确认时间', width: 80, sortable: true },
                 {
                     field: 'ConfirmDate', title: '确认时间', width: 80, sortable: true,
@@ -166,12 +167,16 @@
             //}
             //$("#List").datagrid("load", { queryStr: queryStr });
             var saleBillNum = $("#txtSaleBillNum").val();
+            var sellBillNum = $("#txtSellBillNum").val();
             var partCode = $("#txtPartCode").val();
             var customerShortName = $("#txtCustomerShortName").val();
             var printStaus = $("#txtPrintStaus").val();
             var confirmStatus = $("#txtConfirmStatus").val();
             if (saleBillNum == null) {
                 saleBillNum = "";
+            }
+            if (sellBillNum == null) {
+                sellBillNum = "";
             }
             if (partCode == null) {
                 partCode = "";
@@ -181,7 +186,7 @@
             }
 
             $("#List").datagrid("load", {
-                saleBillNum: saleBillNum, partCode: partCode, customerShortName: customerShortName, printStaus: printStaus, confirmStatus: confirmStatus, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+                saleBillNum: saleBillNum, sellBillNum: sellBillNum, partCode: partCode, customerShortName: customerShortName, printStaus: printStaus, confirmStatus: confirmStatus, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
             });
 
         });
@@ -201,12 +206,16 @@
         });
         $("#btnExport").click(function() {
             var saleBillNum = $("#txtSaleBillNum").val();
+            var sellBillNum = $("#txtSellBillNum").val();
             var partCode = $("#txtPartCode").val();
             var customerShortName = $("#txtCustomerShortName").val();
             var printStaus = $("#txtPrintStaus").val();
             var confirmStatus = $("#txtConfirmStatus").val();
             if (saleBillNum == null) {
                 saleBillNum = "";
+            }
+            if (sellBillNum == null) {
+                sellBillNum = "";
             }
             if (partCode == null) {
                 partCode = "";
@@ -219,7 +228,7 @@
                 + "&endDate= " + $("#endDate").val(), function(data) {
                 if (data.type == 1)
                 {
-                    window.location = "@Url.Action("Export")?saleBillNum=" + saleBillNum + "&partCode=" + partCode + "&customerShortName=" + customerShortName + "&printStaus=" + printStaus
+                    window.location = "@Url.Action("Export")?saleBillNum=" + saleBillNum + "&sellBillNum=" + sellBillNum + "&partCode=" + partCode + "&customerShortName=" + customerShortName + "&printStaus=" + printStaus
                         + "&confirmStatus=" + confirmStatus + "&beginDate=" + $("#beginDate").val()
                         + "&endDate= " + $("#endDate").val();
                 }

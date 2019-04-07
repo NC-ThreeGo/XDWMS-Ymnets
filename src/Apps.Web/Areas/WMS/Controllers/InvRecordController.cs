@@ -28,9 +28,11 @@ namespace Apps.Web.Areas.WMS.Controllers
             List<ReportType> Type = new List<ReportType>();
             Type.Add(new ReportType() { Type = 0, Name = "" });
             Type.Add(new ReportType() { Type = 1, Name = "盘点调整" });
-            Type.Add(new ReportType() { Type = 2, Name = "入库" });
+            Type.Add(new ReportType() { Type = 2, Name = "自制件入库" });
             Type.Add(new ReportType() { Type = 2, Name = "投料" });
             Type.Add(new ReportType() { Type = 2, Name = "销售" });
+            Type.Add(new ReportType() { Type = 2, Name = "退货" });
+            Type.Add(new ReportType() { Type = 2, Name = "调账" });
             Type.Add(new ReportType() { Type = 2, Name = "重新送检" });
 
             ViewBag.Types = new SelectList(Type, "Name", "Name");
