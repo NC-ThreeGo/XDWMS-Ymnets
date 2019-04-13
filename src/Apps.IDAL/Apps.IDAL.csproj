@@ -380,6 +380,7 @@
     <Compile Include="WMS\IWMS_InventoryDRepository.cs" />
     <Compile Include="WMS\IWMS_InventoryHRepository.cs" />
     <Compile Include="WMS\IWMS_ReturnOrderDRepository.cs" />
+    <Compile Include="WMS\IWMS_ReturnInspectionRepository.cs" />
     <Compile Include="WMS\IWMS_SaleOrderRepository.cs" />
     <Compile Include="WMS\IWMS_ReInspectRepository.cs" />
     <Compile Include="WMS\IWMS_Inv_AdjustRepository.cs" />

@@ -320,6 +320,30 @@ namespace Apps.Web.Areas.WMS.Controllers
                 return Json(JsonHandler.CreateMessage(1, Resource.CheckSucceed, JsonHandler.SerializeObject(list.First())));
             }
         }
+
+        //[HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetPartListByCustomerCode(string customerCode, string type = "select")
+        {
+            List<WMS_PartModel> partList = m_BLL.GetListByWhere(ref setNoPagerAscById, "Status == \"有效\" && CustomerCode.Contains(\""
+                + "/" + customerCode + "/" + "\")");
+            if (partList.Count() == 0)
+            {
+                return Json(JsonHandler.CreateMessage(0, "物料的客户编码不存在！"));
+            }
+            else
+            {
+                if (type == "select")
+                {
+                    var list = new SelectList(partList, "Id", "FullPartName");
+                    return Json(list);
+                }
+                else
+                {
+                    return Json(partList);
+                }
+            }
+        }
         #endregion
     }
 }

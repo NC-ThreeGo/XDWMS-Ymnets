@@ -268,6 +268,22 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetCustomerByCode(string customerCode)
+        {
+            List<WMS_CustomerModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Status == \"有效\" && CustomerCode == \""
+                + customerCode + "\"");
+            if (list.Count() == 0)
+            {
+                return Json(JsonHandler.CreateMessage(0, "客户商编码不存在！"));
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(1, Resource.CheckSucceed, JsonHandler.SerializeObject(list.First())));
+            }
+        }
         #endregion
     }
 }

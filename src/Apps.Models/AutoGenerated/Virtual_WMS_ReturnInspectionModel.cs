@@ -24,9 +24,9 @@ namespace Apps.Models.WMS
 		[Display(Name = "退货送检单号")]
 		public virtual string ReturnInspectionNum { get; set; }
 		[Display(Name = "客户图号")]
-		public virtual string CustomerCode { get; set; }
+		public virtual string PartCustomerCode { get; set; }
 		[Display(Name = "零件名称")]
-		public virtual string CustomerCodeName { get; set; }
+		public virtual string PartCustomerCodeName { get; set; }
 		[Display(Name = "新电图号")]
 		public virtual int PartID { get; set; }
 		[Display(Name = "数量")]

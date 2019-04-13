@@ -45,6 +45,8 @@ namespace Apps.BLL.WMS
                                                   Volume = r.Volume,
                                                   Unit = r.Unit,
                                                   Remark = r.Remark,
+
+                                                  FullPartName = r.PartCode + ":" + r.PartName,
                                               }).ToList();
             return modelList;
         }

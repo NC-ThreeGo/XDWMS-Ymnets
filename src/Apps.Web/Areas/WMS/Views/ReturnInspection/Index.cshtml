@@ -95,15 +95,6 @@
                 { field: 'ConfirmMan', title: 'ConfirmMan', width: 80,sortable:true },
                 { field: 'ConfirmDate', title: 'ConfirmDate', width: 80,sortable:true },
                 { field: 'ConfirmRemark', title: 'ConfirmRemark', width: 80,sortable:true },
-                { field: 'Attr1', title: 'Attr1', width: 80,sortable:true },
-                { field: 'Attr2', title: 'Attr2', width: 80,sortable:true },
-                { field: 'Attr3', title: 'Attr3', width: 80,sortable:true },
-                { field: 'Attr4', title: 'Attr4', width: 80,sortable:true },
-                { field: 'Attr5', title: 'Attr5', width: 80,sortable:true },
-                { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
-                { field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
-                { field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
-                { field: 'ModifyTime', title: '修改时间', width: 80,sortable:true }
             ]]
         });
     });
@@ -122,7 +113,7 @@
     }
     $(function () {
         $("#btnCreate").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', $(window).width() - 50, $(window).height() - 50, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');

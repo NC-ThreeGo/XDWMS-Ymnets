@@ -16,8 +16,8 @@ namespace Apps.Models
     {
         public int Id { get; set; }
         public string ReturnInspectionNum { get; set; }
-        public string CustomerCode { get; set; }
-        public string CustomerCodeName { get; set; }
+        public string PartCustomerCode { get; set; }
+        public string PartCustomerCodeName { get; set; }
         public int PartID { get; set; }
         public Nullable<decimal> Qty { get; set; }
         public Nullable<int> CustomerId { get; set; }
