@@ -276,5 +276,62 @@ namespace Apps.Web.Areas.Report.Controllers
             ViewBag.WebReport = webReport;
             return View();
         }
+
+        /// <summary>
+        /// 显示要打印的FR
+        /// </summary>
+        /// <param name="reportCode"></param>
+        /// <param name="paramValues">参数数组</param>
+        /// <returns></returns>
+        public ActionResult ShowReport(string reportCode, string paramValues)
+        {
+            WMS_ReportModel entity = m_BLL.GetListByWhere(ref setNoPagerAscById, "ReportCode == \"" + reportCode + "\"").First();
+
+            List<WMS_ReportParamModel> listParams = m_ParamBLL.GetListByWhere(ref setNoPagerAscById, "ReportId == " + entity.Id.ToString())
+                .OrderBy(p => p.Id).ToList();
+            List<WMS_ReportParamModel> listParamValues = Newtonsoft.Json.JsonConvert.DeserializeObject<List<WMS_ReportParamModel>>(paramValues);
+            foreach (var item in listParamValues)
+            {
+                item.ParamName = item.ParamName.Replace("arg_", "@");
+                if (listParams.Exists(a => a.ParamName == item.ParamName))
+                {
+                    listParams.First(a => a.ParamName == item.ParamName).DefaultValue = item.DefaultValue;
+                }
+            }
+            ViewBag.Entity = entity;
+            ViewBag.ListParam = listParams;
+
+            WebReport webReport = new WebReport();
+            webReport.Width = Unit.Percentage(100);
+            webReport.Height = 600;
+            webReport.ToolbarIconsStyle = ToolbarIconsStyle.Black;
+            webReport.ToolbarIconsStyle = ToolbarIconsStyle.Black;
+            webReport.PrintInBrowser = true;
+            webReport.PrintInPdf = true;
+            webReport.ShowExports = true;
+            webReport.ShowPrint = true;
+            webReport.SinglePage = true;
+
+            DataSet ds = m_BLL.GetDataSource(entity, listParams);
+            //ds = new ReportProvider().GetDataSource(entity, list, orderType, orderNum);
+            string path = Server.MapPath("~/ReportFiles/" + entity.FileName);
+            //if (!FileManager.FileExists(path))
+            //{
+            //    string template = Server.MapPath("~/Theme/content/report/temp/Report.frx");
+            //    System.IO.File.Copy(template, path, true);
+            //}
+            webReport.Report.Load(path);
+            if (ds != null && ds.Tables != null && ds.Tables.Count > 0)
+            {
+                webReport.Report.RegisterData(ds);
+                for (int i = 0; i < ds.Tables.Count; i++)
+                {
+                    webReport.Report.GetDataSource(ds.Tables[i].TableName).Enabled = true;
+                }
+            }
+            webReport.ID = reportCode;
+            ViewBag.WebReport = webReport;
+            return View("ShowBill");
+        }
     }
 }

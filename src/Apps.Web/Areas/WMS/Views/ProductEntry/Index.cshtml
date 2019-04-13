@@ -172,11 +172,22 @@
           window.location = "@Url.Action("ExportTemplate")";
         });
         $("#btnReport").click(function() {
-            @*var row = $('#List').datagrid('getSelected');
+            var list = [];
+            var ReportParams1 = {};
+            ReportParams1["ParamName"] = "arg_BeginDate";
+            ReportParams1["DefaultValue"] = "2019/01/01";
+            list.push(ReportParams1);
+            var ReportParams2 = {};
+            ReportParams2["ParamName"] = "arg_EndDate";
+            ReportParams2["DefaultValue"] = "2019/12/31";
+            list.push(ReportParams2);
+            var json = JSON.stringify(list);
+            json = escape(json);
+
+            var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=FeedList&billNum=' + row.ReleaseBillNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }*@
-            $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ProductEntry&billNum=' + row.ReleaseBillNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+                $.modalWindow("单据打印", '@Url.Action("ShowReport", "ReportManager", new { area = "Report" })?reportCode=ProductEntry&paramValues=' + json + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
     });
     function ImportData()
