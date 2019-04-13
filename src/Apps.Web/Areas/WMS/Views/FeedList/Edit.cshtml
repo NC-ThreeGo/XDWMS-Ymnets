@@ -146,10 +146,12 @@ function onSelect(index, row) {
                             if (showSubPart) {
                                 $("#SubAssemblyPartId").val(result);
                                 $("#SubAssemblyPartList").val(resultName);
+                                LoadLot();
                             }
                             else {
                                 $("#AssemblyPartId").val(result);
                                 $("#AssemblyPartList").val(resultName);
+                                
                             }
                         }
                     </script>

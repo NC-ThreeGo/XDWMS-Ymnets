@@ -218,14 +218,14 @@ namespace Apps.Web.Areas.WMS.Controllers
             JArray jObjects = new JArray();
             var jo = new JObject();
               //jo.Add("供应商ID", "");
-              jo.Add("供应商编码", "");
-              jo.Add("供应商简称", "");
-              jo.Add("供应商名称", "");
-              jo.Add("供应商类型", "");
+              jo.Add("供应商编码(必输)", "");
+              jo.Add("供应商简称(必输)", "");
+              jo.Add("供应商名称(必输)", "");
+              jo.Add("供应商类型(必输)", "");
               jo.Add("联系人", "");
               jo.Add("联系人电话", "");
               jo.Add("联系人地址", "");
-              jo.Add("超量接收(允许/不允许)", "");
+              jo.Add("超量接收(允许/不允许)(必输)", "");
             //jo.Add("状态", "");
             jo.Add("说明", "");
               //jo.Add("创建人", "");
@@ -271,6 +271,22 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetSupplierByCode(string supplierCode)
+        {
+            List<WMS_SupplierModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Status == \"有效\" && SupplierCode == \""
+                + supplierCode + "\"");
+            if (list.Count() == 0)
+            {
+                return Json(JsonHandler.CreateMessage(0, "供应商编码不存在！"));
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(1, Resource.CheckSucceed, JsonHandler.SerializeObject(list.First())));
+            }
         }
         #endregion
     }

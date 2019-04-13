@@ -106,15 +106,15 @@ $(function () {
                 <td>@Html.ValidationMessageFor(model => model.SaleBillNum)</td>
             </tr>
             <tr>
-                    <th>
-                        @Html.LabelFor(model => model.SellBillNum)：
-                    </th>
-                    <td>
-                        @*@Html.EditorFor(model => model.SellBillNum)*@
-                        @Html.ReadOnlyTextBoxFor(model => model.SellBillNum, true)（自动生成）
-                    </td>
-                    <td>@Html.ValidationMessageFor(model => model.SellBillNum)</td>
-                </tr>
+                <th>
+                    @Html.LabelFor(model => model.SellBillNum)：
+                </th>
+                <td>
+                    @*@Html.EditorFor(model => model.SellBillNum)*@
+                    @Html.ReadOnlyTextBoxFor(model => model.SellBillNum, true)（自动生成）
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.SellBillNum)</td>
+            </tr>
             <tr>
                 <th>
                     @Html.LabelFor(model => model.PlanDeliveryDate)：
@@ -135,14 +135,12 @@ $(function () {
                     <input id="CustomerList" name="PartList" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
                     <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelCustomer()"></a>
                     <script type="text/javascript">
-                        function showSelCustomer()
-                        {
+                        function showSelCustomer() {
                             $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Customer/CustomerLookUp'></iframe>");
                             $("#modalwindow").window({ title: '选择客户', width: SetGridWidthSub(20), height: SetGridHeightSub(45), iconCls: 'fa fa-plus' }).window('open');
                         }
 
-                        function SetSelResultForCustomer(result, resultName)
-                        {
+                        function SetSelResultForCustomer(result, resultName) {
                             $("#CustomerId").val(result);
                             $("#CustomerList").val(resultName);
                         }
@@ -152,7 +150,7 @@ $(function () {
             </tr>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.PartId)：
+                    物料编码:
                 </th>
                 <td>
                     <div style="height:0;width:0;overflow:hidden">
@@ -161,16 +159,15 @@ $(function () {
                     <input id="PartList" name="PartList" readonly="readonly" type="text" style="width: 180px; display: inline; background: #dedede; ">
                     <a class="fa fa-plus-square color-gray fa-lg" href="javascript:showSelPart()"></a>
                     <script type="text/javascript">
-                        function showSelPart()
-                        {
+                        function showSelPart() {
                             $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/Part/PartLookUp'></iframe>");
                             $("#modalwindow").window({ title: '选择物料', width: SetGridWidthSub(20), height: SetGridHeightSub(45), iconCls: 'fa fa-plus' }).window('open');
                         }
 
-                        function SetSelResultForPart(result, resultName)
-                        {
+                        function SetSelResultForPart(result, resultName) {
                             $("#PartId").val(result);
                             $("#PartList").val(resultName);
+                            LoadLot();
                         }
                     </script>
                 </td>
@@ -186,14 +183,14 @@ $(function () {
                 <td>@Html.ValidationMessageFor(model => model.InvId)</td>
             </tr>
             @*<tr>
-                    <th>
-                        @Html.LabelFor(model => model.SubInvId)：
-                    </th>
-                    <td>
-                        @Html.EditorFor(model => model.SubInvId)
-                    </td>
-                    <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
-                </tr>*@
+            <th>
+                @Html.LabelFor(model => model.SubInvId)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.SubInvId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
+        </tr>*@
             <tr>
                 <th>
                     批次号：
@@ -221,6 +218,15 @@ $(function () {
                     @Html.EditorFor(model => model.BoxQty)
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.BoxQty)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Volume)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Volume)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Volume)</td>
             </tr>
             <tr>
                 <th>

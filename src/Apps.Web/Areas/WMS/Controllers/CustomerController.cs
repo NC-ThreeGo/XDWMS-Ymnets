@@ -218,10 +218,10 @@ namespace Apps.Web.Areas.WMS.Controllers
             JArray jObjects = new JArray();
             var jo = new JObject();
               //jo.Add("客户ID", "");
-              jo.Add("客户编码", "");
-              jo.Add("客户简称", "");
-              jo.Add("客户名称", "");
-              jo.Add("客户类型", "");
+              jo.Add("客户编码(必输)", "");
+              jo.Add("客户简称(必输)", "");
+              jo.Add("客户名称(必输)", "");
+              jo.Add("客户类型(必输)", "");
               jo.Add("联系人", "");
               jo.Add("联系电话", "");
               jo.Add("联系地址", "");

@@ -48,6 +48,7 @@ namespace Apps.BLL.WMS
                                                        SaleBillNum = r.SaleBillNum,
                                                        SellBillNum = r.SellBillNum,
                                                        SubInvId = r.SubInvId,
+                                                       Volume =r.Volume,
 
                                                        PartCode = r.WMS_Part.PartCode,
                                                        PartName = r.WMS_Part.PartName,                                                       
@@ -81,17 +82,18 @@ namespace Apps.BLL.WMS
 				using (IXLWorksheet wws = wb.Worksheets.First())
 				{
 					//对应列头
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SaleBillNum, "销售单号（业务）");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SaleBillNum, "销售单号（业务）(必输)");
 					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SellBillNum, "销售单号（系统）");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PlanDeliveryDate, "计划发货日期");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CustomerShortName, "客户简称");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartCode, "物料编码");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Qty, "数量");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CustomerShortName, "客户名称(必输)");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartCode, "物料编码(必输)");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Qty, "数量(必输)");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.BoxQty, "箱数");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvName, "库房");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvName, "库房(必输)");
 					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SubInvId, "子库存");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Lot, "批次号：YYYYMM");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Remark, "备注");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Lot, "批次号(格式：YYYY-MM-DD)");
+                    excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Volume, "体积");
+                    excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Remark, "备注");
 					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintStaus, "打印状态");
 					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintDate, "打印日期");
 					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintMan, "打印人");
@@ -134,6 +136,7 @@ namespace Apps.BLL.WMS
 								model.InvName = row.InvName;
 								//model.SubInvId = row.SubInvId;
 								model.Lot = row.Lot;
+                            model.Volume = row.Volume;
 								model.Remark = row.Remark;
 								//model.PrintStaus = row.PrintStaus;
 								//model.PrintDate = row.PrintDate;
@@ -186,6 +189,7 @@ namespace Apps.BLL.WMS
 									entity.SubInvId = model.SubInvId;
 									entity.Lot = model.Lot;
 									entity.Remark = model.Remark;
+                                    entity.Volume = model.Volume;
 									entity.PrintStaus = "未打印";
 									//entity.PrintDate = model.PrintDate;
 									//entity.PrintMan = model.PrintMan;
@@ -268,7 +272,7 @@ namespace Apps.BLL.WMS
             if (!String.IsNullOrEmpty(model.CustomerShortName))
             {
                 var customerShortName = model.CustomerShortName;
-                Expression<Func<WMS_Customer, bool>> exp = x => x.CustomerShortName == customerShortName;
+                Expression<Func<WMS_Customer, bool>> exp = x => x.CustomerName == customerShortName;
 
                 //var part = m_PartRep.GetSingleWhere(exp);
                 var customer = db.WMS_Customer.FirstOrDefault(exp);
@@ -307,10 +311,23 @@ namespace Apps.BLL.WMS
             {
                 throw new Exception("库房不能为空！");
             }
-            //校验批次号
-            if (String.IsNullOrEmpty(model.Lot) || !DateTimeHelper.CheckYearMonth(model.Lot))
+            //校验批次号,没有批次号自动赋值为当前月
+            if (!String.IsNullOrEmpty(model.Lot))
             {
-                throw new Exception("批次号不合符规范！");
+                if (!DateTimeHelper.CheckYearMonth(model.Lot))
+                {
+                    throw new Exception("批次号不合符规范！");
+                }
+            }
+            //销售单号不能为空
+            if (String.IsNullOrEmpty(model.SaleBillNum))
+            {
+                throw new Exception("销售单号不能为空！");
+            }
+            //数量不能为空
+            if (model.Qty == 0)
+            {
+                throw new Exception("数量不能为空！");
             }
         }
 

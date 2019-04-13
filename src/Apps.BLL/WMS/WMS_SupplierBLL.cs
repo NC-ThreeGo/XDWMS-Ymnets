@@ -67,14 +67,14 @@ namespace Apps.BLL.WMS
 				using (IXLWorksheet wws = wb.Worksheets.First())
 				{
 					//对应列头
-					excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierCode, "供应商编码");
-					excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierShortName, "供应商简称");
-					excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierName, "供应商名称");
-					excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierType, "供应商类型");
+					excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierCode, "供应商编码(必输)");
+					excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierShortName, "供应商简称(必输)");
+					excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierName, "供应商名称(必输)");
+					excelFile.AddMapping<WMS_SupplierModel>(x => x.SupplierType, "供应商类型(必输)");
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkMan, "联系人");
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkManTel, "联系人电话");
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.LinkManAddress, "联系人地址");
-					excelFile.AddMapping<WMS_SupplierModel>(x => x.MoreAccept, "超量接收(允许/不允许)");
+					excelFile.AddMapping<WMS_SupplierModel>(x => x.MoreAccept, "超量接收(允许/不允许)(必输)");
 					excelFile.AddMapping<WMS_SupplierModel>(x => x.Remark, "说明");
 					//excelFile.AddMapping<WMS_SupplierModel>(x => x.CreatePerson, "创建人");
 					//excelFile.AddMapping<WMS_SupplierModel>(x => x.CreateTime, "创建时间");
@@ -218,7 +218,7 @@ namespace Apps.BLL.WMS
             {
                 throw new Exception("供应商编码不能为空！");
             }
-            //获取物料类型
+            //获取供应商类型
             if (!String.IsNullOrEmpty(model.SupplierType))
             {
                 var supplier = model.SupplierType;
@@ -230,6 +230,21 @@ namespace Apps.BLL.WMS
                     throw new Exception("供应商类型不存在！");
                 }
             }
+            //供应商名称不能为空
+            if (String.IsNullOrEmpty(model.SupplierName))
+            {
+                throw new Exception("供应商名称不能为空！");
+            }
+            //供应商简称不能为空
+            if (String.IsNullOrEmpty(model.SupplierShortName))
+            {
+                throw new Exception("供应商简称不能为空！");
+            }
+            //供应商类型不能为空
+            if (String.IsNullOrEmpty(model.SupplierType))
+            {
+                throw new Exception("供应商类型不能为空！");
+            }            
         }
 
         public List<WMS_SupplierModel> GetListByWhere(ref GridPager pager, string where)

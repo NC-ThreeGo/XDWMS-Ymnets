@@ -310,21 +310,21 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.HeadId, "HeadId");
-				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.PartId, "PartId");
-				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.SnapshootQty, "SnapshootQty");
-				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.InvId, "InvId");
-				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.SubInvId, "SubInvId");
-				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.Remark, "Remark");
+			 				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.HeadId, "头表ID");
+				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.PartId, "物料");
+				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.SnapshootQty, "数量");
+				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.InvId, "库房");
+				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.SubInvId, "子库房");
+				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.Remark, "备注");
 				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.Attr1, "Attr1");
 				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.Attr2, "Attr2");
 				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.Attr3, "Attr3");
 				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.Attr4, "Attr4");
 				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.Attr5, "Attr5");
-				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.CreatePerson, "CreatePerson");
-				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.CreateTime, "CreateTime");
-				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.ModifyPerson, "ModifyPerson");
-				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.ModifyTime, "ModifyTime");
+				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.CreatePerson, "创建人");
+				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.CreateTime, "创建时间");
+				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.ModifyPerson, "修改人");
+				 excelFile.AddMapping<WMS_Inv_History_DModel>(x => x.ModifyTime, "修改时间");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_Inv_History_DModel>(0);

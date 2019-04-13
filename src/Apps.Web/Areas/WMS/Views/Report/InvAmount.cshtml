@@ -1,0 +1,295 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "WMS_Inv";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<script src="@Url.Content("~/Scripts/datagrid-export.js")" type="text/javascript"></script>
+
+<div id="uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+    <form name="form1" method="post" id="form1">
+        <table>
+            <tr>
+                <th style="padding:20px;"> Excel：</th>
+                <td style="padding:20px;">
+                    <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                    <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                    <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="padding:20px;"> 导入状态：</th>
+                <td style="padding:20px;">
+                    <label id="importMessage"></label>
+                    <a id="importResultFile" href="">         点击查看导入结果</a>
+                </td>
+            </tr>
+        </table>
+        <div class="endbtndiv">
+            <a id="btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+            <a id="btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+        </div>
+    </form>
+</div>
+<div class="mvctool">
+    <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
+    <input id="txtpartName" placeholder="物料名称:" type="text" class="searchText" />
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, true)
+    @*@Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+        @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+        @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+        @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)*@
+    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, true)
+    @*@Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)*@
+</div>
+<table id="List"></table>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetInvAmount")',
+            width:SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            @*onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
+            },*@
+            columns: [[
+                //{ field: 'Id', title: 'Id', width: 80,hidden:true },
+                //{ field: 'InvCode', title: '库房编码', width: 80, sortable: true },
+                { field: 'InvName', title: '库房名称', width: 80, sortable: true },
+                //{ field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
+                { field: 'PartCode', title: '物料编码', width: 60, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 60, sortable: true },
+                //{ field: 'Lot', title: '批次号', width: 60, sortable: true },
+                { field: 'Qty', title: '现有量', width: 80, sortable: true, align: 'right' },
+                { field: 'StockQty', title: '备料数', width: 80, sortable: true, align: 'right' },
+                //{ field: 'AvailableQty', title: '可备料数量', width: 80, sortable: true, align: 'right' }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
+            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
+	        });
+        $("#btnQuery").click(function () {
+            var partName = $("#txtpartName").val();
+            var partCode = $("#txtpartCode").val();
+            if (partName == null) {
+                partName = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            $("#List").datagrid("load", {
+                partcode: partCode, partname: partName
+            });
+
+        });
+        $("#btnDelete").click(function () {
+	            dataDelete("@Url.Action("Delete")", "List");
+	        });
+        $("#btnImport").click(function() {
+             $("#txtExcelPath").val("");
+             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+        });
+        $("#btnExport").click(function() {
+            ////获取Datagride的所有数据集合
+            //var rows = $('#List').datagrid("getRows");
+            //var columns = $('#List').datagrid("options").columns[0];
+            ////创建AX对象excel
+            //var oXL = new ActiveXObject("Excel.Application");
+            ////获取workbook对象
+            //var oWB = oXL.Workbooks.Add();
+            ////激活当前sheet
+            //var oSheet = oWB.ActiveSheet;
+            ////设置工作薄名称
+            //oSheet.name = "库存报表";
+            //for (var i = 0; i < columns.length; i++) {
+            //    oSheet.Cells(1, i + 1).value = columns[i].title;
+            //}
+            //for (var i = 0; i < rows.length; i++) {
+            //    for (var j = 0; j < columns.length; j++) {
+            //        if (rows[i][columns[j].field] != null) {
+            //            oSheet.Cells(i + 2, j + 1).value = rows[i][columns[j].field].toString();
+            //        } else {
+            //            oSheet.Cells(i + 2, j + 1).value = "";
+            //        }
+            //    }
+            //}
+            ////设置excel可见属性
+            //oXL.Visible = true;
+
+            //var data = JSON.stringify($('#List').datagrid('getData').rows);
+            //alert(data);
+            //if (data == '')
+            //    return;
+
+            //JSONToCSVConvertor(data, "Download", true);
+
+            //$('#List').datagrid('toExcel', 'dg.xls');
+            var partName = $("#txtpartName").val();
+            var partCode = $("#txtpartCode").val();
+            if (partName == null) {
+                partName = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            @*$.post("@Url.Action("ExportInvAmount")?partCode=" + partCode                 
+                + "&partName= " + partName, function(data) {*@
+                //if (data.type == 1)
+                //{
+                    window.location = "@Url.Action("ExportInvAmount")?partCode=" + partCode                       
+                        + "&partName= " + partName;
+                //}
+                //else
+                //{
+                //$.messageBox5s(Lang.Tip, data.message);
+                //}
+            //}, "json");
+        });
+        $("#btnExportTemplate").click(function() {
+          window.location = "@Url.Action("ExportTemplate")";
+        });
+    });
+    function ImportData()
+    {
+        showLoading();
+        var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
+        $.post(url, function(data) {
+            if (data.type == 1)
+            {
+             $("#List").datagrid('load');
+             $('#uploadExcel').window('close');
+             $('#FileUpload').val('');
+            }
+            hideLoading();
+            $.messageBox5s('提示', data.message);
+            $('#importMessage').html(data.message);
+            $('#importResultFile').attr('href', data.value);
+        }, "json");
+    }
+
+    function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel)
+    {
+        //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+        var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData)
+            : JSONData;
+
+        var CSV = '';
+        //Set Report title in first row or line
+
+        CSV += ReportTitle + '\r\n\n';
+
+        //This condition will generate the Label/Header
+        if (ShowLabel)
+        {
+            var row = "";
+
+            //This loop will extract the label from 1st index of on array
+            for (var index in arrData[0])
+            {
+
+                //Now convert each value to string and comma-seprated
+                row += index + ',';
+            }
+
+            row = row.slice(0, -1);
+
+            //append Label row with line break
+            CSV += row + '\r\n';
+        }
+
+        //1st loop is to extract each row
+        for (var i = 0; i < arrData.length; i++)
+        {
+            var row = "";
+
+            //2nd loop will extract each column and convert it in string comma-seprated
+            for (var index in arrData[i])
+            {
+                row += '"' + arrData[i][index] + '",';
+            }
+
+            row.slice(0, row.length - 1);
+
+            //add a line break after each row
+            CSV += row + '\r\n';
+        }
+
+        if (CSV == '')
+        {
+            alert("Invalid data");
+            return;
+        }
+
+        //Generate a file name
+        var fileName = "MyReport_";
+        //this will remove the blank-spaces from the title and replace it with an underscore
+        fileName += ReportTitle.replace(/ /g, "_");
+
+        //Initialize file format you want csv or xls
+        var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+        // Now the little tricky part.
+        // you can use either>> window.open(uri);
+        // but this will not work in some browsers
+        // or you will not get the correct file extension
+
+        //this trick will generate a temp <a /> tag
+        var link = document.createElement("a");
+        link.href = uri;
+
+        //set the visibility hidden so it will not effect on your web-layout
+        link.style = "visibility:hidden";
+        link.download = fileName + ".csv";
+
+        //this part will append the anchor tag and remove it after automatic click
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+

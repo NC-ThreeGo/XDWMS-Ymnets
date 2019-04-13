@@ -31,11 +31,27 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         [HttpPost]
         [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr)
+        public JsonResult GetList(GridPager pager, string partName, string partCode, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_Product_EntryModel> list = m_BLL.GetList(ref pager, queryStr);
+            //List<WMS_Product_EntryModel> list = m_BLL.GetList(ref pager, queryStr);
+            //GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
+            //grs.rows = list;
+            //grs.total = pager.totalRows;
+            //return Json(grs);
+            List<WMS_Product_EntryModel> list = m_BLL.GetListByWhere(ref pager, "WMS_Part.PartName.Contains(\""
+                + partName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
+                + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
             GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
+
+            List<WMS_Product_EntryModel> footerList = new List<WMS_Product_EntryModel>();
+            footerList.Add(new WMS_Product_EntryModel()
+            {
+                ProductBillNum = "<div style='text-align:right;color:#444'>合计：</div>",
+                ProductQty = list.Sum(p => p.ProductQty),
+            });
+
             grs.rows = list;
+            grs.footer = footerList;
             grs.total = pager.totalRows;
             return Json(grs);
         }
@@ -186,9 +202,12 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         }
         [SupportFilter]
-        public ActionResult Export(string queryStr)
+        public ActionResult Export(string partName, string partCode, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_Product_EntryModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            //List<WMS_Product_EntryModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            List<WMS_Product_EntryModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "WMS_Part.PartName.Contains(\""
+                + partName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
+                + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
@@ -232,13 +251,13 @@ namespace Apps.Web.Areas.WMS.Controllers
             JArray jObjects = new JArray();
             var jo = new JObject();
               //jo.Add("Id", "");
-              jo.Add("入库单号（业务）", "");
+              jo.Add("入库单号（业务）(必输)", "");
               //jo.Add("入库单号（系统）", "");
               jo.Add("本货部门", "");
-              jo.Add("物料编码", "");
-              jo.Add("数量", "");
-              jo.Add("批次", "");
-              jo.Add("库房", "");
+              jo.Add("物料编码(必输)", "");
+              jo.Add("数量(必输)", "");
+              jo.Add("批次(格式：YYYY-MM-DD)", "");
+              jo.Add("库房(必输)", "");
               //jo.Add("子库存", "");
               jo.Add("备注", "");
               //jo.Add("Attr1", "");

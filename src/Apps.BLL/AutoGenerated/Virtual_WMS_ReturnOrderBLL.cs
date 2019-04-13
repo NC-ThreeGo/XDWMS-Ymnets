@@ -387,10 +387,10 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.SupplierId, "代理商编码");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.InvId, "库存编码");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.SubInvId, "SubInvId");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Lot, "批次号：YYYYMM");
+				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Lot, "Lot");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ReturnQty, "应退货数量");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.AdjustQty, "实际退货数量");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Status, "单据状态：无效，有效");
+				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Status, "单据状态:有效/无效");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.Remark, "退货说明");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.PrintStaus, "打印状态");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.PrintDate, "打印时间");
@@ -408,7 +408,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ModifyTime, "修改时间");
 				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.BatchId, "BatchId");
-				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ReturnOderType, "ReturnOderType");
+				 excelFile.AddMapping<WMS_ReturnOrderModel>(x => x.ReturnOderType, "退货单类型");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_ReturnOrderModel>(0);

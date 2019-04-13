@@ -30,7 +30,7 @@ namespace Apps.Models
         public Nullable<decimal> NQualifyQty { get; set; }
         public Nullable<decimal> NNoQualifyQty { get; set; }
         public string NCheckOutRemark { get; set; }
-        public Nullable<System.DateTime> NCheckOutDate { get; set; }
+        public System.DateTime NCheckOutDate { get; set; }
         public string Remark { get; set; }
         public string AdjustMan { get; set; }
         public Nullable<System.DateTime> AdjustDate { get; set; }

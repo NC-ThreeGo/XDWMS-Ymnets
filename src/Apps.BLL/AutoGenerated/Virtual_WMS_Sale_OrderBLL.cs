@@ -69,6 +69,7 @@ namespace Apps.BLL.WMS
 								|| a.ModifyPerson.Contains(queryStr)
 								
 								|| a.ConfirmMessage.Contains(queryStr)
+								
 								);
             }
             else
@@ -125,6 +126,7 @@ namespace Apps.BLL.WMS
 													ModifyPerson = r.ModifyPerson,
 													ModifyTime = r.ModifyTime,
 													ConfirmMessage = r.ConfirmMessage,
+													Volume = r.Volume,
           
                                               }).ToList();
 
@@ -170,6 +172,7 @@ namespace Apps.BLL.WMS
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
 				entity.ConfirmMessage = model.ConfirmMessage;
+				entity.Volume = model.Volume;
   
 
                 if (m_Rep.Create(entity))
@@ -284,6 +287,7 @@ namespace Apps.BLL.WMS
 				entity.ModifyPerson = model.ModifyPerson;
 				entity.ModifyTime = model.ModifyTime;
 				entity.ConfirmMessage = model.ConfirmMessage;
+				entity.Volume = model.Volume;
  
 
 
@@ -342,6 +346,7 @@ namespace Apps.BLL.WMS
 				model.ModifyPerson = entity.ModifyPerson;
 				model.ModifyTime = entity.ModifyTime;
 				model.ConfirmMessage = entity.ConfirmMessage;
+				model.Volume = entity.Volume;
  
                 return model;
             }
@@ -374,12 +379,12 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SellBillNum, "销售单号（系统）");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PlanDeliveryDate, "计划发货日期");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.CustomerId, "客户");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartId, "物料Id");
+				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartId, "PartId");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Qty, "数量");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.BoxQty, "箱数");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvId, "库存");
+				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvId, "库房");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SubInvId, "子库存");
-				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Lot, "批次号：YYYYMM");
+				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Lot, "Lot");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Remark, "备注");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintStaus, "打印状态");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PrintDate, "打印日期");
@@ -397,6 +402,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ModifyTime, "修改时间");
 				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.ConfirmMessage, "ConfirmMessage");
+				 excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Volume, "体积");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_Sale_OrderModel>(0);
@@ -434,6 +440,7 @@ namespace Apps.BLL.WMS
 				  entity.ModifyPerson = row.ModifyPerson;
 				  entity.ModifyTime = row.ModifyTime;
 				  entity.ConfirmMessage = row.ConfirmMessage;
+				  entity.Volume = row.Volume;
  
                 //=============================================================================
                 if (errorMessage.Length > 0)
@@ -494,6 +501,7 @@ namespace Apps.BLL.WMS
 						entity.ModifyPerson = model.ModifyPerson;
 						entity.ModifyTime = model.ModifyTime;
 						entity.ConfirmMessage = model.ConfirmMessage;
+						entity.Volume = model.Volume;
  
                         db.WMS_Sale_Order.Add(entity);
                     }

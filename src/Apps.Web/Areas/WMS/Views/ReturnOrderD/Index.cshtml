@@ -66,7 +66,7 @@
         <td style="vertical-align:top">
             <div class="mvctool">
                 @Html.ToolButton("btnPrint", "fa fa-plus", "退货单生成", ref perm, "Create", true)
-                @Html.ToolButton("btnConfirm", "fa fa-search", "退货单确认", ref perm, "Edit", true)
+                @Html.ToolButton("btnConfirm", "fa fa-search", "退货单确认", ref perm, "Check", true)
                 @Html.ToolButton("btnDelete", "fa fa-plus", "退货单失效", ref perm, "Delete", true)
                 @Html.ToolButton("btnReport", "fa fa-search", "查看单据", ref perm, "Query", true)
             </div>
@@ -207,7 +207,7 @@
             });
         });
         $("#btnCreateParent").click(function () {
-            $.modalWindow(Lang.Create, '@Url.Action("CreateParent")', 700, 400, 'fa fa-plus');
+            $.modalWindow(Lang.Create, '@Url.Action("CreateParentForDataGrid")', $(window).width() - 50, $(window).height() - 50, 'fa fa-plus');
         });
         $("#btnEditParent").click(function () {
             var row = $('#ListParent').datagrid('getSelected');

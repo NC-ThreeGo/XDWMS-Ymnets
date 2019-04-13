@@ -69,14 +69,14 @@ namespace Apps.BLL.WMS
                 using (IXLWorksheet wws = wb.Worksheets.First())
                 {
                     //对应列头
-                    excelFile.AddMapping<WMS_PartModel>(x => x.PartCode, "物料编码");
-                    excelFile.AddMapping<WMS_PartModel>(x => x.PartName, "物料名称");
-                    excelFile.AddMapping<WMS_PartModel>(x => x.PartType, "物料类型");
+                    excelFile.AddMapping<WMS_PartModel>(x => x.PartCode, "物料编码(必输)");
+                    excelFile.AddMapping<WMS_PartModel>(x => x.PartName, "物料名称(必输)");
+                    excelFile.AddMapping<WMS_PartModel>(x => x.PartType, "物料类型(必输)");
                     excelFile.AddMapping<WMS_PartModel>(x => x.CustomerCode, "客户编码");
                     excelFile.AddMapping<WMS_PartModel>(x => x.LogisticsCode, "物流号");
                     excelFile.AddMapping<WMS_PartModel>(x => x.OtherCode, "额外信息编码");
                     excelFile.AddMapping<WMS_PartModel>(x => x.PCS, "每箱数量");
-                    excelFile.AddMapping<WMS_PartModel>(x => x.StoreMan, "保管员");
+                    excelFile.AddMapping<WMS_PartModel>(x => x.StoreMan, "保管员(必输)");
                     excelFile.AddMapping<WMS_PartModel>(x => x.Unit, "单位");
                     excelFile.AddMapping<WMS_PartModel>(x => x.Volume, "每箱体积");
                     excelFile.AddMapping<WMS_PartModel>(x => x.Remark, "说明");
@@ -220,6 +220,21 @@ namespace Apps.BLL.WMS
                 {
                     throw new Exception("物料类型不存在！");
                 }
+            }
+            //物料编码不能为空
+            if (String.IsNullOrEmpty(model.PartCode))
+            {
+                throw new Exception("物料编码不能为空！");
+            }
+            //物料名称不能为空
+            if (String.IsNullOrEmpty(model.PartName))
+            {
+                throw new Exception("物料名称不能为空！");
+            }
+            //保管员不能为空
+            if (String.IsNullOrEmpty(model.StoreMan))
+            {
+                throw new Exception("保管员不能为空！");
             }
 
         }

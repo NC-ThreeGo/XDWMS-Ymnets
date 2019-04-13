@@ -380,7 +380,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Department, "投料部门");
 				 excelFile.AddMapping<WMS_Feed_ListModel>(x => x.AssemblyPartId, "总成物料");
 				 excelFile.AddMapping<WMS_Feed_ListModel>(x => x.SubAssemblyPartId, "投料物料");
-				 excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Lot, "批次号：YYYYMM");
+				 excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Lot, "Lot");
 				 excelFile.AddMapping<WMS_Feed_ListModel>(x => x.FeedQty, "投料数量");
 				 excelFile.AddMapping<WMS_Feed_ListModel>(x => x.BoxQty, "箱数");
 				 excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Capacity, "体积");

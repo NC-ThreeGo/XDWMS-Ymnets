@@ -411,7 +411,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_AIModel>(x => x.InspectBillNum, "送检单号");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.InspectMan, "送检人");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.InspectDate, "送检日期");
-				 excelFile.AddMapping<WMS_AIModel>(x => x.InspectStatus, "送检状体");
+				 excelFile.AddMapping<WMS_AIModel>(x => x.InspectStatus, "送检状态");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.CheckOutDate, "检验日期");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.CheckOutResult, "检验结果");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.QualifyQty, "合格数量");
@@ -421,7 +421,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_AIModel>(x => x.InStoreBillNum, "入库单号");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.InStoreMan, "入库员");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.InvId, "入库仓库");
-				 excelFile.AddMapping<WMS_AIModel>(x => x.SubInvId, "SubInvId");
+				 excelFile.AddMapping<WMS_AIModel>(x => x.SubInvId, "入库子库存");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.InStoreStatus, "入库状态");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.Attr1, "Attr1");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.Attr2, "Attr2");
@@ -432,7 +432,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_AIModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_AIModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_AIModel>(x => x.Lot, "批次号：YYYYMM");
+				 excelFile.AddMapping<WMS_AIModel>(x => x.Lot, "Lot");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_AIModel>(0);

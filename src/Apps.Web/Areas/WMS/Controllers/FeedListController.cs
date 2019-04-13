@@ -35,6 +35,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             PrintTypes.Add(new ReportType() { Type = 0, Name = "" });
             PrintTypes.Add(new ReportType() { Type = 1, Name = "未打印" });
             PrintTypes.Add(new ReportType() { Type = 2, Name = "已打印" });
+            PrintTypes.Add(new ReportType() { Type = 2, Name = "已失效" });
             ViewBag.PrintStaus = new SelectList(PrintTypes, "Name", "Name");
 
             //定义打印状态下拉框的值
@@ -65,8 +66,17 @@ namespace Apps.Web.Areas.WMS.Controllers
             //  + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")");
 
             List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, query);
-            GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>(); 
+            GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
+
+            List<WMS_Feed_ListModel> footerList = new List<WMS_Feed_ListModel>();
+            footerList.Add(new WMS_Feed_ListModel()
+            {
+                FeedBillNum = "<div style='text-align:right;color:#444'>合计：</div>",
+                FeedQty = list.Sum(p => p.FeedQty),
+            });
+
             grs.rows = list;
+            grs.footer = footerList;
             grs.total = pager.totalRows;
             return Json(grs);
         }
@@ -294,17 +304,42 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 if (id != 0)
                 {
-                    if (m_BLL.Delete(ref errors, id))
+                    WMS_Feed_ListModel model = m_BLL.GetById(id);
+                    model.ModifyTime = ResultHelper.NowTime;
+                    model.ModifyPerson = GetUserTrueName();
+                    model.PrintStaus = "已失效";
+
+                    if (model != null && ModelState.IsValid)
                     {
-                        LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_Feed_List");
-                        return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+
+                        if (m_BLL.Edit(ref errors, model))
+                        {
+                            LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum, "成功", "修改", "WMS_Feed_List");
+                            return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
+                        }
+                        else
+                        {
+                            string ErrorCol = errors.Error;
+                            LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",FeedBillNum" + model.FeedBillNum + "," + ErrorCol, "失败", "修改", "WMS_Feed_List");
+                            return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
+                        }
                     }
                     else
                     {
-                        string ErrorCol = errors.Error;
-                        LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Feed_List");
-                        return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                        return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
                     }
+
+                    //if (m_BLL.Delete(ref errors, id))
+                    //{
+                    //    LogHandler.WriteServiceLog(GetUserTrueName(), "Id:" + id, "成功", "删除", "WMS_Feed_List");
+                    //    return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+                    //}
+                    //else
+                    //{
+                    //    string ErrorCol = errors.Error;
+                    //    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Feed_List");
+                    //    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                    //}
                 }
                 else
                 {
@@ -415,16 +450,16 @@ namespace Apps.Web.Areas.WMS.Controllers
             JArray jObjects = new JArray();
             var jo = new JObject();
               //jo.Add("Id", "");
-              jo.Add("投料单号（业务）", "");
+              jo.Add("投料单号（业务）(必输)", "");
               //jo.Add("投料单号（系统）", "");
               jo.Add("投料部门", "");
-              jo.Add("总成物料", "");
-              jo.Add("投料物料", "");            
-            jo.Add("投料数量", "");
+              jo.Add("总成物料(必输)", "");
+              jo.Add("投料物料(必输)", "");            
+            jo.Add("投料数量(必输)", "");
               jo.Add("箱数", "");
               jo.Add("体积", "");            
-            jo.Add("库房", "");
-            jo.Add("批次号", "");
+            jo.Add("库房(必输)", "");
+            jo.Add("批次号(格式：YYYY-MM-DD)", "");
             //jo.Add("子库存", "");
             jo.Add("备注", "");
               //jo.Add("打印状态", "");

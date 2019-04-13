@@ -16,10 +16,8 @@ namespace Apps.BLL.WMS
 {
     public  partial class WMS_ReturnOrderBLL
     {
-
         public override List<WMS_ReturnOrderModel> CreateModelList(ref IQueryable<WMS_ReturnOrder> queryData)
         {
-
             List<WMS_ReturnOrderModel> modelList = (from r in queryData
                                               select new WMS_ReturnOrderModel
                                               {
@@ -262,10 +260,28 @@ namespace Apps.BLL.WMS
             }
 		}
 
-        //public string CreateBatchReturnOrder(string opt, string jsonReturnOrder)
-        //{
-        //    return m_Rep.CreateBatchReturnOrder(opt, jsonReturnOrder);
-        //}
+        public bool CreateBatchReturnOrder(ref ValidationErrors errors, string opt, string jsonReturnOrder)
+        {
+            string result = String.Empty;
+            try
+            {
+                result = m_Rep.CreateBatchReturnOrder(opt, jsonReturnOrder);
+                if (String.IsNullOrEmpty(result))
+                {
+                    return true;
+                }
+                else
+                {
+                    errors.Add(result);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return false;
+            }
+        }
 
         public bool CreateReturnOrder(ref ValidationErrors errors, string opt, WMS_ReturnOrderModel model)
         {

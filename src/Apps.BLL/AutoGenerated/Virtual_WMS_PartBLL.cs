@@ -328,9 +328,9 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_PartModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_PartModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_PartModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.Unit, "Unit");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.Volume, "Volume");
-				 excelFile.AddMapping<WMS_PartModel>(x => x.Remark, "Remark");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.Unit, "单位");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.Volume, "体积");
+				 excelFile.AddMapping<WMS_PartModel>(x => x.Remark, "说明");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_PartModel>(0);

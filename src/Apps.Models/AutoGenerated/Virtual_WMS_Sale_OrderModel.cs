@@ -75,5 +75,7 @@ namespace Apps.Models.WMS
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string ConfirmMessage { get; set; }
+		[Display(Name = "未设置")]
+		public virtual Nullable<decimal> Volume { get; set; }
 		}
 }

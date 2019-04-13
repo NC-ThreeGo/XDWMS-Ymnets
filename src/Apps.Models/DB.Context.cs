@@ -119,6 +119,7 @@ namespace Apps.Models
         public virtual DbSet<WMS_Inv_History_H> WMS_Inv_History_H { get; set; }
         public virtual DbSet<WMS_Inv> WMS_Inv { get; set; }
         public virtual DbSet<V_WMS_InvHistoryAvg> V_WMS_InvHistoryAvg { get; set; }
+        public virtual DbSet<WMS_InvRecord> WMS_InvRecord { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {
@@ -1009,6 +1010,19 @@ namespace Apps.Models
                 new ObjectParameter("HeadId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_SpecialInventory", userNameParameter, headIdParameter, returnValue);
+        }
+    
+        public virtual int P_WMS_CreateBatchReturnOrder(string userId, string jsonReturnOrder, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var jsonReturnOrderParameter = jsonReturnOrder != null ?
+                new ObjectParameter("JsonReturnOrder", jsonReturnOrder) :
+                new ObjectParameter("JsonReturnOrder", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateBatchReturnOrder", userIdParameter, jsonReturnOrderParameter, returnValue);
         }
     }
 }

@@ -8,17 +8,15 @@ namespace Apps.DAL.WMS
 {
     public partial class WMS_ReturnOrderRepository
     {
-        //public string CreateBatchReturnOrder(string opt, string jsonReturnOrder)
-        //{
-        //    ObjectParameter returnOrderNum = new ObjectParameter("ReturnOrderNum", typeof(string));
-        //    ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
-        //    Context.P_WMS_CreateBatchReturnOrder(opt, jsonReturnOrder, returnOrderNum, returnValue);
+        public string CreateBatchReturnOrder(string opt, string jsonReturnOrder)
+        {
+            //由于EF的默认调用会启用事务，导致和存储过程中的事务冲突，所以设置为不启用事务。
+            Context.Configuration.EnsureTransactionsForFunctionsAndCommands = false;
 
-        //    if (returnValue.Value == DBNull.Value)
-        //        return (string)returnOrderNum.Value;
-        //    else
-        //        return null;
-        //}
+            ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
+            Context.P_WMS_CreateBatchReturnOrder(opt, jsonReturnOrder, returnValue);
+            return returnValue.Value.ToString();
+        }
 
         public string CreateReturnOrder(string opt, int? partId, int? supplierId, int? invId, string lot, decimal? qty, string remark)
         {

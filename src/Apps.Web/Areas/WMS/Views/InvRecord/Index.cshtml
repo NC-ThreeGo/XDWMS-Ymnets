@@ -1,0 +1,204 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "WMS_InvRecord";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+<div id = "uploadExcel" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false">
+<form name = "form1" method="post" id="form1">
+    <table>
+        <tr>
+            <th style="padding:20px;"> Excel：</th>
+            <td style="padding:20px;">
+                <input name="ExcelPath" type="text" maxlength="255" id="txtExcelPath" readonly="readonly" style="width:200px" class="txtInput normal left">
+                <a href = "javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
+                <span class="uploading">@Resource.Uploading</span>
+            </td>
+        </tr>
+        <tr>
+            <th style="padding:20px;"> 导入状态：</th>
+            <td style="padding:20px;">
+                <label id="importMessage"></label>
+                <a id="importResultFile" href="">         点击查看导入结果</a>
+            </td>
+        </tr>
+    </table>
+    <div class="endbtndiv">
+        <a id = "btnSave" href="javascript:ImportData()" class="easyui-linkbutton btns">直接保存</a>
+        <a id = "btnReturn" href="javascript:$('#uploadExcel').window('close')" class="easyui-linkbutton btnc">@Resource.Cancel</a>
+    </div>
+</form>
+</div>
+<div class="mvctool">
+    <input id="txtSourceBill" type="text" placeholder="单据号:" class="searchText" />
+    <input id="txtPartCode" type="text" placeholder="物料编码:" class="searchText" />
+    <input id="txtPartName" placeholder="物料名称:" type="text" class="searchText" />
+    类型：@Html.DropDownList("txtType", ViewBag.Types as SelectList, new { @style = "width:70px;" })
+    日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @*@Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
+        @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
+        @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+        @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)*@
+    @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
+    @*@Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)*@
+</div>
+<table id="List"></table>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width:SetGridWidthSub(10),
+            methord: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'Id',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            showFooter: true,
+            onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
+            },
+            columns: [[
+                //{ field: 'Id', title: '出入库明细ID', width: 80,hidden:true },
+                { field: 'SourceBill', title: '单据编号', width: 80, sortable: true },
+                { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
+                { field: 'PartName', title: '物料名称', width: 80, sortable: true },
+                { field: 'QTY', title: '数量', width: 80,sortable:true },
+                //{ field: 'InvId', title: '库房编码', width: 80,sortable:true },
+                //{ field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
+                //{ field: 'BillId', title: '单据ID', width: 80,sortable:true },
+                //{ field: 'SourceBill', title: '单据来源', width: 80,sortable:true },
+                { field: 'OperateDate', title: '操作时间', width: 80,sortable:true },
+                { field: 'Lot', title: '批次', width: 80,sortable:true },
+                { field: 'Type', title: '出入库类型', width: 80,sortable:true },
+                { field: 'OperateMan', title: '操作人', width: 80,sortable:true },
+                //{ field: 'Stock_InvId', title: '备料库存', width: 80,sortable:true },
+                //{ field: 'StockStatus', title: '备料状态：1-不适用（直接修改库存现有量）；2-已备料；3-无效备料（取消备料后将2改成3）；4-取消备料（当前操作是取消备料）', width: 80,sortable:true }
+            ]]
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s(Lang.Tip, mes);
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            $.modalWindow(Lang.Create, '@Url.Action("Create")', 700, 400, 'fa fa-plus');
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
+            } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
+	        });
+        $("#btnQuery").click(function () {
+            var sourceBill = $("#txtSourceBill").val();
+            var partCode = $("#txtPartCode").val();
+            var partName = $("#txtPartName").val();
+            var type = $("#txtType").val();           
+            if (sourceBill == null) {
+                sourceBill = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (partName == null) {
+                partName = "";
+            }
+
+            $("#List").datagrid("load", {
+                sourceBill: sourceBill, partCode: partCode, partName: partName, type: type, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+            });
+
+        });
+        $("#btnDelete").click(function () {
+	            dataDelete("@Url.Action("Delete")", "List");
+	        });
+        $("#btnImport").click(function() {
+             $("#txtExcelPath").val("");
+             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+        });
+        $("#btnExport").click(function() {
+            var sourceBill = $("#txtSourceBill").val();
+            var partCode = $("#txtPartCode").val();
+            var partName = $("#txtPartName").val();
+            var type = $("#txtType").val();
+            if (sourceBill == null) {
+                sourceBill = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (partName == null) {
+                partName = "";
+            }
+            $.post("@Url.Action("CheckExportData")?sourceBill=" + sourceBill + "&partCode=" + partCode + "&partName=" + partName
+                + "&type=" + type + "&beginDate=" + $("#beginDate").val()
+                + "&endDate= " + $("#endDate").val(), function(data) {
+                if (data.type == 1)
+                {
+                    window.location = "@Url.Action("Export")?sourceBill=" + sourceBill + "&partCode=" + partCode + "&partName=" + partName + "&type=" + type
+                        + "&beginDate=" + $("#beginDate").val()
+                        + "&endDate= " + $("#endDate").val();
+                }
+                else
+                {
+                $.messageBox5s(Lang.Tip, data.message);
+                }
+            }, "json");
+        });
+        $("#btnExportTemplate").click(function() {
+          window.location = "@Url.Action("ExportTemplate")";
+        });
+    });
+    function ImportData()
+    {
+        showLoading();
+        var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
+        $.post(url, function(data) {
+            if (data.type == 1)
+            {
+             $("#List").datagrid('load');
+             $('#uploadExcel').window('close');
+             $('#FileUpload').val('');
+            }
+            hideLoading();
+            $.messageBox5s('提示', data.message);
+            $('#importMessage').html(data.message);
+            $('#importResultFile').attr('href', data.value); 
+        }, "json");
+    }
+</script>
+

@@ -325,15 +325,15 @@ namespace Apps.BLL.WMS
             var excelFile = new ExcelQueryFactory(fileName);
 
             //对应列头
-			 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.HeadId, "HeadId");
+			 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.HeadId, "盘点头表ID");
 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.PartId, "物料");
 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.SnapshootQty, "快照数量");
 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.InventoryQty, "盘点数量");
 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.InvId, "库存");
 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.SubInvId, "子库存");
-				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Lot, "批次号：YYYYMM");
+				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Lot, "批次");
 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Remark, "备注");
-				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.ConfirmMessage, "ConfirmMessage");
+				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.ConfirmMessage, "确认信息");
 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Attr1, "Attr1");
 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Attr2, "Attr2");
 				 excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Attr3, "Attr3");

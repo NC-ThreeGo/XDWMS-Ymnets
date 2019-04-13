@@ -336,7 +336,7 @@ namespace Apps.BLL.WMS
 				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.CreateTime, "创建时间");
 				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.ModifyPerson, "修改人");
 				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.ModifyTime, "修改时间");
-				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Lot, "批次号：YYYYMM");
+				 excelFile.AddMapping<WMS_Inv_AdjustModel>(x => x.Lot, "Lot");
  
             //SheetName
             var excelContent = excelFile.Worksheet<WMS_Inv_AdjustModel>(0);

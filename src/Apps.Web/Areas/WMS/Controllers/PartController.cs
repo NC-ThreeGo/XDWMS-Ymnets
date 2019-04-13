@@ -63,7 +63,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.Id = 0;
             model.CreateTime = ResultHelper.NowTime;
             model.CreatePerson = GetUserTrueName();
-            if (model != null && ModelState.IsValid)
+            if (model != null && ModelState.IsValid && model.StoreMan != null)
             {
 
                 if (m_BLL.Create(ref errors, model))
@@ -101,7 +101,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             model.ModifyTime = ResultHelper.NowTime;
             model.ModifyPerson = GetUserTrueName();
-            if (model != null && ModelState.IsValid)
+            if (model != null && ModelState.IsValid && model.StoreMan != null)
             {
 
                 if (m_BLL.Edit(ref errors, model))
@@ -251,14 +251,14 @@ namespace Apps.Web.Areas.WMS.Controllers
             JArray jObjects = new JArray();
             var jo = new JObject();
             //jo.Add("物料ID", "");
-            jo.Add("物料编码", "");
-            jo.Add("物料名称", "");
-            jo.Add("物料类型", "");
+            jo.Add("物料编码(必输)", "");
+            jo.Add("物料名称(必输)", "");
+            jo.Add("物料类型(必输)", "");
             jo.Add("客户编码", "");
             jo.Add("物流号", "");
             jo.Add("额外信息编码", "");
             jo.Add("每箱数量", "");
-            jo.Add("保管员", "");
+            jo.Add("保管员(必输)", "");
             jo.Add("单位", "");
             jo.Add("每箱体积", "");
             jo.Add("说明", "");
@@ -303,6 +303,22 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetPartByCode(string partCode)
+        {
+            List<WMS_PartModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Status == \"有效\" && PartCode == \""
+                + partCode + "\"");
+            if (list.Count() == 0)
+            {
+                return Json(JsonHandler.CreateMessage(0, "物料编码不存在！"));
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(1, Resource.CheckSucceed, JsonHandler.SerializeObject(list.First())));
+            }
         }
         #endregion
     }
