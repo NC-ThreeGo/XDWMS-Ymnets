@@ -16,7 +16,13 @@
     @Scripts.Render("~/bundles/common")
     <link href="~/Content/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
     <style>
-        body{background:#fff;color:#222;font-size:9pt;font-family:'Microsoft YaHei'}
+        body {
+            background: #fff;
+            color: #222;
+            font-size: 9pt;
+            font-family: 'Microsoft YaHei';
+            background: #fff url('/Content/Images/bg.png') no-repeat center 60px;
+        }
         *{margin:0;padding:0}
         .top_div{width:100%;height:60px;text-align:center; border-bottom:1px solid #eaeaea; background:#f8f8f8}
         #loginbody{background:#fff;border:1px solid #e7e7e7;border-top:3px solid #69bc49; border-image:none;width:305px;height:300px;text-align:center;-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px;margin-top:100px}
@@ -33,6 +39,13 @@
         #local{float:right;margin-right:33px;height:23px;line-height:23px}
         .field-validation-error{color:red}
         .fa {font-size:14px;}
+        .footer { line-height:40px; color:#444; text-align:center;   font-size:12px; padding:20px ;
+        }
+            .footer img { vertical-align:central;
+            height:40px; float:left;}
+            .footer p { width:280px;  margin-left:auto; margin-right:auto;
+                  height:40px;
+            }
     </style>
 
     <meta name="GENERATOR" content="MSHTML 11.00.9600.17496">
@@ -42,20 +55,20 @@
         <table>
             <tr>
                 <td style="width:100px;"></td>
-<td style="width:65px;">
-                    <div style="width:63px; overflow:hidden;"><img style="height:55px;width:220px;" src="/Content/Images/logo.png" /></div>
-                </td>
+@*<td style="width:65px;">*@
+                    @*<div style="width:63px; overflow:hidden;"><img style="height:55px;width:220px;" src="/Content/Images/logo.png" /></div>*@
+                @*</td>*@
                 <td><div id="LoginTopLine">@ViewBag.WebName</div></td>
-                <td style="width:20px;"><div style="width:10px;border-right:1px solid #ccc;">&nbsp;</div></td>
+                <td style="width:20px;"><div style="width:10px;border-right:0px solid #ccc;">&nbsp;</div></td>
                 <td><div id="LoginBotoomLine">@ViewBag.ComName</div></td>
             </tr>
         </table>
     </div>
-    <table style="width:100%;min-height:600px">
+    <table style="width:100%;min-height:530px">
         <tr>
         <td>&nbsp;</td>
         <td style="width:726px;"> <br /><br />
-            <div style="background:url('/Content/Images/bg.png') no-repeat;width:796px;height:600px;">&nbsp;</div>
+            @*<div style="background:url('/Content/Images/bg.png') no-repeat;width:796px;height:600px;">&nbsp;</div>*@
             </td><td style="width:500px;">
                          <div id="loginbody">
                              <p style="padding: 20px 0px 0px 40px; position: relative; text-align:left;font-weight:bold">
@@ -97,7 +110,7 @@
             <td>&nbsp;</td></tr>
 
     </table>
-    
+    <div class="footer"> <p><img src="/Content/Images/logo.png" />|&nbsp;&nbsp;版权所有  江西新电汽车空调系统有限公司</p></div>
 </body>
 </html>
 <div style="background: #f8f8f8; height: 40px; width: 100%; text-align: center; line-height: 40px; border-top: 1px #e7e7e7 solid; bottom: 0; position: absolute">
