@@ -13,48 +13,66 @@ using System.ComponentModel.DataAnnotations;
 namespace Apps.Models.WMS
 {
 
-	public partial class WMS_Sale_OrderModel:Virtual_WMS_Sale_OrderModel
+	public partial class WMS_ReturnInspectionModel:Virtual_WMS_ReturnInspectionModel
 	{
 		
 	}
-	public class Virtual_WMS_Sale_OrderModel
+	public class Virtual_WMS_ReturnInspectionModel
 	{
 		[Display(Name = "未设置")]
 		public virtual int Id { get; set; }
-		[Display(Name = "销售单号（业务）")]
-		public virtual string SaleBillNum { get; set; }
-		[Display(Name = "销售单号（系统）")]
-		public virtual string SellBillNum { get; set; }
-		[Display(Name = "计划发货日期")]
-		public virtual Nullable<System.DateTime> PlanDeliveryDate { get; set; }
-		[Display(Name = "客户")]
-		public virtual int CustomerId { get; set; }
-		[Display(Name = "未设置")]
-		public virtual int PartId { get; set; }
+		[Display(Name = "退货送检单号")]
+		public virtual string ReturnInspectionNum { get; set; }
+		[Display(Name = "客户图号")]
+		public virtual string CustomerCode { get; set; }
+		[Display(Name = "零件名称")]
+		public virtual string CustomerCodeName { get; set; }
+		[Display(Name = "新电图号")]
+		public virtual int PartID { get; set; }
 		[Display(Name = "数量")]
-		public virtual decimal Qty { get; set; }
+		public virtual Nullable<decimal> Qty { get; set; }
+		[Display(Name = "客户")]
+		public virtual Nullable<int> CustomerId { get; set; }
+		[Display(Name = "供应商")]
+		public virtual Nullable<int> SupplierId { get; set; }
 		[Display(Name = "箱数")]
-		public virtual Nullable<decimal> BoxQty { get; set; }
+		public virtual Nullable<decimal> PCS { get; set; }
+		[Display(Name = "体积")]
+		public virtual Nullable<decimal> Volume { get; set; }
 		[Display(Name = "库房")]
 		public virtual Nullable<int> InvId { get; set; }
-		[Display(Name = "子库存")]
+		[Display(Name = "子库房")]
 		public virtual Nullable<int> SubInvId { get; set; }
-		[Display(Name = "未设置")]
-		public virtual string Lot { get; set; }
-		[Display(Name = "备注")]
-		public virtual string Remark { get; set; }
 		[Display(Name = "打印状态")]
-		public virtual string PrintStaus { get; set; }
+		public virtual string PrintStatus { get; set; }
 		[Display(Name = "打印日期")]
 		public virtual Nullable<System.DateTime> PrintDate { get; set; }
 		[Display(Name = "打印人")]
 		public virtual string PrintMan { get; set; }
-		[Display(Name = "确认状态")]
+		[Display(Name = "备注")]
+		public virtual string Remark { get; set; }
+		[Display(Name = "检验人")]
+		public virtual string InspectMan { get; set; }
+		[Display(Name = "检验日期")]
+		public virtual Nullable<System.DateTime> InspectDate { get; set; }
+		[Display(Name = "检验状态")]
+		public virtual string InspectStatus { get; set; }
+		[Display(Name = "检验结果")]
+		public virtual string CheckOutResult { get; set; }
+		[Display(Name = "合格数量")]
+		public virtual Nullable<decimal> QualifyQty { get; set; }
+		[Display(Name = "不合格数量")]
+		public virtual Nullable<decimal> NoQualifyQty { get; set; }
+		[Display(Name = "批次")]
+		public virtual string Lot { get; set; }
+		[Display(Name = "未设置")]
 		public virtual string ConfirmStatus { get; set; }
-		[Display(Name = "确认人")]
+		[Display(Name = "未设置")]
 		public virtual string ConfirmMan { get; set; }
-		[Display(Name = "确认时间")]
+		[Display(Name = "未设置")]
 		public virtual Nullable<System.DateTime> ConfirmDate { get; set; }
+		[Display(Name = "未设置")]
+		public virtual string ConfirmRemark { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string Attr1 { get; set; }
 		[Display(Name = "未设置")]
@@ -73,9 +91,5 @@ namespace Apps.Models.WMS
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
-		[Display(Name = "未设置")]
-		public virtual string ConfirmMessage { get; set; }
-		[Display(Name = "体积")]
-		public virtual Nullable<decimal> Volume { get; set; }
 		}
 }

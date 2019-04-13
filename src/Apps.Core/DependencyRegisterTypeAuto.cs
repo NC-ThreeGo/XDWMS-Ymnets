@@ -185,6 +185,8 @@ namespace Apps.Core
 			container.RegisterType<Apps.IDAL.WMS.IWMS_ReportRepository, Apps.DAL.WMS.WMS_ReportRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_ReportParamBLL, Apps.BLL.WMS.WMS_ReportParamBLL>();
 			container.RegisterType<Apps.IDAL.WMS.IWMS_ReportParamRepository, Apps.DAL.WMS.WMS_ReportParamRepository>();
+			container.RegisterType<Apps.IBLL.WMS.IWMS_ReturnInspectionBLL, Apps.BLL.WMS.WMS_ReturnInspectionBLL>();
+			container.RegisterType<Apps.IDAL.WMS.IWMS_ReturnInspectionRepository, Apps.DAL.WMS.WMS_ReturnInspectionRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_ReturnOrderBLL, Apps.BLL.WMS.WMS_ReturnOrderBLL>();
 			container.RegisterType<Apps.IDAL.WMS.IWMS_ReturnOrderRepository, Apps.DAL.WMS.WMS_ReturnOrderRepository>();
 			container.RegisterType<Apps.IBLL.WMS.IWMS_ReturnOrder_DBLL, Apps.BLL.WMS.WMS_ReturnOrder_DBLL>();

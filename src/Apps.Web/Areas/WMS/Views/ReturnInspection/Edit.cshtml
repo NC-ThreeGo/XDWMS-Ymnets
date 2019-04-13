@@ -1,0 +1,368 @@
+﻿@model Apps.Models.WMS.WMS_ReturnInspectionModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WMS;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(false);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+function frameReturnByClose() {
+$("#modalwindow").window('close');
+}
+function frameReturnByMes(mes) {
+$.messageBox5s(Lang.Tip, mes);
+}
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             @Html.HiddenFor(model => model.CreateTime)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ReturnInspectionNum)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ReturnInspectionNum)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ReturnInspectionNum)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CustomerCode)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.CustomerCode)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.CustomerCode)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CustomerCodeName)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.CustomerCodeName)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.CustomerCodeName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PartID)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.PartID)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PartID)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Qty)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Qty)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Qty)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CustomerId)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.CustomerId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.CustomerId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.SupplierId)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.SupplierId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.SupplierId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PCS)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.PCS)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PCS)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Volume)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Volume)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Volume)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.InvId)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.InvId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.InvId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.SubInvId)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.SubInvId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PrintStatus)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.PrintStatus)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PrintStatus)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PrintDate)：
+            </th>
+            <td >
+               @Html.TextBoxFor(model => model.PrintDate, new { @onClick = "WdatePicker()",@style = "width: 105px" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PrintDate)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PrintMan)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.PrintMan)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PrintMan)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Remark)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Remark)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.InspectMan)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.InspectMan)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.InspectMan)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.InspectDate)：
+            </th>
+            <td >
+               @Html.TextBoxFor(model => model.InspectDate, new { @onClick = "WdatePicker()",@style = "width: 105px" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.InspectDate)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.InspectStatus)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.InspectStatus)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.InspectStatus)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CheckOutResult)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.CheckOutResult)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.CheckOutResult)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.QualifyQty)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.QualifyQty)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.QualifyQty)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.NoQualifyQty)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.NoQualifyQty)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.NoQualifyQty)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Lot)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Lot)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Lot)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ConfirmStatus)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ConfirmStatus)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ConfirmStatus)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ConfirmMan)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ConfirmMan)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ConfirmMan)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ConfirmDate)：
+            </th>
+            <td >
+               @Html.TextBoxFor(model => model.ConfirmDate, new { @onClick = "WdatePicker()",@style = "width: 105px" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ConfirmDate)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ConfirmRemark)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ConfirmRemark)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ConfirmRemark)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attr1)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Attr1)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attr1)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attr2)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Attr2)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attr2)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attr3)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Attr3)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attr3)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attr4)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Attr4)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attr4)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Attr5)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Attr5)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Attr5)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CreatePerson)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.CreatePerson)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.CreatePerson)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ModifyPerson)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ModifyPerson)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ModifyPerson)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ModifyTime)：
+            </th>
+            <td >
+               @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
+        </tr>
+    </tbody>
+</table>
+}
+

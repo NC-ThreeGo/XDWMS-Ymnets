@@ -17,6 +17,7 @@ namespace Apps.Models
         public WMS_Customer()
         {
             this.WMS_Sale_Order = new HashSet<WMS_Sale_Order>();
+            this.WMS_ReturnInspection = new HashSet<WMS_ReturnInspection>();
         }
     
         public int Id { get; set; }
@@ -35,5 +36,6 @@ namespace Apps.Models
         public Nullable<System.DateTime> ModifyTime { get; set; }
     
         public virtual ICollection<WMS_Sale_Order> WMS_Sale_Order { get; set; }
+        public virtual ICollection<WMS_ReturnInspection> WMS_ReturnInspection { get; set; }
     }
 }

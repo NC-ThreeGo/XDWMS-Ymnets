@@ -376,6 +376,7 @@
     <Compile Include="Areas\WMS\Controllers\PartController.cs" />
     <Compile Include="Areas\WMS\Controllers\POController.cs" />
     <Compile Include="Areas\WMS\Controllers\ReInspectController.cs" />
+    <Compile Include="Areas\WMS\Controllers\ReturnInspectionController.cs" />
     <Compile Include="Areas\WMS\Controllers\ReturnOrderController.cs" />
     <Compile Include="Areas\WMS\Controllers\ReturnOrderDController.cs" />
     <Compile Include="Areas\WMS\Controllers\SaleOrderController.cs" />
@@ -880,6 +881,9 @@
     <Content Include="Areas\WMS\Views\InvRecord\Edit.cshtml" />
     <Content Include="Areas\WMS\Views\InvRecord\Index.cshtml" />
     <Content Include="Areas\WMS\Views\ReturnOrderD\CreateParentForDataGrid.cshtml" />
+    <Content Include="Areas\WMS\Views\ReturnInspection\Create.cshtml" />
+    <Content Include="Areas\WMS\Views\ReturnInspection\Edit.cshtml" />
+    <Content Include="Areas\WMS\Views\ReturnInspection\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
