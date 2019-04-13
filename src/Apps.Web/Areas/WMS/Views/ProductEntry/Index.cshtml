@@ -35,7 +35,7 @@
     </div>
 </form>
 </div>
-<div class="mvctool">    
+<div class="mvctool">
     <input id="txtpartName" placeholder="物料名称:" type="text" class="searchText" />
     <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
     创建日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
@@ -47,6 +47,7 @@
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
+    @Html.ToolButton("btnReport", "fa fa-search", "打印单据", ref perm, "Query", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -169,6 +170,13 @@
         });
         $("#btnExportTemplate").click(function() {
           window.location = "@Url.Action("ExportTemplate")";
+        });
+        $("#btnReport").click(function() {
+            @*var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=FeedList&billNum=' + row.ReleaseBillNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }*@
+            $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ProductEntry&billNum=' + row.ReleaseBillNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
         });
     });
     function ImportData()
