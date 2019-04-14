@@ -304,6 +304,29 @@ namespace Apps.BLL.WMS
                 return null;
             }
         }
+
+        public bool ProcessReturnInspectBill(ref ValidationErrors errors, string opt, string jsonReturnInspectBill)
+        {
+            string result = String.Empty;
+            try
+            {
+                result = m_Rep.ProcessReturnInspectBill(opt, jsonReturnInspectBill);
+                if (String.IsNullOrEmpty(result))
+                {
+                    return true;
+                }
+                else
+                {
+                    errors.Add(result);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return false;
+            }
+        }
     }
 }
 

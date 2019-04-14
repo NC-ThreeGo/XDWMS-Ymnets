@@ -13,5 +13,13 @@ namespace Apps.IDAL.WMS
         /// <param name="jsonReturnInspection"></param>
         /// <returns></returns>
         string CreateBatchReturnInspection(string opt, string jsonReturnInspection);
+
+        /// <summary>
+        /// 输入检验结果，并把合格数量入库，不合格数量暂存到退货单上。
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="jsonReturnInspection"></param>
+        /// <returns></returns>
+        string ProcessReturnInspectBill(string opt, string jsonReturnInspection);
     }
 }

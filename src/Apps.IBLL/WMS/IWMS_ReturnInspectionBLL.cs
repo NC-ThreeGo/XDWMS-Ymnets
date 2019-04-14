@@ -16,6 +16,15 @@ namespace Apps.IBLL.WMS
         string CreateBatchReturnInspection(ref ValidationErrors errors, string opt, string jsonReturnInspection);
 
         /// <summary>
+        /// 输入检验结果，并把合格数量入库，不合格数量暂存到退货单上。
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="opt"></param>
+        /// <param name="jsonReturnInspectBill"></param>
+        /// <returns></returns>
+        bool ProcessReturnInspectBill(ref ValidationErrors errors, string opt, string jsonReturnInspectBill);
+
+        /// <summary>
         /// 导入Excel文件，当发生导入错误时，回写错误信息，并且全部回滚。
         /// </summary>
         /// <param name="oper">操作员ID</param>
