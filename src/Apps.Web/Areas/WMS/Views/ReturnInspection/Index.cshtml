@@ -36,10 +36,11 @@
 </div>
 <div class="mvctool">
     <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+    @Html.ToolButton("btnCheck", "fa fa-plus", "检验", ref perm, "Check", true)
+    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
@@ -114,6 +115,9 @@
     $(function () {
         $("#btnCreate").click(function () {
             $.modalWindow(Lang.Create, '@Url.Action("Create")', $(window).width() - 50, $(window).height() - 50, 'fa fa-plus');
+        });
+        $("#btnCheck").click(function () {
+            $.modalWindow(Lang.Create, '@Url.Action("Check")', $(window).width() - 50, $(window).height() - 50, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');

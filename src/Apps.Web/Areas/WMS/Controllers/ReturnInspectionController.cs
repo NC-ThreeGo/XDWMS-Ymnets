@@ -73,6 +73,42 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
+        #region 检验
+        [SupportFilter]
+        public ActionResult Check()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter]
+        [ValidateInput(false)]
+        public JsonResult Check(string inserted)
+        {
+            try
+            {
+                var returnInspectionNum = m_BLL.CreateBatchReturnInspection(ref errors, GetUserTrueName(), inserted);
+                if (!String.IsNullOrEmpty(returnInspectionNum))
+                {
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "打印退货检验单成功", "成功", "打印", "WMS_ReturnInspection");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnInspectionNum));
+                    //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnInspection&billNum=" + returnInspectionNum);
+                }
+                else
+                {
+                    LogHandler.WriteServiceLog(GetUserTrueName(), errors.Error, "失败", "打印", "WMS_ReturnInspection");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserTrueName(), ex.Message, "失败", "打印", "WMS_ReturnOrder");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+            }
+        }
+        #endregion
+
         #region 修改
         [SupportFilter]
         public ActionResult Edit(long id)
@@ -285,6 +321,33 @@ namespace Apps.Web.Areas.WMS.Controllers
                     ExportData = dt
                 };
             }
+        #endregion
+
+        #region 选择退货送检单
+        /// <summary>
+        /// 弹出选择送检单
+        /// </summary>
+        /// <param name="mulSelect">是否多选</param>
+        /// <returns></returns>
+        [SupportFilter(ActionName = "Check")]
+        public ActionResult ReturnInspectionBillLookUp(bool mulSelect = false)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Check")]
+        public JsonResult ReturnInspectBillGetList(GridPager pager, string queryStr)
+        {
+            List<WMS_ReturnInspectionModel> list = m_BLL.GetListByWhere(ref pager, "PrintStatus == \"已打印\" and InspectStatus == \"未检验\"")
+                .GroupBy(p => new { p.ReturnInspectionNum })
+                .Select(g => g.First())
+                .OrderBy(p => p.ReturnInspectionNum).ToList();
+            GridRows<WMS_ReturnInspectionModel> grs = new GridRows<WMS_ReturnInspectionModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
         #endregion
     }
 }
