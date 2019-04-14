@@ -141,7 +141,12 @@
                             valueField: 'Value',
                             textField: 'Text',
                             method: 'post',
-                            url: '/WMS/Part/GetPartListByCustomerCode?customerCode=0',
+                            url: '/WMS/Part/GetPartListByCustomerCode',
+                            queryParams: { customerCode: getPartCustomerCode() },
+                            onBeforeLoad: function (param)
+                            {
+                                param.customerCode = getPartCustomerCode();
+                            },
                             required: true,
                             editable: false
                         }
@@ -362,6 +367,26 @@
         }
     }
 
+    //获取输入的物料客户编码
+    function getPartCustomerCode()
+    {
+        if ($('.datagrid-body').length > 0)
+        {
+            var row = $('#mList').datagrid('getSelected');
+            var rowIndex = $('#mList').datagrid('getRowIndex', row);//获取行号
+            var thisTarget = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'PartCustomerCode' }).target;
+            var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
+            if (thisTarget_Input.val())
+                return thisTarget_Input.val();
+            if (row.PartCustomerCode)
+                return row.PartCustomerCode
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     function setKeyUpValueForPartCustomerCode(e, sender, datagrid)
     {
         var code = e.keyCode || e.which;
@@ -374,7 +399,8 @@
 
             var thisTarget_Part = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'PartId' }).target;
             thisTarget_Part.combobox('clear');
-            thisTarget_Part.combobox('reload', '/WMS/Part/GetPartListByCustomerCode?customerCode=' + thisTarget_Input.val());
+            //thisTarget_Part.combobox('reload', '/WMS/Part/GetPartListByCustomerCode?customerCode=' + thisTarget_Input.val());
+            thisTarget_Part.combobox('reload');
 
             var thisTarget_Customer = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'CustomerCode' }).target;
             thisTarget_Customer.textbox('clear');
@@ -477,54 +503,62 @@
             var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierCode' }).target;
             var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
 
-            //向后台申请当前供应商信息
-            $.ajax({
-                url: "@Url.Action("GetSupplierByCode", "Supplier")",
-                type: "Post",
-                data: { supplierCode: thisTarget_Input.val()},
-                dataType: "json",
-                success: function (data) {
-                    if (data.type == 1)
+            if (thisTarget_Input.val())
+            {
+                //向后台申请当前供应商信息
+                $.ajax({
+                    url: "@Url.Action("GetSupplierByCode", "Supplier")",
+                    type: "Post",
+                    data: { supplierCode: thisTarget_Input.val() },
+                    dataType: "json",
+                    success: function (data)
                     {
-                        //alert(JSON.parse(data.value));
-                        getRow = JSON.parse(data.value);
-                        //datagrid.datagrid('updateRow', {
-                        //    index: rowIndex,
-                        //    row: {
-                        //        SupplierId: getRow.Id,
-                        //        SupplierCode: getRow.SupplierCode,
-                        //        SupplierShortName: getRow.SupplierShortName,
-                        //    },
-                        //});
-                        //endEditing_mList();
-                        //onClickCell_mList(rowIndex, "InvId");
+                        if (data.type == 1)
+                        {
+                            //alert(JSON.parse(data.value));
+                            getRow = JSON.parse(data.value);
+                            //datagrid.datagrid('updateRow', {
+                            //    index: rowIndex,
+                            //    row: {
+                            //        SupplierId: getRow.Id,
+                            //        SupplierCode: getRow.SupplierCode,
+                            //        SupplierShortName: getRow.SupplierShortName,
+                            //    },
+                            //});
+                            //endEditing_mList();
+                            //onClickCell_mList(rowIndex, "InvId");
 
-                        var td = $('.datagrid-body td[field="SupplierId"]')[rowIndex];
-                        var div = $(td).find('div')[0];
-                        $(div).text(getRow.Id);
-                        row.SupplierId = getRow.Id;
-                        var td1 = $('.datagrid-body td[field="SupplierShortName"]')[rowIndex];
-                        var div1 = $(td1).find('div')[0];
-                        $(div1).text(getRow.SupplierShortName);
-                        row.SupplierShortName = getRow.SupplierShortName;
+                            var td = $('.datagrid-body td[field="SupplierId"]')[rowIndex];
+                            var div = $(td).find('div')[0];
+                            $(div).text(getRow.Id);
+                            row.SupplierId = getRow.Id;
+                            var td1 = $('.datagrid-body td[field="SupplierShortName"]')[rowIndex];
+                            var div1 = $(td1).find('div')[0];
+                            $(div1).text(getRow.SupplierShortName);
+                            row.SupplierShortName = getRow.SupplierShortName;
 
-                        ChangeFocus(rowIndex, "Qty");
-                    } else
-                    {
-                        //datagrid.datagrid('updateRow', {
-                        //    index: rowIndex,
-                        //    row: {
-                        //        SupplierId: '',
-                        //        SupplierCode: '',
-                        //        SupplierShortName: '',
-                        //   },
-                        //});
-                        //endEditing_mList();
+                            ChangeFocus(rowIndex, "Qty");
+                        } else
+                        {
+                            //datagrid.datagrid('updateRow', {
+                            //    index: rowIndex,
+                            //    row: {
+                            //        SupplierId: '',
+                            //        SupplierCode: '',
+                            //        SupplierShortName: '',
+                            //   },
+                            //});
+                            //endEditing_mList();
 
-                        alert(data.message);
+                            alert(data.message);
+                        }
                     }
-                }
-            });
+                });
+            }
+            else
+            {
+                ChangeFocus(rowIndex, "Qty");
+            }
         }
     }
 
