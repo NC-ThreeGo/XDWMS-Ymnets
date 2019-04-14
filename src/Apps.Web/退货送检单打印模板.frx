@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="04/06/2019 18:03:38" ReportInfo.CreatorVersion="2018.3.23.0">
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEi497RDkdpawa/mwsEq2Sjfw==">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_SaleOrder where SellBillNum=@SellBillNum">
+        <Column Name="Id" DataType="System.Int32"/>
+        <Column Name="PartId" DataType="System.Int32"/>
+        <Column Name="InvId" DataType="System.Int32"/>
+        <Column Name="SubInvId" DataType="System.Int32"/>
+        <Column Name="Attr1" DataType="System.String"/>
+        <Column Name="Attr2" DataType="System.String"/>
+        <Column Name="Attr3" DataType="System.String"/>
+        <Column Name="Attr4" DataType="System.String"/>
+        <Column Name="Attr5" DataType="System.String"/>
+        <Column Name="CreatePerson" DataType="System.String"/>
+        <Column Name="CreateTime" DataType="System.DateTime"/>
+        <Column Name="ModifyPerson" DataType="System.String"/>
+        <Column Name="ModifyTime" DataType="System.DateTime"/>
+        <Column Name="Remark" DataType="System.String"/>
+        <Column Name="PrintStaus" DataType="System.String"/>
+        <Column Name="PrintDate" DataType="System.DateTime"/>
+        <Column Name="PrintMan" DataType="System.String"/>
+        <Column Name="ConfirmStatus" DataType="System.String"/>
+        <Column Name="ConfirmMan" DataType="System.String"/>
+        <Column Name="ConfirmDate" DataType="System.DateTime"/>
+        <Column Name="SaleBillNum" DataType="System.String"/>
+        <Column Name="SellBillNum" DataType="System.String"/>
+        <Column Name="PlanDeliveryDate" DataType="System.DateTime"/>
+        <Column Name="CustomerId" DataType="System.Int32"/>
+        <Column Name="Qty" DataType="System.Decimal"/>
+        <Column Name="BoxQty" DataType="System.Decimal"/>
+        <Column Name="Lot" DataType="System.String"/>
+        <Column Name="ConfirmMessage" DataType="System.String"/>
+        <Column Name="CustomerCode" DataType="System.String"/>
+        <Column Name="BoxVolume" DataType="System.Decimal"/>
+        <Column Name="LinkMan" DataType="System.String"/>
+        <Column Name="CustomerName" DataType="System.String"/>
+        <Column Name="CustomerShortName" DataType="System.String"/>
+        <Column Name="LinkManAddress" DataType="System.String"/>
+        <Column Name="LinkManTel" DataType="System.String"/>
+        <Column Name="PartName" DataType="System.String"/>
+        <Column Name="PartCode" DataType="System.String"/>
+        <Column Name="Unit" DataType="System.String"/>
+        <CommandParameter Name="SellBillNum" DataType="22" Size="20"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperHeight="290">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="9.45" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
+      <TextObject Name="Text16" Left="-9450" Top="-9450" Width="652.05" Height="18.9" Text="第一联:存根(白) 第二联:质管部(红) 第三联:物流部(蓝) 第四联:结算(绿) 第五联:财务部(红) 第六联:仓库(黄)" VertAlign="Center" Font="Arial, 8pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="13.45" Width="718.2" Height="113.4">
+      <TextObject Name="Text1" Left="132.2" Top="-0.54" Width="396.9" Height="37.8" Text="江西新电汽车空调有限公司" HorzAlign="Center" VertAlign="Center" Font="Arial, 20pt, style=Bold"/>
+      <TextObject Name="Text2" Left="264.6" Top="37.8" Width="160.65" Height="28.35" Text="自制件入库单" Font="Arial, 16pt, style=Bold"/>
+      <TextObject Name="Text5" Left="463.04" Top="85.05" Width="103.95" Height="18.9" Text="打单时间：" Font="Arial, 12pt"/>
+      <TextObject Name="Text27" Left="557.53" Top="85.05" Width="151.2" Height="18.9" Text="[FormatDateTime([Table.PrintDate],&quot;yyyy/MM/dd&quot;)]" Font="宋体, 12pt"/>
+      <TextObject Name="Text44" Left="9.45" Top="85.05" Width="94.5" Height="18.9" Text="单号：" Font="Arial, 12pt"/>
+    </PageHeaderBand>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="130.85" Width="718.2" Height="47.25">
+      <TextObject Name="Text18" Width="47.25" Height="47.25" Border.Lines="All" Text="序号" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text19" Left="47.22" Width="103.95" Height="47.25" Border.Lines="All" Text="物流区号" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text20" Left="151.15" Width="132.3" Height="47.25" Border.Lines="All" Text="物料名称" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text21" Left="406.28" Width="122.85" Height="47.25" Border.Lines="All" Text="新电图号" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text23" Left="529.08" Width="66.15" Height="47.25" Border.Lines="All" Text="数量" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text25" Left="595.25" Width="122.85" Height="47.25" Border.Lines="All" Text="签字" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text46" Left="283.5" Width="122.85" Height="47.25" Border.Lines="All" Text="客户物料编码" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
+    </ColumnHeaderBand>
+    <DataBand Name="Data1" Top="182.1" Width="718.2" Height="47.25" DataSource="Table">
+      <TextObject Name="Text7" Width="47.25" Height="28.35" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text9" Left="47.25" Width="103.95" Height="28.35" Border.Lines="All" Text="[Table.PartName]" HorzAlign="Center" Font="宋体, 12pt"/>
+      <TextObject Name="Text10" Left="151.2" Width="132.3" Height="28.35" Border.Lines="All" Text="[Table.PartCode]" HorzAlign="Center" Font="宋体, 12pt"/>
+      <TextObject Name="Text11" Left="406.33" Width="122.85" Height="28.35" Border.Lines="All" Text="[Table.PlanDeliveryDate]" HorzAlign="Center" WordWrap="false" Font="宋体, 12pt"/>
+      <TextObject Name="Text12" Left="529.18" Width="66.15" Height="28.35" Border.Lines="All" Text="[Table.Qty]" HorzAlign="Center" WordWrap="false" Font="宋体, 12pt"/>
+      <TextObject Name="Text47" Left="283.5" Width="122.85" Height="28.35" Border.Lines="All" Text="[Table.CustomerCode]" HorzAlign="Center" WordWrap="false" Font="宋体, 12pt"/>
+      <TextObject Name="Text49" Left="595.35" Width="122.85" Height="28.35" Border.Lines="All" Text="[Table.Remark]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="233.35" Width="718.2" Height="47.25" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
+      <TextObject Name="Text50" Left="94.5" Top="28.35" Width="652.05" Height="18.9" Text="第一联:存根(白) 第二联:质管部(红) 第三联:物流部(蓝) 第四联:结算(绿) 第五联:财务部(红) 第六联:仓库(黄)" VertAlign="Center" Font="Arial, 8pt"/>
+      <TextObject Name="Text51" Left="519.75" Width="85.05" Height="18.9" Text="制单人：" Font="Arial, 12pt"/>
+      <TextObject Name="Text3" Left="585.9" Top="9.45" Width="94.5" Height="18.9" Text="________________"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>
