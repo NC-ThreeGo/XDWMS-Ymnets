@@ -24,14 +24,41 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Index()
         {
+            //定义打印状态下拉框的值
+            //List<ReportType> PrintTypes = new List<ReportType>();
+            //PrintTypes.Add(new ReportType() { Type = 0, Name = "" });
+            //PrintTypes.Add(new ReportType() { Type = 1, Name = "未打印" });
+            //PrintTypes.Add(new ReportType() { Type = 2, Name = "已打印" });
+            ////PrintTypes.Add(new ReportType() { Type = 2, Name = "已失效" });
+            //ViewBag.PrintStatus = new SelectList(PrintTypes, "Name", "Name");
+
+            //定义检验状态下拉框的值
+            List<ReportType> InspectTypes = new List<ReportType>();
+            InspectTypes.Add(new ReportType() { Type = 0, Name = "" });
+            InspectTypes.Add(new ReportType() { Type = 1, Name = "未检验" });
+            InspectTypes.Add(new ReportType() { Type = 2, Name = "已检验" });
+            ViewBag.InspectStatus = new SelectList(InspectTypes, "Name", "Name");
             return View();
         }
         [HttpPost]
         [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr)
+        public JsonResult GetList(GridPager pager, string returnInspectionNum, string customerCode, string partCode, string partName, string inspectStatus, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_ReturnInspectionModel> list = m_BLL.GetList(ref pager, queryStr);
+            string query = " 1=1 ";
+            query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate.AddDays(1) + "\")";
+            query += " && ReturnInspectionNum.Contains(\"" + returnInspectionNum + "\")&&WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            query += " && WMS_Part.PartName.Contains(\"" + partName + "\")&& PartCustomerCode.Contains(\"" + customerCode + "\")&& InspectStatus.Contains(\"" + inspectStatus + "\")";
+
+            List<WMS_ReturnInspectionModel> list = m_BLL.GetListByWhere(ref pager, query);
             GridRows<WMS_ReturnInspectionModel> grs = new GridRows<WMS_ReturnInspectionModel>();
+
+            List<WMS_ReturnInspectionModel> footerList = new List<WMS_ReturnInspectionModel>();
+            footerList.Add(new WMS_ReturnInspectionModel()
+            {
+                PartCode = "<div style='text-align:right;color:#444'>合计：</div>",
+                Qty = list.Sum(p => p.Qty),
+            });
+
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
@@ -210,49 +237,56 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         }
         [SupportFilter]
-        public ActionResult Export(string queryStr)
+        public ActionResult Export(string returnInspectionNum, string customerCode, string partCode, string partName, string inspectStatus, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_ReturnInspectionModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            //List<WMS_ReturnInspectionModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
+            string query = " 1=1 ";
+            query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate.AddDays(1) + "\")";
+            query += " && ReturnInspectionNum.Contains(\"" + returnInspectionNum + "\")&&WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            query += " && WMS_Part.PartName.Contains(\"" + partName + "\")&& PartCustomerCode.Contains(\"" + customerCode + "\")&& InspectStatus.Contains(\"" + inspectStatus + "\")";
+
+            List<WMS_ReturnInspectionModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, query);
+
             JArray jObjects = new JArray();
                 foreach (var item in list)
                 {
                     var jo = new JObject();
-                    jo.Add("Id", item.Id);
+                    //jo.Add("Id", item.Id);
                     jo.Add("退货送检单号", item.ReturnInspectionNum);
                     jo.Add("客户图号", item.PartCustomerCode);
-                    jo.Add("零件名称", item.PartCustomerCodeName);
-                    jo.Add("新电图号", item.PartID);
+                    jo.Add("零件名称", item.PartName);
+                    jo.Add("新电图号", item.PartCode);
                     jo.Add("数量", item.Qty);
-                    jo.Add("客户", item.CustomerId);
-                    jo.Add("供应商", item.SupplierId);
+                    jo.Add("客户", item.CustomerShortName);
+                    jo.Add("供应商", item.SupplierShortName);
                     jo.Add("箱数", item.PCS);
                     jo.Add("体积", item.Volume);
-                    jo.Add("库房", item.InvId);
-                    jo.Add("子库房", item.SubInvId);
-                    jo.Add("打印状态", item.PrintStatus);
-                    jo.Add("打印日期", item.PrintDate);
-                    jo.Add("打印人", item.PrintMan);
-                    jo.Add("备注", item.Remark);
-                    jo.Add("检验人", item.InspectMan);
+                    //jo.Add("库房", item.InvId);
+                    //jo.Add("子库房", item.SubInvId);
+                    //jo.Add("打印状态", item.PrintStatus);
+                    //jo.Add("打印日期", item.PrintDate);
+                    //jo.Add("打印人", item.PrintMan);
+                    //jo.Add("备注", item.Remark);
+                    //jo.Add("检验人", item.InspectMan);
                     jo.Add("检验日期", item.InspectDate);
                     jo.Add("检验状态", item.InspectStatus);
                     jo.Add("检验结果", item.CheckOutResult);
                     jo.Add("合格数量", item.QualifyQty);
                     jo.Add("不合格数量", item.NoQualifyQty);
                     jo.Add("批次", item.Lot);
-                    jo.Add("ConfirmStatus", item.ConfirmStatus);
-                    jo.Add("ConfirmMan", item.ConfirmMan);
-                    jo.Add("ConfirmDate", item.ConfirmDate);
-                    jo.Add("ConfirmRemark", item.ConfirmRemark);
-                    jo.Add("Attr1", item.Attr1);
-                    jo.Add("Attr2", item.Attr2);
-                    jo.Add("Attr3", item.Attr3);
-                    jo.Add("Attr4", item.Attr4);
-                    jo.Add("Attr5", item.Attr5);
-                    jo.Add("创建人", item.CreatePerson);
-                    jo.Add("创建时间", item.CreateTime);
-                    jo.Add("修改人", item.ModifyPerson);
-                    jo.Add("修改时间", item.ModifyTime);
+                    //jo.Add("ConfirmStatus", item.ConfirmStatus);
+                    //jo.Add("ConfirmMan", item.ConfirmMan);
+                    //jo.Add("ConfirmDate", item.ConfirmDate);
+                    //jo.Add("ConfirmRemark", item.ConfirmRemark);
+                    //jo.Add("Attr1", item.Attr1);
+                    //jo.Add("Attr2", item.Attr2);
+                    //jo.Add("Attr3", item.Attr3);
+                    //jo.Add("Attr4", item.Attr4);
+                    //jo.Add("Attr5", item.Attr5);
+                    //jo.Add("创建人", item.CreatePerson);
+                    //jo.Add("创建时间", item.CreateTime);
+                    //jo.Add("修改人", item.ModifyPerson);
+                    //jo.Add("修改时间", item.ModifyTime);
                     jObjects.Add(jo);
                 }
                 var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());

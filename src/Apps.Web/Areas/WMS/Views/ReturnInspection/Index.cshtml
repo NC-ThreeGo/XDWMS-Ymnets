@@ -35,7 +35,16 @@
 </form>
 </div>
 <div class="mvctool">
-    <input id="txtQuery" type="text" class="searchText" />
+    @*<input id="txtQuery" type="text" class="searchText" />*@
+    <input id="txtReturnInspectionNum" type="text" placeholder="退货送检单号" class="searchText" />
+    <input id="txtCustomerCode" type="text" placeholder="客户图号" class="searchText" />
+    <input id="txtPartCode" placeholder="新电图号" type="text" class="searchText" />
+    <input id="txtPartName" placeholder="零件名称" type="text" class="searchText" />
+    @*打印状态：@Html.DropDownList("txtPrintStatus", ViewBag.PrintStatus as SelectList, new { @style = "width:70px;" })*@
+    检验状态：@Html.DropDownList("txtInspectStatus", ViewBag.InspectStatus as SelectList, new { @style = "width:70px;" })
+    打印日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    <br>
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
     @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
     @Html.ToolButton("btnCheck", "fa fa-plus", "检验", ref perm, "Check", true)
@@ -44,6 +53,7 @@
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
+    @Html.ToolButton("btnReport", "fa fa-search", "查看单据", ref perm, "Query", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -65,37 +75,50 @@
             pagination: true,
             striped: true, //奇偶行是否区分
             singleSelect: true,//单选模式
+            showFooter: true,
             //rownumbers: true,//行号
             onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
             },
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
-                { field: 'ReturnInspectionNum', title: '退货送检单号', width: 80,sortable:true },
-                { field: 'CustomerCode', title: '客户图号', width: 80,sortable:true },
-                { field: 'CustomerCodeName', title: '零件名称', width: 80,sortable:true },
-                { field: 'PartID', title: '新电图号', width: 80,sortable:true },
+                { field: 'ReturnInspectionNum', title: '退货送检单号', width: 100,sortable:true },
+                { field: 'PartCustomerCode', title: '客户图号', width: 80,sortable:true },
+                { field: 'PartName', title: '零件名称', width: 80,sortable:true },
+                { field: 'PartCode', title: '新电图号', width: 80,sortable:true },
                 { field: 'Qty', title: '数量', width: 80,sortable:true },
-                { field: 'CustomerId', title: '客户', width: 80,sortable:true },
-                { field: 'SupplierId', title: '供应商', width: 80,sortable:true },
+                { field: 'CustomerShortName', title: '客户', width: 80,sortable:true },
+                { field: 'SupplierShortName', title: '供应商', width: 80,sortable:true },
                 { field: 'PCS', title: '箱数', width: 80,sortable:true },
                 { field: 'Volume', title: '体积', width: 80,sortable:true },
-                { field: 'InvId', title: '库房', width: 80,sortable:true },
-                { field: 'SubInvId', title: '子库房', width: 80,sortable:true },
-                { field: 'PrintStatus', title: '打印状态', width: 80,sortable:true },
-                { field: 'PrintDate', title: '打印日期', width: 80,sortable:true },
-                { field: 'PrintMan', title: '打印人', width: 80,sortable:true },
-                { field: 'Remark', title: '备注', width: 80,sortable:true },
-                { field: 'InspectMan', title: '检验人', width: 80,sortable:true },
-                { field: 'InspectDate', title: '检验日期', width: 80,sortable:true },
+                //{ field: 'InvId', title: '库房', width: 80,sortable:true },
+                //{ field: 'SubInvId', title: '子库房', width: 80,sortable:true },
+                //{ field: 'PrintStatus', title: '打印状态', width: 80,sortable:true },
+                //{ field: 'PrintDate', title: '打印日期', width: 80, sortable: true },
+                {
+                    field: 'PrintDate', title: '打印时间', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
+                //{ field: 'PrintMan', title: '打印人', width: 80,sortable:true },
+                //{ field: 'Remark', title: '备注', width: 80,sortable:true },
+                //{ field: 'InspectMan', title: '检验人', width: 80,sortable:true },
+                //{ field: 'InspectDate', title: '检验日期', width: 80, sortable: true },
+                {
+                    field: 'InspectDate', title: '检验日期', width: 80, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
                 { field: 'InspectStatus', title: '检验状态', width: 80,sortable:true },
                 { field: 'CheckOutResult', title: '检验结果', width: 80,sortable:true },
                 { field: 'QualifyQty', title: '合格数量', width: 80,sortable:true },
                 { field: 'NoQualifyQty', title: '不合格数量', width: 80,sortable:true },
                 { field: 'Lot', title: '批次', width: 80,sortable:true },
-                { field: 'ConfirmStatus', title: 'ConfirmStatus', width: 80,sortable:true },
-                { field: 'ConfirmMan', title: 'ConfirmMan', width: 80,sortable:true },
-                { field: 'ConfirmDate', title: 'ConfirmDate', width: 80,sortable:true },
-                { field: 'ConfirmRemark', title: 'ConfirmRemark', width: 80,sortable:true },
+                //{ field: 'ConfirmStatus', title: 'ConfirmStatus', width: 80,sortable:true },
+                //{ field: 'ConfirmMan', title: 'ConfirmMan', width: 80,sortable:true },
+                //{ field: 'ConfirmDate', title: 'ConfirmDate', width: 80,sortable:true },
+                //{ field: 'ConfirmRemark', title: 'ConfirmRemark', width: 80,sortable:true },
             ]]
         });
     });
@@ -132,11 +155,27 @@
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            var returnInspectionNum = $("#txtReturnInspectionNum").val();
+            var customerCode = $("#txtCustomerCode").val();
+            var partCode = $("#txtPartCode").val();
+            var partName = $("#txtPartName").val();
+            var inspectStatus = $("#txtInspectStatus").val();
+            if (returnInspectionNum == null) {
+                returnInspectionNum = "";
             }
-            $("#List").datagrid("load", { queryStr: queryStr });
+            if (customerCode == null) {
+                customerCode = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (partName == null) {
+                partName = "";
+            }
+
+            $("#List").datagrid("load", {
+                returnInspectionNum: returnInspectionNum, customerCode: customerCode, partCode: partCode, partName: partName, inspectStatus: inspectStatus, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+            });
 
         });
         $("#btnDelete").click(function () {
@@ -147,14 +186,31 @@
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
-            var queryStr = $("#txtQuery").val();
-            if (queryStr == null) {
-                queryStr = "%";
+            var returnInspectionNum = $("#txtReturnInspectionNum").val();
+            var customerCode = $("#txtCustomerCode").val();
+            var partCode = $("#txtPartCode").val();
+            var partName = $("#txtPartName").val();
+            var inspectStatus = $("#txtInspectStatus").val();
+            if (returnInspectionNum == null) {
+                returnInspectionNum = "";
             }
-          $.post("@Url.Action("CheckExportData")?queryStr=" + queryStr, function(data) {
+            if (customerCode == null) {
+                customerCode = "";
+            }
+            if (partCode == null) {
+                partCode = "";
+            }
+            if (partName == null) {
+                partName = "";
+            }
+            $.post("@Url.Action("CheckExportData")?returnInspectionNum=" + returnInspectionNum + "&customerCode=" + customerCode + "&partCode=" + partCode
+                + "&inspectStatus=" + inspectStatus + "&beginDate=" + $("#beginDate").val()
+                + "&endDate= " + $("#endDate").val(), function(data) {
                 if (data.type == 1)
                 {
-                    window.location = "@Url.Action("Export")?queryStr=" + queryStr;
+                    window.location = "@Url.Action("Export")?returnInspectionNum=" + returnInspectionNum + "&customerCode=" + customerCode + "&partCode=" + partCode + "&partName=" + partName
+                        + "&inspectStatus=" + inspectStatus + "&beginDate=" + $("#beginDate").val()
+                        + "&endDate= " + $("#endDate").val();
                 }
                 else
                 {
