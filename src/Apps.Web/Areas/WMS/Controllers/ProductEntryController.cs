@@ -17,10 +17,13 @@ namespace Apps.Web.Areas.WMS.Controllers
 {
     public class ProductEntryController : BaseController
     {
+        
         [Dependency]
         public IWMS_Product_EntryBLL m_BLL { get; set; }
         [Dependency]
         public IWMS_InvInfoBLL _InvInfoBll { get; set; }
+        [Dependency]
+        public IWMS_ReturnInspectionBLL _ReturnInspectionBLL { get; set; }
 
         ValidationErrors errors = new ValidationErrors();
         
@@ -42,12 +45,32 @@ namespace Apps.Web.Areas.WMS.Controllers
                 + partName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
                 + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
             GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
+            
+            //增加退货检验单据
+            //List<WMS_ReturnInspectionModel> listRI = _ReturnInspectionBLL.GetListByWhere(ref pager, "WMS_Part.PartName.Contains(\""
+            //    + partName + "\")&& WMS_Part.PartType == \"自制件\" && WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
+            //    + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
 
             List<WMS_Product_EntryModel> footerList = new List<WMS_Product_EntryModel>();
+            //自制件入库数
+            decimal productQty = list.Sum(p => p.ProductQty);
+            //自制件退库数
+            //decimal returnProductQty = listRI.Sum(p => p.Qty).Value;
+
             footerList.Add(new WMS_Product_EntryModel()
             {
-                ProductBillNum = "<div style='text-align:right;color:#444'>合计：</div>",
-                ProductQty = list.Sum(p => p.ProductQty),
+                PartName = "<div style='text-align:right;color:#444'>合计：</div>",
+
+                ProductQty = productQty,
+
+                Lot = "<div style='text-align:right;color:#444'>退货合计：</div>",
+
+                //InvName = returnProductQty.ToString(),
+
+                //Remark = "<div style='text-align:right;color:#444'>退货率：</div>",
+
+                //CreatePerson = productQty == 0 ? "0": (returnProductQty / productQty).ToString(),
+             
             });
 
             grs.rows = list;

@@ -60,6 +60,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public JsonResult Create(WMS_PartModel model)
         {
+            if (model.CustomerCode!=null && model.CustomerCode.Last().ToString() != "/")
+            {
+                model.CustomerCode = model.CustomerCode + "/";
+            }
+            if (model.CustomerCode != null && model.CustomerCode.First().ToString() != "/")
+            {
+                model.CustomerCode = "/" + model.CustomerCode;
+            }
             model.Id = 0;
             model.CreateTime = ResultHelper.NowTime;
             model.CreatePerson = GetUserTrueName();
@@ -99,8 +107,17 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public JsonResult Edit(WMS_PartModel model)
         {
+            if (model.CustomerCode != null && model.CustomerCode.Last().ToString() != "/")
+            { 
+                model.CustomerCode = model.CustomerCode + "/";
+            }
+            if (model.CustomerCode != null && model.CustomerCode.First().ToString() != "/")
+            {
+                model.CustomerCode = "/" + model.CustomerCode ;
+            }
             model.ModifyTime = ResultHelper.NowTime;
             model.ModifyPerson = GetUserTrueName();
+            
             if (model != null && ModelState.IsValid && model.StoreMan != null)
             {
 
