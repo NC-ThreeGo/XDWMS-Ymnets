@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="04/14/2019 17:45:58" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="04/14/2019 20:01:21" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiuXU6Cz0miE+YTjMoct5Wtw==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEih7C0v2kibFN1vkYAju8ktQ==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_ReturnInspect">
         <Column Name="PartCode" DataType="System.String"/>
         <Column Name="PartName" DataType="System.String"/>
@@ -83,15 +83,15 @@
       <TextObject Name="Text71" Left="557.55" Width="37.8" Height="28.35" Border.Lines="All" Text="[Table.PCS]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text72" Left="595.35" Width="37.8" Height="28.35" Border.Lines="All" Text="[Table.Volume]" HorzAlign="Center" VertAlign="Center"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="252.25" Width="718.2" Height="47.25" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
-      <TextObject Name="Text50" Left="18.9" Top="28.35" Width="652.05" Height="18.9" Text="第一联:存根(白) 第二联:质管部(红) 第三联:物流部(蓝) 第四联:结算(绿) 第五联:财务部(红) 第六联:仓库(黄)" VertAlign="Center"/>
-      <TextObject Name="Text51" Left="311.85" Width="85.05" Height="18.9" Text="检验员：" Font="Arial, 12pt"/>
-      <TextObject Name="Text3" Left="388.44" Width="103.95" Height="18.9" Text="___________"/>
-      <TextObject Name="Text58" Left="170.1" Width="85.05" Height="18.9" Text="审核人：" Font="Arial, 12pt"/>
-      <TextObject Name="Text59" Left="237.24" Width="103.95" Height="18.9" Text="___________"/>
-      <TextObject Name="Text60" Width="85.05" Height="18.9" Text="制单人：" Font="Arial, 12pt"/>
-      <TextObject Name="Text61" Left="76.59" Width="103.95" Height="18.9" Text="___________"/>
-      <TextObject Name="Text73" Left="472.48" Width="283.5" Height="18.9" Text="发货合计：[Total_Qty]" Font="Arial, 12pt, style=Bold"/>
+    <PageFooterBand Name="PageFooter1" Top="252.25" Width="718.2" Height="85.05" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
+      <TextObject Name="Text50" Left="18.9" Top="66.15" Width="652.05" Height="18.9" Text="第一联:存根(白) 第二联:质管部(红) 第三联:物流部(蓝) 第四联:结算(绿) 第五联:财务部(红) 第六联:仓库(黄)" VertAlign="Center"/>
+      <TextObject Name="Text51" Left="340.2" Top="37.8" Width="85.05" Height="18.9" Text="检验员:" Font="Arial, 12pt"/>
+      <TextObject Name="Text3" Left="426.24" Top="37.8" Width="103.95" Height="18.9" Text="___________"/>
+      <TextObject Name="Text58" Left="170.1" Top="37.8" Width="85.05" Height="18.9" Text="审核人：" Font="Arial, 12pt"/>
+      <TextObject Name="Text59" Left="256.14" Top="37.8" Width="103.95" Height="18.9" Text="___________"/>
+      <TextObject Name="Text60" Top="37.8" Width="85.05" Height="18.9" Text="制单人：" Font="Arial, 12pt"/>
+      <TextObject Name="Text61" Left="76.59" Top="37.8" Width="103.95" Height="18.9" Text="___________"/>
+      <TextObject Name="Text73" Left="500.83" Top="9.45" Width="283.5" Height="18.9" Text="发货合计：[Total_Qty]" Font="Arial, 12pt, style=Bold"/>
     </PageFooterBand>
   </ReportPage>
 </Report>
