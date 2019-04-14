@@ -1025,5 +1025,18 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateBatchReturnOrder", userIdParameter, jsonReturnOrderParameter, returnValue);
         }
+    
+        public virtual int P_WMS_CreateBatchReturnInspection(string userId, string jsonReturnInspection, ObjectParameter returnInspectionNum, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var jsonReturnInspectionParameter = jsonReturnInspection != null ?
+                new ObjectParameter("JsonReturnInspection", jsonReturnInspection) :
+                new ObjectParameter("JsonReturnInspection", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_CreateBatchReturnInspection", userIdParameter, jsonReturnInspectionParameter, returnInspectionNum, returnValue);
+        }
     }
 }

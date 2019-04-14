@@ -36,6 +36,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             grs.total = pager.totalRows;
             return Json(grs);
         }
+
         #region 创建
         [SupportFilter]
         public ActionResult Create()
@@ -45,28 +46,29 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         [HttpPost]
         [SupportFilter]
-        public JsonResult Create(WMS_ReturnInspectionModel model)
+        [ValidateInput(false)]
+        public JsonResult Create(string inserted)
         {
-            model.Id = 0;
-            model.CreateTime = ResultHelper.NowTime;
-            if (model != null && ModelState.IsValid)
+            try
             {
-
-                if (m_BLL.Create(ref errors, model))
+                var returnInspectionNum = m_BLL.CreateBatchReturnInspection(ref errors, GetUserTrueName(), inserted);
+                if (!String.IsNullOrEmpty(returnInspectionNum))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnInspectionNum" + model.ReturnInspectionNum, "成功", "创建", "WMS_ReturnInspection");
-                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "打印退货检验单成功", "成功", "打印", "WMS_ReturnInspection");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnInspectionNum));
+                    //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnInspection&billNum=" + returnInspectionNum);
                 }
                 else
                 {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnInspectionNum" + model.ReturnInspectionNum + "," + ErrorCol, "失败", "创建", "WMS_ReturnInspection");
-                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
+                    LogHandler.WriteServiceLog(GetUserTrueName(), errors.Error, "失败", "打印", "WMS_ReturnInspection");
+                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
                 }
+
             }
-            else
+            catch (Exception ex)
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail));
+                LogHandler.WriteServiceLog(GetUserTrueName(), ex.Message, "失败", "打印", "WMS_ReturnOrder");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }
         #endregion
@@ -181,8 +183,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                     var jo = new JObject();
                     jo.Add("Id", item.Id);
                     jo.Add("退货送检单号", item.ReturnInspectionNum);
-                    jo.Add("客户图号", item.CustomerCode);
-                    jo.Add("零件名称", item.CustomerCodeName);
+                    jo.Add("客户图号", item.PartCustomerCode);
+                    jo.Add("零件名称", item.PartCustomerCodeName);
                     jo.Add("新电图号", item.PartID);
                     jo.Add("数量", item.Qty);
                     jo.Add("客户", item.CustomerId);

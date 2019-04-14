@@ -1422,8 +1422,8 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ReturnInspectionNum" Type="nvarchar" MaxLength="50" />
-          <Property Name="CustomerCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CustomerCodeName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PartCustomerCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PartCustomerCodeName" Type="nvarchar" MaxLength="50" />
           <Property Name="PartID" Type="int" Nullable="false" />
           <Property Name="Qty" Type="decimal" Precision="10" Scale="3" />
           <Property Name="CustomerId" Type="int" />
@@ -3350,6 +3350,12 @@
           <Parameter Name="SellBillNum" Type="varchar" Mode="In" />
           <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
         </Function>
+        <Function Name="P_WMS_CreateBatchReturnInspection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="varchar" Mode="In" />
+          <Parameter Name="JsonReturnInspection" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="ReturnInspectionNum" Type="varchar" Mode="InOut" />
+          <Parameter Name="ReturnValue" Type="varchar" Mode="InOut" />
+        </Function>
         <Function Name="P_WMS_CreateBatchReturnOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="varchar" Mode="In" />
           <Parameter Name="JsonReturnOrder" Type="nvarchar(max)" Mode="In" />
@@ -4953,6 +4959,12 @@
             <End Role="WMS_Supplier" EntitySet="WMS_Supplier" />
             <End Role="WMS_ReturnInspection" EntitySet="WMS_ReturnInspection" />
           </AssociationSet>
+          <FunctionImport Name="P_WMS_CreateBatchReturnInspection">
+            <Parameter Name="UserId" Mode="In" Type="String" />
+            <Parameter Name="JsonReturnInspection" Mode="In" Type="String" />
+            <Parameter Name="ReturnInspectionNum" Mode="InOut" Type="String" />
+            <Parameter Name="ReturnValue" Mode="InOut" Type="String" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="SysAreas">
           <Key>
@@ -8430,8 +8442,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ReturnInspectionNum" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerCodeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartCustomerCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartCustomerCodeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PartID" Type="Int32" Nullable="false" />
           <Property Name="Qty" Type="Decimal" Precision="10" Scale="3" />
           <Property Name="CustomerId" Type="Int32" />
@@ -10506,13 +10518,14 @@
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="Qty" ColumnName="Qty" />
                 <ScalarProperty Name="PartID" ColumnName="PartID" />
-                <ScalarProperty Name="CustomerCodeName" ColumnName="CustomerCodeName" />
-                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
+                <ScalarProperty Name="PartCustomerCodeName" ColumnName="PartCustomerCodeName" />
+                <ScalarProperty Name="PartCustomerCode" ColumnName="PartCustomerCode" />
                 <ScalarProperty Name="ReturnInspectionNum" ColumnName="ReturnInspectionNum" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="P_WMS_CreateBatchReturnInspection" FunctionName="DB.Store.P_WMS_CreateBatchReturnInspection" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

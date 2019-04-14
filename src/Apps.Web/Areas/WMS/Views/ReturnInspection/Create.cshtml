@@ -6,363 +6,644 @@
 @using Apps.Locale;
 @using Apps.Models.Sys;
 @{
-    ViewBag.Title = "创建";
+    ViewBag.Title = "创建退货送检单";
     Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
     List<permModel> perm = null;
 }
 
 <script type="text/javascript">
-$(function () {
-    $("#btnSave").click(function () {
-        if ($("form").valid()) {
+    $(function ()
+    {
+        $("#btnSave").click(function ()
+        {
+            if (!$("form").valid()) {
+                $.messageBox5s('提示', $("#ErrMesList").html());
+                return;
+            }
+            if ($("form").valid())
+            {
+                endEditing_mList();
+                var $dg = $('#mList');
+                var rows = $dg.datagrid('getRows');  //获取所有的行
+
+                //对最后一行进行判断，如果PartId为空则删除最后一行
+                if (!rows[rows.length - 1]['PartId'])
+                {
+                    rows.pop();
+                }
+                //判断是否存在PartId为空的行
+                for (var i = 0; i < rows.length; i++)
+                {
+                    if (!rows[i]['PartId'])
+                    {
+                        alert("存在无效的物料，请确认！");
+                        return;
+                    }
+                }
+
+                //将所选中的行转换成json字符串，并保存到inserted隐藏输入框中。
+                $("#inserted").val(JSON.stringify(rows));
+
+                if (rows.length) {
+                    showLoading();
+                    $.ajax({
+                        url: "@Url.Action("Create")",
+                        type: "Post",
+                        data: $("form").serialize(),
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.type == 1) {
+                                hideLoading();
+                                //window.parent.frameReturnByMes(data.message);
+                                //window.parent.frameReturnByReload(true);
+                                //window.parent.frameReturnByClose()
+
+                                //打开报表打印的窗口
+                                self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?ReturnInspection=ReturnOrder&billNum=' + data.value;
+                            } else
+                            {
+                                window.parent.frameReturnByMes(data.message);
+                                hideLoading();
+
+                            }
+                        }
+                    });
+                } else {
+                    $.messageBox5s('提示', "没有数据需要保存！");
+                }
+            }
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+
+        $(window).resize(function () {
+            $('#List').datagrid('resize', {
+
+            }).datagrid('resize', {
+                width: SetGridWidthSub(30),
+                height: SetGridHeightSub(50)
+            });
+        });
+
+    });
+    $(function ()
+    {
+        $('#mList').datagrid({
+            url: '@Url.Action("GetList")?Id=0',
+            methord: 'post',
+            width: SetGridWidthSub(10),
+            height: SetGridHeightSub(202),
+            fitColumns: true,
+            idField: 'Id',
+            pagination: false,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            selectOnCheck: false,
+            checkOnSelect: false,
+            onClickCell: onClickCell_mList,
+            onEndEdit: onEndEdit_mList,
+            onBeginEdit: onBeginEdit_mList,
+            remotesort: false,
+            showFooter: false,
+            onLoadSuccess: function (data)
+            {
+                append();
+            },
+            columns: [[
+                { field: 'Id', title: 'Id', width: 80, hidden: true },
+                {
+                    field: 'oper', title: '操作', width: 50, formatter: function (value)
+                    {
+                        if (value == null)
+                            return "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-red' href='javascript:removeit()'><a>";
+                        else
+                            return value;
+                    }
+                },
+
+                {
+                    field: 'PartCustomerCode', title: '客户图号', width: 100,
+                    editor: { type: 'textbox', options: { required: true } }
+                },
+                { field: 'PartCode', title: '物料编码', width: 80, hidden: true },
+                {
+                    field: 'PartId', title: '物料', width: 100,
+                    formatter: function (value, row)
+                    {
+                        return row.PartCode;
+                    },
+                    editor:
+                    {
+                        type: 'combobox',
+                        options:
+                        {
+                            valueField: 'Value',
+                            textField: 'Text',
+                            method: 'post',
+                            url: '/WMS/Part/GetPartListByCustomerCode?customerCode=0',
+                            required: true,
+                            editable: false
+                        }
+                    }
+                },
+
+                { field: 'CustomerId', title: '客户ID', width: 80, hidden: true },
+                {
+                    field: 'CustomerCode', title: '客户编码', width: 100,
+                    editor: { type: 'textbox', options: { required: true } }
+                },
+                { field: 'CustomerShortName', title: '客户简称', width: 100 },
+
+                { field: 'SupplierId', title: '供应商ID', width: 80, hidden: true },
+                {
+                    field: 'SupplierCode', title: '供应商编码', width: 100,
+                    editor: { type: 'textbox' }
+                },
+                { field: 'SupplierShortName', title: '供应商简称', width: 100 },
+
+                {
+                    field: 'Qty', title: '退货数量', width: 80,
+                    editor: { type: 'numberbox', options: { required: true, min: 0 } }, align: 'right'
+                },
+                { field: 'PCS', title: '箱数', width: 80, editor: { type: 'numberbox' } },
+                { field: 'Volume', title: '体积', width: 80, editor: { type: 'numberbox' } },
+                { field: 'Remark', title: '退货说明', width: 80, editor: { type: 'textbox' }},
+
+            ]]
+        });
+    });
+
+    //#region 手动加载DataGrid的事件
+    //编辑的行
+    var editIndex_mList = undefined;
+    function endEditing_mList()
+    {
+        if (editIndex_mList == undefined) { return true }
+        $('#mList').datagrid('endEdit', editIndex_mList);
+
+        editIndex_mList = undefined;
+        return true;
+    }
+
+    //添加空行—手动加载
+    function append()
+    {
+        var index = $('#mList').datagrid('getRowIndex', $('#mList').datagrid('getSelected'));
+        if (index == -1)
+            index = 0;
+        $("#mList").datagrid("insertRow", {
+            index: index + 1,
+            row: {
+                oper: "<a class='fa fa-plus color-green' href='javascript:append()'><a>&nbsp;&nbsp;&nbsp;<a class='fa fa-minus color-red' href='javascript:removeit()'><a>",
+            }
+        });
+    }
+
+    //删除一行—手动加载
+    function removeit()
+    {
+        if (editIndex_mList == undefined) { return }
+        $('#mList').datagrid('selectRow', editIndex_mList);
+
+        $('#mList').datagrid('cancelEdit', editIndex_mList)
+            .datagrid('deleteRow', editIndex_mList);
+        editIndex_mList = undefined;
+    }
+
+    function onEndEdit_mList(index, row)
+    {
+        var ed = $(this).datagrid('getEditor', {
+            index: index,
+            field: 'PartId'
+        });
+        row.PartCode = $(ed.target).combobox('getText');
+    }
+
+    //进入编辑前设置
+    function onBeginEdit_mList(index, row)
+    {
+    }
+
+    function onClickCell_mList(index, field)
+    {
+        if (editIndex_mList != index)
+        {
+            if (endEditing_mList())
+            {
+                $('#mList').datagrid('selectRow', index)
+                    .datagrid('beginEdit', index);
+
+                //给numberbox增加keyup事件，以便自动计算合格数量和不合格数量
+                var eds = $('#mList').datagrid('getEditors', index);
+                for (var i = 0; i < eds.length; i++)
+                {
+                    var ed = eds[i];
+                    //给字段PartCustomerCode增加setKeyUpValue事件
+                    if (ed.field == 'PartCustomerCode')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForPartCustomerCode(e, $(this), $('#mList'));
+                        });
+                    }
+
+                    if (ed.field == 'PartId')
+                    {
+                        var target = $(ed.target).combobox('textbox');
+                        target.bind("focus", function ()
+                        {
+                            return setFocusForPartId(index);
+                        });
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForPartId(e, index);
+                        });
+                    }
+
+                    //给字段CustomerCode增加setKeyUpValue事件
+                    if (ed.field == 'CustomerCode')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForCustomerCode(e, $(this), $('#mList'));
+                        });
+                    }
+
+                    //给字段SupplierCode增加setKeyUpValue事件
+                    if (ed.field == 'SupplierCode')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForSupplierCode(e, $(this), $('#mList'));
+                        });
+                    }
+
+                    //给字段Qty增加setKeyUpValue事件
+                    if (ed.field == 'Qty')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                        target.bind("focus", function ()
+                        {
+                            return setFocusForQty($(ed.target));
+                        });
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForQty(e, index);
+                        });
+                    }
+
+                    //给字段PCS增加setKeyUpValue事件
+                    if (ed.field == 'PCS')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                        target.bind("focus", function ()
+                        {
+                            return setFocusForPCS($(ed.target));
+                        });
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForPCS(e, index);
+                        });
+                    }
+
+                    //给字段Volume增加setKeyUpValue事件
+                    if (ed.field == 'Volume')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
+                        target.bind("focus", function ()
+                        {
+                            return setFocusForVolume($(ed.target));
+                        });
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForVolume(e, index);
+                        });
+                    }
+
+                    //给字段Remark增加setKeyUpValue事件
+                    if (ed.field == 'Remark')
+                    {
+                        var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
+                        target.bind("keyup", function (e)
+                        {
+                            return setKeyUpValueForRemark(e, index);
+                        });
+                    }
+                }
+
+                var ed = $('#mList').datagrid('getEditor', { index: index, field: field });
+                if (ed)
+                {
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).select();
+                }
+                editIndex_mList = index;
+            } else
+            {
+                setTimeout(function ()
+                {
+                    $('#mList').datagrid('selectRow', editIndex);
+                }, 0);
+            }
+        }
+    }
+
+    function ChangeFocus(index, field)
+    {
+        var ed = $('#mList').datagrid('getEditor', { index: index, field: field });
+        if (ed)
+        {
+            ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+            ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).select();
+        }
+    }
+
+    function setKeyUpValueForPartCustomerCode(e, sender, datagrid)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            var row = datagrid.datagrid('getSelected');
+            var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
+            var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'PartCustomerCode' }).target;
+            var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
+
+            var thisTarget_Part = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'PartId' }).target;
+            thisTarget_Part.combobox('clear');
+            thisTarget_Part.combobox('reload', '/WMS/Part/GetPartListByCustomerCode?customerCode=' + thisTarget_Input.val());
+
+            var thisTarget_Customer = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'CustomerCode' }).target;
+            thisTarget_Customer.textbox('clear');
+            var thisTarget_Supplier = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierCode' }).target;
+            thisTarget_Supplier.textbox('clear');
+            var thisTarget_Qty = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'Qty' }).target;
+            thisTarget_Qty.textbox('clear');
+            var thisTarget_PCS = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'PCS' }).target;
+            thisTarget_PCS.textbox('clear');
+            var thisTarget_Volume = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'Volume' }).target;
+            thisTarget_Volume.textbox('clear');
+            var thisTarget_Remark = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'Remark' }).target;
+            thisTarget_Remark.textbox('clear');
+
+            ChangeFocus(rowIndex, "PartId");
+        }
+    }
+
+    function setFocusForPartId(rowIndex)
+    {
+        var thisTarget = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'PartId' }).target;
+        thisTarget.combobox('showPanel');
+    }
+    function setKeyUpValueForPartId(e, rowIndex)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            ChangeFocus(rowIndex, "CustomerCode");
+        }
+    }
+
+    function setKeyUpValueForCustomerCode(e, sender, datagrid)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            var row = datagrid.datagrid('getSelected');
+            var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
+            var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'CustomerCode' }).target;
+            var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
+
+            //向后台申请当前供应商信息
             $.ajax({
-                url: "@Url.Action("Create")",
+                url: "@Url.Action("GetCustomerByCode", "Customer")",
                 type: "Post",
-                data: $("form").serialize(),
+                data: { customerCode: thisTarget_Input.val()},
                 dataType: "json",
                 success: function (data) {
-                    if (data.type == 1) {
-                        window.parent.frameReturnByMes(data.message);
-                        window.parent.frameReturnByReload(true);
-                        window.parent.frameReturnByClose()
-                    }
-                    else {
-                        window.parent.frameReturnByMes(data.message);
+                    if (data.type == 1)
+                    {
+                        //alert(JSON.parse(data.value));
+                        getRow = JSON.parse(data.value);
+                        //datagrid.datagrid('updateRow', {
+                        //    index: rowIndex,
+                        //    row: {
+                        //        CustomerId: getRow.Id,
+                        //        CustomerCode: getRow.CustomerCode,
+                        //        CustomerShortName: getRow.CustomerShortName,
+                        //    },
+                        //});
+                        var td = $('.datagrid-body td[field="CustomerId"]')[rowIndex];
+                        var div = $(td).find('div')[0];
+                        $(div).text(getRow.Id);
+                        row.CustomerId = getRow.Id;
+                        var td1 = $('.datagrid-body td[field="CustomerShortName"]')[rowIndex];
+                        var div1 = $(td1).find('div')[0];
+                        $(div1).text(getRow.CustomerShortName);
+                        row.CustomerShortName = getRow.CustomerShortName;
+
+                        ChangeFocus(rowIndex, "SupplierCode");
+                        //endEditing_mList();
+                        //onClickCell_mList(rowIndex, "SupplierCode");
+                    } else
+                    {
+                        //datagrid.datagrid('updateRow', {
+                        //    index: rowIndex,
+                        //    row: {
+                        //        CustomerId: '',
+                        //        CustomerCode: '',
+                        //        CustomerShortName: '',
+                        //   },
+                        //});
+                        //endEditing_mList();
+
+                        alert(data.message);
                     }
                 }
             });
         }
+    }
+
+    function setKeyUpValueForSupplierCode(e, sender, datagrid)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            var row = datagrid.datagrid('getSelected');
+            var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
+            var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierCode' }).target;
+            var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
+
+            //向后台申请当前供应商信息
+            $.ajax({
+                url: "@Url.Action("GetSupplierByCode", "Supplier")",
+                type: "Post",
+                data: { supplierCode: thisTarget_Input.val()},
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1)
+                    {
+                        //alert(JSON.parse(data.value));
+                        getRow = JSON.parse(data.value);
+                        //datagrid.datagrid('updateRow', {
+                        //    index: rowIndex,
+                        //    row: {
+                        //        SupplierId: getRow.Id,
+                        //        SupplierCode: getRow.SupplierCode,
+                        //        SupplierShortName: getRow.SupplierShortName,
+                        //    },
+                        //});
+                        //endEditing_mList();
+                        //onClickCell_mList(rowIndex, "InvId");
+
+                        var td = $('.datagrid-body td[field="SupplierId"]')[rowIndex];
+                        var div = $(td).find('div')[0];
+                        $(div).text(getRow.Id);
+                        row.SupplierId = getRow.Id;
+                        var td1 = $('.datagrid-body td[field="SupplierShortName"]')[rowIndex];
+                        var div1 = $(td1).find('div')[0];
+                        $(div1).text(getRow.SupplierShortName);
+                        row.SupplierShortName = getRow.SupplierShortName;
+
+                        ChangeFocus(rowIndex, "Qty");
+                    } else
+                    {
+                        //datagrid.datagrid('updateRow', {
+                        //    index: rowIndex,
+                        //    row: {
+                        //        SupplierId: '',
+                        //        SupplierCode: '',
+                        //        SupplierShortName: '',
+                        //   },
+                        //});
+                        //endEditing_mList();
+
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+    }
+
+    function setFocusForQty(sender)
+    {
+        sender.select();
+    }
+    function setKeyUpValueForQty(e, rowIndex)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            ChangeFocus(rowIndex, "PCS");
+        }
+    }
+
+    function setFocusForPCS(sender)
+    {
+        sender.select();
+    }
+    function setKeyUpValueForPCS(e, rowIndex)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            ChangeFocus(rowIndex, "Volume");
+        }
+    }
+
+    function setFocusForVolume(sender)
+    {
+        sender.select();
+    }
+    function setKeyUpValueForVolume(e, rowIndex)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            ChangeFocus(rowIndex, "Remark");
+        }
+    }
+
+    function setKeyUpValueForRemark(e, rowIndex)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            var addNewLine = false;
+            var rows = $('#mList').datagrid('getRows');
+            if (rowIndex == rows.length - 1)
+            {
+                append();
+                addNewLine = true;
+            }
+            endEditing_mList();
+
+            if (addNewLine)
+                onClickCell_mList(rowIndex + 1, "PartCustomerCode");
+        }
+    }
+    //#endregion
+
+    //关闭模式窗口
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+
+    function reject() {
+        $('#List').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+    function getChanges() {
+        var rows = $('#List').datagrid('getChanges');
+        alert(rows.length + ' rows are changed!');
+    }
+
+    function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            if (arr[i] === obj) {
+                return true;
+            }
+        }
         return false;
-    });
-    $("#btnReturn").click(function () {
-         window.parent.frameReturnByClose();
-    });
-});
-function frameReturnByClose() {
-$("#modalwindow").window('close');
-}
-function frameReturnByMes(mes) {
-$.messageBox5s(Lang.Tip, mes);
-}
+    }
+
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+
+    function frameReturnByMes(mes) {
+        $.messageBox5s('提示', mes);
+    }
+
+    //清空控件的数据（暂时没用）。
+    function clear()
+    {
+        $('#PONo').val("");
+        $('#List').datagrid("Load");
+
+    }
 </script>
+
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
-@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
-@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
 </div>
 @using (Html.BeginForm())
 {
-             @Html.HiddenFor(model => model.Id, new { @Value = 0})
-             <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
- <table class="formtable">
-    <tbody>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ReturnInspectionNum)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ReturnInspectionNum)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ReturnInspectionNum)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CustomerCode)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.CustomerCode)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CustomerCode)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CustomerCodeName)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.CustomerCodeName)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CustomerCodeName)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.PartID)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.PartID)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.PartID)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Qty)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Qty)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Qty)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CustomerId)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.CustomerId)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CustomerId)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.SupplierId)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.SupplierId)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.SupplierId)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.PCS)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.PCS)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.PCS)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Volume)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Volume)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Volume)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InvId)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InvId)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InvId)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.SubInvId)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.SubInvId)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.SubInvId)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.PrintStatus)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.PrintStatus)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.PrintStatus)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.PrintDate)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.PrintDate, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.PrintDate)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.PrintMan)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.PrintMan)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.PrintMan)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Remark)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Remark)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Remark)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InspectMan)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InspectMan)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InspectMan)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InspectDate)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.InspectDate, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InspectDate)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.InspectStatus)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.InspectStatus)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.InspectStatus)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CheckOutResult)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.CheckOutResult)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CheckOutResult)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.QualifyQty)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.QualifyQty)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.QualifyQty)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.NoQualifyQty)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.NoQualifyQty)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.NoQualifyQty)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Lot)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Lot)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Lot)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ConfirmStatus)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ConfirmStatus)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ConfirmStatus)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ConfirmMan)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ConfirmMan)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ConfirmMan)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ConfirmDate)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.ConfirmDate, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ConfirmDate)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ConfirmRemark)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ConfirmRemark)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ConfirmRemark)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr1)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr1)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr1)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr2)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr2)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr2)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr3)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr3)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr3)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr4)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr4)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr4)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.Attr5)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.Attr5)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.Attr5)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.CreatePerson)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.CreatePerson)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.CreatePerson)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ModifyPerson)：
-            </th>
-            <td>
-                @Html.EditorFor(model => model.ModifyPerson)
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ModifyPerson)</td>
-        </tr>
-        <tr>
-            <th>
-                @Html.LabelFor(model => model.ModifyTime)：
-            </th>
-            <td >
-               @Html.TextBoxFor(model => model.ModifyTime, new { @onClick = "WdatePicker()",@style = "width: 105px" })
-            </td>
-            <td>@Html.ValidationMessageFor(model => model.ModifyTime)</td>
-        </tr>
-    </tbody>
-</table>
+    <div id="ErrMesList">
+        <div id="ErrMesListContent">
+            @Html.ValidationSummary(false)
+        </div>
+    </div>
+    @*@Html.HiddenFor(model => model.Id)*@
+    <input id="inserted" type="hidden" name="inserted" value="" />
 }
+<table id="mList"></table>
 

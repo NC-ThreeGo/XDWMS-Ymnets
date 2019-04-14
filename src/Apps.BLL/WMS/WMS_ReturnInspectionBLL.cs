@@ -32,8 +32,8 @@ namespace Apps.BLL.WMS
                                                   ConfirmStatus = r.ConfirmStatus,
                                                   CreatePerson = r.CreatePerson,
                                                   CreateTime = r.CreateTime,
-                                                  CustomerCode = r.CustomerCode,
-                                                  CustomerCodeName = r.CustomerCodeName,
+                                                  PartCustomerCode = r.PartCustomerCode,
+                                                  PartCustomerCodeName = r.PartCustomerCodeName,
                                                   CustomerId = r.CustomerId,
                                                   Id = r.Id,
                                                   InspectDate = r.InspectDate,
@@ -56,6 +56,13 @@ namespace Apps.BLL.WMS
                                                   SubInvId = r.SubInvId,
                                                   SupplierId = r.SupplierId,
                                                   Volume = r.Volume,
+
+                                                  PartCode = r.WMS_Part.PartCode,
+                                                  PartName = r.WMS_Part.PartName,
+                                                  CustomerShortName = r.WMS_Customer.CustomerShortName,
+                                                  SupplierShortName = r.WMS_Supplier.SupplierShortName,
+                                                  InvName = r.WMS_InvInfo.InvName,
+                                                  SubInvName = r.WMS_SubInvInfo.SubInvName,
                                               }).ToList();
             return modelList;
         }
@@ -81,8 +88,8 @@ namespace Apps.BLL.WMS
 				{
 					//对应列头
 					excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.ReturnInspectionNum, "退货送检单号");
-					excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.CustomerCode, "客户图号");
-					excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.CustomerCodeName, "零件名称");
+					excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.PartCustomerCode, "客户图号");
+					excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.PartCustomerCodeName, "零件名称");
 					excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.PartID, "新电图号");
 					excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.Qty, "数量");
 					excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.CustomerId, "客户");
@@ -133,8 +140,8 @@ namespace Apps.BLL.WMS
 								var model = new WMS_ReturnInspectionModel();
 								model.Id = row.Id;
 								model.ReturnInspectionNum = row.ReturnInspectionNum;
-								model.CustomerCode = row.CustomerCode;
-								model.CustomerCodeName = row.CustomerCodeName;
+								model.PartCustomerCode = row.PartCustomerCode;
+								model.PartCustomerCodeName = row.PartCustomerCodeName;
 								model.PartID = row.PartID;
 								model.Qty = row.Qty;
 								model.CustomerId = row.CustomerId;
@@ -193,8 +200,8 @@ namespace Apps.BLL.WMS
 									WMS_ReturnInspection entity = new WMS_ReturnInspection();
 									entity.Id = model.Id;
 									entity.ReturnInspectionNum = model.ReturnInspectionNum;
-									entity.CustomerCode = model.CustomerCode;
-									entity.CustomerCodeName = model.CustomerCodeName;
+									entity.PartCustomerCode = model.PartCustomerCode;
+									entity.PartCustomerCodeName = model.PartCustomerCodeName;
 									entity.PartID = model.PartID;
 									entity.Qty = model.Qty;
 									entity.CustomerId = model.CustomerId;
@@ -277,6 +284,26 @@ namespace Apps.BLL.WMS
 			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
 			return CreateModelList(ref queryData);
 		}
+
+        public string CreateBatchReturnInspection(ref ValidationErrors errors, string opt, string jsonReturnInspection)
+        {
+            string result = String.Empty;
+            try
+            {
+                result = m_Rep.CreateBatchReturnInspection(opt, jsonReturnInspection);
+                if (!String.IsNullOrEmpty(result))
+                {
+                    return result;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return null;
+            }
+        }
     }
- }
+}
 

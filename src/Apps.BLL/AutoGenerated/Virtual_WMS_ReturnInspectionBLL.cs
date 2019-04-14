@@ -43,16 +43,8 @@ namespace Apps.BLL.WMS
                 queryData = m_Rep.GetList(
 								
 								a=>a.ReturnInspectionNum.Contains(queryStr)
-								|| a.CustomerCode.Contains(queryStr)
-								|| a.CustomerCodeName.Contains(queryStr)
-								
-								
-								
-								
-								
-								
-								
-								
+								|| a.PartCustomerCode.Contains(queryStr)
+								|| a.PartCustomerCodeName.Contains(queryStr)
 								|| a.PrintStatus.Contains(queryStr)
 								
 								|| a.PrintMan.Contains(queryStr)
@@ -107,8 +99,8 @@ namespace Apps.BLL.WMS
                                               {
 													Id = r.Id,
 													ReturnInspectionNum = r.ReturnInspectionNum,
-													CustomerCode = r.CustomerCode,
-													CustomerCodeName = r.CustomerCodeName,
+													PartCustomerCode = r.PartCustomerCode,
+                                                  PartCustomerCodeName = r.PartCustomerCodeName,
 													PartID = r.PartID,
 													Qty = r.Qty,
 													CustomerId = r.CustomerId,
@@ -160,8 +152,8 @@ namespace Apps.BLL.WMS
                 entity = new WMS_ReturnInspection();
                				entity.Id = model.Id;
 				entity.ReturnInspectionNum = model.ReturnInspectionNum;
-				entity.CustomerCode = model.CustomerCode;
-				entity.CustomerCodeName = model.CustomerCodeName;
+				entity.PartCustomerCode = model.PartCustomerCode;
+				entity.PartCustomerCodeName = model.PartCustomerCodeName;
 				entity.PartID = model.PartID;
 				entity.Qty = model.Qty;
 				entity.CustomerId = model.CustomerId;
@@ -282,8 +274,8 @@ namespace Apps.BLL.WMS
                 }
                               				entity.Id = model.Id;
 				entity.ReturnInspectionNum = model.ReturnInspectionNum;
-				entity.CustomerCode = model.CustomerCode;
-				entity.CustomerCodeName = model.CustomerCodeName;
+				entity.PartCustomerCode = model.PartCustomerCode;
+				entity.PartCustomerCodeName = model.PartCustomerCodeName;
 				entity.PartID = model.PartID;
 				entity.Qty = model.Qty;
 				entity.CustomerId = model.CustomerId;
@@ -348,8 +340,8 @@ namespace Apps.BLL.WMS
                 WMS_ReturnInspectionModel model = new WMS_ReturnInspectionModel();
                               				model.Id = entity.Id;
 				model.ReturnInspectionNum = entity.ReturnInspectionNum;
-				model.CustomerCode = entity.CustomerCode;
-				model.CustomerCodeName = entity.CustomerCodeName;
+				model.PartCustomerCode = entity.PartCustomerCode;
+				model.PartCustomerCodeName = entity.PartCustomerCodeName;
 				model.PartID = entity.PartID;
 				model.Qty = entity.Qty;
 				model.CustomerId = entity.CustomerId;
@@ -411,8 +403,8 @@ namespace Apps.BLL.WMS
 
             //对应列头
 			 				 excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.ReturnInspectionNum, "退货送检单号");
-				 excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.CustomerCode, "客户图号");
-				 excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.CustomerCodeName, "零件名称");
+				 excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.PartCustomerCode, "客户图号");
+				 excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.PartCustomerCodeName, "零件名称");
 				 excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.PartID, "新电图号");
 				 excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.Qty, "数量");
 				 excelFile.AddMapping<WMS_ReturnInspectionModel>(x => x.CustomerId, "客户");
@@ -456,8 +448,8 @@ namespace Apps.BLL.WMS
                 var entity = new WMS_ReturnInspectionModel();
 						 				  entity.Id = row.Id;
 				  entity.ReturnInspectionNum = row.ReturnInspectionNum;
-				  entity.CustomerCode = row.CustomerCode;
-				  entity.CustomerCodeName = row.CustomerCodeName;
+				  entity.PartCustomerCode = row.PartCustomerCode;
+				  entity.PartCustomerCodeName = row.PartCustomerCodeName;
 				  entity.PartID = row.PartID;
 				  entity.Qty = row.Qty;
 				  entity.CustomerId = row.CustomerId;
@@ -524,8 +516,8 @@ namespace Apps.BLL.WMS
                         WMS_ReturnInspection entity = new WMS_ReturnInspection();
                        						entity.Id = 0;
 						entity.ReturnInspectionNum = model.ReturnInspectionNum;
-						entity.CustomerCode = model.CustomerCode;
-						entity.CustomerCodeName = model.CustomerCodeName;
+						entity.PartCustomerCode = model.PartCustomerCode;
+						entity.PartCustomerCodeName = model.PartCustomerCodeName;
 						entity.PartID = model.PartID;
 						entity.Qty = model.Qty;
 						entity.CustomerId = model.CustomerId;

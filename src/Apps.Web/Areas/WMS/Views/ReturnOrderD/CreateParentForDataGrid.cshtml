@@ -293,7 +293,7 @@
                         var target = $(ed.target).combobox('textbox');
                         target.bind("focus", function ()
                         {
-                            return setFocusForInvId($(ed.target));
+                            return setFocusForInvId(index);
                         });
                         target.bind("keyup", function (e)
                         {
@@ -307,7 +307,7 @@
                         var target = $(ed.target).combobox('textbox');
                         target.bind("focus", function ()
                         {
-                            return setFocusForLot($(ed.target));
+                            return setFocusForLot(index);
                         });
                         target.bind("keyup", function (e)
                         {
@@ -356,6 +356,16 @@
         }
     }
 
+    function ChangeFocus(index, field)
+    {
+        var ed = $('#mList').datagrid('getEditor', { index: index, field: field });
+        if (ed)
+        {
+            ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+            ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).select();
+        }
+    }
+
     function setKeyUpValueForPartCode(e, sender, datagrid)
     {
         var code = e.keyCode || e.which;
@@ -388,43 +398,61 @@
                     {
                         //alert(JSON.parse(data.value));
                         getRow = JSON.parse(data.value);
-                        datagrid.datagrid('updateRow', {
-                            index: rowIndex,
-                            row: {
-                                PartId: getRow.Id,
-                                PartCode: getRow.PartCode,
-                                PartName: getRow.PartName,
-                                SupplierId: '',
-                                SupplierCode: '',
-                                SupplierShortName: '',
-                                InvName: '',
-                                InvId: '',
-                                Lot: '',
-                                AdjustQty: 0,
-                                Remark: '',
-                            },
-                        });
-                        endEditing_mList();
-                        onClickCell_mList(rowIndex, "SupplierCode");
+
+                        var td = $('.datagrid-body td[field="PartId"]')[rowIndex];
+                        var div = $(td).find('div')[0];
+                        $(div).text(getRow.Id);
+                        row.PartId = getRow.Id;
+                        var td1 = $('.datagrid-body td[field="PartCode"]')[rowIndex];
+                        var div1 = $(td1).find('div')[0];
+                        $(div1).text(getRow.PartCode);
+                        row.PartCode = getRow.PartCode;
+                        var td2 = $('.datagrid-body td[field="PartName"]')[rowIndex];
+                        var div2 = $(td2).find('div')[0];
+                        $(div2).text(getRow.PartName);
+                        row.PartName = getRow.PartName;
+
+                        ChangeFocus(rowIndex, "SupplierCode");
+
+                        //datagrid.datagrid('updateRow', {
+                        //    index: rowIndex,
+                        //    row: {
+                        //        PartId: getRow.Id,
+                        //        PartCode: getRow.PartCode,
+                        //        PartName: getRow.PartName,
+                        //        SupplierId: '',
+                        //        SupplierCode: '',
+                        //        SupplierShortName: '',
+                        //        InvName: '',
+                        //        InvId: '',
+                        //        Lot: '',
+                        //        AdjustQty: 0,
+                        //        Remark: '',
+                        //    },
+                        //});
+                        //endEditing_mList();
+                        //onClickCell_mList(rowIndex, "SupplierCode");
                     } else
                     {
-                        datagrid.datagrid('updateRow', {
-                            index: rowIndex,
-                            row: {
-                                PartId: '',
-                                PartCode: '',
-                                PartName: '',
-                                SupplierId: '',
-                                SupplierCode: '',
-                                SupplierShortName: '',
-                                InvName: '',
-                                InvId: '',
-                                Lot: '',
-                                AdjustQty: 0,
-                                Remark: '',
-                           },
-                        });
-                        endEditing_mList();
+                        //datagrid.datagrid('updateRow', {
+                        //    index: rowIndex,
+                        //    row: {
+                        //        PartId: '',
+                        //        PartCode: '',
+                        //        PartName: '',
+                        //        SupplierId: '',
+                        //        SupplierCode: '',
+                        //        SupplierShortName: '',
+                        //        InvName: '',
+                        //        InvId: '',
+                        //        Lot: '',
+                        //        AdjustQty: 0,
+                        //        Remark: '',
+                        //   },
+                        //});
+                        //endEditing_mList();
+
+                        alert(data.message);
                     }
                 }
             });
@@ -460,6 +488,7 @@
                                 SupplierShortName: getRow.SupplierShortName,
                             },
                         });
+                        //ChangeFocus(rowIndex, "InvId");
                         endEditing_mList();
                         onClickCell_mList(rowIndex, "InvId");
                     } else
@@ -479,33 +508,33 @@
         }
     }
 
-    function setFocusForInvId(sender)
+    function setFocusForInvId(rowIndex)
     {
         //alert("InvId");
-        sender.combobox('showPanel');
+        var thisTarget = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'InvId' }).target;
+        thisTarget.combobox('showPanel');
     }
     function setKeyUpValueForInvId(e, rowIndex)
     {
         var code = e.keyCode || e.which;
         if (code == 13)
         {
-            endEditing_mList();
-            onClickCell_mList(rowIndex, "Lot");
+            ChangeFocus(rowIndex, "Lot");
         }
     }
 
-    function setFocusForLot(sender)
+    function setFocusForLot(rowIndex)
     {
         //alert("Lot");
-        sender.combobox('showPanel');
+        var thisTarget = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'Lot' }).target;
+        thisTarget.combobox('showPanel');
     }
     function setKeyUpValueForLot(e, rowIndex)
     {
         var code = e.keyCode || e.which;
         if (code == 13)
         {
-            endEditing_mList();
-            onClickCell_mList(rowIndex, "AdjustQty");
+            ChangeFocus(rowIndex, "AdjustQty");
         }
     }
 
@@ -518,8 +547,7 @@
         var code = e.keyCode || e.which;
         if (code == 13)
         {
-            endEditing_mList();
-            onClickCell_mList(rowIndex, "Remark");
+            ChangeFocus(rowIndex, "Remark");
         }
     }
 
