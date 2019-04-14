@@ -94,7 +94,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
             catch (Exception ex)
             {
-                LogHandler.WriteServiceLog(GetUserTrueName(), ex.Message, "失败", "打印", "WMS_ReturnOrder");
+                LogHandler.WriteServiceLog(GetUserTrueName(), ex.Message, "失败", "打印", "WMS_ReturnInspection");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }
@@ -110,28 +110,18 @@ namespace Apps.Web.Areas.WMS.Controllers
         [HttpPost]
         [SupportFilter]
         [ValidateInput(false)]
-        public JsonResult Check(string inserted)
+        public JsonResult Check(string returnInspectBillNum, string inserted)
         {
-            try
+            if (m_BLL.ProcessReturnInspectBill(ref errors, GetUserTrueName(), inserted))
             {
-                var returnInspectionNum = m_BLL.CreateBatchReturnInspection(ref errors, GetUserTrueName(), inserted);
-                if (!String.IsNullOrEmpty(returnInspectionNum))
-                {
-                    LogHandler.WriteServiceLog(GetUserTrueName(), "打印退货检验单成功", "成功", "打印", "WMS_ReturnInspection");
-                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnInspectionNum));
-                    //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnInspection&billNum=" + returnInspectionNum);
-                }
-                else
-                {
-                    LogHandler.WriteServiceLog(GetUserTrueName(), errors.Error, "失败", "打印", "WMS_ReturnInspection");
-                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
-                }
-
+                LogHandler.WriteServiceLog(GetUserTrueName(), "退货检验单：" + returnInspectBillNum + "处理", "成功", "处理", "WMS_ReturnInspection");
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
             }
-            catch (Exception ex)
+            else
             {
-                LogHandler.WriteServiceLog(GetUserTrueName(), ex.Message, "失败", "打印", "WMS_ReturnOrder");
-                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
+                string ErrorCol = errors.Error;
+                LogHandler.WriteServiceLog(GetUserTrueName(), "退货检验单：" + returnInspectBillNum + "处理" + "," + ErrorCol, "失败", "处理", "WMS_ReturnInspection");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
             }
         }
         #endregion
@@ -377,6 +367,19 @@ namespace Apps.Web.Areas.WMS.Controllers
                 .GroupBy(p => new { p.ReturnInspectionNum })
                 .Select(g => g.First())
                 .OrderBy(p => p.ReturnInspectionNum).ToList();
+            GridRows<WMS_ReturnInspectionModel> grs = new GridRows<WMS_ReturnInspectionModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
+
+        #region 加载指定退货送检单的行信息
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetReturnInspectBillList(GridPager pager, string returnInspectBillNum)
+        {
+            List<WMS_ReturnInspectionModel> list = m_BLL.GetListByWhere(ref pager, "ReturnInspectionNum == \"" + returnInspectBillNum + "\" && InspectStatus == \"" + "未检验" + "\"").ToList();
             GridRows<WMS_ReturnInspectionModel> grs = new GridRows<WMS_ReturnInspectionModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

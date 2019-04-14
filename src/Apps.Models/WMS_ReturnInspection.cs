@@ -50,6 +50,7 @@ namespace Apps.Models
         public Nullable<System.DateTime> CreateTime { get; set; }
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
+        public string InStoreBillNum { get; set; }
     
         public virtual WMS_Customer WMS_Customer { get; set; }
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }

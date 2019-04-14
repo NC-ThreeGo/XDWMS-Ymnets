@@ -22,5 +22,16 @@ namespace Apps.DAL.WMS
             else
                 return null;
         }
+
+        public string ProcessReturnInspectBill(string opt, string jsonReturnInspection)
+        {
+            //由于EF的默认调用会启用事务，导致和存储过程中的事务冲突，所以设置为不启用事务。
+            Context.Configuration.EnsureTransactionsForFunctionsAndCommands = false;
+
+            ObjectParameter returnValue = new ObjectParameter("ReturnValue", typeof(string));
+            Context.P_WMS_ProcessReturnInspectBill(opt, jsonReturnInspection, returnValue);
+
+            return returnValue.Value.ToString();
+        }
     }
 }
