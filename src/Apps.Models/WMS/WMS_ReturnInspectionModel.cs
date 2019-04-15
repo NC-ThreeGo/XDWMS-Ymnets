@@ -7,6 +7,7 @@ namespace Apps.Models.WMS
     {
         public string PartCode { get; set; }
         public string PartName { get; set; }
+        public string PartType { get; set; }
         public string CustomerShortName { get; set; }
         public string SupplierShortName { get; set; }
         public string InvName { get; set; }

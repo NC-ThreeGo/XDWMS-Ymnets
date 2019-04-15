@@ -135,23 +135,48 @@
                     },
                     editor:
                     {
-                        type: 'combobox',
+                        type: 'combogrid',
                         options:
                         {
-                            valueField: 'Value',
-                            textField: 'Text',
+                            panelWidth: 300,
+                            panelHeight: 150,
+                            idField: 'Id',
+                            textField: 'FullPartName',
+                            url: '@Url.Action("GetPartListByCustomerCode", "Part")',
                             method: 'post',
-                            url: '/WMS/Part/GetPartListByCustomerCode',
-                            queryParams: { customerCode: getPartCustomerCode() },
+                            editable: false,
+                            columns: [[
+                                { field: 'Id', title: '物料ID', width: 50, hidden: true },
+                                { field: 'FullPartName', title:'物料全称',width:50 },
+                                { field: 'PartType', title: '物料类型', width: 100 },
+                            ]],
+                            fitColumns: true,
                             onBeforeLoad: function (param)
                             {
-                                param.customerCode = getPartCustomerCode();
+                                var customerCode = getPartCustomerCode();
+                                if (customerCode)
+                                {
+                                    param.customerCode = customerCode;
+                                    param.type = 'datagrid';
+                                }
+                                else
+                                {
+                                    return false;
+                                }
                             },
-                            required: true,
-                            editable: false
+                            onSelect: function (rowIndex, rowData)
+                            {
+                                var row = $('#mList').datagrid('getSelected');
+                                var rowIndex_mlist = $('#mList').datagrid('getRowIndex', row);//获取行号
+                                var td = $('.datagrid-body td[field="PartType"]')[rowIndex_mlist];
+                                var div = $(td).find('div')[0];
+                                $(div).text(rowData.PartType);
+                                row.PartType = rowData.PartType;
+                            },
                         }
                     }
                 },
+                { field: 'PartType', title: '物料类型', width: 80 },
 
                 { field: 'CustomerId', title: '客户ID', width: 80, hidden: true },
                 {
@@ -398,9 +423,8 @@
             var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
 
             var thisTarget_Part = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'PartId' }).target;
-            thisTarget_Part.combobox('clear');
-            //thisTarget_Part.combobox('reload', '/WMS/Part/GetPartListByCustomerCode?customerCode=' + thisTarget_Input.val());
-            thisTarget_Part.combobox('reload');
+            thisTarget_Part.combogrid('clear');
+            thisTarget_Part.combogrid('grid').datagrid('reload');
 
             var thisTarget_Customer = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'CustomerCode' }).target;
             thisTarget_Customer.textbox('clear');
@@ -557,7 +581,10 @@
             }
             else
             {
-                ChangeFocus(rowIndex, "Qty");
+                if (row.PartType == "外购件")
+                    alert("外购件必须选择供应商！");
+                else
+                    ChangeFocus(rowIndex, "Qty");
             }
         }
     }

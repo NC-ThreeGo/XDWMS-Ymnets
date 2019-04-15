@@ -59,6 +59,7 @@ namespace Apps.BLL.WMS
 
                                                   PartCode = r.WMS_Part.PartCode,
                                                   PartName = r.WMS_Part.PartName,
+                                                  PartType = r.WMS_Part.PartType,
                                                   CustomerShortName = r.WMS_Customer.CustomerShortName,
                                                   SupplierShortName = r.WMS_Supplier.SupplierShortName,
                                                   InvName = r.WMS_InvInfo.InvName,
