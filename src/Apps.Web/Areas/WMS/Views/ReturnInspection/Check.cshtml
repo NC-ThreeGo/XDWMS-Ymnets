@@ -130,7 +130,18 @@
                 { field: 'CustomerShortName', title: '客户简称', width: 100 },
                 { field: 'SupplierShortName', title: '供应商简称', width: 100 },
                 { field: 'Qty', title: '退货数量', width: 80, sortable: true, align: 'right' },
-                { field: 'InspectDate', title: '检验日期', width: 80, sortable: true, editor: { type: 'datebox' } },
+                {
+                    field: 'InspectDate', title: '检验日期', width: 80, sortable: true, editor: { type: 'datebox' },
+                    formatter: function (value, row, index)
+                    {
+                        if (!value)
+                        {
+                            row.InspectDate = formatterDate(new Date());
+                            value = row.InspectDate;
+                        }
+                        return value;
+                    },
+                },
                 { field: 'QualifyQty', title: '合格数量', width: 80, sortable: true, editor: { type: 'numberbox', options: { required: true, min: 0 } } },
                 { field: 'NoQualifyQty', title: '不合格数量', width: 80, sortable: true, editor: { type: 'numberbox', options: { required: true, min: 0 } } },
                 { field: 'InvName', title: '仓库名称', width: 80, hidden: true },
@@ -178,6 +189,16 @@
             ]]
         });
     });
+
+    //得到当前日期
+    formatterDate = function (date)
+    {
+        var day = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
+        var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0"
+            + (date.getMonth() + 1);
+        return date.getFullYear() + '-' + month + '-' + day;
+    };
+
     //自动计算合格数量+不合格数量=到货数量
     function setKeyUpValue(sender)
     {
