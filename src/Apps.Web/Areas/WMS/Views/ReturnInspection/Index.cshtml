@@ -83,7 +83,8 @@
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
                 { field: 'ReturnInspectionNum', title: '退货送检单号', width: 100,sortable:true },
                 { field: 'PartCustomerCode', title: '客户图号', width: 80,sortable:true },
-                { field: 'PartName', title: '零件名称', width: 80,sortable:true },
+                { field: 'PartName', title: '零件名称', width: 80, sortable: true },
+                { field: 'PartType', title: '零件类型', width: 80, sortable: true },
                 { field: 'PartCode', title: '新电图号', width: 80,sortable:true },
                 { field: 'Qty', title: '数量', width: 80,sortable:true },
                 { field: 'CustomerShortName', title: '客户', width: 80,sortable:true },
@@ -143,10 +144,20 @@
             $.modalWindow(Lang.Create, '@Url.Action("Check")', $(window).width() - 50, $(window).height() - 50, 'fa fa-plus');
         });
         $("#btnEdit").click(function () {
-            var row = $('#List').datagrid('getSelected');
+            @*var row = $('#List').datagrid('getSelected');
             if (row != null) {
                 $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
-            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }*@
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                if (row.InspectStatus == "已检验") {            
+                $.messager.confirm(index_lang_tip, "单据已检验不能被修改")
+            }
+            else { $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 800, 600, 'fa fa-pencil');
+            } 
+                
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords');                }
+
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
@@ -179,8 +190,14 @@
 
         });
         $("#btnDelete").click(function () {
-	            dataDelete("@Url.Action("Delete")", "List");
-	        });
+	            @*dataDelete("@Url.Action("Delete")", "List");*@
+            var row = $('#List').datagrid('getSelected');
+            if (row.InspectStatus == "已检验") {                
+                $.messager.confirm(index_lang_tip, "单据已检验不能被删除")
+            }
+            else { dataDelete("@Url.Action("Delete")", "List");
+            }
+	     });
         $("#btnImport").click(function() {
              $("#txtExcelPath").val("");
              $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');

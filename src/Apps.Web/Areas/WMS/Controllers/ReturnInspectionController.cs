@@ -19,6 +19,12 @@ namespace Apps.Web.Areas.WMS.Controllers
     {
         [Dependency]
         public IWMS_ReturnInspectionBLL m_BLL { get; set; }
+        [Dependency]
+        public IWMS_PartBLL m_PartBLL { get; set; }
+        [Dependency]
+        public IWMS_CustomerBLL m_CustomerBLL { get; set; }
+        [Dependency]
+        public IWMS_SupplierBLL m_SupplierBLL { get; set; }
         ValidationErrors errors = new ValidationErrors();
         
         [SupportFilter]
@@ -131,6 +137,24 @@ namespace Apps.Web.Areas.WMS.Controllers
         public ActionResult Edit(long id)
         {
             WMS_ReturnInspectionModel entity = m_BLL.GetById(id);
+            //给关联字段物料赋值
+            WMS_PartModel entity_part = m_PartBLL.GetById(entity.PartID);
+            entity.PartCode = entity_part.PartCode;
+            entity.PartName = entity_part.PartName;
+            entity.PartType = entity_part.PartType;
+            //给关联字段客户编码赋值
+            WMS_CustomerModel entity_cus = m_CustomerBLL.GetById(entity.CustomerId);
+            entity.CustomerShortName = entity_cus.CustomerShortName;
+            //给关联字段供应商赋值
+            if (entity.SupplierId != null)
+            {
+                WMS_SupplierModel entity_sup = m_SupplierBLL.GetById(entity.SupplierId);
+                entity.SupplierShortName = entity_sup.SupplierShortName;
+            }
+            
+
+
+
             return View(entity);
         }
 
@@ -138,25 +162,39 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public JsonResult Edit(WMS_ReturnInspectionModel model)
         {
-            if (model != null && ModelState.IsValid)
+            //给关联字段物料赋值
+            WMS_PartModel entity_part = m_PartBLL.GetById(model.PartID);
+            model.PartType = entity_part.PartType;
+            if (model.PartType == "外购件" && model.SupplierId == null)
             {
-
-                if (m_BLL.Edit(ref errors, model))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnInspectionNum" + model.ReturnInspectionNum, "成功", "修改", "WMS_ReturnInspection");
-                    return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
-                }
-                else
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnInspectionNum" + model.ReturnInspectionNum + "," + ErrorCol, "失败", "修改", "WMS_ReturnInspection");
-                    return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
-                }
+                return Json(JsonHandler.CreateMessage(0, "采购件必须维护供应商"));
             }
             else
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
+                model.ModifyTime = ResultHelper.NowTime;
+                model.ModifyPerson = GetUserTrueName();
+                if (model != null && ModelState.IsValid)
+                {
+
+                    if (m_BLL.Edit(ref errors, model))
+                    {
+                        LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnInspectionNum" + model.ReturnInspectionNum, "成功", "修改", "WMS_ReturnInspection");
+                        return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
+                    }
+                    else
+                    {
+                        string ErrorCol = errors.Error;
+                        LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",ReturnInspectionNum" + model.ReturnInspectionNum + "," + ErrorCol, "失败", "修改", "WMS_ReturnInspection");
+                        return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
+                    }
+                }
+                else
+                {
+                    return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
+                }
+
             }
+            
         }
         #endregion
 
@@ -175,24 +213,33 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Delete(long id)
         {
-            if(id!=0)
+            List<WMS_ReturnInspectionModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Id = " + id + " &&InspectStatus = \"已检验\"");
+            if (list.Count() > 0)
             {
-                if (m_BLL.Delete(ref errors, id))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_ReturnInspection");
-                    return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
-                }
-                else
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_ReturnInspection");
-                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
-                }
+                return Json(JsonHandler.CreateMessage(0, "已检验单据不能删除"));
             }
             else
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+                if (id != 0)
+                {
+                    if (m_BLL.Delete(ref errors, id))
+                    {
+                        LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "WMS_ReturnInspection");
+                        return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+                    }
+                    else
+                    {
+                        string ErrorCol = errors.Error;
+                        LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_ReturnInspection");
+                        return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                    }
+                }
+                else
+                {
+                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+                }
             }
+                
         }
         #endregion
 
