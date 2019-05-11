@@ -1,109 +1,13 @@
-/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty_BatchUpdate]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_UpdateInvQty_BatchUpdate]
+USE [XDWMS]
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_UpdateInvQty]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintSaleOrder]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_UnPrintSaleOrder]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintFeedList]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_UnPrintFeedList]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnInvStock]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_UnInvStock]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessProductEntry]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_ProcessProductEntry]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_ProcessInspectBill]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_PrintSaleOrder]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder1]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_PrintReturnOrder1]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_PrintReturnOrder]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_PrintFeedList]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock_BatchUpdate]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_InvStock_BatchUpdate]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_InvStock]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvAdjust]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_InvAdjust]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_InitNumForDay]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_InitNumForDay]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_GetMaxNum]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_GetMaxNum]
-GO
-
-/****** Object:  StoredProcedure [dbo].[p_wms_deleteTestData]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[p_wms_deleteTestData]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReturnOrder]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_CreateReturnOrder]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReInspect]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_CreateReInspect]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInventoryLine]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_CreateInventoryLine]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInspectBill]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_CreateInspectBill]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmSaleOrder]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_ConfirmSaleOrder]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmReturnOrder]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_ConfirmReturnOrder]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmInventory]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_ConfirmInventory]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmFeedList]    Script Date: 2019/3/2 13:51:37 ******/
-DROP PROCEDURE [dbo].[P_WMS_ConfirmFeedList]
-GO
-
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmFeedList]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmFeedList]    Script Date: 2019/5/11 21:00:10 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE   PROCEDURE [dbo].[P_WMS_ConfirmFeedList]
 	@UserId varchar(50),
@@ -197,12 +101,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmInventory]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmInventory]    Script Date: 2019/5/11 21:00:10 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE PROCEDURE [dbo].[P_WMS_ConfirmInventory] --盘点调整
 	@UserId varchar(50),
@@ -216,6 +121,7 @@ BEGIN
 
 	DECLARE @now datetime = getdate()
 	DECLARE @Count int;
+	DECLARE @InventoryBillNum varchar(50);
 
 	--查询该盘点表的状态是否为“已生成”
 	select @Count = count(*) from WMS_Inventory_H
@@ -302,6 +208,11 @@ BEGIN
 
 	BEGIN TRAN
 
+	--获取盘点表头的单据编号
+	select @InventoryBillNum = InventoryBillNum
+		from WMS_Inventory_H
+		 where Id = @HeadId;
+
 	--插入库存记录表
 	INSERT INTO WMS_InvRecord (PartId,
 								Lot,
@@ -320,7 +231,7 @@ BEGIN
 						id.InvId,
 						id.SubInvId,	
 						id.Id,
-						@HeadId,
+						@InventoryBillNum,
 						@now,
 						'盘点调整',
 						@UserId
@@ -377,12 +288,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmReturnOrder]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmReturnOrder]    Script Date: 2019/5/11 21:00:10 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE   PROCEDURE [dbo].[P_WMS_ConfirmReturnOrder]
 	@UserId varchar(50),
@@ -445,12 +357,13 @@ BEGIN
 END
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmSaleOrder]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ConfirmSaleOrder]    Script Date: 2019/5/11 21:00:11 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE     PROCEDURE [dbo].[P_WMS_ConfirmSaleOrder]
 	@UserId varchar(50),
@@ -544,12 +457,281 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInspectBill]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateBatchReturnInspection]    Script Date: 2019/5/11 21:00:11 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
+CREATE     PROCEDURE [dbo].[P_WMS_CreateBatchReturnInspection]
+	@UserId varchar(50),
+	@JsonReturnInspection NVARCHAR(MAX), --所选择的退货入库记录
+	@ReturnInspectionNum	varchar(50) OUTPUT,
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now date = getdate();
+	DECLARE @count int;
+	DECLARE @InvId int;
+	DECLARE @CheckOutResult varchar(50);
+
+	--保存到临时表
+	SELECT *
+		INTO #ReturnInspection
+		FROM OPENJSON(@JsonReturnInspection)  
+			WITH (	PartCustomerCode nvarchar(50),
+					PartId int,
+					CustomerId int,
+					SupplierId int,
+					Qty decimal(10, 3),
+					PCS nvarchar(50),
+					Volume nvarchar(50),
+					Remark nvarchar(200)
+				) 
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '临时保存信息时出错！'
+		RETURN
+	END
+
+	select @count = count(*) from #ReturnInspection
+		where PartId is null;
+	IF (@count > 0)
+	BEGIN
+		;
+		THROW 51000, '存在物料Id为空的记录，请确认！', 1;
+		RETURN;
+	END;
+
+	select @count = count(*) from #ReturnInspection
+		where CustomerId is null;
+	IF (@count > 0)
+	BEGIN
+		;
+		THROW 51000, '存在客户Id为空的记录，请确认！', 1;
+		RETURN;
+	END;
+
+	select @count = count(*) from #ReturnInspection ri, WMS_Part p
+		where ri.PartId = p.Id
+		  and p.PartType = '外购件'
+		  and SupplierId is null;
+	IF (@count > 0)
+	BEGIN
+		;
+		THROW 51000, '存在供应商Id为空的外购件记录，请确认！', 1;
+		RETURN;
+	END;
+
+	select @count = count(*) from #ReturnInspection
+		where Qty <= 0;
+	IF (@count > 0)
+	BEGIN
+		;
+		THROW 51000, '存在退货数量小于0的记录，请确认！', 1;
+		RETURN;
+	END;
+
+	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
+	exec P_WMS_InitNumForDay 'THJ', 'WMS_ReturnInspection', @now
+
+	BEGIN TRAN
+
+	--获取当前的单据编号
+	exec P_WMS_GetMaxNum 'THJ', 'WMS_ReturnInspection', @now, @ReturnInspectionNum output
+
+	--获取默认库房
+	select top 1 @InvId = Id from WMS_InvInfo
+		where Status = '有效'
+		  and IsDefault = 1;
+
+	--赋值：默认的检验结果
+	set @CheckOutResult = '合格';
+
+	INSERT INTO WMS_ReturnInspection (ReturnInspectionNum,
+								PartCustomerCode,
+								PartCustomerCodeName,
+								PartID,
+								CustomerId,
+								SupplierId,
+								Qty,
+								PCS,
+								Volume,
+								Remark,
+								QualifyQty,
+								NoQualifyQty,
+								CheckOutResult,
+								InvId,
+
+								PrintStatus,
+								PrintDate,
+								PrintMan,
+								InspectStatus,
+								ConfirmStatus,
+
+								CreatePerson,
+								CreateTime
+								) 
+						SELECT	@ReturnInspectionNum,
+								PartCustomerCode,
+								'',
+								PartId,
+								CustomerId,
+								SupplierId,
+								Qty,
+								case when isnull(PCS, '') = '' then null else convert(decimal(19,2), PCS) end,
+								case when isnull(Volume, '') = '' then null else convert(decimal(19,2), Volume) end,
+								Remark,
+								Qty,	--默认合格
+								0,
+								@CheckOutResult,
+								@InvId,
+
+								'已打印',
+								@now,
+								@UserId,
+								'未检验',
+								'未确认',
+
+								@UserId,
+								@now
+							FROM #ReturnInspection;
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '保存退货入库记录时出错！'
+		RETURN
+	END
+
+
+	COMMIT TRAN
+	RETURN
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateBatchReturnOrder]    Script Date: 2019/5/11 21:00:11 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   PROCEDURE [dbo].[P_WMS_CreateBatchReturnOrder]
+	@UserId varchar(50),
+	@JsonReturnOrder NVARCHAR(MAX), --所选择要退货的退货记录
+	--@ReturnOrderNum	varchar(50) OUTPUT,
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now date = getdate();
+	DECLARE @count int;
+
+	--保存到临时表
+	SELECT *
+		INTO #ReturnOrder
+		FROM OPENJSON(@JsonReturnOrder)  
+			WITH (	PartId int,
+					SupplierId int,
+					InvId int,
+					Lot varchar(50),
+					AdjustQty decimal(10, 3),
+					Remark nvarchar(200)
+				) 
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '临时保存信息时出错！'
+		RETURN
+	END
+
+	select @count = count(*) from #ReturnOrder
+		where PartId is null;
+	IF (@count > 0)
+	BEGIN
+		;
+		THROW 51000, '存在物料Id为空的记录，请确认！', 1;
+		RETURN;
+	END;
+
+	select @count = count(*) from #ReturnOrder
+		where SupplierId is null;
+	IF (@count > 0)
+	BEGIN
+		;
+		THROW 51000, '存在供应商Id为空的记录，请确认！', 1;
+		RETURN;
+	END;
+
+	select @count = count(*) from #ReturnOrder
+		where InvId is null;
+	IF (@count > 0)
+	BEGIN
+		;
+		THROW 51000, '存在库房Id为空的记录，请确认！', 1;
+		RETURN;
+	END;
+
+	select @count = count(*) from #ReturnOrder
+		where Lot is null;
+	IF (@count > 0)
+	BEGIN
+		;
+		THROW 51000, '存在批次为空的记录，请确认！', 1;
+		RETURN;
+	END;
+
+	BEGIN TRAN
+
+	INSERT INTO WMS_ReturnOrder (
+								PartID,
+								Lot,
+								SupplierId,
+								InvId,
+								SubInvId,
+								ReturnQty,
+								AdjustQty,
+								Status,
+								Remark,
+								CreatePerson,
+								CreateTime
+								) 
+						SELECT	
+								PartId,
+								Lot,
+								SupplierId,
+								InvId,
+								null,
+								AdjustQty,
+								0,
+								'有效',
+								Remark,
+								@UserId,
+								@now
+							FROM #ReturnOrder;
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '保存退货记录时出错！'
+		RETURN
+	END
+
+
+	COMMIT TRAN
+	RETURN
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInspectBill]    Script Date: 2019/5/11 21:00:11 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 
 CREATE   PROCEDURE [dbo].[P_WMS_CreateInspectBill]
 	-- Add the parameters for the stored procedure here
@@ -591,12 +773,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInventoryLine]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInventoryLine]    Script Date: 2019/5/11 21:00:11 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE PROCEDURE [dbo].[P_WMS_CreateInventoryLine]
 	@UserId varchar(50),
@@ -658,7 +841,7 @@ BEGIN
 								@UserId,
 								@now
 						from WMS_Inv inv
-						where inv.InvId in (select id from #InvList);
+						where qty+stockqty>0 and inv.InvId in (select id from #InvList);
 
 	--修改盘点头表状态
 	update WMS_Inventory_H set InventoryStatus = '已生成',
@@ -672,12 +855,92 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReInspect]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateInvHistory]    Script Date: 2019/5/11 21:00:12 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
+--创建历史库存
+CREATE PROCEDURE [dbo].[P_WMS_CreateInvHistory]
+	@UserId varchar(50),
+	@InvHistoryTitle nvarchar(100),
+	@InvHistoryStatus nvarchar(10),
+	@Remark nvarchar(200),
+	--@ReturnOrderNum	varchar(50) OUTPUT,
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now datetime = getdate()
+	DECLARE @rowId int
+
+	BEGIN TRAN
+
+	--插入退货记录（退货单号为空，打印时再生成退货单号）
+	INSERT INTO WMS_Inv_History_H (
+								InvHistoryTitle,
+								InvHistoryStatus,
+								Remark,
+								CreatePerson,
+								CreateTime
+								) 
+						VALUES	(
+								@InvHistoryTitle,
+								@InvHistoryStatus,
+								@Remark,
+								@UserId,
+								@now
+								);
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '保存历史库存记录时出错！'
+		RETURN
+	END
+	set @rowId = @@IDENTITY
+
+	--保存历史库存的行表
+	insert into WMS_Inv_History_D (HeadId,
+								PartId,
+								InvId,
+								SubInvId,
+								SnapshootQty,
+								CreatePerson,
+								CreateTime
+								)
+					select		@rowId,
+								PartId,
+								InvId,
+								SubInvId,
+								sum(Qty),
+								@UserId,
+								@now
+						from WMS_Inv inv
+						group by PartId,
+								InvId,
+								SubInvId;
+
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '保存历史库存记录时出错！'
+		RETURN
+	END
+
+	COMMIT TRAN
+	RETURN
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReInspect]    Script Date: 2019/5/11 21:00:12 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 
 CREATE   PROCEDURE [dbo].[P_WMS_CreateReInspect]
 	@UserId varchar(50),
@@ -697,6 +960,7 @@ BEGIN
 
 	DECLARE @now datetime = getdate();
 	DECLARE @rowId int
+	DECLARE @SupplierId int;
 	DECLARE @PartId int;
 	DECLARE @InvId int;
 	DECLARE @SubInvId int;
@@ -708,14 +972,17 @@ BEGIN
 
 	BEGIN TRAN
 
-	SELECT @PartId = PartId,
-			@InvId = InvId,
-			@SubInvId = SubInvId,
-			@Lot = Lot,
-			@OQualifyQty = QualifyQty,
-			@ONoQualifyQty = NoQualifyQty
-		FROM WMS_AI
-		WHERE Id = @AIID;
+	SELECT @PartId = ai.PartId,
+			@SupplierId = po.SupplierId,
+			@InvId = ai.InvId,
+			@SubInvId = ai.SubInvId,
+			@Lot = ai.Lot,
+			@OQualifyQty = ai.QualifyQty,
+			@ONoQualifyQty = ai.NoQualifyQty
+		FROM WMS_AI ai,
+			WMS_PO po
+		WHERE ai.POId = po.Id
+		  and ai.Id = @AIID;
 
 	--插入ReInspect表
 	INSERT INTO WMS_ReInspect (AIId,
@@ -802,7 +1069,7 @@ BEGIN
 						@rowId,
 						@PartId,
 						@Lot,
-						@SubInvId,
+						@SupplierId,
 						@NoQualifyQty,
 						0,
 						'有效',
@@ -819,12 +1086,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReturnOrder]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_CreateReturnOrder]    Script Date: 2019/5/11 21:00:12 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 --手工创建退货单
 CREATE PROCEDURE [dbo].[P_WMS_CreateReturnOrder]
@@ -948,12 +1216,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[p_wms_deleteTestData]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[p_wms_deleteTestData]    Script Date: 2019/5/11 21:00:12 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 -- =============================================
 -- Author:		<Author,,Name>
@@ -976,16 +1245,19 @@ delete WMS_Inventory_D;
 delete WMS_Inventory_H;
 delete [WMS_AI]
 delete wms_po
+delete WMS_Inv_History_D;
+delete WMS_Inv_History_H;
 end
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_GetMaxNum]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_GetMaxNum]    Script Date: 2019/5/11 21:00:12 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE PROCEDURE [dbo].[P_WMS_GetMaxNum]
 	@Type varchar(50),
@@ -1025,12 +1297,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InitNumForDay]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InitNumForDay]    Script Date: 2019/5/11 21:00:13 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE PROCEDURE [dbo].[P_WMS_InitNumForDay]
 	@Type varchar(50),
@@ -1056,12 +1329,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvAdjust]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvAdjust]    Script Date: 2019/5/11 21:00:13 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 CREATE   PROCEDURE [dbo].[P_WMS_InvAdjust]
@@ -1131,12 +1405,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock]    Script Date: 2019/5/11 21:00:13 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE       PROCEDURE [dbo].[P_WMS_InvStock]	--库存备料
 	@UserId varchar(50),
@@ -1281,12 +1556,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock_BatchUpdate]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_InvStock_BatchUpdate]    Script Date: 2019/5/11 21:00:13 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE     PROCEDURE [dbo].[P_WMS_InvStock_BatchUpdate]	--库存备料
 	@UserId varchar(50),
@@ -1418,12 +1694,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintFeedList]    Script Date: 2019/5/11 21:00:13 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE   PROCEDURE [dbo].[P_WMS_PrintFeedList]
 	@UserId varchar(50),
@@ -1538,12 +1815,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder]    Script Date: 2019/5/11 21:00:13 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE   PROCEDURE [dbo].[P_WMS_PrintReturnOrder]
 	@UserId varchar(50),
@@ -1651,12 +1929,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder1]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintReturnOrder1]    Script Date: 2019/5/11 21:00:14 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE PROCEDURE [dbo].[P_WMS_PrintReturnOrder1]
 	@UserId varchar(50),
@@ -1738,12 +2017,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_PrintSaleOrder]    Script Date: 2019/5/11 21:00:14 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE     PROCEDURE [dbo].[P_WMS_PrintSaleOrder]
 	@UserId varchar(50),
@@ -1861,12 +2141,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessInspectBill]    Script Date: 2019/5/11 21:00:14 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE   PROCEDURE [dbo].[P_WMS_ProcessInspectBill]
 	@UserId varchar(50),
@@ -2070,12 +2351,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessProductEntry]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessProductEntry]    Script Date: 2019/5/11 21:00:15 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE   PROCEDURE [dbo].[P_WMS_ProcessProductEntry]
 	@UserId varchar(50),
@@ -2139,7 +2421,7 @@ BEGIN
 	BEGIN TRAN
 
 	--获取入库单号
-	exec P_WMS_GetMaxNum 'RK', 'WMS_Product_Entry', @now, @EntryBillNum output
+	exec P_WMS_GetMaxNum 'Z', 'WMS_Product_Entry', @now, @EntryBillNum output
 
 	--保存检验结果
 	update WMS_Product_Entry SET EntryBillNum = @EntryBillNum,
@@ -2174,7 +2456,7 @@ BEGIN
 						pe.Id,
 						@EntryBillNum,
 						@now,
-						'入库',
+						'自制件入库',
 						@UserId
 						FROM WMS_Product_Entry pe
 						WHERE pe.ProductBillNum = @ProductBillNum
@@ -2209,12 +2491,283 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnInvStock]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_ProcessReturnInspectBill]    Script Date: 2019/5/11 21:00:15 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
+CREATE     PROCEDURE [dbo].[P_WMS_ProcessReturnInspectBill]
+	@UserId varchar(50),
+	@JsonReturnInspectBill NVARCHAR(MAX), --检验结果
+	@ReturnValue	varchar(50) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @ReturnInspectBillNum varchar(50)
+	DECLARE @now date = getdate()
+	DECLARE @lot varchar(6) = dbo.F_GetLot(@now);
+	DECLARE @count int
+	DECLARE @InStoreBillNum varchar(50)
+	DECLARE @ReturnOrderNum varchar(50)
+
+	--先初始化当前日期、当前type的Num（要在事务开始之前执行）
+	exec P_WMS_InitNumForDay 'RK', 'WMS_ReturnInspection', @now
+
+	--将检验结果保存到临时表
+	SELECT *
+		INTO #ReturnInspectBill
+		FROM OPENJSON(@JsonReturnInspectBill)  
+			WITH (	Id int,
+					PartID int,
+					ReturnInspectionNum nvarchar(50),
+					SupplierId int,
+					InspectDate date,
+					CheckOutResult nvarchar(50),
+					QualifyQty decimal(10, 3),
+					InvId int,
+					SubInvId int,
+					NoQualifyQty decimal(10, 3)
+				) 
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '临时保存检验信息时出错！'
+		RETURN
+	END
+
+	--根据检验结果初始化库存现有量，目的是处理并发。如果放在下面的事务中，会导致初始化语句只有在事务完成后才能提交，不利于并发处理。而放在事务之前，是立即提交，这样可以同时对库存现有量进行修改。
+	INSERT INTO WMS_Inv (InvId,
+						SubInvId,
+						PartId,
+						Lot,
+						Qty,
+						StockQty
+						)
+			SELECT	ib.InvId,	
+					ib.SubInvId,	
+					ib.PartID,
+					@lot,
+					0,
+					0
+					FROM #ReturnInspectBill ib
+					WHERE ib.QualifyQty <> 0
+						AND not exists (
+										SELECT 1 FROM WMS_Inv inv
+											WHERE inv.InvId = ib.InvId
+												AND Isnull(inv.SubInvId, 0) = Isnull(ib.SubInvId, 0)
+												AND inv.PartId = ib.PartID
+												AND Isnull(inv.Lot, 0) = @lot
+										)
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '初始化库存数据时出错！'
+		RETURN
+	END
+
+
+	BEGIN TRAN
+
+
+	SELECT top 1 @ReturnInspectBillNum = ReturnInspectionNum FROM #ReturnInspectBill
+
+	--获取入库单号
+	exec P_WMS_GetMaxNum 'RK', 'WMS_ReturnInspection', @now, @InStoreBillNum output
+
+	--保存检验结果
+	update WMS_ReturnInspection SET	WMS_ReturnInspection.InspectStatus = '已检验',
+						WMS_ReturnInspection.InspectDate = t.InspectDate,
+						WMS_ReturnInspection.CheckOutResult = t.CheckOutResult,
+						WMS_ReturnInspection.QualifyQty = t.QualifyQty,
+						WMS_ReturnInspection.NoQualifyQty = t.NoQualifyQty,
+						WMS_ReturnInspection.InStoreBillNum = @InStoreBillNum,
+						WMS_ReturnInspection.InvId = t.InvId,
+						WMS_ReturnInspection.SubInvId = t.SubInvId,
+						WMS_ReturnInspection.Lot = @lot,
+						WMS_ReturnInspection.ModifyPerson = @UserId,
+						WMS_ReturnInspection.ModifyTime = @now
+					FROM #ReturnInspectBill t,
+						WMS_ReturnInspection
+					WHERE WMS_ReturnInspection.Id = t.Id
+							AND WMS_ReturnInspection.ReturnInspectionNum = @ReturnInspectBillNum
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '保存检验信息时出错！'
+		ROLLBACK TRAN
+		RETURN
+	END
+
+
+	--对合格数量进行入库处理
+	SELECT @count = count(*) FROM #ReturnInspectBill
+		WHERE QualifyQty <> 0
+	IF (@count > 0)
+	BEGIN
+		--插入库存记录表
+		INSERT INTO WMS_InvRecord (PartId,
+									Lot,
+									QTY,
+									InvId,
+									SubInvId,
+									BillId,
+									SourceBill,
+									OperateDate,
+									Type,
+									OperateMan
+									)
+					SELECT ib.PartId,
+							@lot,
+							ib.QualifyQty,
+							ib.InvId,
+							ib.SubInvId,	
+							ib.Id,
+							@InStoreBillNum,
+							@now,
+							'入库',
+							@UserId
+							FROM #ReturnInspectBill ib
+							WHERE ib.QualifyQty <> 0
+		IF (@@ERROR <> 0)
+		BEGIN
+			set @ReturnValue = '保存库存记录时出错！'
+			ROLLBACK TRAN
+			RETURN
+		END
+
+		--修改现有量
+		UPDATE WMS_Inv SET Qty = Qty + ib.QualifyQty
+			FROM WMS_Inv inv,
+				#ReturnInspectBill ib
+			WHERE inv.InvId = ib.InvId
+				AND Isnull(inv.SubInvId, 0) = Isnull(ib.SubInvId, 0)
+				AND inv.PartId = ib.PartId
+				AND Isnull(inv.Lot, 0) = @lot
+				AND ib.QualifyQty <> 0
+		IF (@@ERROR <> 0)
+		BEGIN
+			set @ReturnValue = '修改库存现有量时出错！'
+			ROLLBACK TRAN
+			RETURN
+		END
+	END
+
+
+	--对不合格数量进行退库处理（必须是外购件，即有供应商ID的退货记录）
+	SELECT @count = count(*) FROM #ReturnInspectBill
+		WHERE NoQualifyQty <> 0
+		  and SupplierId is not null
+	IF (@count > 0)
+	BEGIN
+		--插入退货记录
+		INSERT INTO WMS_ReturnOrder (
+									PartID,
+									Lot,
+									SupplierId,
+									ReturnQty,
+									AdjustQty,
+									Status,
+									--PrintStaus,
+									CreatePerson,
+									CreateTime
+									--ConfirmStatus
+									)
+				SELECT 
+						ib.PartId,
+						null,
+						ib.SupplierId,
+						ib.NoQualifyQty,
+						0,
+						'有效',
+						--'未退货',
+						@UserId,
+						@now
+						--'未确认'
+					FROM #ReturnInspectBill ib
+					WHERE ib.NoQualifyQty <> 0
+					  and ib.SupplierId is not null
+
+	END
+
+
+	COMMIT TRAN
+	RETURN
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_SpecialInventory]    Script Date: 2019/5/11 21:00:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[P_WMS_SpecialInventory] --盘点调整
+	@UserName varchar(50),
+	@HeadId int,	--盘点头表的ID
+	@ReturnValue	varchar(50) OUTPUT
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+	set xact_abort on   
+
+	DECLARE @now datetime = getdate()
+	DECLARE @Count int;
+	BEGIN TRAN
+	--更改头表状态为已生成
+	update WMS_Inventory_H set InventoryStatus='已生成' where Id = @HeadId;
+	--抽检物料导入后，如果存在物料批次，那么更改快照数，不存在新增行	
+	MERGE INTO WMS_Inventory_D AS inventory
+		USING (SELECT * FROM WMS_Inv where PartId in (select PartId from WMS_Inventory_D where HeadId = @HeadId))  AS inv
+		ON (inventory.InvId = inv.InvId
+			and isnull(inventory.SubInvId, 0) = isnull(inv.SubInvId, 0)
+			and inventory.PartId = inv.PartId
+			and isnull(inventory.Lot, 0) = isnull(inv.Lot, 0)
+			and inventory.HeadId = @HeadId
+			)
+		WHEN MATCHED
+			THEN UPDATE SET inventory.SnapshootQty = inv.Qty
+		WHEN NOT MATCHED and inv.qty+inv.stockqty>0
+			THEN INSERT (InvId,
+						SubInvId,
+						PartId,
+						Lot,
+						HeadId,
+						SnapshootQty,
+						InventoryQty,
+						CreatePerson,
+						CreateTime) 
+					VALUES(inv.InvId,
+							inv.SubInvId,
+							inv.PartId,
+							inv.Lot,
+							@HeadId,
+							inv.Qty,
+							0,
+							@UserName,
+							@now);
+	IF (@@ERROR <> 0)
+	BEGIN
+		set @ReturnValue = '抽检导入时出错！'
+		ROLLBACK TRAN
+		RETURN
+	END
+	COMMIT TRAN
+	RETURN
+
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[P_WMS_UnInvStock]    Script Date: 2019/5/11 21:00:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 
 CREATE         PROCEDURE [dbo].[P_WMS_UnInvStock]	--取消库存备料
 	@UserId varchar(50),
@@ -2280,12 +2833,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintFeedList]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintFeedList]    Script Date: 2019/5/11 21:00:15 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE     PROCEDURE [dbo].[P_WMS_UnPrintFeedList]
 	@UserId varchar(50),
@@ -2358,12 +2912,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintSaleOrder]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UnPrintSaleOrder]    Script Date: 2019/5/11 21:00:16 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE     PROCEDURE [dbo].[P_WMS_UnPrintSaleOrder]
 	@UserId varchar(50),
@@ -2435,12 +2990,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty]    Script Date: 2019/5/11 21:00:16 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE     PROCEDURE [dbo].[P_WMS_UpdateInvQty]
 	@UserId varchar(50),
@@ -2454,10 +3010,11 @@ CREATE     PROCEDURE [dbo].[P_WMS_UpdateInvQty]
 	@now datetime,
 	@type varchar(50),
 	@BillId int,
-	@SourceBill varchar(50)
+	@SourceBill varchar(50),
+	@AllowNegativeInv bit = 0 --是否允许负库存，默认否
 AS
 BEGIN
-	DECLARE @AllowNegativeInv bit = 0; --是否允许负库存，默认否
+	--DECLARE @AllowNegativeInv bit = 0; --是否允许负库存，默认否
 	DECLARE @Count int;
 	DECLARE @rowId int;
 	DECLARE @InvQty decimal(10, 3);
@@ -2558,6 +3115,33 @@ BEGIN
 			THROW 51000, '入库批次存在问题：当前批次库存不存在且该操作不允许新增批次，请确认！', 1;
 			RETURN;
 		END
+
+		--插入库存记录表
+		INSERT INTO WMS_InvRecord (PartId,
+									Lot,
+									QTY,
+									InvId,
+									SubInvId,
+									BillId,
+									SourceBill,
+									OperateDate,
+									Type,
+									OperateMan,
+									Stock_InvId,
+									StockStatus
+									)
+							VALUES (@PartId,
+									@Lot,
+									@Qty,
+									@InvId,
+									@SubInvId,	
+									@BillId,
+									@SourceBill,
+									@now,
+									@type,
+									@UserId,
+									null,
+									1);
 	END
 
 
@@ -2713,12 +3297,13 @@ END
 
 GO
 
-/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty_BatchUpdate]    Script Date: 2019/3/2 13:51:37 ******/
+/****** Object:  StoredProcedure [dbo].[P_WMS_UpdateInvQty_BatchUpdate]    Script Date: 2019/5/11 21:00:16 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 CREATE   PROCEDURE [dbo].[P_WMS_UpdateInvQty_BatchUpdate]
 	@UserId varchar(50),
