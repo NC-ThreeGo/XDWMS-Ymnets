@@ -86,7 +86,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             ViewBag.Inv = new SelectList(_InvInfoBll.GetList(ref setNoPagerAscById, ""), "Id", "InvName");
             WMS_Product_EntryModel model = new WMS_Product_EntryModel()
             {
-                ProductBillNum = "RK" + DateTime.Now.ToString("yyyyMMddHHmmssff"),
+                ProductBillNum = "Z" + DateTime.Now.ToString("yyyyMMddHHmmssff"),
 
             };
             return View(model);

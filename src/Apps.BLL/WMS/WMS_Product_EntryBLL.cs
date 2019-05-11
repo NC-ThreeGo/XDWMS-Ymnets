@@ -109,7 +109,7 @@ namespace Apps.BLL.WMS
                     {
                         var tran = db.Database.BeginTransaction();  //开启事务
                         int rowIndex = 0;
-                        string productBillNum = null;
+                        string productBillNum = "Z" + DateTime.Now.ToString("yyyyMMddHHmmssff");
 
                         //检查数据正确性
                         foreach (var row in excelContent)
@@ -118,8 +118,8 @@ namespace Apps.BLL.WMS
                             string errorMessage = String.Empty;
                             var model = new WMS_Product_EntryModel();
                             model.Id = row.Id;
-                            model.ProductBillNum = row.ProductBillNum;
-                            productBillNum = row.ProductBillNum;
+                            model.ProductBillNum = productBillNum;
+                            //productBillNum = row.ProductBillNum;
                             model.EntryBillNum = row.EntryBillNum;
                             model.Department = row.Department;
                             //model.Partid = row.Partid;
