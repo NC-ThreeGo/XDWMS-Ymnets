@@ -145,7 +145,7 @@
                         if (isSelectAll)
                         {
                             $("input[type='checkbox']")[i + 1].checked = true;
-                            data.rows[i].Qty = data.rows[i].ReturnQty;
+                            data.rows[i].Qty = data.rows[i].ReturnQty - data.rows[i].AdjustQty;
                             var td1 = $('.datagrid-body td[field="Qty"]')[i];
                             var div1 = $(td1).find('div')[0];
                             $(div1).text(data.rows[i].Qty);
