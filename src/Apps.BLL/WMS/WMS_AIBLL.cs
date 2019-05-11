@@ -253,7 +253,7 @@ namespace Apps.BLL.WMS
                                 entity.PartId = model.PartId;
                                 entity.BoxQty = model.BoxQty;
                                 entity.ArrivalQty = model.ArrivalQty;
-                                entity.ArrivalDate = model.ArrivalDate.Value;
+                                entity.ArrivalDate = DateTime.Now;
                                 entity.ReceiveMan = model.ReceiveMan;
                                 entity.Lot = model.Lot;
                                 entity.ReceiveStatus = model.ReceiveStatus;
@@ -372,14 +372,15 @@ namespace Apps.BLL.WMS
                 throw new Exception("采购订单号不能为空！");
             }
             //校验入库日期
-            if (!String.IsNullOrEmpty(model.ArrivalDate.ToString()))
+            //if (!String.IsNullOrEmpty(model.ArrivalDate.ToString()))
+            if (!String.IsNullOrEmpty(model.PO))
             {
-                //model.Lot = CommonHelper.GetLot(DateTime.Now);
-                if (!DateTimeHelper.CheckYearMonth(model.ArrivalDate.Value.ToString("yyyyMM")))
-                {
-                    throw new Exception("批次号不合符规范！");
-                }
-                else { model.Lot = model.ArrivalDate.Value.ToString("yyyyMM"); }
+                model.Lot = DateTimeHelper.GetLot(DateTime.Now);
+                //if (!DateTimeHelper.CheckYearMonth(model.ArrivalDate.Value.ToString("yyyyMM")))
+                //{
+                //    throw new Exception("批次号不合符规范！");
+                //}
+                //else { model.Lot = model.ArrivalDate.Value.ToString("yyyyMM"); }
             }
             else
             {
@@ -406,7 +407,7 @@ namespace Apps.BLL.WMS
             //不允许超量接受
 
             //投料数量不能为空
-            if (model.ArrivalQty > 0)
+            if (model.ArrivalQty < 0)
             {
                 throw new Exception("到货数量必须大于0！");
             }
