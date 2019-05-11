@@ -56,7 +56,7 @@ $.messageBox5s(Lang.Tip, mes);
              @Html.HiddenFor(model => model.CreateTime)
  <table class="formtable">
     <tbody>
-        <tr>
+        @*<tr>
             <th>
                 @Html.LabelFor(model => model.ProductBillNum)：
             </th>
@@ -64,7 +64,7 @@ $.messageBox5s(Lang.Tip, mes);
                 @Html.EditorFor(model => model.ProductBillNum)
             </td>
             <td>@Html.ValidationMessageFor(model => model.ProductBillNum)</td>
-        </tr>
+        </tr>*@
         <tr>
             <th>
                 @Html.LabelFor(model => model.EntryBillNum)：
