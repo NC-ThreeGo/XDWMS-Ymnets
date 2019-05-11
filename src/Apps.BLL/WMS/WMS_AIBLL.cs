@@ -287,6 +287,7 @@ namespace Apps.BLL.WMS
                                 entity.ModifyTime = DateTime.Now;
 
                                 db.WMS_AI.Add(entity);
+                                
                                 try
                                 {
                                     db.SaveChanges();

@@ -18,6 +18,7 @@
                 <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
                 <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="Upload('ExcelFile', 'txtExcelPath', 'FileUpload'); ">
                 <span class="uploading">@Resource.Uploading</span>
+                <input name="Para" type="hidden" maxlength="255" id="Para" readonly="readonly">
             </td>
         </tr>
         <tr>
@@ -36,7 +37,7 @@
 </div>
 <div class="mvctool">
     @*<input id="txtPartCode" placeholder="物料编码:" type="text" class="searchText" />
-    <input id="txtPartName" placeholder="物料名称:" type="text" class="searchText" />*@
+        <input id="txtPartName" placeholder="物料名称:" type="text" class="searchText" />*@
     <input id="txtQuery" type="text" class="searchText" />
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
     @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
@@ -45,6 +46,8 @@
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
+    @Html.ToolButton("btnSafeImport", "fa fa-level-down", "安全库存导入", ref perm, "Import", true)
+    @Html.ToolButton("btnSafeExportTemplate", "fa fa-level-up", "安全库存模板导出", ref perm, "Export", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -83,7 +86,8 @@
                 { field: 'Unit', title: '单位', width: 80, sortable: true },
                 { field: 'Volume', title: '每箱体积', width: 80, sortable: true },
                 { field: 'Remark', title: '说明', width: 80, sortable: true },
-                { field: 'Status', title: '物料状态', width: 80,sortable:true },
+                { field: 'Status', title: '物料状态', width: 80, sortable: true },
+                { field: 'SafeStock', title: '安全库存', width: 80, sortable: true },
                 { field: 'CreatePerson', title: '创建人', width: 80,sortable:true },
                 //{ field: 'CreateTime', title: '创建时间', width: 80,sortable:true },
                 //{ field: 'ModifyPerson', title: '修改人', width: 80,sortable:true },
@@ -142,8 +146,14 @@
 	            dataDelete("@Url.Action("Delete")", "List");
 	        });
         $("#btnImport").click(function() {
-             $("#txtExcelPath").val("");
-             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+            $("#txtExcelPath").val("")
+            $("#Para").val("0")
+            $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+        });
+        $("#btnSafeImport").click(function() {
+            $("#txtExcelPath").val("")
+            $("#Para").val("1")
+            $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
             var queryStr = $("#txtQuery").val();
@@ -164,12 +174,21 @@
         $("#btnExportTemplate").click(function() {
           window.location = "@Url.Action("ExportTemplate")";
         });
+        $("#btnSafeExportTemplate").click(function() {
+          window.location = "@Url.Action("ExportSafeTemplate")";
+        });
     });
     function ImportData()
     {
         showLoading();
-        var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
-        $.post(url, function(data) {
+        var para = $("#Para").val();
+        if (para == 0) {
+            var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
+        }
+        else {
+            var url = "@Url.Action("SafeStockImport")?filePath="+$("#txtExcelPath").val();
+        }
+                $.post(url, function(data) {
             if (data.type == 1)
             {
              $("#List").datagrid('load');

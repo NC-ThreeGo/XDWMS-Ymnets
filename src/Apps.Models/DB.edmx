@@ -1296,6 +1296,7 @@
           <Property Name="Volume" Type="decimal" Precision="10" Scale="3" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
           <Property Name="Remark" Type="nvarchar" MaxLength="100" />
+          <Property Name="SafeStock" Type="decimal" Precision="10" Scale="3" />
           <Property Name="CreatePerson" Type="nvarchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" />
           <Property Name="ModifyPerson" Type="nvarchar" MaxLength="50" />
@@ -7817,6 +7818,7 @@
           <NavigationProperty Name="WMS_Inv" Relationship="DB.FK_Inv_WMS_Part" FromRole="WMS_Part" ToRole="WMS_Inv" />
           <NavigationProperty Name="WMS_InvRecord" Relationship="DB.FK_WMS_InvRecord_WMS_Part" FromRole="WMS_Part" ToRole="WMS_InvRecord" />
           <NavigationProperty Name="WMS_ReturnInspection" Relationship="DB.FK_ReturnInspection_WMS_Part" FromRole="WMS_Part" ToRole="WMS_ReturnInspection" />
+          <Property Name="SafeStock" Type="Decimal" Precision="10" Scale="3" />
         </EntityType>
         <Association Name="FK_WMS_AI_WMS_Part">
           <End Type="DB.WMS_Part" Role="WMS_Part" Multiplicity="0..1" />
@@ -10231,6 +10233,7 @@
           <EntitySetMapping Name="WMS_Part">
             <EntityTypeMapping TypeName="DB.WMS_Part">
               <MappingFragment StoreEntitySet="WMS_Part">
+                <ScalarProperty Name="SafeStock" ColumnName="SafeStock" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="Volume" ColumnName="Volume" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />

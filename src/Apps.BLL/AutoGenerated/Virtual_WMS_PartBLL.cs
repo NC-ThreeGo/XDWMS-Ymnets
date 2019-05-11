@@ -103,6 +103,7 @@ namespace Apps.BLL.WMS
 													Unit = r.Unit,
 													Volume = r.Volume,
 													Remark = r.Remark,
+                                                    SafeStock = r.SafeStock,
           
                                               }).ToList();
 
@@ -240,6 +241,7 @@ namespace Apps.BLL.WMS
 				entity.Unit = model.Unit;
 				entity.Volume = model.Volume;
 				entity.Remark = model.Remark;
+                entity.SafeStock = model.SafeStock;
  
 
 
@@ -287,6 +289,7 @@ namespace Apps.BLL.WMS
 				model.Unit = entity.Unit;
 				model.Volume = entity.Volume;
 				model.Remark = entity.Remark;
+                model.SafeStock = entity.SafeStock;
  
                 return model;
             }

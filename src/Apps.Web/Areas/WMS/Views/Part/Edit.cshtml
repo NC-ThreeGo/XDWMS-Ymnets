@@ -150,6 +150,15 @@ $.messageBox5s(Lang.Tip, mes);
          </tr>
          <tr>
              <th>
+                 安全库存：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.SafeStock)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.SafeStock)</td>
+         </tr>
+         <tr>
+             <th>
                  说明：
              </th>
              <td>

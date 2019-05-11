@@ -209,6 +209,21 @@ namespace Apps.Web.Areas.WMS.Controllers
             //}
         }
         [HttpPost]
+        [SupportFilter(ActionName = "Import")]
+        public ActionResult SafeStockImport(string filePath)
+        {
+            if (m_BLL.ImportSafeStock(GetUserTrueName(), Utils.GetMapPath(filePath), ref errors))
+            {
+                LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Part", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
+            }
+            else
+            {
+                LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Part", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
+            }
+        }
+        [HttpPost]
         [SupportFilter(ActionName = "Export")]
         public JsonResult CheckExportData(string queryStr)
         {
@@ -288,6 +303,26 @@ namespace Apps.Web.Areas.WMS.Controllers
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
             var exportFileName = string.Concat("零件导入模板",
+                    ".xlsx");
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
+
+        [SupportFilter(ActionName = "Export")]
+        public ActionResult ExportSafeTemplate()
+        {
+            JArray jObjects = new JArray();
+            var jo = new JObject();
+            jo.Add("物料编码(必输)", "");
+            jo.Add("安全库存(必输)", "");            
+            jo.Add("导入的错误信息", "");
+            jObjects.Add(jo);
+            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+            var exportFileName = string.Concat("零件安全库存导入模板",
                     ".xlsx");
             return new ExportExcelResult
             {

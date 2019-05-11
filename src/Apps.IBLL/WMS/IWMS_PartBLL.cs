@@ -13,14 +13,16 @@ namespace Apps.IBLL.WMS
          /// <param name="errors"></param>
          /// <returns></returns>
          bool ImportExcelData(string oper, string filePath, ref ValidationErrors errors);
-    
-         /// <summary>
-         /// 对导入进行附加的校验，例如物料编码是否存在等。
-         /// </summary>
-         /// <param name="model"></param>
-         //void AdditionalCheckExcelData(WMS_PartModel model);
 
-        List<WMS_PartModel> GetList(ref GridPager pager, string partCode, string partName);
+        bool ImportSafeStock(string oper, string filePath, ref ValidationErrors errors);
+        
+            /// <summary>
+            /// 对导入进行附加的校验，例如物料编码是否存在等。
+            /// </summary>
+            /// <param name="model"></param>
+            //void AdditionalCheckExcelData(WMS_PartModel model);
+
+            List<WMS_PartModel> GetList(ref GridPager pager, string partCode, string partName);
 
         /// <summary>
         /// 根据where字符串获取列表数据

@@ -53,5 +53,7 @@ namespace Apps.Models.WMS
 		public virtual Nullable<decimal> Volume { get; set; }
 		[Display(Name = "说明")]
 		public virtual string Remark { get; set; }
+		[Display(Name = "未设置")]
+		public virtual Nullable<decimal> SafeStock { get; set; }
 		}
 }
