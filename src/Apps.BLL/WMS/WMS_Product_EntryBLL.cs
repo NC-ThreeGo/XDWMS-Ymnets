@@ -300,7 +300,10 @@ namespace Apps.BLL.WMS
                     throw new Exception("批次号不合符规范！");
                 }
             }
-            else { model.Lot = DateTime.Now.ToString("yyyyMM"); }
+            else {
+                //model.Lot = DateTime.Now.ToString("yyyyMM");
+                model.Lot = DateTimeHelper.GetLot(DateTime.Now);
+            }
 
             if (model.ProductQty == 0)
             {
