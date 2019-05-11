@@ -303,7 +303,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             jo.Add("物料编码(必输)", "");
             jo.Add("到货箱数", "");
               jo.Add("到货数量(必输)", "");
-              jo.Add("到货日期(格式:年-月-日)(必输)", "");
+              //jo.Add("到货日期(格式:年-月-日)(必输)", "");
               jo.Add("接收人", "");
               //jo.Add("到货状态", "");
               //jo.Add("送检单号", "");
