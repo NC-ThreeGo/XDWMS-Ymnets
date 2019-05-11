@@ -203,7 +203,7 @@
                     //{
                     //    return formatterDateNoHour(value);
                     //},
-                    editor: { type: 'datebox' }
+                    editor: { type: 'datetimebox' }
                 },
                 {
                     field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true,
@@ -271,11 +271,11 @@
                 { field: 'BoxNum', title: '到货箱数', width: 80, editor: { type: 'numberbox' }, align: 'right' },
                 {
                     field: 'ArrivalDate', title: '到货日期', width: 80, sortable: true,
-                    formatter: function (value, row, index)
-                    {
-                        return formatterDateNoHour(value);
-                    },
-                    editor: { type: 'datebox' }
+                    //formatter: function (value, row, index)
+                    //{
+                    //    return formatterDateNoHour(value);
+                    //},
+                    editor: { type: 'datetimebox' }
                 },
                 {
                     field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true,
@@ -328,7 +328,8 @@
         var dateTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'ArrivalDate' }).target;
         if (dateTarget.datebox('getValue') == "")
         {
-            dateTarget.datebox('setValue', formatterDate(new Date()));
+            //dateTarget.datebox('setValue', formatterDate(new Date()));
+            dateTarget.datebox('setValue', new Date());
         }
     }
 
