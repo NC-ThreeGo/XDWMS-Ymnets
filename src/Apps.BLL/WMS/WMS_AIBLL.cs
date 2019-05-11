@@ -374,6 +374,7 @@ namespace Apps.BLL.WMS
             //校验入库日期
             if (!String.IsNullOrEmpty(model.ArrivalDate.ToString()))
             {
+                //model.Lot = CommonHelper.GetLot(DateTime.Now);
                 if (!DateTimeHelper.CheckYearMonth(model.ArrivalDate.Value.ToString("yyyyMM")))
                 {
                     throw new Exception("批次号不合符规范！");
