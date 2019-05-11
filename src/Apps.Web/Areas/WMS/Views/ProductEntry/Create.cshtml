@@ -135,7 +135,7 @@ $.messageBox5s(Lang.Tip, mes);
                 </th>
                 <td>
                     @*@Html.EditorFor(model => model.Lot)*@
-                    @Html.TextBoxFor(model => model.Lot, new {@Value = CommonHelper.GetLot(DateTime.Now) })
+                    @Html.TextBoxFor(model => model.Lot, new {@Value = DateTimeHelper.GetLot(DateTime.Now) })
 
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.Lot)</td>
