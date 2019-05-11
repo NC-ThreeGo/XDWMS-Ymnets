@@ -480,28 +480,45 @@
                     {
                         //alert(JSON.parse(data.value));
                         getRow = JSON.parse(data.value);
-                        datagrid.datagrid('updateRow', {
-                            index: rowIndex,
-                            row: {
-                                SupplierId: getRow.Id,
-                                SupplierCode: getRow.SupplierCode,
-                                SupplierShortName: getRow.SupplierShortName,
-                            },
-                        });
-                        //ChangeFocus(rowIndex, "InvId");
-                        endEditing_mList();
-                        onClickCell_mList(rowIndex, "InvId");
+                        var td = $('.datagrid-body td[field="SupplierId"]')[rowIndex];
+                        var div = $(td).find('div')[0];
+                        $(div).text(getRow.Id);
+                        row.SupplierId = getRow.Id;
+                        var td1 = $('.datagrid-body td[field="SupplierCode"]')[rowIndex];
+                        var div1 = $(td1).find('div')[0];
+                        $(div1).text(getRow.SupplierCode);
+                        row.SupplierCode = getRow.SupplierCode;
+                        var td2 = $('.datagrid-body td[field="SupplierShortName"]')[rowIndex];
+                        var div2 = $(td2).find('div')[0];
+                        $(div2).text(getRow.SupplierShortName);
+                        row.SupplierShortName = getRow.SupplierShortName;
+
+                        ChangeFocus(rowIndex, "InvId");
+
+                        //datagrid.datagrid('updateRow', {
+                        //    index: rowIndex,
+                        //    row: {
+                        //        SupplierId: getRow.Id,
+                        //        SupplierCode: getRow.SupplierCode,
+                        //        SupplierShortName: getRow.SupplierShortName,
+                        //    },
+                        //});
+                        ////ChangeFocus(rowIndex, "InvId");
+                        //endEditing_mList();
+                        //onClickCell_mList(rowIndex, "InvId");
                     } else
                     {
-                        datagrid.datagrid('updateRow', {
-                            index: rowIndex,
-                            row: {
-                                SupplierId: '',
-                                SupplierCode: '',
-                                SupplierShortName: '',
-                           },
-                        });
-                        endEditing_mList();
+                        //datagrid.datagrid('updateRow', {
+                        //    index: rowIndex,
+                        //    row: {
+                        //        SupplierId: '',
+                        //        SupplierCode: '',
+                        //        SupplierShortName: '',
+                        //   },
+                        //});
+                        //endEditing_mList();
+
+                        alert(data.message);
                     }
                 }
             });
