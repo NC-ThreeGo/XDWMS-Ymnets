@@ -450,7 +450,7 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("物料编码(必输)", "");
               jo.Add("数量(必输)", "");
               jo.Add("箱数", "");
-              jo.Add("库房(必输)", "");
+              jo.Add("库房", "");
               //jo.Add("子库存", "");
               jo.Add("批次号(格式：YYYY-MM-DD)", "");
             jo.Add("体积", "");

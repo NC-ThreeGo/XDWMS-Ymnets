@@ -91,7 +91,7 @@ namespace Apps.BLL.WMS
                     excelFile.AddMapping<WMS_POModel>(x => x.PartCode, "物料编码(必输)");
                     excelFile.AddMapping<WMS_POModel>(x => x.QTY, "数量(必输)");
                     excelFile.AddMapping<WMS_POModel>(x => x.PlanDate, "计划到货日期");
-                    excelFile.AddMapping<WMS_POModel>(x => x.POType, "采购订单类型(必输)");
+                    excelFile.AddMapping<WMS_POModel>(x => x.POType, "采购订单类型");
                     //excelFile.AddMapping<WMS_POModel>(x => x.Status, "状态");
                     excelFile.AddMapping<WMS_POModel>(x => x.Remark, "说明");
                     //excelFile.AddMapping<WMS_POModel>(x => x.Attr1, "");
@@ -316,7 +316,7 @@ namespace Apps.BLL.WMS
                 }
                 
             }
-            else { throw new Exception("采购订单类型不能为空！"); }
+            //else { throw new Exception("采购订单类型不能为空！"); }
 
         }
         public List<WMS_POModel> GetListByWhere(ref GridPager pager, string where)

@@ -272,7 +272,7 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("物料编码(必输)", "");
               jo.Add("数量(必输)", "");
               jo.Add("计划到货日期", "");
-              jo.Add("采购订单类型(必输)", "");
+              jo.Add("采购订单类型", "");
               //jo.Add("状态", "");
               jo.Add("说明", "");
               //jo.Add("Attr1", "");

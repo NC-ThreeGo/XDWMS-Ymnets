@@ -112,12 +112,12 @@ namespace Apps.BLL.WMS
                 using (IXLWorksheet wws = wb.Worksheets.First())
                 {
                     //对应列头
-                    excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Inventory_HName, "盘点名称");
-                    excelFile.AddMapping<WMS_Inventory_DModel>(x => x.PartCode, "物料编码");
-                    excelFile.AddMapping<WMS_Inventory_DModel>(x => x.InventoryQty, "盘点数量");
+                    excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Inventory_HName, "盘点名称(必输)");
+                    excelFile.AddMapping<WMS_Inventory_DModel>(x => x.PartCode, "物料编码(必输)");
+                    excelFile.AddMapping<WMS_Inventory_DModel>(x => x.InventoryQty, "盘点数量(必输)");
                     excelFile.AddMapping<WMS_Inventory_DModel>(x => x.InvName, "库房名称");
                     //excelFile.AddMapping<WMS_Inventory_DModel>(x => x.SubInvId, "子库存");
-                    excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Lot, "批次号");
+                    excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Lot, "批次号(必输)");
                     excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Remark, "备注");
                     //excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Attr1, "");
                     //excelFile.AddMapping<WMS_Inventory_DModel>(x => x.Attr2, "");
@@ -336,13 +336,11 @@ namespace Apps.BLL.WMS
                 throw new Exception("物料编码不能为空！");
             }
 
-            //获取库房ID
-            if (!String.IsNullOrEmpty(model.InvName))
+            //获取库房ID 
+            if (!String.IsNullOrEmpty(model.PartCode))
             {
-                var invName = model.InvName;
+                var invName = "主仓库";
                 Expression<Func<WMS_InvInfo, bool>> exp = x => x.InvName == invName;
-
-                //var supplier = m_SupplierRep.GetSingleWhere(exp);
                 var invInfo = db.WMS_InvInfo.FirstOrDefault(exp);
                 if (invInfo == null)
                 {
@@ -353,10 +351,10 @@ namespace Apps.BLL.WMS
                     model.InvId = invInfo.Id;
                 }
             }
-            else
-            {
-                throw new Exception("库房不能为空！");
-            }
+            //else
+            //{
+            //    throw new Exception("库房不能为空！");
+            //}
             //获取盘点头ID
             if (!String.IsNullOrEmpty(model.Inventory_HName))
             {

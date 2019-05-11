@@ -88,7 +88,7 @@ namespace Apps.BLL.WMS
                     excelFile.AddMapping<WMS_Product_EntryModel>(x => x.ProductQty, "数量(必输)");
                     excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Lot, "批次(格式：YYYY-MM-DD)");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvId, "库存");
-                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvName, "库房(必输)");
+                    excelFile.AddMapping<WMS_Product_EntryModel>(x => x.InvName, "库房");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.SubInvId, "子库存");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Remark, "备注");
                     //excelFile.AddMapping<WMS_Product_EntryModel>(x => x.Attr1, "");
@@ -168,7 +168,7 @@ namespace Apps.BLL.WMS
                             entity.ProductBillNum = model.ProductBillNum;
                             entity.EntryBillNum = model.EntryBillNum;
                             //entity.EntryBillNum = "ZZJ" + DateTime.Now.ToString("yyyyMMddHHmmssff");
-                            entity.Department = model.Department;
+                            entity.Department = "总装车间";
                             entity.Partid = model.Partid;
                             entity.ProductQty = model.ProductQty;
                             entity.InvId = model.InvId;
@@ -254,9 +254,9 @@ namespace Apps.BLL.WMS
             }
 
             //获取仓库ID
-            if (!String.IsNullOrEmpty(model.InvName))
+            if (!String.IsNullOrEmpty(model.PartCode))
             {
-                var invName = model.InvName;
+                var invName = "主仓库";
                 Expression<Func<WMS_InvInfo, bool>> exp = x => x.InvName == invName;
 
                 var inv = db.WMS_InvInfo.FirstOrDefault(exp);
@@ -269,10 +269,10 @@ namespace Apps.BLL.WMS
                     model.InvId = inv.Id;
                 }
             }
-            else
-            {
-                throw new Exception("库房不能为空！");
-            }
+            //else
+            //{
+            //    throw new Exception("库房不能为空！");
+            //}
 
             //校验入库单号与物料
             if (!String.IsNullOrEmpty(model.ProductBillNum))

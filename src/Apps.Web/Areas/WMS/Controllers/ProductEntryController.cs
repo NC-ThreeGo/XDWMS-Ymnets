@@ -274,13 +274,13 @@ namespace Apps.Web.Areas.WMS.Controllers
             JArray jObjects = new JArray();
             var jo = new JObject();
               //jo.Add("Id", "");
-              jo.Add("入库单号（业务）(必输)", "");
+              //jo.Add("入库单号（业务）(必输)", "");
               //jo.Add("入库单号（系统）", "");
-              jo.Add("本货部门", "");
+              //jo.Add("本货部门", "");
               jo.Add("物料编码(必输)", "");
               jo.Add("数量(必输)", "");
               jo.Add("批次(格式：YYYY-MM-DD)", "");
-              jo.Add("库房(必输)", "");
+              //jo.Add("库房", "");
               //jo.Add("子库存", "");
               jo.Add("备注", "");
               //jo.Add("Attr1", "");

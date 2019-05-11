@@ -89,7 +89,7 @@ namespace Apps.BLL.WMS
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.PartCode, "物料编码(必输)");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Qty, "数量(必输)");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.BoxQty, "箱数");
-					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvName, "库房(必输)");
+					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.InvName, "库房");
 					//excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.SubInvId, "子库存");
 					excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Lot, "批次号(格式：YYYY-MM-DD)");
                     excelFile.AddMapping<WMS_Sale_OrderModel>(x => x.Volume, "体积");
@@ -291,9 +291,9 @@ namespace Apps.BLL.WMS
             }
 
             //获取库房ID
-            if (!String.IsNullOrEmpty(model.InvName))
+            if (!String.IsNullOrEmpty(model.PartCode))
             {
-                var invName = model.InvName;
+                var invName = "主仓库";
                 Expression<Func<WMS_InvInfo, bool>> exp = x => x.InvName == invName;
 
                 //var supplier = m_SupplierRep.GetSingleWhere(exp);
@@ -307,10 +307,10 @@ namespace Apps.BLL.WMS
                     model.InvId = invInfo.Id;
                 }
             }
-            else
-            {
-                throw new Exception("库房不能为空！");
-            }
+            //else
+            //{
+            //    throw new Exception("库房不能为空！");
+            //}
             //校验批次号,没有批次号自动赋值为当前月
             if (!String.IsNullOrEmpty(model.Lot))
             {

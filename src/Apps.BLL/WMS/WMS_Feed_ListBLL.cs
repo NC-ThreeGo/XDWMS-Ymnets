@@ -90,7 +90,7 @@ namespace Apps.BLL.WMS
                     excelFile.AddMapping<WMS_Feed_ListModel>(x => x.FeedQty, "投料数量(必输)");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.BoxQty, "箱数");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Capacity, "体积");
-					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.InvName, "库房(必输)");
+					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.InvName, "库房");
 					//excelFile.AddMapping<WMS_Feed_ListModel>(x => x.SubInvId, "子库存");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Remark, "备注");
 					//excelFile.AddMapping<WMS_Feed_ListModel>(x => x.PrintStaus, "打印状态");
@@ -288,9 +288,9 @@ namespace Apps.BLL.WMS
             }
 
             //获取库房ID
-            if (!String.IsNullOrEmpty(model.InvName))
+            if (!String.IsNullOrEmpty(model.SubAssemblyPartCode))
             {
-                var invName = model.InvName;
+                var invName = "主仓库";
                 Expression<Func<WMS_InvInfo, bool>> exp = x => x.InvName == invName;
 
                 //var supplier = m_SupplierRep.GetSingleWhere(exp);

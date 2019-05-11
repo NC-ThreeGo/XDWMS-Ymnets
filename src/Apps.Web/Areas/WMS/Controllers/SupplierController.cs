@@ -221,7 +221,7 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("供应商编码(必输)", "");
               jo.Add("供应商简称(必输)", "");
               jo.Add("供应商名称(必输)", "");
-              jo.Add("供应商类型(必输)", "");
+              jo.Add("供应商类型", "");
               jo.Add("联系人", "");
               jo.Add("联系人电话", "");
               jo.Add("联系人地址", "");

@@ -231,11 +231,11 @@ namespace Apps.Web.Areas.WMS.Controllers
             JArray jObjects = new JArray();
             var jo = new JObject();
             //jo.Add("Id", "");
-            jo.Add("盘点名称", "");
-            jo.Add("库房名称", "");
-            jo.Add("物料编码", "");
-            jo.Add("批次号", "");
-            jo.Add("盘点数量", "");
+            jo.Add("盘点名称(必输)", "");
+            //jo.Add("库房名称", "");
+            jo.Add("物料编码(必输)", "");
+            jo.Add("批次号(必输)", "");
+            jo.Add("盘点数量(必输)", "");
             jo.Add("备注", "");
             //jo.Add("子库存", "");
             //jo.Add("Attr1", "");
