@@ -74,7 +74,7 @@ namespace Apps.BLL.WMS
                     excelFile.AddMapping<WMS_PartModel>(x => x.PartCode, "物料编码(必输)");
                     excelFile.AddMapping<WMS_PartModel>(x => x.PartName, "物料名称(必输)");
                     excelFile.AddMapping<WMS_PartModel>(x => x.PartType, "物料类型(必输)");
-                    excelFile.AddMapping<WMS_PartModel>(x => x.CustomerCode, "客户编码");
+                    excelFile.AddMapping<WMS_PartModel>(x => x.CustomerCode, "主机厂编码");
                     excelFile.AddMapping<WMS_PartModel>(x => x.LogisticsCode, "物流号");
                     excelFile.AddMapping<WMS_PartModel>(x => x.OtherCode, "额外信息编码");
                     excelFile.AddMapping<WMS_PartModel>(x => x.PCS, "每箱数量");

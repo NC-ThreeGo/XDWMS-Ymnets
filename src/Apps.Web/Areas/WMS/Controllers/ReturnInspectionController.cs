@@ -167,7 +167,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.PartType = entity_part.PartType;
             if (model.PartType == "外购件" && model.SupplierId == null)
             {
-                return Json(JsonHandler.CreateMessage(0, "采购件必须维护供应商"));
+                return Json(JsonHandler.CreateMessage(0, "外购件必须维护供应商"));
             }
             else
             {
