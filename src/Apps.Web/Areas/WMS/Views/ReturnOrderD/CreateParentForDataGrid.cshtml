@@ -127,10 +127,10 @@
 
                 { field: 'SupplierId', title: '供应商ID', width: 80, hidden: true },
                 {
-                    field: 'SupplierCode', title: '供应商编码', width: 100,
+                    field: 'SupplierShortName', title: '供应商简称', width: 100,
                     editor: { type: 'textbox', options: { required: true } }
                 },
-                { field: 'SupplierShortName', title: '供应商简称', width: 100 },
+                { field: 'SupplierCode', title: '供应商编码', width: 100 },
 
                 { field: 'InvName', title: '仓库名称', width: 80, hidden: true },
                 {
@@ -277,13 +277,13 @@
                         });
                     }
 
-                    //给字段SupplierCode增加setKeyUpValue事件
-                    if (ed.field == 'SupplierCode')
+                    //给字段SupplierShortName增加setKeyUpValue事件
+                    if (ed.field == 'SupplierShortName')
                     {
                         var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
                         target.bind("keyup", function (e)
                         {
-                            return setKeyUpValueForSupplierCode(e, $(this), $('#mList'));
+                            return setKeyUpValueForSupplierShortName(e, $(this), $('#mList'));
                         });
                     }
 
@@ -376,7 +376,7 @@
             var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'PartCode' }).target;
             var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
 
-            var thisTarget_Supplier = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierCode' }).target;
+            var thisTarget_Supplier = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierShortName' }).target;
             thisTarget_Supplier.textbox('clear');
             var thisTarget_Inv = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'InvId' }).target;
             thisTarget_Inv.combobox('clear');
@@ -412,7 +412,7 @@
                         $(div2).text(getRow.PartName);
                         row.PartName = getRow.PartName;
 
-                        ChangeFocus(rowIndex, "SupplierCode");
+                        ChangeFocus(rowIndex, "SupplierShortName");
 
                         //datagrid.datagrid('updateRow', {
                         //    index: rowIndex,
@@ -459,21 +459,21 @@
         }
     }
 
-    function setKeyUpValueForSupplierCode(e, sender, datagrid)
+    function setKeyUpValueForSupplierShortName(e, sender, datagrid)
     {
         var code = e.keyCode || e.which;
         if (code == 13)
         {
             var row = datagrid.datagrid('getSelected');
             var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
-            var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierCode' }).target;
+            var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierShortName' }).target;
             var thisTarget_Input = $(thisTarget).data('textbox') ? $(thisTarget).textbox('textbox') : $(thisTarget);
 
             //向后台申请当前供应商信息
             $.ajax({
-                url: "@Url.Action("GetSupplierByCode", "Supplier")",
+                url: "@Url.Action("GetSupplierByShortName", "Supplier")",
                 type: "Post",
-                data: { supplierCode: thisTarget_Input.val()},
+                data: { supplierShortName: thisTarget_Input.val()},
                 dataType: "json",
                 success: function (data) {
                     if (data.type == 1)

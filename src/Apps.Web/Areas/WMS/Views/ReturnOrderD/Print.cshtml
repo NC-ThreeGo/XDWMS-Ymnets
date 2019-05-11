@@ -15,18 +15,34 @@
     var sum_Qty = 0;
     //编辑的行
     var editIndex = undefined;
+    //是否全部退货
+    var isSelectAll = false;
 
     $(function ()
     {
         //加载到货单
         $("#btnLoadSupplier").click(function ()
         {
+            isSelectAll = false;
             var supplierId = $("#SupplierId").val();
             var supplierShortName = $("#Supplier").val();
             sum_Qty = 0;
             editIndex = undefined;
             $("#List").datagrid("load", { supplierId: supplierId, supplierShortName: supplierShortName });
             $("#List").datagrid("uncheckAll");
+            setFooter();
+        });
+
+        //全退：全选、并且“本次退货数量”=“应退货数量”
+        $("#btnLoadSupplierAndSelectAll").click(function ()
+        {
+            isSelectAll = true;
+            var supplierId = $("#SupplierId").val();
+            var supplierShortName = $("#Supplier").val();
+            sum_Qty = 0;
+            editIndex = undefined;
+            $("#List").datagrid("load", { supplierId: supplierId, supplierShortName: supplierShortName });
+            //$("#List").datagrid("checkAll");
             setFooter();
         });
 
@@ -125,6 +141,21 @@
                     for (var i = 0; i < data.rows.length; i++)
                     {
                         $("input[type='checkbox']")[i + 1].disabled = true;
+
+                        if (isSelectAll)
+                        {
+                            $("input[type='checkbox']")[i + 1].checked = true;
+                            data.rows[i].Qty = data.rows[i].ReturnQty;
+                            var td1 = $('.datagrid-body td[field="Qty"]')[i];
+                            var div1 = $(td1).find('div')[0];
+                            $(div1).text(data.rows[i].Qty);
+                        }
+                    }
+
+                    if (isSelectAll)
+                    {
+                        $("#List").datagrid("checkAll");
+                        onEndEdit(0, null);
                     }
                 }
                 else
@@ -133,6 +164,17 @@
                         alert('没有需要处理的数据！');
                 }
             },
+
+            //onCheckAll: function (rows)
+            //{
+            //    if (rows.length > 0)
+            //    {
+            //        for (var i = 0; i < rows.length; i++)
+            //        {
+            //            rows[i].Qty = rows[i].ReturnQty;
+            //        }
+            //    }
+            //},
 
             columns: [[
                 {
@@ -371,6 +413,7 @@
 
                     </script>
                     @Html.ToolButton("btnLoadSupplier", "fa fa-reply", Resource.Load, false)
+                    @Html.ToolButton("btnLoadSupplierAndSelectAll", "fa fa-list", "加载且全退", false)
                 </td>
                 @*<th>
                         @Html.LabelFor(model => model.InStoreBillNum) （自动生成）：

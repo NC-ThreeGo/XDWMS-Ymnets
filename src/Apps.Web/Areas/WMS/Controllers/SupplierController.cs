@@ -288,6 +288,20 @@ namespace Apps.Web.Areas.WMS.Controllers
                 return Json(JsonHandler.CreateMessage(1, Resource.CheckSucceed, JsonHandler.SerializeObject(list.First())));
             }
         }
+
+        public JsonResult GetSupplierByShortName(string supplierShortName)
+        {
+            List<WMS_SupplierModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Status == \"有效\" && SupplierShortName == \""
+                + supplierShortName + "\"");
+            if (list.Count() == 0)
+            {
+                return Json(JsonHandler.CreateMessage(0, "供应商简称不存在！"));
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(1, Resource.CheckSucceed, JsonHandler.SerializeObject(list.First())));
+            }
+        }
         #endregion
     }
 }
