@@ -287,10 +287,10 @@ namespace Apps.BLL.WMS
                     throw new Exception("入库单号与物料编码重复！");
                 }
             }
-            else
-            {
-                throw new Exception("入库单号不能为空！");
-            }
+            //else
+            //{
+            //    throw new Exception("入库单号不能为空！");
+            //}
 
             //校验批次号,没有批次号自动赋值为当前月
             if (!String.IsNullOrEmpty(model.Lot))
