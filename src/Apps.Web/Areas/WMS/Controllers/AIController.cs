@@ -76,7 +76,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                 aiModel.ArrivalBillNum = arrivalBillNum;
                 aiModel.ArrivalDate = model.ArrivalDate;
                 //到货批次：年+月（根据到货日期）
-                aiModel.Lot = model.ArrivalDate.ToString("yyyyMM");
+                aiModel.Lot = CommonHelper.GetLot(model.ArrivalDate);
                 aiModel.ReceiveMan = GetUserTrueName();
                 aiModel.ReceiveStatus = "已到货";
                 aiModel.CreateTime = ResultHelper.NowTime;

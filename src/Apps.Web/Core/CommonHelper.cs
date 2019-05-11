@@ -12,7 +12,7 @@ using Apps.DAL;
 using Apps.DAL.Sys;
 using Apps.BLL.Sys;
 using Apps.DAL.Spl;
-
+using System.Configuration;
 
 namespace Apps.Web.Core
 {
@@ -282,6 +282,21 @@ namespace Apps.Web.Core
 
         #endregion
 
+
+        #region 根据日期生成批次，如果大于规定的Day，则作为下个月的批次
+        public static string GetLot(DateTime dateTime)
+        {
+            int maxLotDay = Int32.Parse(ConfigurationManager.AppSettings["MaxLotDay"] ?? "24");
+            if (dateTime.Day > maxLotDay)
+            {
+                return dateTime.AddMonths(1).ToString("yyyyMM");
+            }
+            else
+            {
+                return dateTime.ToString("yyyyMM");
+            }
+        }
+        #endregion
 
     }
 }
