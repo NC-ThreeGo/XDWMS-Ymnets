@@ -256,6 +256,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                 jo.Add("保管员", item.StoreMan);
                 jo.Add("单位", item.Unit);
                 jo.Add("每箱体积", item.Volume);
+                jo.Add("所属客户", item.BelongCustomer);
+                jo.Add("所属供应商", item.BelongSupplier);
                 jo.Add("说明", item.Remark);
 
                 //jo.Add("物料状态", item.Status);
@@ -293,6 +295,8 @@ namespace Apps.Web.Areas.WMS.Controllers
             jo.Add("每箱数量", "");            
             jo.Add("单位", "");
             jo.Add("每箱体积", "");
+            jo.Add("所属客户", "");
+            jo.Add("所属供应商", "");            
             jo.Add("说明", "");
             //jo.Add("物料状态", "");
             //jo.Add("创建人", "");

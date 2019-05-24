@@ -29,11 +29,12 @@ namespace Apps.Web.Areas.WMS.Controllers
             Type.Add(new ReportType() { Type = 0, Name = "" });
             Type.Add(new ReportType() { Type = 1, Name = "盘点调整" });
             Type.Add(new ReportType() { Type = 2, Name = "自制件入库" });
-            Type.Add(new ReportType() { Type = 2, Name = "投料" });
-            Type.Add(new ReportType() { Type = 2, Name = "销售" });
-            Type.Add(new ReportType() { Type = 2, Name = "退货" });
-            Type.Add(new ReportType() { Type = 2, Name = "调账" });
-            Type.Add(new ReportType() { Type = 2, Name = "重新送检" });
+            Type.Add(new ReportType() { Type = 3, Name = "投料" });
+            Type.Add(new ReportType() { Type = 4, Name = "销售" });
+            Type.Add(new ReportType() { Type = 5, Name = "退货" });
+            Type.Add(new ReportType() { Type = 6, Name = "调账" });
+            Type.Add(new ReportType() { Type = 7, Name = "重新送检" });
+            Type.Add(new ReportType() { Type = 8, Name = "入库" });
 
             ViewBag.Types = new SelectList(Type, "Name", "Name");
 

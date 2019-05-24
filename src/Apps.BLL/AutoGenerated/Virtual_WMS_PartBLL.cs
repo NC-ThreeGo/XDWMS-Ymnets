@@ -104,6 +104,8 @@ namespace Apps.BLL.WMS
 													Volume = r.Volume,
 													Remark = r.Remark,
                                                     SafeStock = r.SafeStock,
+                                                    BelongCustomer = r.BelongCustomer,
+                                                    BelongSupplier = r.BelongSupplier,
           
                                               }).ToList();
 
@@ -138,6 +140,8 @@ namespace Apps.BLL.WMS
 				entity.Unit = model.Unit;
 				entity.Volume = model.Volume;
 				entity.Remark = model.Remark;
+                entity.BelongSupplier = model.BelongSupplier;
+                entity.BelongCustomer = model.BelongCustomer;
   
 
                 if (m_Rep.Create(entity))
@@ -242,6 +246,8 @@ namespace Apps.BLL.WMS
 				entity.Volume = model.Volume;
 				entity.Remark = model.Remark;
                 entity.SafeStock = model.SafeStock;
+                entity.BelongCustomer = model.BelongCustomer;
+                entity.BelongSupplier = model.BelongSupplier;
  
 
 
@@ -290,6 +296,8 @@ namespace Apps.BLL.WMS
 				model.Volume = entity.Volume;
 				model.Remark = entity.Remark;
                 model.SafeStock = entity.SafeStock;
+                model.BelongSupplier = entity.BelongSupplier;
+                model.BelongCustomer = entity.BelongCustomer;
  
                 return model;
             }

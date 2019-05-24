@@ -46,6 +46,8 @@ namespace Apps.BLL.WMS
                                                   Unit = r.Unit,
                                                   Remark = r.Remark,
                                                   SafeStock = r.SafeStock,
+                                                  BelongCustomer = r.BelongCustomer,
+                                                  BelongSupplier = r.BelongSupplier,
 
                                                   FullPartName = r.PartCode + ":" + r.PartName,
                                               }).ToList();
@@ -82,6 +84,8 @@ namespace Apps.BLL.WMS
                     excelFile.AddMapping<WMS_PartModel>(x => x.StoreMan, "保管员(必输)");
                     excelFile.AddMapping<WMS_PartModel>(x => x.Unit, "单位");
                     excelFile.AddMapping<WMS_PartModel>(x => x.Volume, "每箱体积");
+                    excelFile.AddMapping<WMS_PartModel>(x => x.BelongSupplier, "所属供应商");
+                    excelFile.AddMapping<WMS_PartModel>(x => x.BelongCustomer, "所属客户");
                     excelFile.AddMapping<WMS_PartModel>(x => x.Remark, "说明");
 
 
@@ -112,6 +116,8 @@ namespace Apps.BLL.WMS
                             model.Unit = row.Unit;
                             model.Volume = row.Volume;
                             model.Remark = row.Remark;
+                            model.BelongCustomer = row.BelongCustomer;
+                            model.BelongSupplier = row.BelongSupplier;
 
                             //model.CreatePerson = row.oper;
                             //model.CreateTime = row.CreateTime;
@@ -159,6 +165,8 @@ namespace Apps.BLL.WMS
                             entity.Unit = model.Unit;
                             entity.Volume = model.Volume;
                             entity.Remark = model.Remark;
+                            entity.BelongCustomer = model.BelongCustomer;
+                            entity.BelongSupplier = model.BelongSupplier;
 
                             db.WMS_Part.Add(entity);
                             try

@@ -48,6 +48,7 @@ namespace Apps.BLL.WMS
 								a=>a.Lot.Contains(queryStr)
                                 || a.WMS_Part.PartCode.Contains(queryStr)
                                 || a.WMS_Part.PartName.Contains(queryStr)
+                                || a.WMS_Part.StoreMan.Contains(queryStr)
 
 
 

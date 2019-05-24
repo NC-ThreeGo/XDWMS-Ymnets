@@ -62,6 +62,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                 jo.Add("库房名称", item.InvName);
                 jo.Add("物料编码", item.PartCode);
                 jo.Add("物料名称", item.PartName);
+                jo.Add("安全库存", item.SafeStock);
                 jo.Add("现有量", item.Qty);
                 jo.Add("备料数", item.StockQty);
                 //jo.Add("批次", item.Lot);

@@ -209,7 +209,8 @@ namespace Apps.Web.Areas.WMS.Controllers
                     jo.Add("物料ID", item.PartId);
                     jo.Add("物料编码", item.PartCode);
                     jo.Add("物料名称", item.PartName);
-                    jo.Add("平均库存", item.AvgQty);
+                jo.Add("保管员", item.StoreMan);
+                jo.Add("平均库存", item.AvgQty);
                     jo.Add("当前库存", item.InvQty);
                     jo.Add("差额", item.BalanceQty);
                     jObjects.Add(jo);

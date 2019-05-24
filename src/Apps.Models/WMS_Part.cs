@@ -49,6 +49,8 @@ namespace Apps.Models
         public Nullable<decimal> Volume { get; set; }
         public string Remark { get; set; }
         public Nullable<decimal> SafeStock { get; set; }
+        public string BelongSupplier { get; set; }
+        public string BelongCustomer { get; set; }
     
         public virtual ICollection<WMS_AI> WMS_AI { get; set; }
         public virtual ICollection<WMS_Feed_List> WMS_Feed_List { get; set; }

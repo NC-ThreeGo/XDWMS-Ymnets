@@ -23,9 +23,13 @@ namespace Apps.Models.WMS
 
         [Display(Name = "批次号")]
         public string LotDisp { get; set; }
+        
 
         [Display(Name = "安全库存")]
         public decimal SafeStock { get; set; }
+
+        [Display(Name = "保管员")]
+        public string StoreMan { get; set; }
     }
 }
 

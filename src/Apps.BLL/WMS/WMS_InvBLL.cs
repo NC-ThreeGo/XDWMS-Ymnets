@@ -36,6 +36,7 @@ namespace Apps.BLL.WMS
                                                     SubInvName = r.WMS_SubInvInfo.SubInvName,
                                                     LotDisp = String.IsNullOrEmpty(r.Lot) ? "[空]" : r.Lot,
                                                     AvailableQty = r.Qty - r.StockQty.Value,
+                                                    StoreMan = r.WMS_Part.StoreMan,
                                                 })
                                                  .OrderBy("InvId asc, SubInvId asc, PartId asc, Lot asc")
                                                  .ToList();

@@ -18,5 +18,6 @@ namespace Apps.Models.WMS
         public Nullable<decimal> AvgQty { get; set; }
         public Nullable<decimal> InvQty { get; set; }
         public Nullable<decimal> BalanceQty { get; set; }
+        public string StoreMan { get; set; }
     }
 }
