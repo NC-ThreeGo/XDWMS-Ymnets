@@ -86,7 +86,8 @@
                         { field: 'HeadId', title: 'HeadId', width: 80, hidden: true },
                         { field: 'InventoryBillNum', title: '盘点单号', width: 130,sortable:true },
                         { field: 'InventoryTitle', title: '盘点名称', width: 80,sortable:true },
-                        { field: 'InventoryPerson', title: '盘点人', width: 80,sortable:true },
+                        { field: 'InventoryPerson', title: '盘点人', width: 80, sortable: true },
+                        { field: 'InventoryType', title: '盘点类型', width: 80, sortable: true },
                         //{ field: 'InventoryTime', title: '盘点时间', width: 80, sortable: true },
                         {
                             field: 'InventoryTime', title: '盘点时间', width: 100, sortable: true,
@@ -163,13 +164,13 @@
                     var row = $('#ListParent').datagrid('getSelected');
                     if (row != null)
                     {
-                        if (row.InventoryStatus == '未生成')
+                        if (row.InventoryStatus == '未生成' || row.InventoryType =='全检')
                         {
                             $.modalWindow(Lang.Edit, '@Url.Action("Create")?headerId=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-pencil');
                         }
                         else
                         {
-                            $.messageBox5s(Lang.Tip, '你选择的盘点已生成盘点表，不能重复生成！');
+                            $.messageBox5s(Lang.Tip, '需要选择全检并且未生成单据！');
                         }
                     }
                     else

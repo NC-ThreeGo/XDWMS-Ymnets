@@ -68,6 +68,22 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 model.CustomerCode = "/" + model.CustomerCode;
             }
+            if (model.BelongCustomer != null && model.BelongCustomer.Last().ToString() != "/")
+            {
+                model.BelongCustomer = model.BelongCustomer + "/";
+            }
+            if (model.BelongCustomer != null && model.BelongCustomer.First().ToString() != "/")
+            {
+                model.BelongCustomer = "/" + model.BelongCustomer;
+            }
+            if (model.BelongSupplier != null && model.BelongSupplier.Last().ToString() != "/")
+            {
+                model.BelongSupplier = model.BelongSupplier + "/";
+            }
+            if (model.BelongSupplier != null && model.BelongSupplier.First().ToString() != "/")
+            {
+                model.BelongSupplier = "/" + model.BelongSupplier;
+            }
             model.Id = 0;
             model.CreateTime = ResultHelper.NowTime;
             model.CreatePerson = GetUserTrueName();
@@ -114,6 +130,22 @@ namespace Apps.Web.Areas.WMS.Controllers
             if (model.CustomerCode != null && model.CustomerCode.First().ToString() != "/")
             {
                 model.CustomerCode = "/" + model.CustomerCode ;
+            }
+            if (model.BelongCustomer != null && model.BelongCustomer.Last().ToString() != "/")
+            {
+                model.BelongCustomer = model.BelongCustomer + "/";
+            }
+            if (model.BelongCustomer != null && model.BelongCustomer.First().ToString() != "/")
+            {
+                model.BelongCustomer = "/" + model.BelongCustomer;
+            }
+            if (model.BelongSupplier != null && model.BelongSupplier.Last().ToString() != "/")
+            {
+                model.BelongSupplier = model.BelongSupplier + "/";
+            }
+            if (model.BelongSupplier != null && model.BelongSupplier.First().ToString() != "/")
+            {
+                model.BelongSupplier = "/" + model.BelongSupplier;
             }
             model.ModifyTime = ResultHelper.NowTime;
             model.ModifyPerson = GetUserTrueName();

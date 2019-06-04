@@ -186,12 +186,14 @@ namespace Apps.Web.Areas.WMS.Controllers
             foreach (var item in list)
             {
                 var jo = new JObject();
-                jo.Add("盘点名称", item.Inventory_HName);
+                jo.Add("盘点名称(必输)", item.Inventory_HName);
                 jo.Add("库房名称", item.InvName);
-                jo.Add("物料编码", item.PartCode);
-                jo.Add("批次号", item.Lot);
+                jo.Add("物料编码(必输)", item.PartCode);
+                jo.Add("物料名称", item.PartName);
+                jo.Add("批次号(必输)", item.Lot);
                 jo.Add("库存数量", item.SnapshootQty);
-                jo.Add("盘点数量", item.InventoryQty);
+                jo.Add("盘点数量(必输)", item.InventoryQty);
+                jo.Add("保管员", item.StoreMan);
                 jo.Add("备注", item.Remark);
                 //jo.Add("物料", item.PartId);
                 //jo.Add("物料", item.PartId);

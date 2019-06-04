@@ -96,6 +96,24 @@ $.messageBox5s(Lang.Tip, mes);
          </tr>
          <tr>
              <th>
+                 所属客户编码：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.BelongCustomer)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.BelongCustomer)</td>
+         </tr>
+         <tr>
+             <th>
+                 所属供应商编码：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.BelongSupplier)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.BelongSupplier)</td>
+         </tr>
+         <tr>
+             <th>
                  @Html.LabelFor(model => model.LogisticsCode)：
              </th>
              <td>
