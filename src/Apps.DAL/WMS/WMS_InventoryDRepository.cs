@@ -13,7 +13,7 @@ namespace Apps.DAL.WMS
     {
         public bool ClearInventoryQty(string opt, int headId)
         {
-            ExecuteSqlCommand(string.Format("update [dbo].[WMS_Inventory_D] set InventoryQty=0 where HeadId ='{0}'", headId));
+            ExecuteSqlCommand(string.Format("update [dbo].[WMS_Inventory_D] set InventoryQty=0,Attr1='' where HeadId ='{0}'", headId));
             return true;
         }
         public string SpecialInventory(string opt, int headId)

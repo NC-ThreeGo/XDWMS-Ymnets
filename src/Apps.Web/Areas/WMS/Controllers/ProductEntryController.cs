@@ -34,7 +34,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         [HttpPost]
         [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string partName, string partCode, DateTime beginDate, DateTime endDate)
+        public JsonResult GetList(GridPager pager, string partName, string partCode, string entryBillNum, DateTime beginDate, DateTime endDate)
         {
             //List<WMS_Product_EntryModel> list = m_BLL.GetList(ref pager, queryStr);
             //GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
@@ -43,7 +43,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             //return Json(grs);
             List<WMS_Product_EntryModel> list = m_BLL.GetListByWhere(ref pager, "WMS_Part.PartName.Contains(\""
                 + partName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
-                + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
+                + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")&& EntryBillNum.Contains(\"" + entryBillNum + "\")");
             GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
 
             //增加退货检验单据

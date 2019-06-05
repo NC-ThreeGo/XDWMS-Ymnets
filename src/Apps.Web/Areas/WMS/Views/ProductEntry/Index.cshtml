@@ -38,8 +38,10 @@
 <div class="mvctool">
     <input id="txtpartName" placeholder="物料名称:" type="text" class="searchText" />
     <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
-    创建日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
-    至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    <input id="txtentryBillNum" type="text" placeholder="入库单号" class="searchText" />
+    创建日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTime.Now.ToString("yyyy-MM-dd"))" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    至: <input type="text" id="endDate" style="width:70px;" value="@(DateTime.Now.ToString("yyyy-MM-dd"))" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    <br>
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
     @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
     @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
@@ -122,15 +124,18 @@
         $("#btnQuery").click(function () {            
             var partName = $("#txtpartName").val();
             var partCode = $("#txtpartCode").val();
-           
+            var entryBillNum = $("#txtentryBillNum").val();
             if (partName == null) {
                 partName = "";
             }
             if (partCode == null) {
                 partCode = "";
             }
+            if (entryBillNum == null) {
+                entryBillNum = "";
+            }
             $("#List").datagrid("load", {
-                partName: partName, partCode: partCode, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+                partName: partName, partCode: partCode, entryBillNum: entryBillNum, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
             });
 
         });
@@ -146,6 +151,7 @@
             
             var partName = $("#txtpartName").val();
             var partCode = $("#txtpartCode").val();
+            var entryBillNum = $("#txtentryBillNum").val();
            
             if (partName == null) {
                 partName = "";
@@ -153,13 +159,18 @@
             if (partCode == null) {
                 partCode = "";
             }
+            if (entryBillNum == null) {
+                entryBillNum = "";
+            }
             $.post("@Url.Action("CheckExportData")?partName=" + partName 
                 + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
+                + "&entryBillNum=" + entryBillNum
                 + "&endDate= " + $("#endDate").val(), function(data) {
                 if (data.type == 1)
                 {
                     window.location = "@Url.Action("Export")?partName=" + partName 
                         + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
+                        + "&entryBillNum=" + entryBillNum
                         + "&endDate= " + $("#endDate").val();
                 }
                 else
