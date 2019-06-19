@@ -55,9 +55,9 @@ namespace Apps.Models.WMS
 		public virtual string Remark { get; set; }
 		[Display(Name = "未设置")]
 		public virtual Nullable<decimal> SafeStock { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "所属供应商")]
 		public virtual string BelongSupplier { get; set; }
-		[Display(Name = "未设置")]
+		[Display(Name = "所属客户")]
 		public virtual string BelongCustomer { get; set; }
 		}
 }

@@ -152,7 +152,7 @@ namespace Apps.BLL.WMS
                             entity.PartCode = model.PartCode;
                             entity.PartName = model.PartName;
                             entity.PartType = model.PartType;
-                            entity.CustomerCode = model.CustomerCode;
+                            entity.CustomerCode = ";"+model.CustomerCode+";";
                             entity.LogisticsCode = model.LogisticsCode;
                             entity.OtherCode = model.OtherCode;
                             entity.PCS = model.PCS;
@@ -165,8 +165,8 @@ namespace Apps.BLL.WMS
                             entity.Unit = model.Unit;
                             entity.Volume = model.Volume;
                             entity.Remark = model.Remark;
-                            entity.BelongCustomer = model.BelongCustomer;
-                            entity.BelongSupplier = model.BelongSupplier;
+                            entity.BelongCustomer = ";" + model.BelongCustomer + ";";
+                            entity.BelongSupplier = ";" + model.BelongSupplier + ";";
 
                             db.WMS_Part.Add(entity);
                             try

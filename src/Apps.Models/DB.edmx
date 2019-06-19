@@ -1062,8 +1062,8 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerCode" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="CustomerShortName" Type="nvarchar" MaxLength="20" />
-          <Property Name="CustomerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustomerShortName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="CustomerType" Type="nvarchar" MaxLength="20" />
           <Property Name="LinkMan" Type="nvarchar" MaxLength="20" />
           <Property Name="LinkManTel" Type="nvarchar" MaxLength="20" />
@@ -7275,8 +7275,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerShortName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerShortName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CustomerType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LinkMan" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LinkManTel" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
