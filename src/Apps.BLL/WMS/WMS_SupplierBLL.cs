@@ -11,6 +11,7 @@ using Apps.Models.WMS;
 using System.Linq.Expressions;
 using Apps.IDAL.Sys;
 using Unity.Attributes;
+using System.Data.Entity.Infrastructure;
 
 namespace Apps.BLL.WMS
 {
@@ -255,6 +256,28 @@ namespace Apps.BLL.WMS
             //排序
             queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
             return CreateModelList(ref queryData);
+        }
+
+        public List<WMS_SupplierModel> GetListByBelong(ref GridPager pager, string codes)
+        {
+            using (DBContainer db = new DBContainer())
+            {
+                DbRawSqlQuery<WMS_SupplierModel> query = db.Database.SqlQuery<WMS_SupplierModel>(@"SELECT  * from WMS_Supplier where '" + codes + "' like '%;' + SupplierCode + ';%'");
+
+                //启用通用列头过滤
+                pager.totalRows = query.Count();
+
+                try
+                {
+                    //排序
+                    IQueryable<WMS_SupplierModel> queryData = LinqHelper.SortingAndPaging(query.AsQueryable(), pager.sort, pager.order, pager.page, pager.rows);
+                    return queryData.ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 }

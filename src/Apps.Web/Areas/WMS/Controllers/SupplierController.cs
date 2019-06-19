@@ -303,6 +303,16 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         }
         #endregion
+
+        #region 根据物料的所属供应商，返回供应商列表
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetSupplierByBelong(string codes)
+        {
+            List<WMS_SupplierModel> list = m_BLL.GetListByBelong(ref setNoPagerAscById, codes);
+            return Json(list);
+        }
+        #endregion
     }
 }
 

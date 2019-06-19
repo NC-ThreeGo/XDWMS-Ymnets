@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using Apps.IDAL.Sys;
 using Unity.Attributes;
 using System.Linq.Dynamic.Core;
+using System.Data.Entity.Infrastructure;
 
 namespace Apps.BLL.WMS
 {
@@ -246,6 +247,28 @@ namespace Apps.BLL.WMS
             //排序
             queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
             return CreateModelList(ref queryData);
+        }
+
+        public List<WMS_CustomerModel> GetListByBelong(ref GridPager pager, string codes)
+        {
+            using (DBContainer db = new DBContainer())
+            {
+                DbRawSqlQuery<WMS_CustomerModel> query = db.Database.SqlQuery<WMS_CustomerModel>(@"SELECT  * from WMS_Customer where '" + codes + "' like '%;' + CustomerCode + ';%'");
+
+                //启用通用列头过滤
+                pager.totalRows = query.Count();
+
+                try
+                {
+                    //排序
+                    IQueryable<WMS_CustomerModel> queryData = LinqHelper.SortingAndPaging(query.AsQueryable(), pager.sort, pager.order, pager.page, pager.rows);
+                    return queryData.ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 }

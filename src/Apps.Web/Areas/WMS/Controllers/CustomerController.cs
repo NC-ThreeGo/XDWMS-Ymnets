@@ -285,6 +285,16 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
         }
         #endregion
+
+        #region 根据物料的所属客户，返回客户列表
+        [HttpPost]
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetCustomerByBelong(string codes)
+        {
+            List<WMS_CustomerModel> list = m_BLL.GetListByBelong(ref setNoPagerAscById, codes);
+            return Json(list);
+        }
+        #endregion
     }
 }
 

@@ -26,5 +26,13 @@ namespace Apps.IBLL.WMS
         /// <param name="whereStr"></param>
         /// <returns></returns>
         List<WMS_CustomerModel> GetListByWhere(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 根据所属客户代码列表，返回客户数据
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="codes"></param>
+        /// <returns></returns>
+        List<WMS_CustomerModel> GetListByBelong(ref GridPager pager, string codes);
     }
 }
