@@ -1284,7 +1284,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PartCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PartCode" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="PartName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="PartType" Type="nvarchar" MaxLength="50" />
           <Property Name="CustomerCode" Type="nvarchar" MaxLength="200" />
@@ -7791,7 +7791,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PartCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PartName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PartType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CustomerCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
