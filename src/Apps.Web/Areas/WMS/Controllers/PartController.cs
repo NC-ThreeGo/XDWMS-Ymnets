@@ -84,6 +84,10 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 model.BelongSupplier = ";" + model.BelongSupplier;
             }
+            model.CustomerCode = model.CustomerCode.Replace(" ", "").Replace("；", ";");
+            model.BelongCustomer = model.BelongCustomer.Replace(" ", "").Replace("；", ";");
+            model.BelongSupplier = model.BelongSupplier.Replace(" ", "").Replace("；", ";");
+
             model.Id = 0;
             model.CreateTime = ResultHelper.NowTime;
             model.CreatePerson = GetUserTrueName();
@@ -139,6 +143,19 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 model.BelongSupplier = ";" + model.BelongSupplier;
             }
+            if (model.BelongCustomer != null && model.BelongCustomer.Last().ToString() != ";")
+            {
+                model.BelongCustomer = model.BelongCustomer + ";";
+            }
+            if (model.BelongCustomer != null && model.BelongCustomer.First().ToString() != ";")
+            {
+                model.BelongCustomer = ";" + model.BelongCustomer;
+            }
+            model.CustomerCode = model.CustomerCode.Replace(" ", "").Replace("；", ";");
+            model.BelongCustomer = model.BelongCustomer.Replace(" ", "").Replace("；", ";");
+            model.BelongSupplier = model.BelongSupplier.Replace(" ", "").Replace("；", ";");
+
+
             model.ModifyTime = ResultHelper.NowTime;
             model.ModifyPerson = GetUserTrueName();
             

@@ -105,19 +105,36 @@ namespace Apps.BLL.WMS
                             string errorMessage = String.Empty;
                             var model = new WMS_PartModel();
                             model.Id = row.Id;
-                            model.PartCode = row.PartCode;
-                            model.PartName = row.PartName;
-                            model.PartType = row.PartType;
-                            model.CustomerCode = row.CustomerCode;
+                            if(row.PartCode != null)
+                            { model.PartCode = row.PartCode.Replace(" ", ""); }
+
+                            if (row.PartName != null)
+                            { model.PartName = row.PartName.Replace(" ", ""); }
+
+                            if (row.PartType != null)
+                            { model.PartType = row.PartType.Replace(" ", ""); }
+
+                            if (row.CustomerCode != null)
+                            { model.CustomerCode = row.CustomerCode.Replace(" ", "").Replace("；", ";"); }
+
+                            //model.PartName = row.PartName.Replace(" ", "");
+                            //model.PartType = row.PartType.Replace(" ", "");
+                            //model.CustomerCode = row.CustomerCode.Replace(" ", "").Replace("；",";");
                             model.LogisticsCode = row.LogisticsCode;
                             model.OtherCode = row.OtherCode;
                             model.PCS = row.PCS;
-                            model.StoreMan = row.StoreMan;
+                            model.StoreMan = row.StoreMan.Replace(" ", "");
                             model.Unit = row.Unit;
                             model.Volume = row.Volume;
                             model.Remark = row.Remark;
-                            model.BelongCustomer = row.BelongCustomer;
-                            model.BelongSupplier = row.BelongSupplier;
+                            if (row.BelongCustomer != null)
+                            { model.BelongCustomer = row.BelongCustomer.Replace(" ", "").Replace("；", ";"); }
+
+                            if (row.BelongSupplier != null)
+                            { model.BelongSupplier = row.BelongSupplier.Replace(" ", "").Replace("；", ";"); }
+
+                            //model.BelongCustomer = row.BelongCustomer.Replace(" ", "").Replace("；", ";");
+                            //model.BelongSupplier = row.BelongSupplier.Replace(" ", "").Replace("；", ";");
 
                             //model.CreatePerson = row.oper;
                             //model.CreateTime = row.CreateTime;
@@ -165,8 +182,10 @@ namespace Apps.BLL.WMS
                             entity.Unit = model.Unit;
                             entity.Volume = model.Volume;
                             entity.Remark = model.Remark;
-                            entity.BelongCustomer = ";" + model.BelongCustomer + ";";
-                            entity.BelongSupplier = ";" + model.BelongSupplier + ";";
+                            if (model.BelongCustomer != null)
+                              entity.BelongCustomer = ";" + model.BelongCustomer + ";"; 
+                            if (model.BelongSupplier != null)
+                                entity.BelongSupplier = ";" + model.BelongSupplier + ";";
 
                             db.WMS_Part.Add(entity);
                             try
@@ -239,7 +258,7 @@ namespace Apps.BLL.WMS
                             string errorMessage = String.Empty;
                             var model = new WMS_PartModel();
                             model.Id = row.Id;
-                            model.PartCode = row.PartCode;
+                            model.PartCode = row.PartCode.Replace(" ", "");
                             model.SafeStock = row.SafeStock;
 
                             //model.CreatePerson = row.oper;

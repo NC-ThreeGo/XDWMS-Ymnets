@@ -98,9 +98,12 @@ namespace Apps.BLL.WMS
 								string errorMessage = String.Empty;
 								var model = new WMS_SupplierModel();
 								model.Id = row.Id;
-								model.SupplierCode = row.SupplierCode;
-								model.SupplierShortName = row.SupplierShortName;
-								model.SupplierName = row.SupplierName;
+                            if(row.SupplierCode != null)
+                            { model.SupplierCode = row.SupplierCode.Replace(" ", ""); }
+                            if (row.SupplierShortName != null)
+                            { model.SupplierShortName = row.SupplierShortName.Replace(" ", ""); }
+                            if (row.SupplierName != null)
+                            { model.SupplierName = row.SupplierName.Replace(" ", ""); }                            
 								model.SupplierType = row.SupplierType;
 								model.LinkMan = row.LinkMan;
 								model.LinkManTel = row.LinkManTel;
