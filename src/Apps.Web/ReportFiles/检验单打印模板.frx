@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/22/2018 12:19:07" ReportInfo.Modified="03/16/2019 15:17:49" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/22/2018 12:19:07" ReportInfo.Modified="07/01/2019 15:28:39" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiXHsK7j4gJH5som6t11s+/A==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiUEnylNwKOqEBrtKlkULyjw==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_InspectBill where InspectBillNum=@InspectBillNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="ArrivalBillNum" DataType="System.String"/>
@@ -79,7 +79,7 @@
       <TextObject Name="Text14" Left="633.15" Width="85.05" Height="28.35" Border.Lines="All"/>
     </DataBand>
     <PageFooterBand Name="PageFooter1" Top="233.33" Width="748.44" Height="18.9" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
-      <TextObject Name="Text16" Left="462.97" Width="85.05" Height="18.9" Text="送检人：" VertAlign="Center" Font="Arial, 12pt"/>
+      <TextObject Name="Text16" Left="453.52" Width="85.05" Height="18.9" Text="送检人：" VertAlign="Center" Font="Arial, 12pt"/>
       <TextObject Name="Text15" Left="529.2" Width="94.5" Height="18.9" Text="[Table.InspectMan]" Font="宋体, 12pt"/>
     </PageFooterBand>
   </ReportPage>

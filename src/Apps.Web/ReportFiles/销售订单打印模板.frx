@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="04/13/2019 21:39:59" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="07/04/2019 16:13:09" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEifGFy8UTB1ldZ0RPrQstnGw==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiwVmyQIkQ9KJ0WhjPWbbM1Q==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_SaleOrder where SellBillNum=@SellBillNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="PartId" DataType="System.Int32"/>
@@ -81,7 +81,7 @@
       <TextObject Name="Text7" Width="47.25" Height="28.35" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text9" Left="47.25" Width="85.05" Height="28.35" Border.Lines="All" Text="[Table.PartName]" HorzAlign="Center" Font="宋体, 12pt"/>
       <TextObject Name="Text10" Left="132.3" Width="94.5" Height="28.35" Border.Lines="All" Text="[Table.PartCode]" HorzAlign="Center" Font="宋体, 12pt"/>
-      <TextObject Name="Text11" Left="302.38" Width="85.05" Height="28.35" Border.Lines="All" Text="[Table.PlanDeliveryDate]" HorzAlign="Center" WordWrap="false" Font="宋体, 12pt"/>
+      <TextObject Name="Text11" Left="302.38" Width="85.05" Height="28.35" Border.Lines="All" Text="[IIf(FormatDateTime([Table.PlanDeliveryDate],&quot;yyyy/MM/dd&quot;)==&quot;0001-01-01&quot;,&quot;&quot;,FormatDateTime([Table.PlanDeliveryDate],&quot;yyyy/MM/dd&quot;))]" HorzAlign="Center" WordWrap="false" Font="宋体, 12pt"/>
       <TextObject Name="Text12" Left="387.43" Width="56.7" Height="28.35" Border.Lines="All" Text="[Table.Qty]" HorzAlign="Center" WordWrap="false" Font="宋体, 12pt"/>
       <TextObject Name="Text13" Left="481.93" Width="47.25" Height="28.35" Border.Lines="All" Text="[Table.BoxQty]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
       <TextObject Name="Text14" Left="529.2" Width="66.15" Height="28.35" Border.Lines="All" Text="[Round([Table.BoxVolume],3)]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
