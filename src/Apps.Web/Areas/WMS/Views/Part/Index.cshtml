@@ -47,7 +47,12 @@
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
     @Html.ToolButton("btnSafeImport", "fa fa-level-down", "安全库存导入", ref perm, "Import", true)
+    @Html.ToolButton("btnBelongCustomerImport", "fa fa-level-down", "所属客户导入", ref perm, "Import", true)
+    @Html.ToolButton("btnBelongSupplierImport", "fa fa-level-down", "所属供应商导入", ref perm, "Import", true)
     @Html.ToolButton("btnSafeExportTemplate", "fa fa-level-up", "安全库存模板导出", ref perm, "Export", true)
+    @Html.ToolButton("btnBelongCustomerExportTemplate", "fa fa-level-up", "所属客户模板导出", ref perm, "Export", true)
+    @Html.ToolButton("btnBelongSupplierExportTemplate", "fa fa-level-up", "所属供应商模板导出", ref perm, "Export", true)
+
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -155,6 +160,16 @@
             $("#Para").val("1")
             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
+        $("#btnBelongCustomerImport").click(function() {
+            $("#txtExcelPath").val("")
+            $("#Para").val("2")
+            $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+        });
+        $("#btnBelongSupplierImport").click(function() {
+            $("#txtExcelPath").val("")
+            $("#Para").val("3")
+            $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
+        });
         $("#btnExport").click(function() {
             var queryStr = $("#txtQuery").val();
             if (queryStr == null) {
@@ -177,6 +192,12 @@
         $("#btnSafeExportTemplate").click(function() {
           window.location = "@Url.Action("ExportSafeTemplate")";
         });
+        $("#btnBelongCustomerExportTemplate").click(function() {
+          window.location = "@Url.Action("ExportBelongCustomerTemplate")";
+        });
+        $("#btnBelongSupplierExportTemplate").click(function() {
+          window.location = "@Url.Action("ExportBelongSupplierTemplate")";
+        });
     });
     function ImportData()
     {
@@ -185,9 +206,18 @@
         if (para == 0) {
             var url = "@Url.Action("Import")?filePath="+$("#txtExcelPath").val();
         }
-        else {
+        if (para == 1) {
             var url = "@Url.Action("SafeStockImport")?filePath="+$("#txtExcelPath").val();
         }
+        if (para == 2) {
+            var url = "@Url.Action("BelongCustomerImport")?filePath="+$("#txtExcelPath").val();
+        }
+        if (para == 3) {
+            var url = "@Url.Action("BelongSupplierImport")?filePath="+$("#txtExcelPath").val();
+        }
+        @*else {
+            var url = "@Url.Action("SafeStockImport")?filePath="+$("#txtExcelPath").val();
+        }*@
                 $.post(url, function(data) {
             if (data.type == 1)
             {
