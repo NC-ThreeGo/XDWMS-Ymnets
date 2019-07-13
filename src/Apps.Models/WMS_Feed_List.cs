@@ -46,7 +46,6 @@ namespace Apps.Models
     
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
         public virtual WMS_Part WMS_Part { get; set; }
-        public virtual WMS_Part WMS_Part1 { get; set; }
         public virtual WMS_SubInvInfo WMS_SubInvInfo { get; set; }
     }
 }

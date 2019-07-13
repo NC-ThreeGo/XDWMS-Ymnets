@@ -51,10 +51,10 @@ namespace Apps.BLL.WMS
                                                   SubInvId = r.SubInvId,
                                                   ConfirmMessage = r.ConfirmMessage,
 
-                                                  AssemblyPartCode = r.WMS_Part.PartCode,
-                                                  AssemblyPartName = r.WMS_Part.PartName,
-                                                  SubAssemblyPartCode = r.WMS_Part1.PartCode,
-                                                  SubAssemblyPartName = r.WMS_Part1.PartName,
+                                                  //AssemblyPartCode = r.WMS_Part.PartCode,
+                                                  //AssemblyPartName = r.WMS_Part.PartName,
+                                                  SubAssemblyPartCode = r.WMS_Part.PartCode,
+                                                  SubAssemblyPartName = r.WMS_Part.PartName,
                                                   InvCode = r.WMS_InvInfo.InvCode,
                                                   InvName = r.WMS_InvInfo.InvName,
                                               }).ToList();
@@ -345,7 +345,7 @@ namespace Apps.BLL.WMS
             IQueryable<WMS_Feed_List> queryData = null;
             queryData = m_Rep.GetList().Where(where)
                     .GroupBy(p => new { p.FeedBillNum, p.ReleaseBillNum })
-                    .Select(g => g.First())
+                    .Select(g => g.FirstOrDefault())
                     .OrderBy(p => p.FeedBillNum);
             pager.totalRows = queryData.Count();
             //排序
