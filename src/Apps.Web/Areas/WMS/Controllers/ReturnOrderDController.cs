@@ -298,10 +298,20 @@ namespace Apps.Web.Areas.WMS.Controllers
             try
             {
                 var returnOrderNum = m_BLL.PrintReturnOrder(ref errors, GetUserTrueName(), inserted);
+                string query = null;
+                query = "ReturnOrderDNum.Contains(\"" + returnOrderNum + "\")";
+                
+                WMS_ReturnOrder_DModel list = m_BLL.GetListByWhere(ref setNoPagerAscById,query)[0];
                 if (!String.IsNullOrEmpty(returnOrderNum))
                 {
                     LogHandler.WriteServiceLog(GetUserTrueName(), "打印退货单成功", "成功", "打印", "WMS_ReturnOrder");
-                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnOrderNum));
+                    if(list.SupplierCode == "210")
+                    {
+                        return Json(JsonHandler.CreateMessage(2, Resource.InsertSucceed, returnOrderNum));
+                    }
+                    else {
+                        return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, returnOrderNum));
+                    }
                     //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
                 }
                 else

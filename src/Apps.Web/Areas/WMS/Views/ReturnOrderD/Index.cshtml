@@ -266,11 +266,19 @@
         $("#btnConfirm").click(function () {
             $.modalWindow(Lang.Confirm, '@Url.Action("Confirm")', 1000, 600, 'fa fa-plus');
         });
-        $("#btnReport").click(function() {
+        $("#btnReport").click(function () {             
             var row = $('#List').datagrid('getSelected');
+
             if (row != null && row.PrintStaus != '无效') {
-                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&BillNum=' + row.ReturnOrderDNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+                if (row.SupplierCode == "S210") {
+                //库存退货单打印
+                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&BillNum=' + row.ReturnOrderDNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');}
+                else {
+                //送检退货单打印
+                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&BillNum=' + row.ReturnOrderDNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');}
+                
             } else { $.messageBox5s(Lang.Tip, '请选择有效单据'); }
+            $('#List').datagrid('clearSelections');
         });
     });
     function ImportData()

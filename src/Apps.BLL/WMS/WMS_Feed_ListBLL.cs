@@ -280,6 +280,17 @@ namespace Apps.BLL.WMS
                 else
                 {
                     model.SubAssemblyPartId = part.Id;
+                    int partId = part.Id;                    
+                    if (!String.IsNullOrEmpty(model.FeedBillNum))
+                    {
+                        var feedBillNum = model.FeedBillNum;
+                        Expression<Func<WMS_Feed_List, bool>> exp1 = x => x.SubAssemblyPartId == partId && x.FeedBillNum == feedBillNum;
+                        var part1 = db.WMS_Feed_List.FirstOrDefault(exp1);
+                        if (part1 != null)
+                        {
+                            throw new Exception("投料单号与物料编码重复！");
+                        }
+                    }
                 }
             }
             else
@@ -321,7 +332,7 @@ namespace Apps.BLL.WMS
             if (String.IsNullOrEmpty(model.FeedBillNum))
             {
                 throw new Exception("投料单号不能为空！");
-            }
+            }           
             //投料数量不能为空
             if (model.FeedQty == 0)
             {

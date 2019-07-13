@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="07/12/2019 10:31:16" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="07/13/2019 22:09:41" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiLlhjQSHjfHkSz5jpeq+ZEg==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiDHsRr55Wi+/Sg2/N0MWHcg==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_SaleOrder where SellBillNum=@SellBillNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="PartId" DataType="System.Int32"/>
@@ -88,7 +88,7 @@
       <TextObject Name="Text13" Left="481.93" Width="47.25" Height="28.35" Border.Lines="All" Text="[Table.BoxQty]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
       <TextObject Name="Text14" Left="529.2" Width="66.15" Height="28.35" Border.Lines="All" Text="[Round([Table.BoxVolume],3)]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
       <TextObject Name="Text40" Left="444.14" Width="37.8" Height="28.35" Border.Lines="All" Text="[Table.Unit]" HorzAlign="Center" Font="宋体, 12pt"/>
-      <TextObject Name="Text47" Left="226.8" Width="75.6" Height="28.35" Border.Lines="All" Text="[Substring([Table.CustomerCode],1,Length([Table.CustomerCode])-2)]" HorzAlign="Center" Font="宋体, 12pt"/>
+      <TextObject Name="Text47" Left="226.8" Width="75.6" Height="28.35" Border.Lines="All" Text="[IIf([Table.CustomerCode]==&quot;&quot;,&quot;2&quot;,[Substring([Table.CustomerCode],1,Length([Table.CustomerCode])-2)])]&#13;&#10;" HorzAlign="Center" Font="宋体, 12pt"/>
       <TextObject Name="Text49" Left="595.35" Width="122.85" Height="28.35" Border.Lines="All" Text="[Table.Remark]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
     </DataBand>
     <PageFooterBand Name="PageFooter1" Top="290.05" Width="718.2" Height="47.25" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">

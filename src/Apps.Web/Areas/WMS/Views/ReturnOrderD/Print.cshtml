@@ -72,17 +72,18 @@
                             if (data.type == 1)
                             {
                                 hideLoading();
-                                //window.parent.frameReturnByMes(data.message);
-                                //window.parent.frameReturnByReload(true);
-                                //window.parent.frameReturnByClose()
-                                //window.parent.frameReturnByMes("保存成功！");
-
                                 //打开报表打印的窗口
                                 self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + data.value;
                             } else
                             {
-                                window.parent.frameReturnByMes(data.message);
+                                if (data.type == 2) {
                                 hideLoading();
+                                //打开报表打印的窗口
+                                self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + data.value;
+                                }
+                                else {
+                                    window.parent.frameReturnByMes(data.message);
+                                    hideLoading();}                                
 
                             }
                         }
