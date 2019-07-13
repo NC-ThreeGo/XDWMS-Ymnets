@@ -17,8 +17,10 @@ namespace Apps.IBLL.WMS
         bool ImportSafeStock(string oper, string filePath, ref ValidationErrors errors);
 
         bool ImportBelongCustomer(string oper, string filePath, ref ValidationErrors errors);
-
+        
         bool ImportBelongSupplier(string oper, string filePath, ref ValidationErrors errors);
+
+        bool ImportVolume(string oper, string filePath, ref ValidationErrors errors);
 
         /// <summary>
         /// 对导入进行附加的校验，例如物料编码是否存在等。

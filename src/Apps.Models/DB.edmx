@@ -2718,18 +2718,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_WMS_Feed_List_WMS_Part">
-          <End Role="WMS_Part" Type="Self.WMS_Part" Multiplicity="1" />
-          <End Role="WMS_Feed_List" Type="Self.WMS_Feed_List" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WMS_Part">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="WMS_Feed_List">
-              <PropertyRef Name="AssemblyPartId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_WMS_Feed_List_WMS_Part1">
           <End Role="WMS_Part" Type="Self.WMS_Part" Multiplicity="1" />
           <End Role="WMS_Feed_List" Type="Self.WMS_Feed_List" Multiplicity="*" />
@@ -3933,10 +3921,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_WMS_Feed_List_WMS_InvInfo" Association="Self.FK_WMS_Feed_List_WMS_InvInfo">
             <End Role="WMS_InvInfo" EntitySet="WMS_InvInfo" />
-            <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
-          </AssociationSet>
-          <AssociationSet Name="FK_WMS_Feed_List_WMS_Part" Association="Self.FK_WMS_Feed_List_WMS_Part">
-            <End Role="WMS_Part" EntitySet="WMS_Part" />
             <End Role="WMS_Feed_List" EntitySet="WMS_Feed_List" />
           </AssociationSet>
           <AssociationSet Name="FK_WMS_Feed_List_WMS_Part1" Association="Self.FK_WMS_Feed_List_WMS_Part1">

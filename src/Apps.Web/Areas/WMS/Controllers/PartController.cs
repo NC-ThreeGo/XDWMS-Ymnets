@@ -282,11 +282,27 @@ namespace Apps.Web.Areas.WMS.Controllers
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
             }
         }
-        [HttpPost]
+        
+       [HttpPost]
         [SupportFilter(ActionName = "Import")]
         public ActionResult BelongCustomerImport(string filePath)
         {
             if (m_BLL.ImportBelongCustomer(GetUserTrueName(), Utils.GetMapPath(filePath), ref errors))
+            {
+                LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Part", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
+            }
+            else
+            {
+                LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Part", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
+            }
+        }
+        [HttpPost]
+        [SupportFilter(ActionName = "Import")]
+        public ActionResult VolumeImport(string filePath)
+        {
+            if (m_BLL.ImportVolume(GetUserTrueName(), Utils.GetMapPath(filePath), ref errors))
             {
                 LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Part", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
                 return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
@@ -441,6 +457,26 @@ namespace Apps.Web.Areas.WMS.Controllers
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
             var exportFileName = string.Concat("所属供应商导入模板",
+                    ".xlsx");
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
+
+        [SupportFilter(ActionName = "Export")]
+        public ActionResult ExportVolumeTemplate()
+        {
+            JArray jObjects = new JArray();
+            var jo = new JObject();
+            jo.Add("物料编码(必输)", "");
+            jo.Add("每箱体积(必输)", "");
+            jo.Add("导入的错误信息", "");
+            jObjects.Add(jo);
+            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+            var exportFileName = string.Concat("每箱体积导入模板",
                     ".xlsx");
             return new ExportExcelResult
             {

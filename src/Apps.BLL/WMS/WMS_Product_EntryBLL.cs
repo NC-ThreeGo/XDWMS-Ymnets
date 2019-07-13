@@ -166,6 +166,7 @@ namespace Apps.BLL.WMS
                             WMS_Product_Entry entity = new WMS_Product_Entry();
                             entity.Id = model.Id;
                             entity.ProductBillNum = model.ProductBillNum;
+                            //entity.ProductBillNum = "ZZJ" + DateTime.Now.ToString("yyyyMMddHHmmssff");
                             entity.EntryBillNum = model.EntryBillNum;
                             //entity.EntryBillNum = "ZZJ" + DateTime.Now.ToString("yyyyMMddHHmmssff");
                             entity.Department = "总装车间";
