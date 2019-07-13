@@ -58,9 +58,9 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
             }
-            query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\")";
-            //query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")";
-            query += " && WMS_Part1.PartCode.Contains(\"" + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
+            //query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\")";
+            query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")";
+            query += " && WMS_Part.PartCode.Contains(\"" + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
 
             //List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, "FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\") && WMS_Part1.PartCode.Contains(\""
             //  + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")&& PrintDate>=(\""
@@ -151,7 +151,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                 if (!String.IsNullOrEmpty(releaseBillNum))
                 {
                     LogHandler.WriteServiceLog(GetUserTrueName(), "打印投料单成功，id:" + id.ToString(), "成功", "打印", "WMS_Feed_List");
-                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNum));
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, feedBillNum));
                     //return Redirect("~/Report/ReportManager/ShowBill?reportCode=ReturnOrder&billNum=" + returnOrderNum);
                 }
                 else

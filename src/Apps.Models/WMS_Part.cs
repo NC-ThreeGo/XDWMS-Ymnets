@@ -28,7 +28,6 @@ namespace Apps.Models
             this.WMS_InvRecord = new HashSet<WMS_InvRecord>();
             this.WMS_ReturnInspection = new HashSet<WMS_ReturnInspection>();
             this.WMS_Feed_List = new HashSet<WMS_Feed_List>();
-            this.WMS_Feed_List1 = new HashSet<WMS_Feed_List>();
         }
     
         public int Id { get; set; }
@@ -64,6 +63,5 @@ namespace Apps.Models
         public virtual ICollection<WMS_InvRecord> WMS_InvRecord { get; set; }
         public virtual ICollection<WMS_ReturnInspection> WMS_ReturnInspection { get; set; }
         public virtual ICollection<WMS_Feed_List> WMS_Feed_List { get; set; }
-        public virtual ICollection<WMS_Feed_List> WMS_Feed_List1 { get; set; }
     }
 }

@@ -217,7 +217,6 @@
         <AssociationConnector Association="DB.FK_ReturnInspection_WMS_Supplier" />
         <EntityTypeShape EntityType="DB.WMS_Feed_List" Width="1.5" PointX="16.875" PointY="31.875" />
         <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_InvInfo" />
-        <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_Part1" />
         <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_SubInvInfo" />
         </Diagram>
