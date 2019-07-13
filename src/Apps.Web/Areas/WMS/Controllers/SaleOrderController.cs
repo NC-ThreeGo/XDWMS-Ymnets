@@ -60,9 +60,12 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
             }
-            query += " && SaleBillNum.Contains(\"" + saleBillNum + "\")&& SellBillNum.Contains(\"" + sellBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            //query += " && SaleBillNum.Contains(\"" + saleBillNum + "\")&& SellBillNum.Contains(\"" + sellBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            //去除掉系统单据号查询
+            query += " && SaleBillNum.Contains(\"" + saleBillNum + "\") && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
             query += " && WMS_Customer.CustomerShortName.Contains(\"" + customerShortName + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
             List<WMS_Sale_OrderModel> list = m_BLL.GetListByWhere(ref pager, query);
+            //List<WMS_Sale_OrderModel> list = m_BLL.GetListByWhere(ref pager, "1=1");
             GridRows<WMS_Sale_OrderModel> grs = new GridRows<WMS_Sale_OrderModel>();
 
             List<WMS_Sale_OrderModel> footerList = new List<WMS_Sale_OrderModel>();

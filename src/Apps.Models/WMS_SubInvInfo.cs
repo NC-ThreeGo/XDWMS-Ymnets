@@ -19,7 +19,6 @@ namespace Apps.Models
             this.WMS_AI = new HashSet<WMS_AI>();
             this.WMS_Product_Entry = new HashSet<WMS_Product_Entry>();
             this.WMS_Inv_Adjust = new HashSet<WMS_Inv_Adjust>();
-            this.WMS_Feed_List = new HashSet<WMS_Feed_List>();
             this.WMS_Sale_Order = new HashSet<WMS_Sale_Order>();
             this.WMS_Inventory_D = new HashSet<WMS_Inventory_D>();
             this.WMS_ReturnOrder = new HashSet<WMS_ReturnOrder>();
@@ -27,6 +26,7 @@ namespace Apps.Models
             this.WMS_Inv = new HashSet<WMS_Inv>();
             this.WMS_InvRecord = new HashSet<WMS_InvRecord>();
             this.WMS_ReturnInspection = new HashSet<WMS_ReturnInspection>();
+            this.WMS_Feed_List = new HashSet<WMS_Feed_List>();
         }
     
         public int Id { get; set; }
@@ -45,7 +45,6 @@ namespace Apps.Models
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }
         public virtual ICollection<WMS_Product_Entry> WMS_Product_Entry { get; set; }
         public virtual ICollection<WMS_Inv_Adjust> WMS_Inv_Adjust { get; set; }
-        public virtual ICollection<WMS_Feed_List> WMS_Feed_List { get; set; }
         public virtual ICollection<WMS_Sale_Order> WMS_Sale_Order { get; set; }
         public virtual ICollection<WMS_Inventory_D> WMS_Inventory_D { get; set; }
         public virtual ICollection<WMS_ReturnOrder> WMS_ReturnOrder { get; set; }
@@ -53,5 +52,6 @@ namespace Apps.Models
         public virtual ICollection<WMS_Inv> WMS_Inv { get; set; }
         public virtual ICollection<WMS_InvRecord> WMS_InvRecord { get; set; }
         public virtual ICollection<WMS_ReturnInspection> WMS_ReturnInspection { get; set; }
+        public virtual ICollection<WMS_Feed_List> WMS_Feed_List { get; set; }
     }
 }

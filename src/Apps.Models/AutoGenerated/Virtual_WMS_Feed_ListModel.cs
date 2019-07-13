@@ -31,8 +31,6 @@ namespace Apps.Models.WMS
 		public virtual int AssemblyPartId { get; set; }
 		[Display(Name = "投料物料")]
 		public virtual int SubAssemblyPartId { get; set; }
-		[Display(Name = "未设置")]
-		public virtual string Lot { get; set; }
 		[Display(Name = "投料数量")]
 		public virtual decimal FeedQty { get; set; }
 		[Display(Name = "箱数")]
@@ -58,6 +56,10 @@ namespace Apps.Models.WMS
 		[Display(Name = "确认时间")]
 		public virtual Nullable<System.DateTime> ConfirmDate { get; set; }
 		[Display(Name = "未设置")]
+		public virtual string Lot { get; set; }
+		[Display(Name = "未设置")]
+		public virtual string ConfirmMessage { get; set; }
+		[Display(Name = "未设置")]
 		public virtual string Attr1 { get; set; }
 		[Display(Name = "未设置")]
 		public virtual string Attr2 { get; set; }
@@ -75,7 +77,5 @@ namespace Apps.Models.WMS
 		public virtual string ModifyPerson { get; set; }
 		[Display(Name = "修改时间")]
 		public virtual Nullable<System.DateTime> ModifyTime { get; set; }
-		[Display(Name = "未设置")]
-		public virtual string ConfirmMessage { get; set; }
 		}
 }

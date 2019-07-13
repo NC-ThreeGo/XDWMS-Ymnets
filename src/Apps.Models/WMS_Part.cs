@@ -17,8 +17,6 @@ namespace Apps.Models
         public WMS_Part()
         {
             this.WMS_AI = new HashSet<WMS_AI>();
-            this.WMS_Feed_List = new HashSet<WMS_Feed_List>();
-            this.WMS_Feed_List1 = new HashSet<WMS_Feed_List>();
             this.WMS_Inv_Adjust = new HashSet<WMS_Inv_Adjust>();
             this.WMS_PO = new HashSet<WMS_PO>();
             this.WMS_Product_Entry = new HashSet<WMS_Product_Entry>();
@@ -29,6 +27,8 @@ namespace Apps.Models
             this.WMS_Inv = new HashSet<WMS_Inv>();
             this.WMS_InvRecord = new HashSet<WMS_InvRecord>();
             this.WMS_ReturnInspection = new HashSet<WMS_ReturnInspection>();
+            this.WMS_Feed_List = new HashSet<WMS_Feed_List>();
+            this.WMS_Feed_List1 = new HashSet<WMS_Feed_List>();
         }
     
         public int Id { get; set; }
@@ -53,8 +53,6 @@ namespace Apps.Models
         public string BelongCustomer { get; set; }
     
         public virtual ICollection<WMS_AI> WMS_AI { get; set; }
-        public virtual ICollection<WMS_Feed_List> WMS_Feed_List { get; set; }
-        public virtual ICollection<WMS_Feed_List> WMS_Feed_List1 { get; set; }
         public virtual ICollection<WMS_Inv_Adjust> WMS_Inv_Adjust { get; set; }
         public virtual ICollection<WMS_PO> WMS_PO { get; set; }
         public virtual ICollection<WMS_Product_Entry> WMS_Product_Entry { get; set; }
@@ -65,5 +63,7 @@ namespace Apps.Models
         public virtual ICollection<WMS_Inv> WMS_Inv { get; set; }
         public virtual ICollection<WMS_InvRecord> WMS_InvRecord { get; set; }
         public virtual ICollection<WMS_ReturnInspection> WMS_ReturnInspection { get; set; }
+        public virtual ICollection<WMS_Feed_List> WMS_Feed_List { get; set; }
+        public virtual ICollection<WMS_Feed_List> WMS_Feed_List1 { get; set; }
     }
 }

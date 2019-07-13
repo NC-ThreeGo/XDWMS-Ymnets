@@ -99,9 +99,12 @@ namespace Apps.BLL.WMS
 								string errorMessage = String.Empty;
 								var model = new WMS_CustomerModel();
 								model.Id = row.Id;
-								model.CustomerCode = row.CustomerCode;
-								model.CustomerShortName = row.CustomerShortName;
-								model.CustomerName = row.CustomerName;
+                               if (row.CustomerCode != null)
+                               { model.CustomerCode = row.CustomerCode.Replace(" ", ""); }
+                               if (row.CustomerShortName != null)
+                               { model.CustomerShortName = row.CustomerShortName.Replace(" ", ""); }
+                               if (row.CustomerName != null)
+                               { model.CustomerName = row.CustomerName.Replace(" ", ""); }
 								model.CustomerType = row.CustomerType;
 								model.LinkMan = row.LinkMan;
 								model.LinkManTel = row.LinkManTel;

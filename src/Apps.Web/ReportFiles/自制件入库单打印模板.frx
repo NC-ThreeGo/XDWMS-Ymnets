@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="06/05/2019 17:07:36" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="07/13/2019 16:25:09" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiwd/FN10R6moM1TQrzKi0mQ==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEi5Tze2oRAMkXnA24BATK+Og==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_ProductEntry ">
         <Column Name="CreateTimeToChar" DataType="System.String"/>
         <Column Name="ProductQty" DataType="System.Decimal"/>
@@ -39,7 +39,7 @@
       <DataBand Name="Data1" Top="186.1" Width="718.2" Height="28.35" DataSource="Table">
         <TextObject Name="Text7" Width="47.25" Height="28.35" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center"/>
         <TextObject Name="Text53" Left="151.2" Width="132.3" Height="28.35" Border.Lines="All" Text="[Table.PartName]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text54" Left="283.5" Width="122.85" Height="28.35" Border.Lines="All" Text="[Table.CustomerCode]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text54" Left="283.5" Width="122.85" Height="28.35" Border.Lines="All" Text="[Substring([Table.CustomerCode],1,Length([Table.CustomerCode])-2)]" HorzAlign="Center" VertAlign="Center"/>
         <TextObject Name="Text55" Left="406.35" Width="122.85" Height="28.35" Border.Lines="All" Text="[Table.PartCode]" HorzAlign="Center" VertAlign="Center"/>
         <TextObject Name="Text56" Left="529.2" Width="66.15" Height="28.35" Border.Lines="All" Text="[Table.ProductQty]" HorzAlign="Center" VertAlign="Center"/>
         <TextObject Name="Text57" Left="595.35" Width="122.85" Height="28.35" Border.Lines="All" HorzAlign="Center" VertAlign="Center"/>
