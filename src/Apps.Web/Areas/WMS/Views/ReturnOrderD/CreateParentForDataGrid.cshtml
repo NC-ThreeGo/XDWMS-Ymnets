@@ -128,7 +128,7 @@
                 { field: 'SupplierId', title: '供应商ID', width: 80, hidden: true },
                 {
                     field: 'SupplierShortName', title: '供应商简称', width: 100,
-                    editor: { type: 'textbox', options: { required: true } }
+                    editor: { type: 'textbox', options: { required: true, value: '总装车间' } }
                 },
                 { field: 'SupplierCode', title: '供应商编码', width: 100 },
 
@@ -281,6 +281,8 @@
                     if (ed.field == 'SupplierShortName')
                     {
                         var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
+                        //赋默认值：总装车间
+                        $(ed.target).textbox('setValue', '总装车间');
                         target.bind("keyup", function (e)
                         {
                             return setKeyUpValueForSupplierShortName(e, $(this), $('#mList'));

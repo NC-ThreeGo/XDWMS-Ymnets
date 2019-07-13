@@ -158,9 +158,16 @@ namespace Apps.BLL.WMS
 
         public List<WMS_InvInfoModel> GetListByWhere(string where)
         {
-            IQueryable<WMS_InvInfo> queryData = null;
-            queryData = m_Rep.GetList().Where(where).OrderBy(p => p.InvCode);
-            return CreateModelList(ref queryData);
+            try
+            {
+                IQueryable<WMS_InvInfo> queryData = null;
+                queryData = m_Rep.GetList().Where(where).OrderBy(p => p.InvCode);
+                return CreateModelList(ref queryData);
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

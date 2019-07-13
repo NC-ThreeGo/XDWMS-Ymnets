@@ -513,17 +513,11 @@ namespace Apps.Web.Areas.WMS.Controllers
 
             if (type == "print")
             {
-                list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"未打印\"")
-                    .GroupBy(p => new { p.FeedBillNum, p.ReleaseBillNum })
-                    .Select(g => g.First())
-                    .OrderBy(p => p.FeedBillNum).ToList();
+                list = m_BLL.GetListByWhereAndGroupBy(ref pager, "PrintStaus == \"未打印\"");
             }
             else
             {
-                list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"已打印\" and ConfirmStatus == \"未确认\"")
-                    .GroupBy(p => new { p.FeedBillNum, p.ReleaseBillNum })
-                    .Select(g => g.First())
-                    .OrderBy(p => p.FeedBillNum).ToList();
+                list = m_BLL.GetListByWhereAndGroupBy(ref pager, "PrintStaus == \"已打印\" and ConfirmStatus == \"未确认\"");
             }
             GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
             grs.rows = list;

@@ -29,6 +29,22 @@ namespace Apps.IBLL.WMS
          List<WMS_ReturnOrderModel> GetListByWhere(ref GridPager pager, string where);
 
         /// <summary>
+        /// 根据where字符串获取按单据编号分组后的列表数据。
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        List<WMS_ReturnOrderModel> GetListByWhereAndGroupBy(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 根据where字符串获取按SupplierId分组后的列表数据。
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        List<WMS_ReturnOrderModel> GetListByWhereAndGroupBySupplierId(ref GridPager pager, string where);
+
+        /// <summary>
         /// 批量保存库存退货记录
         /// </summary>
         /// <param name="opt"></param>

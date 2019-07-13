@@ -431,6 +431,48 @@ namespace Apps.BLL.WMS
             }
         }
 
+        public List<WMS_AIModel> GetListByWhereAndGroupBy(ref GridPager pager, string where)
+        {
+            try
+            {
+                IQueryable<WMS_AI> queryData = null;
+                queryData = m_Rep.GetList().Where(where)
+                    .GroupBy(p => new { p.ArrivalBillNum, p.POId })
+                    .Select(g => g.FirstOrDefault())
+                    .OrderBy(p => p.ArrivalBillNum);
+
+                pager.totalRows = queryData.Count();
+                //排序
+                queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+                return CreateModelList(ref queryData);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<WMS_AIModel> GetListByWhereAndGroupByInspectBillNum(ref GridPager pager, string where)
+        {
+            try
+            {
+                IQueryable<WMS_AI> queryData = null;
+                queryData = m_Rep.GetList().Where(where)
+                .GroupBy(p => new { p.InspectBillNum })
+                    .Select(g => g.FirstOrDefault())
+                    .OrderBy(p => p.InspectBillNum);
+
+                pager.totalRows = queryData.Count();
+                //排序
+                queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+                return CreateModelList(ref queryData);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public List<WMS_AIModel> GetInspectBillList(ref GridPager pager, string where)
         {
             try

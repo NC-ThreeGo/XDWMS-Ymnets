@@ -239,7 +239,19 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             if (type == "select")
             {
-                var list = new SelectList(m_BLL.GetListByWhere("Status == \"有效\""), "Id", "InvName");
+                SelectList list;
+                //获取第一个默认的仓库
+                //var invList = m_BLL.GetList(ref setNoPagerAscById, "").Where(p => p.Status == "有效" && p.IsDefault.Value);
+                var invList = m_BLL.GetListByWhere("Status == \"有效\" && IsDefault.Value");
+                if (invList.Count > 0)
+                {
+                    var defaultInvId = invList[0].Id;
+                    list = new SelectList(invList, "Id", "InvName", defaultInvId);
+                }
+                else
+                {
+                    list = new SelectList(m_BLL.GetListByWhere("Status == \"有效\""), "Id", "InvName");
+                }
                 return Json(list);
             }
             else

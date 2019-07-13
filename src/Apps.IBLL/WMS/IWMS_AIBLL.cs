@@ -27,5 +27,21 @@ namespace Apps.IBLL.WMS
          /// <param name="pager"></param>
          /// <param name="whereStr"></param>
          List<WMS_AIModel> GetListByWhere(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 根据where字符串获取按单据编号分组后的列表数据。
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        List<WMS_AIModel> GetListByWhereAndGroupBy(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 根据where字符串获取按单据编号分组后的列表数据。
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        List<WMS_AIModel> GetListByWhereAndGroupByInspectBillNum(ref GridPager pager, string where);
     }
 }

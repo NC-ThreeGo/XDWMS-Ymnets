@@ -340,6 +340,19 @@ namespace Apps.BLL.WMS
 			return CreateModelList(ref queryData);
 		}
 
+        public List<WMS_Feed_ListModel> GetListByWhereAndGroupBy(ref GridPager pager, string where)
+        {
+            IQueryable<WMS_Feed_List> queryData = null;
+            queryData = m_Rep.GetList().Where(where)
+                    .GroupBy(p => new { p.FeedBillNum, p.ReleaseBillNum })
+                    .Select(g => g.First())
+                    .OrderBy(p => p.FeedBillNum);
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return CreateModelList(ref queryData);
+        }
+
         public string PrintFeedList(ref ValidationErrors errors, string opt, string feedBillNum, int id)
         {
             try

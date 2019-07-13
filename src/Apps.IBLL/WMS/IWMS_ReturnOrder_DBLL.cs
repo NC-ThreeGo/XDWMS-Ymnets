@@ -28,6 +28,14 @@ namespace Apps.IBLL.WMS
          /// <param name="whereStr"></param>
          List<WMS_ReturnOrder_DModel> GetListByWhere(ref GridPager pager, string where);
 
+        /// <summary>
+        /// 根据where字符串获取按单据编号分组后的列表数据。
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        List<WMS_ReturnOrder_DModel> GetListByWhereAndGroupBy(ref GridPager pager, string where);
+
 
         List<WMS_ReturnOrderModel> GetListParentByWhere(ref GridPager pager, string numWhere, string where);
 

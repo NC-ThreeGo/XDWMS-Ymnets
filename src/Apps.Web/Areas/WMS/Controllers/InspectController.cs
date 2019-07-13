@@ -324,10 +324,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             //TODO:显示有效且已打印的送检单。
             //List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已送检\" and InStoreStatus == \"未入库\"")
             //    .OrderBy(p => p.InspectBillNum).ToList();
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已送检\" and InStoreStatus == \"未入库\"")
-                .GroupBy(p => new { p.InspectBillNum })
-                .Select(g => g.First())
-                .OrderBy(p => p.InspectBillNum).ToList();
+            List<WMS_AIModel> list = m_BLL.GetListByWhereAndGroupByInspectBillNum(ref pager, "InspectStatus == \"已送检\" and InStoreStatus == \"未入库\"");
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

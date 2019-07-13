@@ -260,6 +260,46 @@ namespace Apps.BLL.WMS
             }
 		}
 
+        public List<WMS_ReturnOrderModel> GetListByWhereAndGroupBy(ref GridPager pager, string where)
+        {
+            try
+            {
+                IQueryable<WMS_ReturnOrder> queryData = null;
+                queryData = m_Rep.GetList().Where(where)
+                    .GroupBy(p => new { p.ReturnOrderNum, p.SupplierId })
+                    .Select(g => g.FirstOrDefault())
+                    .OrderBy(p => p.ReturnOrderNum);
+                pager.totalRows = queryData.Count();
+                //排序
+                queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+                return CreateModelList(ref queryData);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<WMS_ReturnOrderModel> GetListByWhereAndGroupBySupplierId(ref GridPager pager, string where)
+        {
+            try
+            {
+                IQueryable<WMS_ReturnOrder> queryData = null;
+                queryData = m_Rep.GetList().Where(where).Where(p => Math.Abs(p.AdjustQty) < Math.Abs(p.ReturnQty))
+                .GroupBy(p => new { p.SupplierId })
+                    .Select(g => g.FirstOrDefault())
+                    .OrderBy(p => p.SupplierId);
+                pager.totalRows = queryData.Count();
+                //排序
+                queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+                return CreateModelList(ref queryData);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool CreateBatchReturnOrder(ref ValidationErrors errors, string opt, string jsonReturnOrder)
         {
             string result = String.Empty;

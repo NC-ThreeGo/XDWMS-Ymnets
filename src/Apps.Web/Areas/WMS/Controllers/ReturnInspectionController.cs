@@ -410,10 +410,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Check")]
         public JsonResult ReturnInspectBillGetList(GridPager pager, string queryStr)
         {
-            List<WMS_ReturnInspectionModel> list = m_BLL.GetListByWhere(ref pager, "PrintStatus == \"已打印\" and InspectStatus == \"未检验\"")
-                .GroupBy(p => new { p.ReturnInspectionNum })
-                .Select(g => g.First())
-                .OrderBy(p => p.ReturnInspectionNum).ToList();
+            List<WMS_ReturnInspectionModel> list = m_BLL.GetListByWhereAndGroupBy(ref pager, "PrintStatus == \"已打印\" and InspectStatus == \"未检验\"");
             GridRows<WMS_ReturnInspectionModel> grs = new GridRows<WMS_ReturnInspectionModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

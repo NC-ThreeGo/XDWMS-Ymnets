@@ -286,6 +286,19 @@ namespace Apps.BLL.WMS
 			return CreateModelList(ref queryData);
 		}
 
+        public List<WMS_ReturnInspectionModel> GetListByWhereAndGroupBy(ref GridPager pager, string where)
+        {
+            IQueryable<WMS_ReturnInspection> queryData = null;
+            queryData = m_Rep.GetList().Where(where)
+                .GroupBy(p => new { p.ReturnInspectionNum })
+                .Select(g => g.First())
+                .OrderBy(p => p.ReturnInspectionNum);
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return CreateModelList(ref queryData);
+        }
+
         public string CreateBatchReturnInspection(ref ValidationErrors errors, string opt, string jsonReturnInspection)
         {
             string result = String.Empty;

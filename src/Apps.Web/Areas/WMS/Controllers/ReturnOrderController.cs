@@ -403,10 +403,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Create")]
         public JsonResult SupplierGetList(GridPager pager, string supplierCode, string supplierShortName)
         {
-            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum == null")
-            .GroupBy(p => new { p.ReturnOrderNum, p.SupplierId, p.SupplierShortName })
-            .Select(g => g.First())
-            .ToList(); 
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhereAndGroupBy(ref pager, "ReturnOrderNum == null"); 
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
@@ -447,11 +444,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Edit")]
         public JsonResult RetunOrderForPrintedGetList(GridPager pager)
         {
-            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"已退货\" && ConfirmStatus == \"未确认\"")
-                .GroupBy(p => new { p.ReturnOrderNum, p.SupplierId, p.SupplierShortName })
-                .Select(g => g.First())
-                //.Select(p => new WMS_ReturnOrderModel { ReturnOrderNum = p.ReturnOrderNum, SupplierId = p.SupplierId, SupplierShortName = p.SupplierShortName })
-                .ToList();
+            List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "PrintStaus == \"已退货\" && ConfirmStatus == \"未确认\"");
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
