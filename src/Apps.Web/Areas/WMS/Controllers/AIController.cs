@@ -399,13 +399,13 @@ namespace Apps.Web.Areas.WMS.Controllers
             //    + arrivalBillNum + "\") && ReceiveStatus == \"已到货\" && InspectStatus == \"未送检\"")
             //    .OrderBy(p => p.ArrivalBillNum).ToList();
             //改为采购订单号
-            List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "WMS_PO.PO.Contains(\""
-                + arrivalBillNum + "\") && ReceiveStatus == \"已到货\" && InspectStatus == \"未送检\"")
-                .GroupBy(p => new { p.ArrivalBillNum, p.PO, p.SupplierShortName })
-                .Select(g => g.First())
-                .OrderBy(p => p.ArrivalBillNum)
-                .ToList();
-            List<WMS_AIModel> list = m_BLL.GetListByWhereAndGroupBy(ref pager, "ArrivalBillNum.Contains(\""
+            //List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "WMS_PO.PO.Contains(\""
+            //    + arrivalBillNum + "\") && ReceiveStatus == \"已到货\" && InspectStatus == \"未送检\"")
+            //    .GroupBy(p => new { p.ArrivalBillNum, p.PO, p.SupplierShortName })
+            //    .Select(g => g.First())
+            //    .OrderBy(p => p.ArrivalBillNum)
+            //    .ToList();
+            List<WMS_AIModel> list = m_BLL.GetListByWhereAndGroupBy(ref pager, "WMS_PO.PO.Contains(\""
                 + arrivalBillNum + "\") && ReceiveStatus == \"已到货\" && InspectStatus == \"未送检\"");
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
