@@ -30,6 +30,6 @@ namespace Apps.IDAL.WMS
         /// </summary>
         /// <param name="opt"></param>
         /// <param name="releaseBillNum"></param>
-        void ConfirmFeedList(string opt, string releaseBillNum);
+        string ConfirmFeedList(string opt, string releaseBillNum);
     }
 }

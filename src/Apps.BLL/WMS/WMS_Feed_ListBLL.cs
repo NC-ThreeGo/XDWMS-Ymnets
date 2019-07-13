@@ -394,8 +394,16 @@ namespace Apps.BLL.WMS
         {
             try
             {
-                m_Rep.ConfirmFeedList(opt, releaseBillNum);
-                return true;
+                var rtn = m_Rep.ConfirmFeedList(opt, releaseBillNum);
+                if (String.IsNullOrEmpty(rtn))
+                {
+                    return true;
+                }
+                else
+                {
+                    errors.Add(rtn);
+                    return false;
+                }
             }
             catch (Exception ex)
             {
