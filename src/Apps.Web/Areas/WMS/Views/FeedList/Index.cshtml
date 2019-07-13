@@ -38,7 +38,7 @@
 <div class="mvctool">
     @*<input id="txtQuery" type="text" class="searchText" />*@
     <input id="txtFeedBillNum" type="text" placeholder="投料单号(业务):" class="searchText" />
-    <input id="txtAssemblyPartCode" type="text" placeholder="总成物料编码:" class="searchText" />
+    @*<input id="txtAssemblyPartCode" type="text" placeholder="总成物料编码:" class="searchText" />*@
     <input id="txtSubAssemblyPartCode" placeholder="投料物料编码:" type="text" class="searchText" />
     打印状态：@Html.DropDownList("txtPrintStaus", ViewBag.PrintStaus as SelectList, new { @style = "width:70px;" })
     确认状态：@Html.DropDownList("txtConfirmStatus", ViewBag.ConfirmStatus as SelectList, new { @style = "width:70px;" })
@@ -84,32 +84,33 @@
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
                 { field: 'FeedBillNum', title: '投料单号（业务）', width: 80,sortable:true },
-                { field: 'ReleaseBillNum', title: '投料单号（系统）', width: 100,sortable:true },
-                { field: 'Department', title: '投料部门', width: 70,sortable:true },
-                { field: 'AssemblyPartCode', title: '总成物料', width: 80,sortable:true },
-                { field: 'SubAssemblyPartCode', title: '投料物料', width: 80,sortable:true },
+                //{ field: 'ReleaseBillNum', title: '投料单号（系统）', width: 100,sortable:true },
+                //{ field: 'Department', title: '投料部门', width: 70,sortable:true },
+                //{ field: 'AssemblyPartCode', title: '总成物料', width: 80,sortable:true },
+                { field: 'SubAssemblyPartCode', title: '投料物料', width: 120,sortable:true },
+                { field: 'SubAssemblyPartName', title: '投料物料名称', width: 120, sortable: true },
                 //{ field: 'Lot', title: '批次号', width: 50, sortable: true },
                 { field: 'FeedQty', title: '投料数量', width: 80, sortable: true, align: 'right' },
-                { field: 'BoxQty', title: '箱数', width: 80, sortable: true, align: 'right' },
-                { field: 'Capacity', title: '体积', width: 80,sortable:true },
-                { field: 'InvName', title: '库房', width: 80,sortable:true },
+                { field: 'BoxQty', title: '箱数', width: 50, sortable: true, align: 'right' },
+                { field: 'Capacity', title: '体积', width: 50,sortable:true },
+                //{ field: 'InvName', title: '库房', width: 80,sortable:true },
                 //{ field: 'SubInvId', title: '子库存', width: 80,sortable:true },
-                { field: 'Lot', title: '批次号', width: 60, sortable: true },
+                { field: 'Lot', title: '批次号', width: 50, sortable: true },
                 { field: 'Remark', title: '备注', width: 80,sortable:true },
-                { field: 'PrintStaus', title: '打印状态', width: 80,sortable:true },
+                { field: 'PrintStaus', title: '打印状态', width: 50,sortable:true },
                 //{ field: 'PrintDate', title: '打印时间', width: 80, sortable: true },
                 {
-                    field: 'PrintDate', title: '打印时间', width: 80, sortable: true,
+                    field: 'PrintDate', title: '打印时间', width: 60, sortable: true,
                     formatter: function (value, row, index) {
                         return formatterDateNoHour(value);
                     }
                 },
                 //{ field: 'PrintMan', title: '打印人', width: 80,sortable:true },
-                { field: 'ConfirmStatus', title: '确认状态', width: 80,sortable:true },
+                { field: 'ConfirmStatus', title: '确认状态', width: 50,sortable:true },
                 //{ field: 'ConfirmMan', title: '确认人', width: 80,sortable:true },
                 //{ field: 'ConfirmDate', title: '确认时间', width: 80, sortable: true },
                 {
-                    field: 'ConfirmDate', title: '确认时间', width: 80, sortable: true,
+                    field: 'ConfirmDate', title: '确认时间', width: 60, sortable: true,
                     formatter: function (value, row, index) {
                         return formatterDateNoHour(value);
                     }
@@ -268,7 +269,7 @@
         $("#btnReport").click(function() {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=FeedList&billNum=' + row.ReleaseBillNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
+                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=FeedList&billNum=' + row.feedBillNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
     });

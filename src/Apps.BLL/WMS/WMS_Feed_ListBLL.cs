@@ -84,7 +84,7 @@ namespace Apps.BLL.WMS
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.FeedBillNum, "投料单号（业务）(必输)");
 					//excelFile.AddMapping<WMS_Feed_ListModel>(x => x.ReleaseBillNum, "投料单号（系统）");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Department, "投料部门");
-					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.AssemblyPartCode, "总成物料(必输)");
+					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.AssemblyPartCode, "总成物料");
 					excelFile.AddMapping<WMS_Feed_ListModel>(x => x.SubAssemblyPartCode, "投料物料(必输)");
                     excelFile.AddMapping<WMS_Feed_ListModel>(x => x.Lot, "批次号(格式：YYYY-MM-DD)");
                     excelFile.AddMapping<WMS_Feed_ListModel>(x => x.FeedQty, "投料数量(必输)");
@@ -245,26 +245,26 @@ namespace Apps.BLL.WMS
 		public void AdditionalCheckExcelData(DBContainer db, ref WMS_Feed_ListModel model)
 		{
             //获取总成物料ID
-            if (!String.IsNullOrEmpty(model.AssemblyPartCode))
-            {
-                var partCode = model.AssemblyPartCode;
-                Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
+            //if (!String.IsNullOrEmpty(model.AssemblyPartCode))
+            //{
+            //    var partCode = model.AssemblyPartCode;
+            //    Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
 
-                //var part = m_PartRep.GetSingleWhere(exp);
-                var part = db.WMS_Part.FirstOrDefault(exp);
-                if (part == null)
-                {
-                    throw new Exception("总成物料编码不存在！");
-                }
-                else
-                {
-                    model.AssemblyPartId = part.Id;
-                }
-            }
-            else
-            {
-                throw new Exception("总成物料编码不能为空！");
-            }
+            //    //var part = m_PartRep.GetSingleWhere(exp);
+            //    var part = db.WMS_Part.FirstOrDefault(exp);
+            //    if (part == null)
+            //    {
+            //        throw new Exception("总成物料编码不存在！");
+            //    }
+            //    else
+            //    {
+            //        model.AssemblyPartId = part.Id;
+            //    }
+            //}
+            //else
+            //{
+            //    throw new Exception("总成物料编码不能为空！");
+            //}
             //获取物料ID
             if (!String.IsNullOrEmpty(model.SubAssemblyPartCode))
             {

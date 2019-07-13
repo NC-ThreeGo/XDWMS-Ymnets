@@ -59,6 +59,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
             }
             query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\")";
+            //query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")";
             query += " && WMS_Part1.PartCode.Contains(\"" + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
 
             //List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, "FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\") && WMS_Part1.PartCode.Contains(\""
@@ -453,7 +454,7 @@ namespace Apps.Web.Areas.WMS.Controllers
               jo.Add("投料单号（业务）(必输)", "");
               //jo.Add("投料单号（系统）", "");
               jo.Add("投料部门", "");
-              jo.Add("总成物料(必输)", "");
+              jo.Add("总成物料", "");
               jo.Add("投料物料(必输)", "");            
             jo.Add("投料数量(必输)", "");
               jo.Add("箱数", "");

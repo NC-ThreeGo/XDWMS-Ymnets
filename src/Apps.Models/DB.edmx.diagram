@@ -169,13 +169,8 @@
         <AssociationConnector Association="DB.FK_WMS_PO_WMS_Supplier" />
         <EntityTypeShape EntityType="DB.WMS_ReInspect" Width="1.5" PointX="7.5" PointY="58.75" />
         <AssociationConnector Association="DB.FK_WMS_ReInspect_WMS_AI" />
-        <EntityTypeShape EntityType="DB.WMS_Feed_List" Width="1.5" PointX="16.875" PointY="31.125" />
-        <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_InvInfo" />
-        <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_SubInvInfo" />
         <EntityTypeShape EntityType="DB.WMS_Part" Width="1.5" PointX="0.75" PointY="30" />
         <AssociationConnector Association="DB.FK_WMS_AI_WMS_Part" />
-        <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_Part" />
-        <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_Part1" />
         <AssociationConnector Association="DB.FK_WMS_Inv_Adjust_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_PO_WMS_Part" />
         <AssociationConnector Association="DB.FK_WMS_Product_Entry_WMS_Part" />
@@ -220,6 +215,11 @@
         <AssociationConnector Association="DB.FK_ReturnInspection_WMS_Part" />
         <AssociationConnector Association="DB.FK_ReturnInspection_WMS_SubInvInfo" />
         <AssociationConnector Association="DB.FK_ReturnInspection_WMS_Supplier" />
+        <EntityTypeShape EntityType="DB.WMS_Feed_List" Width="1.5" PointX="16.875" PointY="31.875" />
+        <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_InvInfo" />
+        <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_Part" />
+        <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_Part1" />
+        <AssociationConnector Association="DB.FK_WMS_Feed_List_WMS_SubInvInfo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

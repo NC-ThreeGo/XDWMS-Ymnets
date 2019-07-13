@@ -108,7 +108,6 @@ namespace Apps.Models
         public virtual DbSet<WMS_Inv_Adjust> WMS_Inv_Adjust { get; set; }
         public virtual DbSet<WMS_Supplier> WMS_Supplier { get; set; }
         public virtual DbSet<WMS_ReInspect> WMS_ReInspect { get; set; }
-        public virtual DbSet<WMS_Feed_List> WMS_Feed_List { get; set; }
         public virtual DbSet<WMS_Part> WMS_Part { get; set; }
         public virtual DbSet<WMS_Sale_Order> WMS_Sale_Order { get; set; }
         public virtual DbSet<WMS_Inventory_D> WMS_Inventory_D { get; set; }
@@ -121,6 +120,7 @@ namespace Apps.Models
         public virtual DbSet<V_WMS_InvHistoryAvg> V_WMS_InvHistoryAvg { get; set; }
         public virtual DbSet<WMS_InvRecord> WMS_InvRecord { get; set; }
         public virtual DbSet<WMS_ReturnInspection> WMS_ReturnInspection { get; set; }
+        public virtual DbSet<WMS_Feed_List> WMS_Feed_List { get; set; }
     
         public virtual int P_JOB_DeleteTaskJobs(string sno)
         {

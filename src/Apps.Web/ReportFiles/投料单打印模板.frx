@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/22/2018 12:19:07" ReportInfo.Modified="04/13/2019 21:39:51" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/22/2018 12:19:07" ReportInfo.Modified="07/13/2019 16:57:39" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEi9Nj2vx3MduHchON7CbLLbg==">
-      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_FeedList where ReleaseBillNum=@ReleaseBillNum">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEilDvCAeHSasqf3wYziwAv0A==">
+      <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_FeedList where FeedBillNum=@FeedBillNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="BoxQty" DataType="System.Decimal"/>
         <Column Name="InvId" DataType="System.Int32"/>
@@ -37,7 +37,8 @@
         <Column Name="AssemblyCustomerCode" DataType="System.String"/>
         <Column Name="SubAssemblyPartCode" DataType="System.String"/>
         <Column Name="SubAssemblyPartName" DataType="System.String"/>
-        <CommandParameter Name="ReleaseBillNum" DataType="22" Size="20"/>
+        <Column Name="seq" DataType="System.Int64"/>
+        <CommandParameter Name="FeedBillNum" DataType="22" Size="20"/>
       </TableDataSource>
     </MsSqlDataConnection>
   </Dictionary>
@@ -72,11 +73,11 @@
       <DataBand Name="Data1" Top="240.91" Width="718.2" Height="28.35" DataSource="Table">
         <TextObject Name="Text7" Width="47.25" Height="28.35" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center"/>
         <TextObject Name="Text10" Left="207.9" Width="122.85" Height="28.35" Border.Lines="All" Text="[Table.SubAssemblyPartCode]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text12" Left="396.9" Width="75.6" Height="28.35" Border.Lines="All" Text="[Table.FeedQty]" HorzAlign="Center" VertAlign="Center" WordWrap="false"/>
+        <TextObject Name="Text12" Left="396.9" Width="75.6" Height="28.35" Border.Lines="All" Text="[Table.FeedQty]" HorzAlign="Center" VertAlign="Center"/>
         <TextObject Name="Text13" Left="472.5" Width="66.15" Height="28.35" Border.Lines="All" Text="[Table.Capacity]" HorzAlign="Center" VertAlign="Center"/>
         <TextObject Name="Text14" Left="538.65" Width="179.55" Height="28.35" Border.Lines="All" Text="[Table.Remark]" HorzAlign="Center" VertAlign="Center"/>
         <TextObject Name="Text6" Left="47.25" Width="160.65" Height="28.35" Border.Lines="All" Text="[Table.SubAssemblyPartName]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text11" Left="330.75" Width="66.15" Height="28.35" Border.Lines="All" Text="[Table.BoxQty]" HorzAlign="Center" VertAlign="Center" WordWrap="false"/>
+        <TextObject Name="Text11" Left="330.75" Width="66.15" Height="28.35" Border.Lines="All" Text="[Table.BoxQty]" HorzAlign="Center" VertAlign="Center"/>
       </DataBand>
       <GroupFooterBand Name="GroupFooter1" Top="273.26" Width="718.2"/>
     </GroupHeaderBand>
