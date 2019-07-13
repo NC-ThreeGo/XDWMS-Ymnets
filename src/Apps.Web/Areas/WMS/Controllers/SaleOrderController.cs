@@ -508,11 +508,11 @@ namespace Apps.Web.Areas.WMS.Controllers
 
             if (type == "print")
             {
-                list = m_BLL.GetListByWhereAndGroupBy(ref pager, "PrintStaus == \"未打印\"");
+                list = m_BLL.GetListByWhereAndGroupBy(ref pager, String.IsNullOrEmpty(queryStr) ? "PrintStaus == \"未打印\"" : "SaleBillNum = \"" + queryStr + "\" and PrintStaus == \"未打印\"");
             }
             else
             {
-                list = m_BLL.GetListByWhereAndGroupBy(ref pager, "PrintStaus == \"已打印\" and ConfirmStatus == \"未确认\"");
+                list = m_BLL.GetListByWhereAndGroupBy(ref pager, String.IsNullOrEmpty(queryStr) ? "PrintStaus == \"已打印\" and ConfirmStatus == \"未确认\"" : "SaleBillNum = \"" + queryStr + "\" and PrintStaus == \"已打印\" and ConfirmStatus == \"未确认\"");
             }
             GridRows<WMS_Sale_OrderModel> grs = new GridRows<WMS_Sale_OrderModel>();
             grs.rows = list;
