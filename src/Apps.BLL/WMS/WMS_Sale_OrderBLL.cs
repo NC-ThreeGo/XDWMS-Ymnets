@@ -396,8 +396,16 @@ namespace Apps.BLL.WMS
         {
             try
             {
-                m_Rep.ConfirmSaleOrder(opt, sellBillNum);
-                return true;
+                var rtn = m_Rep.ConfirmSaleOrder(opt, sellBillNum);
+                if (String.IsNullOrEmpty(rtn))
+                {
+                    return true;
+                }
+                else
+                {
+                    errors.Add(rtn);
+                    return false;
+                }
             }
             catch (Exception ex)
             {

@@ -29,6 +29,6 @@ namespace Apps.IDAL.WMS
         /// </summary>
         /// <param name="opt"></param>
         /// <param name="sellBillNum"></param>
-        void ConfirmSaleOrder(string opt, string sellBillNum);
+        string ConfirmSaleOrder(string opt, string sellBillNum);
     }
 }

@@ -291,7 +291,7 @@ namespace Apps.BLL.WMS
             IQueryable<WMS_ReturnInspection> queryData = null;
             queryData = m_Rep.GetList().Where(where)
                 .GroupBy(p => new { p.ReturnInspectionNum })
-                .Select(g => g.First())
+                .Select(g => g.FirstOrDefault())
                 .OrderBy(p => p.ReturnInspectionNum);
             pager.totalRows = queryData.Count();
             //排序

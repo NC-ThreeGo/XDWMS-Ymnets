@@ -281,8 +281,6 @@
                     if (ed.field == 'SupplierShortName')
                     {
                         var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
-                        //赋默认值：总装车间
-                        $(ed.target).textbox('setValue', '总装车间');
                         target.bind("keyup", function (e)
                         {
                             return setKeyUpValueForSupplierShortName(e, $(this), $('#mList'));
@@ -380,6 +378,8 @@
 
             var thisTarget_Supplier = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierShortName' }).target;
             thisTarget_Supplier.textbox('clear');
+            //赋默认值：总装车间
+            thisTarget_Supplier.textbox('setValue', '总装车间');
             var thisTarget_Inv = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'InvId' }).target;
             thisTarget_Inv.combobox('clear');
             var thisTarget_Lot = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'Lot' }).target;
