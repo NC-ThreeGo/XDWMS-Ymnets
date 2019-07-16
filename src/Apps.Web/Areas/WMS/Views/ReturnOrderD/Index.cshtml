@@ -272,7 +272,7 @@
             if (row != null && row.PrintStaus != '无效') {
                 if (row.SupplierCode == "S210") {
                 //库存退货单打印
-                $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&BillNum=' + row.ReturnOrderDNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');}
+                    $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=InvReturnOrder&BillNum=' + row.ReturnOrderDNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');}
                 else {
                 //送检退货单打印
                 $.modalWindow("单据打印", '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&BillNum=' + row.ReturnOrderDNum + '&Ieguid=' + GetGuid(), 1000, 600, 'fa fa-pencil');}

@@ -72,14 +72,14 @@
                             if (data.type == 1)
                             {
                                 hideLoading();
-                                //打开报表打印的窗口
+                                //送检退货打开报表打印的窗口
                                 self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + data.value;
                             } else
                             {
                                 if (data.type == 2) {
                                 hideLoading();
-                                //打开报表打印的窗口
-                                self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=ReturnOrder&billNum=' + data.value;
+                                //库存退货打开报表打印的窗口
+                                    self.location = '@Url.Action("ShowBill", "ReportManager", new { area = "Report" })?reportCode=InvReturnOrder&billNum=' + data.value;
                                 }
                                 else {
                                     window.parent.frameReturnByMes(data.message);

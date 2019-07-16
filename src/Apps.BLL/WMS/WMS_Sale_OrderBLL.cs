@@ -259,6 +259,17 @@ namespace Apps.BLL.WMS
                 else
                 {
                     model.PartId = part.Id;
+                    int partId = part.Id;
+                    if (!String.IsNullOrEmpty(model.SaleBillNum))
+                    {
+                        var saleBillNum = model.SaleBillNum;
+                        Expression<Func<WMS_Sale_Order, bool>> exp1 = x => x.PartId == partId && x.SaleBillNum == saleBillNum;
+                        var part1 = db.WMS_Sale_Order.FirstOrDefault(exp1);
+                        if (part1 != null)
+                        {
+                            throw new Exception("销售单号与物料编码重复！");
+                        }
+                    }
                 }
             }
             else
