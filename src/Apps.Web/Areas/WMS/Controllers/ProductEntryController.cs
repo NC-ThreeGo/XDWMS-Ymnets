@@ -25,6 +25,9 @@ namespace Apps.Web.Areas.WMS.Controllers
         [Dependency]
         public IWMS_ReturnInspectionBLL _ReturnInspectionBLL { get; set; }
 
+        [Dependency]
+        public IWMS_ReturnOrder_DBLL _ReturnOrder_DBLL { get; set; }
+
         ValidationErrors errors = new ValidationErrors();
         
         [SupportFilter]
@@ -46,16 +49,23 @@ namespace Apps.Web.Areas.WMS.Controllers
                 + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")&& EntryBillNum.Contains(\"" + entryBillNum + "\")");
             GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
 
-            //增加退货检验单据
-            List<WMS_ReturnInspectionModel> listRI = _ReturnInspectionBLL.GetListByWhere(ref pager, "WMS_Part.PartName.Contains(\""
-                + partName + "\")&& WMS_Part.PartType == \"自制件\" && WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
+            ////增加退货检验单据
+            //List<WMS_ReturnInspectionModel> listRI = _ReturnInspectionBLL.GetListByWhere(ref pager, "WMS_Part.PartName.Contains(\""
+            //    + partName + "\")&& WMS_Part.PartType == \"自制件\" && WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
+            //    + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
+
+            //增加退货单单据--条件:单据已确认;库存退货单据
+            List<WMS_ReturnOrder_DModel> listRI = _ReturnOrder_DBLL.GetListByWhere(ref pager, "WMS_ReturnOrder.WMS_Part.PartName.Contains(\""
+                + partName + "\") && WMS_ReturnOrder.AIID == null && WMS_ReturnOrder.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
                 + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
+            //List<WMS_ReturnOrder_DModel> listRI = _ReturnOrder_DBLL.GetListByWhere(ref pager, "1 == 1");
+
 
             List<WMS_Product_EntryModel> footerList = new List<WMS_Product_EntryModel>();
             //自制件入库数
             decimal productQty = list.Sum(p => p.ProductQty);
             //自制件退库数
-            decimal returnProductQty = listRI.Sum(p => p.Qty).Value;
+            decimal returnProductQty = listRI.Sum(p => p.ReturnQty);
 
             footerList.Add(new WMS_Product_EntryModel()
             {
@@ -63,15 +73,16 @@ namespace Apps.Web.Areas.WMS.Controllers
 
                 ProductQty = productQty,
 
-                Lot = "<div style='text-align:right;color:#444'>退货合计：</div>",
+                Lot = "<div style='text-align:left;color:#444'>退货合计：</div>" + returnProductQty.ToString(),
 
-                InvName = returnProductQty.ToString(),
+                //InvName = returnProductQty.ToString(),                
+                
+            
+                Remark = productQty.ToString() == "0" ? "<div style='text-align:left;color:#444'>退货率：</div>" + "0" : "<div style='text-align:left;color:#444'>退货率：</div>" + (returnProductQty / productQty).ToString("#0.00"),
 
-                Remark = "<div style='text-align:right;color:#444'>退货率：</div>",
+            //CreatePerson = productQty == 0 ? "0" : (returnProductQty / productQty).ToString(),
 
-                CreatePerson = productQty == 0 ? "0" : (returnProductQty / productQty).ToString(),
-
-            });
+        });
 
             grs.rows = list;
             grs.footer = footerList;
