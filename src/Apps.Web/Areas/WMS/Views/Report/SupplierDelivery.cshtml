@@ -4,7 +4,7 @@
 @using Apps.Models.Sys;
 @using Apps.Locale;
 @{
-    ViewBag.Title = "WMS_Inv";
+    ViewBag.Title = "WMS_SupplierDelivery";
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
@@ -37,13 +37,11 @@
     </form>
 </div>
 <div class="mvctool">
+    <input id="txtpo" type="text" placeholder="采购订单号:" class="searchText" />
+    <input id="txtsupplierName" placeholder="供应商名称:" type="text" class="searchText" />
     <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
     <input id="txtpartName" placeholder="物料名称:" type="text" class="searchText" />
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, true)
-    @*@Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-        @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-        @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
-        @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)*@
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, true)
     @*@Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)*@
 </div>
@@ -54,7 +52,7 @@
 <script type="text/javascript">
     $(function () {
         $('#List').datagrid({
-            url: '@Url.Action("GetInvAmount")',
+            url: '@Url.Action("GetSupplierDelivery")',
             width:SetGridWidthSub(10),
             methord: 'post',
             height: SetGridHeightSub(45),
@@ -62,33 +60,47 @@
             sortName: 'Id',
             sortOrder: 'desc',
             idField: 'Id',
-            pageSize: 15,
-            pageList: [15, 20, 30, 40, 50],
+            pageSize: 30,
+            pageList: [30, 40, 50],
             pagination: true,
             striped: true, //奇偶行是否区分
             singleSelect: true,//单选模式
             //rownumbers: true,//行号
             @*onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
             },*@
-            rowStyler: function (index, row) {
-                if (Number(row.SafeStock) >= Number(row.Qty)) {
-                    return 'color: #D24D57';
-                }
-                
-            },
+           
+            
             columns: [[
-                //{ field: 'Id', title: 'Id', width: 80,hidden:true },
-                //{ field: 'InvCode', title: '库房编码', width: 80, sortable: true },
-                { field: 'InvName', title: '库房名称', width: 80, sortable: true },
-                //{ field: 'SubInvId', title: 'SubInvId', width: 80,sortable:true },
-                { field: 'PartCode', title: '物料编码', width: 60, sortable: true },
-                { field: 'PartName', title: '物料名称', width: 60, sortable: true },
-                { field: 'SafeStock', title: '安全库存', width: 60, sortable: true },
-                { field: 'Qty', title: '现有量', width: 80, sortable: true, align: 'right' },
-                { field: 'PreDeductionQty', title: '预扣减数', width: 80, sortable: true, align: 'right' },
-                { field: 'AvailableQty', title: '可用库存', width: 80, sortable: true, align: 'right' },
-                //{ field: 'StockQty', title: '备料数', width: 80, sortable: true, align: 'right' },
-                //{ field: 'AvailableQty', title: '可备料数量', width: 80, sortable: true, align: 'right' }
+                { field: 'PO', title: '采购单号', width: 60, sortable: true },
+                { field: 'POStatus', title: '订单状态', width: 60, sortable: true },
+                {
+                    field: 'PlanDate', title: '计划到货日期', width: 60, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },
+                {
+                    field: 'ArrivalDate', title: '到货日期', width: 60, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },               
+                { field: 'SupplierName', title: '供应商', width: 150,sortable:true },
+                { field: 'PartName', title: '物料名称', width: 120, sortable: true },
+                { field: 'PartCode', title: '物料编码', width: 120, sortable: true },               
+                { field: 'QTY', title: '采购数量', width: 40, sortable: true },
+                { field: 'ArrivalQty', title: '收货数量', width: 40, sortable: true, align: 'right' },
+                { field: 'InspectBillNum', title: '检验单号', width: 80, sortable: true, align: 'right' },
+                {
+                    field: 'CheckOutDate', title: '合格入库日期', width: 60, sortable: true,
+                    formatter: function (value, row, index) {
+                        return formatterDateNoHour(value);
+                    }
+                },                
+                { field: 'QualifyQty', title: '合格数', width: 40, sortable: true, align: 'right' },
+                { field: 'NoQualifyQty', title: '不合格数', width: 40, sortable: true, align: 'right' },
+                { field: 'CheckOutResult', title: '检验结果', width: 40, sortable: true, align: 'right' },
+                
             ]]
         });
     });
@@ -122,8 +134,16 @@
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
         $("#btnQuery").click(function () {
+            var po = $("#txtpo").val();
+            var supplierName = $("#txtsupplierName").val();
             var partName = $("#txtpartName").val();
             var partCode = $("#txtpartCode").val();
+            if (po == null) {
+                po = "";
+            }
+            if (supplierName == null) {
+                supplierName = "";
+            }
             if (partName == null) {
                 partName = "";
             }
@@ -131,7 +151,7 @@
                 partCode = "";
             }
             $("#List").datagrid("load", {
-                partcode: partCode, partname: partName
+                po:po,suppliername:supplierName,partcode:partCode,partname:partName
             });
 
         });
@@ -177,8 +197,16 @@
             //JSONToCSVConvertor(data, "Download", true);
 
             //$('#List').datagrid('toExcel', 'dg.xls');
+            var po = $("#txtpo").val();
+            var supplierName = $("#txtsupplierName").val();
             var partName = $("#txtpartName").val();
             var partCode = $("#txtpartCode").val();
+            if (po == null) {
+                po = "";
+            }
+            if (supplierName == null) {
+                supplierName = "";
+            }
             if (partName == null) {
                 partName = "";
             }
@@ -189,8 +217,7 @@
                 + "&partName= " + partName, function(data) {*@
                 //if (data.type == 1)
                 //{
-                    window.location = "@Url.Action("ExportInvAmount")?partCode=" + partCode                       
-                        + "&partName=" + partName;
+            window.location = "@Url.Action("ExportSupplierDelivery")?po=" + po + "&suppliername=" + supplierName +"&partcode=" + partCode + "&partname=" + partName;
                 //}
                 //else
                 //{

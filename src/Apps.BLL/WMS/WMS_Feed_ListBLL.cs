@@ -126,7 +126,8 @@ namespace Apps.BLL.WMS
 								var model = new WMS_Feed_ListModel();
 								model.Id = row.Id;
 								model.FeedBillNum = row.FeedBillNum;
-								//model.ReleaseBillNum = row.ReleaseBillNum;
+                            //把系统单据号与业务单据号赋一样的值
+                                model.ReleaseBillNum = row.FeedBillNum;
 								model.Department = row.Department;
 								model.AssemblyPartCode = row.AssemblyPartCode;
 								model.SubAssemblyPartCode = row.SubAssemblyPartCode;
@@ -137,7 +138,8 @@ namespace Apps.BLL.WMS
                             model.Lot = row.Lot;
 								//model.SubInvId = row.SubInvId;
 								model.Remark = row.Remark;
-								//model.PrintStaus = row.PrintStaus;
+                            //默认已打印
+								model.PrintStaus = "已打印";
 								//model.PrintDate = row.PrintDate;
 								//model.PrintMan = row.PrintMan;
 								//model.ConfirmStatus = row.ConfirmStatus;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
 using Apps.Common;
@@ -17,5 +18,10 @@ namespace Apps.IBLL.WMS
         List<WMS_Feed_ListModel> GetFeedList(ref GridPager pager);
 
         List<WMS_InvModel> InvAmount(ref GridPager pager, string partcode, string partname);
+
+        List<WMS_AIModel> SupplierDelivery(ref GridPager pager, string po, string suppliername, string partcode, string partname);
+
+        List<WMS_Product_EntryModel> ReturnRate(ref GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate);
+
     }
 }

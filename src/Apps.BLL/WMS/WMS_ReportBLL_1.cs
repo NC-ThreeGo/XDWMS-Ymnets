@@ -70,6 +70,58 @@ namespace Apps.BLL.WMS
                 }
             }
         }
+        //供应商交付报表
+        public List<WMS_AIModel> SupplierDelivery(ref GridPager pager, string po, string suppliername, string partcode, string partname)
+        {
+            using (DBContainer db = new DBContainer())
+            {
+                DbRawSqlQuery<WMS_AIModel> query = db.Database.SqlQuery<WMS_AIModel>("SELECT  * from V_WMS_Supplierdelivery where PO like '%" + po + "%' and SupplierName like '%" + suppliername + "%' and PartCode like '%" + partcode + "%' and PartName like '%" + partname + "%'");
+
+                //启用通用列头过滤
+                pager.totalRows = query.Count();
+
+                try
+                {
+                    //排序
+                    IQueryable<WMS_AIModel> queryData = LinqHelper.SortingAndPaging(query.AsQueryable(), pager.sort, pager.order, pager.page, pager.rows);
+                    return queryData.ToList();
+                    //return query.ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+        //退货率报表
+        public List<WMS_Product_EntryModel> ReturnRate(ref GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate)
+        {
+            //自制件退货
+            string ProductReturnRate = "select c.PartCode,c.PartName,ReturnQty/ProductQty ReturnRate from "
+            + " (select partid, SUM(ReturnQty) ReturnQty from WMS_ReturnOrder a where a.AIID is null and CreateTime>=CONVERT(varchar(100), '" + beginDate + "', 120) and CreateTime<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120) group by partid) a,"
+            + " (select partid, SUM(ProductQty) ProductQty from WMS_Product_Entry a where  CreateTime>=CONVERT(varchar(100), '" + beginDate + "', 120) and CreateTime<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120) group by partid ) b,WMS_Part c"
+            + "  where a.partid = b.partid and a.PartID = c.Id and c.PartCode like '%" + partcode + "%' and c.PartName like '%" + partname + "%'";
+            using (DBContainer db = new DBContainer())
+            {
+                DbRawSqlQuery<WMS_Product_EntryModel> query = db.Database.SqlQuery<WMS_Product_EntryModel>(ProductReturnRate);
+
+                //启用通用列头过滤
+                pager.totalRows = query.Count();
+
+                try
+                {
+                    //排序
+                    IQueryable<WMS_Product_EntryModel> queryData = LinqHelper.SortingAndPaging(query.AsQueryable(), pager.sort, pager.order, pager.page, pager.rows);
+                    return queryData.ToList();
+                    //return query.ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
     }
- }
+}
 

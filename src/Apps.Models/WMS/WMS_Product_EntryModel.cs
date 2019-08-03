@@ -12,6 +12,8 @@ namespace Apps.Models.WMS
         public string InvCode { get; set; }
 
         public string InvName { get; set; }
+
+        public decimal ReturnRate { get; set; }
     }
 }
 

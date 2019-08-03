@@ -30,6 +30,9 @@ namespace Apps.Models.WMS
 
         [Display(Name = "保管员")]
         public string StoreMan { get; set; }
+
+        [Display(Name = "预扣减数量")]
+        public decimal PreDeductionQty { get; set; }
     }
 }
 
