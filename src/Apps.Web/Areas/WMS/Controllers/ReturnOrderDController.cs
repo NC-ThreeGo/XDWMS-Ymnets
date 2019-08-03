@@ -521,7 +521,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
             //List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "SupplierId == \"" + supplierId + "\" && Abs(AdjustQty) < Abs(ReturnQty)").ToList();
             List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref setNoPagerAscById, "Status != \"无效\"")
-                .Where(p => p.SupplierId.ToString() == supplierId && Math.Abs(p.AdjustQty) < Math.Abs(p.ReturnQty))
+                .Where(p => p.SupplierId.ToString() == supplierId && (Math.Abs(p.AdjustQty) + Math.Abs(p.LossQty)) < Math.Abs(p.ReturnQty))
                 .ToList();
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
