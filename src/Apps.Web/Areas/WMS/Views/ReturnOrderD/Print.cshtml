@@ -12,7 +12,8 @@
 }
 <script type="text/javascript">
     //所选择行的退货数求和
-    var sum_Qty = 0;
+    var sum_CurReturnQty = 0;
+    var sum_CurLossQty = 0;
     //编辑的行
     var editIndex = undefined;
     //是否全部退货
@@ -26,7 +27,8 @@
             isSelectAll = false;
             var supplierId = $("#SupplierId").val();
             var supplierShortName = $("#Supplier").val();
-            sum_Qty = 0;
+            sum_CurReturnQty = 0;
+            sum_CurLossQty = 0;
             editIndex = undefined;
             $("#List").datagrid("load", { supplierId: supplierId, supplierShortName: supplierShortName });
             $("#List").datagrid("uncheckAll");
@@ -39,7 +41,8 @@
             isSelectAll = true;
             var supplierId = $("#SupplierId").val();
             var supplierShortName = $("#Supplier").val();
-            sum_Qty = 0;
+            sum_CurReturnQty = 0;
+            sum_CurLossQty = 0;
             editIndex = undefined;
             $("#List").datagrid("load", { supplierId: supplierId, supplierShortName: supplierShortName });
             //$("#List").datagrid("checkAll");
@@ -146,10 +149,15 @@
                         if (isSelectAll)
                         {
                             $("input[type='checkbox']")[i + 1].checked = true;
-                            data.rows[i].Qty = data.rows[i].ReturnQty - data.rows[i].AdjustQty;
-                            var td1 = $('.datagrid-body td[field="Qty"]')[i];
+                            data.rows[i].CurReturnQty = data.rows[i].ReturnQty - data.rows[i].AdjustQty;
+                            var td1 = $('.datagrid-body td[field="CurReturnQty"]')[i];
                             var div1 = $(td1).find('div')[0];
-                            $(div1).text(data.rows[i].Qty);
+                            $(div1).text(data.rows[i].CurReturnQty);
+
+                            data.rows[i].CurLossQty = 0;
+                            var td2 = $('.datagrid-body td[field="CurLossQty"]')[i];
+                            var div2 = $(td2).find('div')[0];
+                            $(div2).text(data.rows[i].CurLossQty);
                         }
                     }
 
@@ -189,8 +197,13 @@
                 { field: 'NoQualifyNum', title: '不合格数量', width: 80, sortable: true, align: 'right' },
                 { field: 'ReturnQty', title: '应退货数量', width: 80, sortable: true, align: 'right' },
                 { field: 'AdjustQty', title: '已退货数量', width: 80, sortable: true, align: 'right' },
+                { field: 'LossQty', title: '已报废数量', width: 80, sortable: true, align: 'right' },
                 {
-                    field: 'Qty', title: '本次退货数量', width: 80, sortable: true, align: 'right',
+                    field: 'CurReturnQty', title: '本次退货数量', width: 80, sortable: true, align: 'right',
+                    editor: { type: 'numberbox' }
+                },
+                {
+                    field: 'CurLossQty', title: '本次报废数量', width: 80, sortable: true, align: 'right',
                     editor: { type: 'numberbox' }
                 },
                 { field: 'InvName', title: '库房', width: 80, sortable: true },
@@ -233,7 +246,7 @@
     {
         $('#List').datagrid('reloadFooter',
             [
-                { SupplierShortName: '合计：', Qty: sum_Qty },
+                { SupplierShortName: '合计：', CurReturnQty: sum_CurReturnQty, CurLossQty: sum_CurLossQty },
             ]
         );
     }
@@ -242,10 +255,12 @@
     {
         var row = $('#List').datagrid('getSelected');
         var rowIndex = $('#List').datagrid('getRowIndex', row);//获取行号
-        var thisTarget = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'Qty' }).target;
-        var thisTarget_Input = $(thisTarget).data('numberbox') ? $(thisTarget).numberbox('textbox') : $(thisTarget);
+        var thisTarget_CurReturnQty = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'CurReturnQty' }).target;
+        var thisTarget_CurReturnQty_Input = $(thisTarget_CurReturnQty).data('numberbox') ? $(thisTarget_CurReturnQty).numberbox('textbox') : $(thisTarget_CurReturnQty);
+        var thisTarget_CurLossQty = $('#List').datagrid('getEditor', { 'index': rowIndex, 'field': 'CurLossQty' }).target;
+        var thisTarget_CurLossQty_Input = $(thisTarget_CurLossQty).data('numberbox') ? $(thisTarget_CurLossQty).numberbox('textbox') : $(thisTarget_CurLossQty);
 
-        if (thisTarget_Input.val() != 0)
+        if ((thisTarget_CurReturnQty_Input.val() != 0) || (thisTarget_CurLossQty_Input.val() != 0))
         {
             $('#List').datagrid('checkRow', rowIndex);
         }
@@ -284,7 +299,7 @@
                 {
                     var ed = eds[i];
                     //alert(ed.field);
-                    if (ed.field == 'Qty')
+                    if ((ed.field == 'CurReturnQty') || (ed.field == 'CurLossQty'))
                     {
                         var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
                         target.attr("field", ed.field)
@@ -292,7 +307,11 @@
                         {
                             return setKeyUpValue($(this));
                         });
+                    }
 
+                    if (ed.field == 'CurReturnQty')
+                    {
+                        var target = $(ed.target).data('numberbox') ? $(ed.target).numberbox('textbox') : $(ed.target);
                         ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
                     }
                 }
@@ -310,10 +329,12 @@
     function onEndEdit(index, row)
     {
         var rows = $('#List').datagrid("getChecked");
-        sum_Qty = 0;
+        sum_CurReturnQty = 0;
+        sum_CurLossQty = 0;
         for (var i = 0; i < rows.length; i++)
         {
-            sum_Qty = sum_Qty + Number(rows[i]['Qty']);
+            sum_CurReturnQty = sum_CurReturnQty + Number(rows[i]['CurReturnQty']);
+            sum_CurLossQty = sum_CurLossQty + Number(rows[i]['CurLossQty']);
         }
         setFooter();
    }

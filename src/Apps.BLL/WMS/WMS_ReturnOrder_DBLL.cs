@@ -79,6 +79,7 @@ namespace Apps.BLL.WMS
                                                           Remark = r.Remark,
                                                           ReturnOrderDNum = r.ReturnOrderDNum,
                                                           ReturnQty = r.ReturnQty,
+                                                          LossQty = r.LossQty,
 
                                                           Lot = r.WMS_ReturnOrder.Lot,
                                                           ArrivalBillNum = r.WMS_ReturnOrder.WMS_AI.ArrivalBillNum,

@@ -49,7 +49,10 @@ namespace Apps.Models.WMS
         public decimal? NoQualifyNum { get; set; }
 
         [Display(Name = "本次退货数量")]
-        public decimal? Qty { get; set; }
+        public decimal? CurReturnQty { get; set; }
+
+        [Display(Name = "本次报废数量")]
+        public decimal? CurLossQty { get; set; }
     }
 }
 

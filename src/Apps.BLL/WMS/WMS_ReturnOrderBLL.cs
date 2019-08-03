@@ -285,7 +285,7 @@ namespace Apps.BLL.WMS
             try
             {
                 IQueryable<WMS_ReturnOrder> queryData = null;
-                queryData = m_Rep.GetList().Where(where).Where(p => Math.Abs(p.AdjustQty) < Math.Abs(p.ReturnQty))
+                queryData = m_Rep.GetList().Where(where).Where(p => (Math.Abs(p.AdjustQty) + Math.Abs(p.LossQty)) < Math.Abs(p.ReturnQty))
                 .GroupBy(p => new { p.SupplierId })
                     .Select(g => g.FirstOrDefault())
                     .OrderBy(p => p.SupplierId);

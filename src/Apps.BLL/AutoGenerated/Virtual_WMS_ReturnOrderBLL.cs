@@ -110,6 +110,7 @@ namespace Apps.BLL.WMS
 													Lot = r.Lot,
 													ReturnQty = r.ReturnQty,
 													AdjustQty = r.AdjustQty,
+                                                    LossQty = r.LossQty,
 													Status = r.Status,
 													Remark = r.Remark,
 													PrintStaus = r.PrintStaus,
