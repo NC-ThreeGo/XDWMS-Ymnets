@@ -16,7 +16,7 @@
         //加载到货单
         $("#btnLoadFeedList").click(function ()
         {
-            var billNum = $("#ReleaseBillNum").val();
+            var billNum = $("#ReleaseBillNums").val();
             $("#List").datagrid("load", { type: "confirm", billNum: billNum });
         });
 
@@ -35,7 +35,7 @@
                     $.ajax({
                         url: "@Url.Action("Confirm")",
                         type: "Post",
-                        data: { releaseBillNum: $("#ReleaseBillNum").val() },
+                        data: { releaseBillNums: $("#ReleaseBillNums").val() },
                         dataType: "json",
                         success: function (data)
                         {
@@ -90,7 +90,7 @@
             columns: [[
                 { field: 'Id', title: 'Id', width: 80, hidden: true },
                 { field: 'FeedBillNum', title: '投料单号（业务）', width: 80, sortable: true },
-                { field: 'ReleaseBillNum', title: '投料单号（系统）', width: 80, sortable: true },
+                { field: 'ReleaseBillNum', title: '投料单号（系统）', width: 100, sortable: true },
                 { field: 'Department', title: '投料部门', width: 80, sortable: true },
                 { field: 'AssemblyPartCode', title: '总成物料', width: 80, sortable: true },
                 { field: 'SubAssemblyPartCode', title: '投料物料', width: 80, sortable: true },
@@ -140,18 +140,18 @@
                     @Html.LabelFor(model => model.ReleaseBillNum)：
                 </th>
                 <td>
-                    <input id="ReleaseBillNum" name="Supplier" type="text" style="width: 200px; display: inline;">
+                    <input id="ReleaseBillNums" name="Supplier" type="text" style="width: 500px; display: inline;">
                     <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelFeedBillNum()"></a>
                     <script type="text/javascript">
                         function showSelFeedBillNum()
                         {
-                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/FeedList/FeedListLookUp?type=confirm'></iframe>");
+                            $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/FeedList/FeedListLookUp?type=confirm&singleSelect=false'></iframe>");
                             $("#modalwindow").window({ title: '选择投料单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
                         }
 
                         function SetSelResult(result, resultName)
                         {
-                            $("#ReleaseBillNum").val(resultName);
+                            $("#ReleaseBillNums").val(resultName);
                         }
 
                     </script>
