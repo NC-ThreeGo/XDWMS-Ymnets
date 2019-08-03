@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
 using System.Data;
+using System.Configuration;
 
 namespace Apps.Web.Areas.WMS.Controllers
 {
@@ -225,8 +226,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         #region 获取指定库房、物料的现有批次号
         [HttpPost]
         //[SupportFilter(ActionName = "Create")]
-        public JsonResult GetLotsByPart(int partId, int invId, int? subInvId = null)
+        public JsonResult GetLotsByPart(int partId, int invId = 0, int? subInvId = null)
         {
+            //如果没有传入invId参数则读取配置文件里的默认库房ID
+            if (invId == 0)
+            {
+                invId = Int32.Parse(ConfigurationManager.AppSettings["DefaultInvId"]);
+            }
+
             var list = m_BLL.GetLotsByPart(invId, subInvId, partId);
             return Json(list);
         }

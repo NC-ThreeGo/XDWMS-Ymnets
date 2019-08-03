@@ -101,9 +101,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult Create(WMS_Feed_ListModel model)
         {
             model.Id = 0;
+            model.ReleaseBillNum = model.FeedBillNum;
             model.CreatePerson = GetUserTrueName();
             model.CreateTime = ResultHelper.NowTime;
-            model.PrintStaus = "未打印";
+            //model.PrintStaus = "未打印";
             model.ConfirmStatus = "未确认";
             if (model.Lot == "[空]")
                 model.Lot = "";
@@ -206,25 +207,25 @@ namespace Apps.Web.Areas.WMS.Controllers
         [HttpPost]
         [SupportFilter(ActionName = "Edit")]
         [ValidateInput(false)]
-        public JsonResult Confirm(string releaseBillNum)
+        public JsonResult Confirm(string releaseBillNums)
         {
             try
             {
-                if (m_BLL.ConfirmFeedList(ref errors, GetUserTrueName(), releaseBillNum))
+                if (m_BLL.ConfirmFeedList(ref errors, GetUserTrueName(), releaseBillNums))
                 {
-                    LogHandler.WriteServiceLog(GetUserTrueName(), "ReleaseBillNum" + releaseBillNum, "成功", "确认", "WMS_Feed_List");
-                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNum));
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "ReleaseBillNums" + releaseBillNums, "成功", "确认", "WMS_Feed_List");
+                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, releaseBillNums));
                 }
                 else
                 {
-                    LogHandler.WriteServiceLog(GetUserTrueName(), "ReleaseBillNum" + releaseBillNum + ", " + errors.Error, "失败", "确认", "WMS_Feed_List");
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "ReleaseBillNums" + releaseBillNums + ", " + errors.Error, "失败", "确认", "WMS_Feed_List");
                     return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + errors.Error));
                 }
 
             }
             catch (Exception ex)
             {
-                LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNum" + releaseBillNum + ", " + ex.Message, "失败", "确认", "WMS_Feed_List");
+                LogHandler.WriteServiceLog(GetUserTrueName(), "ReturnOrderNums" + releaseBillNums + ", " + ex.Message, "失败", "确认", "WMS_Feed_List");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ex.Message));
             }
         }
@@ -498,9 +499,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         /// <param name="mulSelect">是否多选</param>
         /// <returns></returns>
         [SupportFilter(ActionName = "Create")]
-        public ActionResult FeedListLookUp(string type, bool mulSelect = false)
+        public ActionResult FeedListLookUp(string type, string singleSelect = "true")
         {
             ViewBag.Type = type;
+            ViewBag.singleSelect = singleSelect;
             return View();
         }
 
@@ -537,7 +539,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
             else
             {
-                list = m_BLL.GetListByWhere(ref pager, "ReleaseBillNum = \"" + billNum + "\"&& PrintStaus == \"已打印\"");
+                list = m_BLL.GetListForConfirm(ref pager, billNum);
             }
             GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
             grs.rows = list;

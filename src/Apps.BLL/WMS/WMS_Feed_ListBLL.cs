@@ -345,13 +345,34 @@ namespace Apps.BLL.WMS
 
         public List<WMS_Feed_ListModel> GetListByWhere(ref GridPager pager, string where)
 		{
-			IQueryable<WMS_Feed_List> queryData = null;
+            //string b = "x2001,N190708001,N190708002";
+            //var d = m_Rep.GetList(p => p.PrintStaus == "未打印" && b.Split(',').Contains(p.FeedBillNum));
+            //var l = d.ToList();
+
+            IQueryable<WMS_Feed_List> queryData = null;
 			queryData = m_Rep.GetList().Where(where);
 			pager.totalRows = queryData.Count();
-			//排序
-			queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            //排序string where
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
 			return CreateModelList(ref queryData);
 		}
+
+        public List<WMS_Feed_ListModel> GetListForConfirm(ref GridPager pager, string releaseBillNums)
+        {
+            try
+            {
+                IQueryable<WMS_Feed_List> queryData = null;
+                queryData = m_Rep.GetList(p => p.PrintStaus == "已打印" && releaseBillNums.Contains(p.ReleaseBillNum));
+                pager.totalRows = queryData.Count();
+                //排序
+                queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+                return CreateModelList(ref queryData);
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
 
         public List<WMS_Feed_ListModel> GetListByWhereAndGroupBy(ref GridPager pager, string where)
         {
@@ -403,20 +424,23 @@ namespace Apps.BLL.WMS
             }
         }
 
-        public bool ConfirmFeedList(ref ValidationErrors errors, string opt, string releaseBillNum)
+        public bool ConfirmFeedList(ref ValidationErrors errors, string opt, string releaseBillNums)
         {
             try
             {
-                var rtn = m_Rep.ConfirmFeedList(opt, releaseBillNum);
-                if (String.IsNullOrEmpty(rtn))
+                foreach (string releaseBillNum in releaseBillNums.Split(','))
                 {
-                    return true;
+                    var rtn = m_Rep.ConfirmFeedList(opt, releaseBillNum);
+                    if (!String.IsNullOrEmpty(rtn))
+                    {
+                        errors.Add(rtn);
+                    }
                 }
-                else
-                {
-                    errors.Add(rtn);
+
+                if (errors.Count() > 0)
                     return false;
-                }
+                else
+                    return true;
             }
             catch (Exception ex)
             {

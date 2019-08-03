@@ -39,7 +39,7 @@
             pageList: [50, 100],
             pagination: true,
             striped: true, //奇偶行是否区分
-            singleSelect: true,//单选模式
+            singleSelect: @ViewBag.singleSelect,
             checkOnSelect: true,
             selectOnCheck: true,
             //rownumbers: true,//行号
@@ -79,9 +79,24 @@
         //取得所选择的行
         $("#btnSave").click(function () {
             var rows = $('#List').datagrid('getSelections');
-            if (rows.length > 0) {
-                //返回到上一层处理
-                window.parent.SetSelResult(rows[0].FeedBillNum, rows[0].ReleaseBillNum);
+            if (rows.length > 0)
+            {
+                if (@ViewBag.singleSelect == true) //单选
+                {
+                    //返回到上一层处理
+                    window.parent.SetSelResult(rows[0].FeedBillNum, rows[0].ReleaseBillNum);
+                }
+                else //多选
+                {
+                    var billNums = "";
+                    $.each(rows, function (index, row)
+                    {
+                        billNums = billNums + row.ReleaseBillNum + ",";
+                    });
+                    billNums = billNums.substring(0, billNums.length - 1);
+                    window.parent.SetSelResult(billNums, billNums);
+                }
+
                 window.parent.frameReturnByClose();
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });

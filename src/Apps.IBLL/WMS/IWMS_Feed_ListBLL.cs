@@ -28,6 +28,8 @@ namespace Apps.IBLL.WMS
          /// <param name="whereStr"></param>
          List<WMS_Feed_ListModel> GetListByWhere(ref GridPager pager, string where);
 
+        List<WMS_Feed_ListModel> GetListForConfirm(ref GridPager pager, string releaseBillNums);
+
         /// <summary>
         /// 根据where字符串获取按单据编号分组后的列表数据。
         /// </summary>
@@ -62,6 +64,6 @@ namespace Apps.IBLL.WMS
         /// <param name="opt"></param>
         /// <param name="releaseBillNum"></param>
         /// <returns></returns>
-        bool ConfirmFeedList(ref ValidationErrors errors, string opt, string releaseBillNum);
+        bool ConfirmFeedList(ref ValidationErrors errors, string opt, string releaseBillNums);
     }
 }
