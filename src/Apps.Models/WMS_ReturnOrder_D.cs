@@ -35,7 +35,7 @@ namespace Apps.Models
         public string ModifyPerson { get; set; }
         public Nullable<System.DateTime> ModifyTime { get; set; }
         public Nullable<int> BatchId { get; set; }
-        public Nullable<decimal> LossQty { get; set; }
+        public decimal LossQty { get; set; }
     
         public virtual WMS_ReturnOrder WMS_ReturnOrder { get; set; }
     }

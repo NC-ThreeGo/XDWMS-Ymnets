@@ -80,6 +80,6 @@ namespace Apps.Models.WMS
 		[Display(Name = "退货单类型")]
 		public virtual string ReturnOderType { get; set; }
 		[Display(Name = "报废数量")]
-		public virtual Nullable<decimal> LossQty { get; set; }
+		public virtual decimal LossQty { get; set; }
 		}
 }

@@ -71,11 +71,14 @@ namespace Apps.BLL.WMS
             }
         }
         //供应商交付报表
-        public List<WMS_AIModel> SupplierDelivery(ref GridPager pager, string po, string suppliername, string partcode, string partname)
+        public List<WMS_AIModel> SupplierDelivery(ref GridPager pager, string po, string suppliername, string partcode, string partname, DateTime beginDate, DateTime endDate)
         {
             using (DBContainer db = new DBContainer())
             {
-                DbRawSqlQuery<WMS_AIModel> query = db.Database.SqlQuery<WMS_AIModel>("SELECT  * from V_WMS_Supplierdelivery where PO like '%" + po + "%' and SupplierName like '%" + suppliername + "%' and PartCode like '%" + partcode + "%' and PartName like '%" + partname + "%'");
+                DbRawSqlQuery<WMS_AIModel> query = db.Database.SqlQuery<WMS_AIModel>("SELECT  * from V_WMS_Supplierdelivery where PO like '%" + po 
+                    + "%' and SupplierName like '%" + suppliername + "%' and PartCode like '%" + partcode 
+                    + "%' and PartName like '%" + partname + "%' and ((ArrivalDate>=CONVERT(varchar(100), '" + beginDate 
+                    + "', 120) and ArrivalDate<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120)) or ArrivalDate is null )");
 
                 //启用通用列头过滤
                 pager.totalRows = query.Count();
@@ -101,6 +104,13 @@ namespace Apps.BLL.WMS
             + " (select partid, SUM(ReturnQty) ReturnQty from WMS_ReturnOrder a where a.AIID is null and CreateTime>=CONVERT(varchar(100), '" + beginDate + "', 120) and CreateTime<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120) group by partid) a,"
             + " (select partid, SUM(ProductQty) ProductQty from WMS_Product_Entry a where  CreateTime>=CONVERT(varchar(100), '" + beginDate + "', 120) and CreateTime<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120) group by partid ) b,WMS_Part c"
             + "  where a.partid = b.partid and a.PartID = c.Id and c.PartCode like '%" + partcode + "%' and c.PartName like '%" + partname + "%'";
+
+            //外购件退货
+            string POReturnRate = "select c.PartCode,c.PartName,ReturnQty/ArrivalQty ReturnRate from "
+            + " (select partid, SUM(ReturnQty) ReturnQty from WMS_ReturnOrder a where a.AIID is null and CreateTime>=CONVERT(varchar(100), '" + beginDate + "', 120) and CreateTime<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120) group by partid) a,"
+            + " (select partid, SUM(ArrivalQty) ArrivalQty from WMS_AI a where  ArrivalDate>=CONVERT(varchar(100), '" + beginDate + "', 120) and ArrivalDate<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120) group by partid ) b,WMS_Part c"
+            + "  where a.partid = b.partid and a.PartID = c.Id and c.PartCode like '%" + partcode + "%' and c.PartName like '%" + partname + "%'";
+
             using (DBContainer db = new DBContainer())
             {
                 DbRawSqlQuery<WMS_Product_EntryModel> query = db.Database.SqlQuery<WMS_Product_EntryModel>(ProductReturnRate);

@@ -94,23 +94,24 @@ namespace Apps.Web.Areas.WMS.Controllers
             };
         }
 
-        public JsonResult GetSupplierDelivery(GridPager pager, string po,string suppliername,string partcode, string partname)
+        public JsonResult GetSupplierDelivery(GridPager pager, string po,string suppliername,string partcode, string partname, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_AIModel> list = m_BLL.SupplierDelivery(ref pager,po, suppliername, partcode, partname);
+            List<WMS_AIModel> list = m_BLL.SupplierDelivery(ref pager,po, suppliername, partcode, partname, beginDate, endDate);
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult ExportSupplierDelivery(GridPager pager, string po, string suppliername, string partcode, string partname)
+        public ActionResult ExportSupplierDelivery(GridPager pager, string po, string suppliername, string partcode, string partname, DateTime beginDate, DateTime endDate)
         {
-            List<WMS_AIModel> list = m_BLL.SupplierDelivery(ref setNoPagerAscById, po, suppliername, partcode, partname);//m_BLL.GetListByWhere(ref setNoPagerAscById, query);
+            List<WMS_AIModel> list = m_BLL.SupplierDelivery(ref setNoPagerAscById, po, suppliername, partcode, partname, beginDate, endDate);//m_BLL.GetListByWhere(ref setNoPagerAscById, query);
             
             JArray jObjects = new JArray();
             foreach (var item in list)
             {
                 var jo = new JObject();
                 jo.Add("采购单号", item.PO);
+                jo.Add("订单状态", item.POStatus);
                 jo.Add("计划到货日期", item.PlanDate);
                 jo.Add("到货日期", item.ArrivalDate);
                 jo.Add("供应商", item.SupplierName);
@@ -118,6 +119,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                 jo.Add("物料编码", item.PartCode);
                 jo.Add("采购数量", item.QTY);
                 jo.Add("收货数量", item.ArrivalQty);
+                jo.Add("合计收货数量", item.ArrivalQtySum);
                 jo.Add("检验单号", item.InspectBillNum);
                 jo.Add("合格入库日期", item.CheckOutDate);
                 jo.Add("合格数", item.QualifyQty);

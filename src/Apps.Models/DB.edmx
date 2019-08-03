@@ -1475,7 +1475,7 @@
           <Property Name="SubInvId" Type="int" />
           <Property Name="ReturnQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="AdjustQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="LossQty" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="LossQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="ReturnOderType" Type="nvarchar" MaxLength="20" />
           <Property Name="Remark" Type="nvarchar" MaxLength="200" />
           <Property Name="PrintStaus" Type="nvarchar" MaxLength="10" />
@@ -1505,7 +1505,7 @@
           <Property Name="ReturnOrderDNum" Type="nvarchar" MaxLength="50" />
           <Property Name="HeadId" Type="int" Nullable="false" />
           <Property Name="ReturnQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
-          <Property Name="LossQty" Type="decimal" Precision="10" Scale="3" />
+          <Property Name="LossQty" Type="decimal" Precision="10" Scale="3" Nullable="false" />
           <Property Name="Remark" Type="nvarchar" MaxLength="200" />
           <Property Name="PrintStaus" Type="nvarchar" MaxLength="10" />
           <Property Name="PrintDate" Type="datetime" />
@@ -7982,7 +7982,7 @@
           <NavigationProperty Name="WMS_ReturnOrder_D" Relationship="DB.FK_WMS_ReturnOrder_D_WMS_ReturnOrder" FromRole="WMS_ReturnOrder" ToRole="WMS_ReturnOrder_D" />
           <NavigationProperty Name="WMS_SubInvInfo" Relationship="DB.FK_WMS_ReturnOrder_WMS_SubInvInfo" FromRole="WMS_ReturnOrder" ToRole="WMS_SubInvInfo" />
           <NavigationProperty Name="WMS_Supplier" Relationship="DB.FK_WMS_ReturnOrder_WMS_Supplier" FromRole="WMS_ReturnOrder" ToRole="WMS_Supplier" />
-          <Property Name="LossQty" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="LossQty" Type="Decimal" Precision="10" Scale="3" Nullable="false" />
         </EntityType>
         <EntityType Name="WMS_ReturnOrder_D">
           <Key>
@@ -8010,7 +8010,7 @@
           <Property Name="ModifyTime" Type="DateTime" Precision="3" />
           <Property Name="BatchId" Type="Int32" />
           <NavigationProperty Name="WMS_ReturnOrder" Relationship="DB.FK_WMS_ReturnOrder_D_WMS_ReturnOrder" FromRole="WMS_ReturnOrder_D" ToRole="WMS_ReturnOrder" />
-          <Property Name="LossQty" Type="Decimal" Precision="10" Scale="3" />
+          <Property Name="LossQty" Type="Decimal" Precision="10" Scale="3" Nullable="false" />
         </EntityType>
         <Association Name="FK_WMS_ReturnOrder_WMS_AI">
           <End Type="DB.WMS_AI" Role="WMS_AI" Multiplicity="0..1" />

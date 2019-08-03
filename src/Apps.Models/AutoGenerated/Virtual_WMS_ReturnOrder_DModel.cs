@@ -62,6 +62,6 @@ namespace Apps.Models.WMS
 		[Display(Name = "未设置")]
 		public virtual Nullable<int> BatchId { get; set; }
 		[Display(Name = "报废数量")]
-		public virtual Nullable<decimal> LossQty { get; set; }
+		public virtual decimal LossQty { get; set; }
 		}
 }
