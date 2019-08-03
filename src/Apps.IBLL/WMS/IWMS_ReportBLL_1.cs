@@ -21,7 +21,7 @@ namespace Apps.IBLL.WMS
 
         List<WMS_AIModel> SupplierDelivery(ref GridPager pager, string po, string suppliername, string partcode, string partname, DateTime beginDate, DateTime endDate);
 
-        List<WMS_Product_EntryModel> ReturnRate(ref GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate);
+        List<WMS_Product_EntryModel> ReturnRate(ref GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate, string returnRateType);
 
     }
 }

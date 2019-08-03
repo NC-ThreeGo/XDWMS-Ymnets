@@ -38,6 +38,11 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         public ActionResult ReturnRate()
         {
+            List<ReportType> Types = new List<ReportType>();
+            //Types.Add(new ReportType() { Type = 0, Name = "" });
+            Types.Add(new ReportType() { Type = 1, Name = "自制件" });
+            Types.Add(new ReportType() { Type = 2, Name = "其他" });
+            ViewBag.ReturnRateType = new SelectList(Types, "Name", "Name");
             return View();
         }
 
@@ -140,17 +145,17 @@ namespace Apps.Web.Areas.WMS.Controllers
             };
         }
 
-        public JsonResult GetReturnRate(GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate)
+        public JsonResult GetReturnRate(GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate, string returnRateType)
         {
-            List<WMS_Product_EntryModel> list = m_BLL.ReturnRate(ref pager, partcode, partname, beginDate, endDate);
+            List<WMS_Product_EntryModel> list = m_BLL.ReturnRate(ref pager, partcode, partname, beginDate, endDate, returnRateType);
             GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult ExportReturnRate(GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate)
+        public ActionResult ExportReturnRate(GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate, string returnRateType)
         {
-            List<WMS_Product_EntryModel> list = m_BLL.ReturnRate(ref setNoPagerAscById, partcode, partname, beginDate, endDate);//m_BLL.GetListByWhere(ref setNoPagerAscById, query);
+            List<WMS_Product_EntryModel> list = m_BLL.ReturnRate(ref setNoPagerAscById, partcode, partname, beginDate, endDate, returnRateType);//m_BLL.GetListByWhere(ref setNoPagerAscById, query);
 
             JArray jObjects = new JArray();
             foreach (var item in list)

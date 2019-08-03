@@ -97,7 +97,7 @@ namespace Apps.BLL.WMS
             }
         }
         //退货率报表
-        public List<WMS_Product_EntryModel> ReturnRate(ref GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate)
+        public List<WMS_Product_EntryModel> ReturnRate(ref GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate,string returnRateType)
         {
             //自制件退货
             string ProductReturnRate = "select c.PartCode,c.PartName,ReturnQty/ProductQty ReturnRate from "
@@ -110,10 +110,15 @@ namespace Apps.BLL.WMS
             + " (select partid, SUM(ReturnQty) ReturnQty from WMS_ReturnOrder a where a.AIID is null and CreateTime>=CONVERT(varchar(100), '" + beginDate + "', 120) and CreateTime<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120) group by partid) a,"
             + " (select partid, SUM(ArrivalQty) ArrivalQty from WMS_AI a where  ArrivalDate>=CONVERT(varchar(100), '" + beginDate + "', 120) and ArrivalDate<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120) group by partid ) b,WMS_Part c"
             + "  where a.partid = b.partid and a.PartID = c.Id and c.PartCode like '%" + partcode + "%' and c.PartName like '%" + partname + "%'";
+            string ReturnRate;
+
+            if (returnRateType == "自制件")
+            { ReturnRate = ProductReturnRate; }
+            else { ReturnRate = POReturnRate; }
 
             using (DBContainer db = new DBContainer())
             {
-                DbRawSqlQuery<WMS_Product_EntryModel> query = db.Database.SqlQuery<WMS_Product_EntryModel>(ProductReturnRate);
+                DbRawSqlQuery<WMS_Product_EntryModel> query = db.Database.SqlQuery<WMS_Product_EntryModel>(ReturnRate);
 
                 //启用通用列头过滤
                 pager.totalRows = query.Count();
