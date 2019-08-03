@@ -343,7 +343,11 @@ namespace Apps.BLL.WMS
 
         public List<WMS_Feed_ListModel> GetListByWhere(ref GridPager pager, string where)
 		{
-			IQueryable<WMS_Feed_List> queryData = null;
+            //string b = "x2001,N190708001,N190708002";
+            //var d = m_Rep.GetList(p => p.PrintStaus == "未打印" && b.Split(',').Contains(p.FeedBillNum));
+            //var l = d.ToList();
+
+            IQueryable<WMS_Feed_List> queryData = null;
 			queryData = m_Rep.GetList().Where(where);
 			pager.totalRows = queryData.Count();
 			//排序

@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
 using System.Data;
+using System.Configuration;
 
 namespace Apps.Web.Areas.WMS.Controllers
 {
@@ -149,6 +150,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Create")]
         public ActionResult CreateParentForDataGrid()
         {
+            ViewBag.DefualtInvId = Int32.Parse(ConfigurationManager.AppSettings["DefaultInvId"]);
             return View();
         }
 
