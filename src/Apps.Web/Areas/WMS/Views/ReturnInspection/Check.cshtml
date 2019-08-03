@@ -127,8 +127,63 @@
                 { field: 'PartCustomerCode', title: '客户图号', width: 80 },
                 { field: 'PartCode', title: '物料编码', width: 80, sortable: true },
                 { field: 'PartName', title: '物料名称', width: 80, sortable: true },
+                { field: 'PartType', title: '物料类型', width: 80, hidden: true },
+                { field: 'BelongSupplier', title: '所属供应商', width: 80, hidden: true },
                 { field: 'CustomerShortName', title: '客户简称', width: 100 },
+
+                { field: 'SupplierCode', title: '供应商ID', width: 80, hidden: true },
+                {
+                    field: 'SupplierId', title: '供应商', width: 100,
+                    formatter: function (value, row)
+                    {
+                        return row.SupplierCode;
+                    },
+                    editor:
+                    {
+                        type: 'combogrid',
+                        options:
+                        {
+                            panelWidth: 300,
+                            panelHeight: 150,
+                            idField: 'Id',
+                            textField: 'SupplierCode',
+                            url: '@Url.Action("GetSupplierByBelong", "Supplier")',
+                            method: 'post',
+                            editable: false,
+                            columns: [[
+                                { field: 'Id', title: '供应商ID', width: 50, hidden: true },
+                                { field: 'SupplierCode', title:'供应商编码',width:80 },
+                                { field: 'SupplierShortName', title: '供应商简称', width: 80 },
+                                { field: 'SupplierName', title: '供应商名称', width: 140 },
+                            ]],
+                            fitColumns: true,
+                            onBeforeLoad: function (param)
+                            {
+                                var belongSupplier = getPartBelongSupplier();
+                                if (belongSupplier)
+                                {
+                                    param.codes = belongSupplier;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            },
+                            onSelect: function (rowIndex, rowData)
+                            {
+                                //赋值给供应商简称
+                                var row = $('#List').datagrid('getSelected');
+                                var rowIndex_mlist = $('#List').datagrid('getRowIndex', row);//获取行号
+                                var td = $('.datagrid-body td[field="SupplierShortName"]')[rowIndex_mlist];
+                                var div = $(td).find('div')[0];
+                                $(div).text(rowData.SupplierShortName);
+                                row.SupplierShortName = rowData.SupplierShortName;
+                            },
+                        }
+                    }
+                },
                 { field: 'SupplierShortName', title: '供应商简称', width: 100 },
+
                 { field: 'Qty', title: '退货数量', width: 80, sortable: true, align: 'right' },
                 {
                     field: 'InspectDate', title: '检验日期', width: 80, sortable: true, editor: { type: 'datebox' },
@@ -189,6 +244,21 @@
             ]]
         });
     });
+
+    //获取输入的物料所属供应商
+    function getPartBelongSupplier()
+    {
+        if ($('.datagrid-body').length > 0)
+        {
+            var row = $('#List').datagrid('getSelected');
+            if (row.BelongSupplier)
+                return row.BelongSupplier
+        }
+        else
+        {
+            return '';
+        }
+    }
 
     //得到当前日期
     formatterDate = function (date)
@@ -253,6 +323,37 @@
         $("input[type='checkbox']")[rowIndex + 1].disabled = true;
     }
 
+    function setFocusForSupplierId(rowIndex)
+    {
+        var thisTarget = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierId' }).target;
+        thisTarget.combobox('showPanel');
+    }
+    function setKeyUpValueForSupplierId(e, sender, datagrid)
+    {
+        var code = e.keyCode || e.which;
+        if (code == 13)
+        {
+            var row = datagrid.datagrid('getSelected');
+            var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
+            var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierId' }).target;
+            var supplierId = $(thisTarget).combo('getValue');
+
+            if ((row.PartType == "外购件") && !(supplierId))
+                alert("外购件必须选择供应商！");
+            else
+                ChangeFocus(rowIndex, "Qty");
+        }
+    }
+
+    function ChangeFocus(index, field)
+    {
+        var ed = $('#mList').datagrid('getEditor', { index: index, field: field });
+        if (ed)
+        {
+            ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+            ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).select();
+        }
+    }
 
     //编辑的行
     var editIndex = undefined;

@@ -104,7 +104,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             model.ReleaseBillNum = model.FeedBillNum;
             model.CreatePerson = GetUserTrueName();
             model.CreateTime = ResultHelper.NowTime;
-            //model.PrintStaus = "未打印";
+            model.PrintStaus = "已打印";
             model.ConfirmStatus = "未确认";
             if (model.Lot == "[空]")
                 model.Lot = "";

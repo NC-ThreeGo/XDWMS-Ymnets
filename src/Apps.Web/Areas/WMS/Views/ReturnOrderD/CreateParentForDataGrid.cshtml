@@ -378,8 +378,6 @@
 
             var thisTarget_Supplier = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierShortName' }).target;
             thisTarget_Supplier.textbox('clear');
-            //赋默认值：总装车间
-            thisTarget_Supplier.textbox('setValue', '总装车间');
             //var thisTarget_Inv = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'InvId' }).target;
             //thisTarget_Inv.combobox('clear');
             var thisTarget_Lot = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'Lot' }).target;
@@ -413,6 +411,14 @@
                         var div2 = $(td2).find('div')[0];
                         $(div2).text(getRow.PartName);
                         row.PartName = getRow.PartName;
+
+                        //如果物料类别=自制件，则供应商默认为总装车间
+                        if (getRow.PartType == '自制件')
+                        {
+                            //赋默认值：总装车间
+                            thisTarget_Supplier.textbox('setValue', '总装车间');
+                            thisTarget_Supplier.textbox('readonly', true);
+                        }
 
                         //获取默认库房的当前物料批次信息
                         row.InvId = $("#defaultInvId").val();

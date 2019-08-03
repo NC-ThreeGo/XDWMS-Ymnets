@@ -176,7 +176,7 @@
                                 $(div).text(rowData.PartType);
                                 row.PartType = rowData.PartType;
 
-                                //根据所属供应商，确定供应商下拉列表的值
+                                //根据所属客户，确定客户下拉列表的值
                                 var row = $('#mList').datagrid('getSelected');
                                 var rowIndex_mlist = $('#mList').datagrid('getRowIndex', row);//获取行号
                                 var lotTarget_c = $('#mList').datagrid('getEditor', { 'index': rowIndex_mlist, 'field': 'CustomerId' }).target;
@@ -187,14 +187,14 @@
                                 var lotTarget_Grid_c = $(lotTarget_c).combogrid('grid');
                                 lotTarget_Grid_c.datagrid('load', { codes: rowData.BelongCustomer });
 
-                                //根据所属客户，确定客户下拉列表的值
-                                var lotTarget_s = $('#mList').datagrid('getEditor', { 'index': rowIndex_mlist, 'field': 'SupplierId' }).target;
-                                $(lotTarget_s).combogrid('clear');
-                                var td_s = $('.datagrid-body td[field="SupplierShortName"]')[rowIndex_mlist];
-                                var div_s = $(td_s).find('div')[0];
-                                $(div_s).text("");
-                                var lotTarget_Grid_s = $(lotTarget_s).combogrid('grid');
-                                lotTarget_Grid_s.datagrid('load', { codes: rowData.BelongSupplier });
+                                //根据所属供应商，确定供应商下拉列表的值
+                                //var lotTarget_s = $('#mList').datagrid('getEditor', { 'index': rowIndex_mlist, 'field': 'SupplierId' }).target;
+                                //$(lotTarget_s).combogrid('clear');
+                                //var td_s = $('.datagrid-body td[field="SupplierShortName"]')[rowIndex_mlist];
+                                //var div_s = $(td_s).find('div')[0];
+                                //$(div_s).text("");
+                                //var lotTarget_Grid_s = $(lotTarget_s).combogrid('grid');
+                                //lotTarget_Grid_s.datagrid('load', { codes: rowData.BelongSupplier });
                             },
                         }
                     }
@@ -241,47 +241,6 @@
                     }
                 },
                 { field: 'CustomerShortName', title: '客户简称', width: 100 },
-
-                { field: 'SupplierCode', title: '供应商ID', width: 80, hidden: true },
-                {
-                    field: 'SupplierId', title: '供应商', width: 100,
-                    formatter: function (value, row)
-                    {
-                        return row.SupplierCode;
-                    },
-                    editor:
-                    {
-                        type: 'combogrid',
-                        options:
-                        {
-                            panelWidth: 300,
-                            panelHeight: 150,
-                            idField: 'Id',
-                            textField: 'SupplierCode',
-                            url: '@Url.Action("GetSupplierByBelong", "Supplier")',
-                            method: 'post',
-                            editable: false,
-                            columns: [[
-                                { field: 'Id', title: '供应商ID', width: 50, hidden: true },
-                                { field: 'SupplierCode', title:'供应商编码',width:80 },
-                                { field: 'SupplierShortName', title: '供应商简称', width: 80 },
-                                { field: 'SupplierName', title: '供应商名称', width: 140 },
-                            ]],
-                            fitColumns: true,
-                            onSelect: function (rowIndex, rowData)
-                            {
-                                //赋值给供应商简称
-                                var row = $('#mList').datagrid('getSelected');
-                                var rowIndex_mlist = $('#mList').datagrid('getRowIndex', row);//获取行号
-                                var td = $('.datagrid-body td[field="SupplierShortName"]')[rowIndex_mlist];
-                                var div = $(td).find('div')[0];
-                                $(div).text(rowData.SupplierShortName);
-                                row.SupplierShortName = rowData.SupplierShortName;
-                            },
-                        }
-                    }
-                },
-                { field: 'SupplierShortName', title: '供应商简称', width: 100 },
 
                 {
                     field: 'Qty', title: '退货数量', width: 80,
@@ -398,18 +357,18 @@
                     }
 
                     //给字段SupplierId增加setKeyUpValue事件
-                    if (ed.field == 'SupplierId')
-                    {
-                        var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
-                        target.bind("focus", function ()
-                        {
-                            return setFocusForSupplierId(index);
-                        });
-                        target.bind("keyup", function (e)
-                        {
-                            return setKeyUpValueForSupplierId(e, $(this), $('#mList'));
-                        });
-                    }
+                    //if (ed.field == 'SupplierId')
+                    //{
+                    //    var target = $(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target);
+                    //    target.bind("focus", function ()
+                    //    {
+                    //        return setFocusForSupplierId(index);
+                    //    });
+                    //    target.bind("keyup", function (e)
+                    //    {
+                    //        return setKeyUpValueForSupplierId(e, $(this), $('#mList'));
+                    //    });
+                    //}
 
                     //给字段Qty增加setKeyUpValue事件
                     if (ed.field == 'Qty')
@@ -527,8 +486,8 @@
 
             var thisTarget_Customer = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'CustomerId' }).target;
             thisTarget_Customer.textbox('clear');
-            var thisTarget_Supplier = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierId' }).target;
-            thisTarget_Supplier.textbox('clear');
+            //var thisTarget_Supplier = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierId' }).target;
+            //thisTarget_Supplier.textbox('clear');
             var thisTarget_Qty = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'Qty' }).target;
             thisTarget_Qty.textbox('clear');
             var thisTarget_PCS = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'PCS' }).target;
@@ -568,31 +527,31 @@
         {
             var row = datagrid.datagrid('getSelected');
             var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
-            ChangeFocus(rowIndex, "SupplierId");
+            ChangeFocus(rowIndex, "Qty");
         }
     }
 
-    function setFocusForSupplierId(rowIndex)
-    {
-        var thisTarget = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierId' }).target;
-        thisTarget.combobox('showPanel');
-    }
-    function setKeyUpValueForSupplierId(e, sender, datagrid)
-    {
-        var code = e.keyCode || e.which;
-        if (code == 13)
-        {
-            var row = datagrid.datagrid('getSelected');
-            var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
-            var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierId' }).target;
-            var supplierId = $(thisTarget).combo('getValue');
+    //function setFocusForSupplierId(rowIndex)
+    //{
+    //    var thisTarget = $('#mList').datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierId' }).target;
+    //    thisTarget.combobox('showPanel');
+    //}
+    //function setKeyUpValueForSupplierId(e, sender, datagrid)
+    //{
+    //    var code = e.keyCode || e.which;
+    //    if (code == 13)
+    //    {
+    //        var row = datagrid.datagrid('getSelected');
+    //        var rowIndex = datagrid.datagrid('getRowIndex', row);//获取行号
+    //        var thisTarget = datagrid.datagrid('getEditor', { 'index': rowIndex, 'field': 'SupplierId' }).target;
+    //        var supplierId = $(thisTarget).combo('getValue');
 
-            if ((row.PartType == "外购件") && !(supplierId))
-                alert("外购件必须选择供应商！");
-            else
-                ChangeFocus(rowIndex, "Qty");
-        }
-    }
+    //        if ((row.PartType == "外购件") && !(supplierId))
+    //            alert("外购件必须选择供应商！");
+    //        else
+    //            ChangeFocus(rowIndex, "Qty");
+    //    }
+    //}
 
     function setFocusForQty(sender)
     {

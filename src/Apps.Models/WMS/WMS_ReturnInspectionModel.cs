@@ -12,6 +12,9 @@ namespace Apps.Models.WMS
         public string SupplierShortName { get; set; }
         public string InvName { get; set; }
         public string SubInvName { get; set; }
+
+        [Display(Name = "物料所属供应商")]
+        public string BelongSupplier { get; set; }
     }
 }
 

@@ -64,6 +64,7 @@ namespace Apps.BLL.WMS
                                                   SupplierShortName = r.WMS_Supplier.SupplierShortName,
                                                   InvName = r.WMS_InvInfo.InvName,
                                                   SubInvName = r.WMS_SubInvInfo.SubInvName,
+                                                  BelongSupplier = r.WMS_Part.BelongSupplier,
                                               }).ToList();
             return modelList;
         }
