@@ -385,19 +385,15 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Export(string feedBillNum, string assemblyPartCode, string subAssemblyPartCode, string printStaus, string confirmStatus, DateTime beginDate, DateTime endDate)
         {
-            //List<WMS_Feed_ListModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
             string query = " 1=1 ";
             if (printStaus == "已打印")
             {
                 query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
             }
-            query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\")";
-            query += " && WMS_Part1.PartCode.Contains(\"" + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
-
-            //List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, "FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\") && WMS_Part1.PartCode.Contains(\""
-            //  + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")&& PrintDate>=(\""
-            //  + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")");
-
+            //query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\")";
+            query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")";
+            query += " && WMS_Part.PartCode.Contains(\"" + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
+            
             List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, query);
             JArray jObjects = new JArray();
                 foreach (var item in list)
@@ -405,24 +401,27 @@ namespace Apps.Web.Areas.WMS.Controllers
                     var jo = new JObject();
                     //jo.Add("Id", item.Id);
                     jo.Add("投料单号（业务）", item.FeedBillNum);
-                    jo.Add("投料单号（系统）", item.ReleaseBillNum);
-                    jo.Add("投料部门", item.Department);
-                    jo.Add("总成物料", item.AssemblyPartId);
-                    jo.Add("投料物料", item.SubAssemblyPartId);                
+                //jo.Add("投料单号（系统）", item.ReleaseBillNum);
+                jo.Add("投料物料", item.SubAssemblyPartCode);
+                jo.Add("投料物料名称", item.SubAssemblyPartName);
                 jo.Add("投料数量", item.FeedQty);
-                    jo.Add("箱数", item.BoxQty);
-                    jo.Add("体积", item.Capacity);
-                    jo.Add("库房", item.InvId);
+                jo.Add("箱数", item.BoxQty);
+                jo.Add("体积", item.Capacity);
                 jo.Add("批次号", item.Lot);
-                //jo.Add("子库存", item.SubInvId);
-                    jo.Add("备注", item.Remark);
-                    jo.Add("打印状态", item.PrintStaus);
-                    jo.Add("打印时间", item.PrintDate);
-                    jo.Add("打印人", item.PrintMan);
-                    jo.Add("确认状态", item.ConfirmStatus);
-                    jo.Add("确认人", item.ConfirmMan);
-                    jo.Add("确认时间", item.ConfirmDate);
+                jo.Add("备注", item.Remark);
+                jo.Add("打印状态", item.PrintStaus);
+                jo.Add("打印时间", item.PrintDate);
+                //jo.Add("打印人", item.PrintMan);
+                jo.Add("确认状态", item.ConfirmStatus);
+                //jo.Add("确认人", item.ConfirmMan);
+                jo.Add("确认时间", item.ConfirmDate);
                 jo.Add("确认信息", item.ConfirmMessage);
+
+                //jo.Add("投料部门", item.Department);
+                //jo.Add("总成物料", item.AssemblyPartId);
+                //jo.Add("库房", item.InvId);
+                
+                    
                     //jo.Add("Attr1", item.Attr1);
                     //jo.Add("Attr2", item.Attr2);
                     //jo.Add("Attr3", item.Attr3);

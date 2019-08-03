@@ -85,8 +85,9 @@
                 { field: 'PartName', title: '物料名称', width: 80, sortable: true },
                 { field: 'SupplierShortName', title: '供应商简称', width: 80, sortable: true },
                 { field: 'Lot', title: '到货批次', width: 80, sortable: true },
-                { field: 'ArrivalQty', title: '到货数量', width: 80, sortable: true, align: 'right' },
-                { field: 'BoxQty', title: '到货箱数', width: 80, sortable : true, align: 'right' },                
+                { field: 'QTY', title: '采购数量', width: 60, sortable: true, align: 'right' },
+                { field: 'ArrivalQty', title: '到货数量', width: 60, sortable: true, align: 'right' },
+                { field: 'BoxQty', title: '到货箱数', width: 60, sortable : true, align: 'right' },                
                 {
                     field: 'PlanDate', title: '计划到货日期', width: 80, sortable: true,
                     formatter: function (value, row, index)
@@ -101,9 +102,9 @@
                     //    return formatterDateNoHour(value);
                     //}
                 },
-                { field: 'ReceiveMan', title: '接收人', width: 80,sortable:true },
-                { field: 'ReceiveStatus', title: '到货状态', width: 80, sortable: true },
-                { field: 'InspectStatus', title: '送检状态', width: 80, sortable: true },
+                { field: 'ReceiveMan', title: '接收人', width: 60,sortable:true },
+                { field: 'ReceiveStatus', title: '到货状态', width: 60, sortable: true },
+                { field: 'InspectStatus', title: '送检状态', width: 60, sortable: true },
                 //{ field: 'InspectBillNum', title: '送检单号', width: 80,sortable:true },
                 //{ field: 'InspectMan', title: '送检人', width: 80,sortable:true },
                 //{ field: 'InspectDate', title: '送检日期', width: 80,sortable:true },

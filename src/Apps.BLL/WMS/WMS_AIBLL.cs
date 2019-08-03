@@ -58,6 +58,7 @@ namespace Apps.BLL.WMS
                                                PartName = r.WMS_PO.WMS_Part.PartName,
                                                SupplierShortName = r.WMS_PO.WMS_Supplier.SupplierShortName,
                                                PO = r.WMS_PO.PO,
+                                               QTY = r.WMS_PO.QTY,
                                                PlanDate = r.WMS_PO.PlanDate,
                                                InvName = r.WMS_InvInfo.InvName,
                                                SubInvName = r.WMS_SubInvInfo.SubInvName,

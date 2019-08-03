@@ -384,9 +384,11 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
             }
-            query += " && SaleBillNum.Contains(\"" + saleBillNum + "\")&& SellBillNum.Contains(\"" + sellBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            //query += " && SaleBillNum.Contains(\"" + saleBillNum + "\")&& SellBillNum.Contains(\"" + sellBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + partCode + "\")";
+            //去除掉系统单据号查询
+            query += " && SaleBillNum.Contains(\"" + saleBillNum + "\") && WMS_Part.PartCode.Contains(\"" + partCode + "\")";
             query += " && WMS_Customer.CustomerShortName.Contains(\"" + customerShortName + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
-
+           
             //List<WMS_Sale_OrderModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
             List<WMS_Sale_OrderModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, query);
 
@@ -396,26 +398,26 @@ namespace Apps.Web.Areas.WMS.Controllers
                     var jo = new JObject();
                     //jo.Add("Id", item.Id);
                     jo.Add("销售单号（业务）", item.SaleBillNum);
-                    jo.Add("销售单号（系统）", item.SellBillNum);
-                    jo.Add("计划发货日期", item.PlanDeliveryDate);
+                    //jo.Add("销售单号（系统）", item.SellBillNum);
+                    //jo.Add("计划发货日期", item.PlanDeliveryDate);
                     jo.Add("客户", item.CustomerShortName);
                     //jo.Add("物料", item.PartId);
                 jo.Add("物料编码", item.PartCode);
                 jo.Add("物料名称", item.PartName);
                 jo.Add("数量", item.Qty);
-                    jo.Add("箱数", item.BoxQty);
-                jo.Add("体积", item.BoxVolume);
+                jo.Add("箱数", item.BoxQty);
+                jo.Add("总体积", item.BoxVolume);
                 //jo.Add("库房", item.InvId);
                     //jo.Add("子库存", item.SubInvId);
-                    jo.Add("批次号", item.Lot);
-                jo.Add("体积", item.Volume);
-                jo.Add("备注", item.Remark);
-                    jo.Add("打印状态", item.PrintStaus);
-                    jo.Add("打印日期", item.PrintDate);
+                jo.Add("批次号", item.Lot);
+                //jo.Add("体积", item.Volume);
+                //jo.Add("备注", item.Remark);
+                jo.Add("打印状态", item.PrintStaus);
+                    //jo.Add("打印日期", item.PrintDate);
                     //jo.Add("打印人", item.PrintMan);
                     jo.Add("确认状态", item.ConfirmStatus);
                     //jo.Add("确认人", item.ConfirmMan);
-                    jo.Add("确认时间", item.ConfirmDate);
+                    //jo.Add("确认时间", item.ConfirmDate);
                 jo.Add("确认信息", item.ConfirmMessage);
                 //jo.Add("Attr1", item.Attr1);
                 //jo.Add("Attr2", item.Attr2);

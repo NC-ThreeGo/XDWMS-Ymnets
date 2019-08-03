@@ -15,6 +15,8 @@ namespace Apps.Models.WMS
         public DateTime? PlanDate { get; set; }
         public string InvName { get; set; }
         public string SubInvName { get; set; }
+        public decimal QTY { get; set; }
+        public string SupplierName { get; set; }
     }
 }
 
