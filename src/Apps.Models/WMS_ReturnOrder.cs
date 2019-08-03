@@ -49,6 +49,7 @@ namespace Apps.Models
         public Nullable<System.DateTime> ModifyTime { get; set; }
         public Nullable<int> BatchId { get; set; }
         public string ReturnOderType { get; set; }
+        public Nullable<decimal> LossQty { get; set; }
     
         public virtual WMS_AI WMS_AI { get; set; }
         public virtual WMS_InvInfo WMS_InvInfo { get; set; }

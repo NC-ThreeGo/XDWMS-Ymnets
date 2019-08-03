@@ -79,5 +79,7 @@ namespace Apps.Models.WMS
 		public virtual Nullable<int> BatchId { get; set; }
 		[Display(Name = "退货单类型")]
 		public virtual string ReturnOderType { get; set; }
+		[Display(Name = "报废数量")]
+		public virtual Nullable<decimal> LossQty { get; set; }
 		}
 }
