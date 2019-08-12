@@ -52,10 +52,10 @@
     @Html.ToolButton("btnImport", "fa fa-level-down", Resource.Import, ref perm, "Import", true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, ref perm, "Export", true)
     @Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)
-    @Html.ToolButton("btnPrint", "fa fa-level-up", Resource.Print, ref perm, "Create", true)
-    @Html.ToolButton("btnUnPrint", "fa fa-level-up", Resource.UnPrint, ref perm, "Create", true)
+    @*@Html.ToolButton("btnPrint", "fa fa-level-up", Resource.Print, ref perm, "Create", true)
+    @Html.ToolButton("btnUnPrint", "fa fa-level-up", Resource.UnPrint, ref perm, "Create", true)*@
     @Html.ToolButton("btnConfirm", "fa fa-search", "确认", ref perm, "Edit", true)
-    @Html.ToolButton("btnReport", "fa fa-search", "查看单据", ref perm, "Query", true)
+    @*@Html.ToolButton("btnReport", "fa fa-search", "查看单据", ref perm, "Query", true)*@
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
