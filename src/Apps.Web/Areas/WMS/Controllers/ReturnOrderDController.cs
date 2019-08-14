@@ -539,9 +539,9 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         [HttpPost]
         [SupportFilter(ActionName = "Edit")]
-        public JsonResult RetunOrderForPrintedGetList(GridPager pager)
+        public JsonResult RetunOrderForPrintedGetList(GridPager pager,string supplierCode,string supplierShortName)
         {
-            List<WMS_ReturnOrder_DModel> list = m_BLL.GetListByWhereAndGroupBy(ref pager, "PrintStaus == \"已退货\" && ConfirmStatus == \"未确认\"");
+            List<WMS_ReturnOrder_DModel> list = m_BLL.GetListByWhereAndGroupBy(ref pager, "WMS_ReturnOrder.WMS_Supplier.SupplierCode.Contains(\"" + supplierCode + "\") && WMS_ReturnOrder.WMS_Supplier.SupplierShortName.Contains(\"" + supplierShortName + "\") && PrintStaus == \"已退货\" && ConfirmStatus == \"未确认\"");
             GridRows<WMS_ReturnOrder_DModel> grs = new GridRows<WMS_ReturnOrder_DModel>();
             grs.rows = list;
             grs.total = pager.totalRows;

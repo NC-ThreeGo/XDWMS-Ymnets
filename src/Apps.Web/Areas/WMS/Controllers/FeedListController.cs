@@ -33,7 +33,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             //定义打印状态下拉框的值
             List<ReportType> PrintTypes = new List<ReportType>();
             PrintTypes.Add(new ReportType() { Type = 0, Name = "" });
-            PrintTypes.Add(new ReportType() { Type = 1, Name = "未打印" });
+            //PrintTypes.Add(new ReportType() { Type = 1, Name = "未打印" });
             PrintTypes.Add(new ReportType() { Type = 2, Name = "已打印" });
             PrintTypes.Add(new ReportType() { Type = 2, Name = "已失效" });
             ViewBag.PrintStaus = new SelectList(PrintTypes, "Name", "Name");
@@ -54,10 +54,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             //List<WMS_Feed_ListModel> list = m_BLL.GetList(ref pager, queryStr);
             string query = " 1=1 ";
-            if (printStaus == "已打印")
-            {
-               query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate + "\")";
-            }
+            query += " && CreateTime>=(\"" + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")";
             //query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")&&WMS_Part.PartCode.Contains(\"" + assemblyPartCode + "\")";
             query += " && FeedBillNum.Contains(\"" + feedBillNum + "\")";
             query += " && WMS_Part.PartCode.Contains(\"" + subAssemblyPartCode + "\")&& PrintStaus.Contains(\"" + printStaus + "\")&& ConfirmStatus.Contains(\"" + confirmStatus + "\")";
@@ -237,8 +234,8 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             ViewBag.Inv = new SelectList(_InvInfoBll.GetList(ref setNoPagerAscById, ""), "Id", "InvName");
             WMS_Feed_ListModel entity = m_BLL.GetById(id);
-            WMS_PartModel entity_p = m_PartBLL.GetById(entity.AssemblyPartId);
-            entity.AssemblyPartCode = entity_p.PartCode;
+            //WMS_PartModel entity_p = m_PartBLL.GetById(entity.AssemblyPartId);
+            //entity.AssemblyPartCode = entity_p.PartCode;
             WMS_PartModel entity_p1 = m_PartBLL.GetById(entity.SubAssemblyPartId);
             entity.SubAssemblyPartCode = entity_p1.PartCode;
 

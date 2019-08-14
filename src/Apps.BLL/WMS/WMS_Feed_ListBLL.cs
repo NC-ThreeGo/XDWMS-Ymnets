@@ -180,7 +180,7 @@ namespace Apps.BLL.WMS
 									WMS_Feed_List entity = new WMS_Feed_List();
 									entity.Id = model.Id;
 									entity.FeedBillNum = model.FeedBillNum;
-                            //entity.ReleaseBillNum = model.ReleaseBillNum;
+                                    entity.ReleaseBillNum = model.ReleaseBillNum;
                             //entity.ReleaseBillNum = "TL" + DateTime.Now.ToString("yyyyMMddHHmmssff");打印时生成
                             entity.Department = model.Department;
 									entity.AssemblyPartId = model.AssemblyPartId;
@@ -192,7 +192,7 @@ namespace Apps.BLL.WMS
                             entity.Lot = model.Lot;
 									//entity.SubInvId = model.SubInvId;
 									entity.Remark = model.Remark;
-									entity.PrintStaus = "未打印";
+									entity.PrintStaus = "已打印";
 									//entity.PrintDate = model.PrintDate;
 									//entity.PrintMan = model.PrintMan;
 									entity.ConfirmStatus = "未确认";

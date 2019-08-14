@@ -42,7 +42,7 @@
     <input id="txtSubAssemblyPartCode" placeholder="投料物料编码:" type="text" class="searchText" />
     打印状态：@Html.DropDownList("txtPrintStaus", ViewBag.PrintStaus as SelectList, new { @style = "width:70px;" })
     确认状态：@Html.DropDownList("txtConfirmStatus", ViewBag.ConfirmStatus as SelectList, new { @style = "width:70px;" })
-    打印日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    创建日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
     至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
     <br>
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
@@ -100,7 +100,7 @@
                 { field: 'PrintStaus', title: '打印状态', width: 50,sortable:true },
                 //{ field: 'PrintDate', title: '打印时间', width: 80, sortable: true },
                 {
-                    field: 'PrintDate', title: '打印时间', width: 60, sortable: true,
+                    field: 'CreateTime', title: '创建时间', width: 60, sortable: true,
                     formatter: function (value, row, index) {
                         return formatterDateNoHour(value);
                     }
@@ -184,9 +184,9 @@
         });
         $("#btnDelete").click(function () {
 	            //dataDelete("@Url.Action("Delete")", "List");
-             var row = $('#List').datagrid('getSelected');
-            if (row.PrintStaus == "已打印") {
-                $.messager.confirm(index_lang_tip, "单据已打印不能被删除")
+            var row = $('#List').datagrid('getSelected');           
+            if (row.ConfirmStatus == "已确认") {
+                $.messager.confirm(index_lang_tip, "单据已确认不能被删除")
             }
             else { dataDelete("@Url.Action("Delete")", "List");
             }
