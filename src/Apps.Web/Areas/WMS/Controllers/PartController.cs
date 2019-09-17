@@ -84,9 +84,12 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 model.BelongSupplier = ";" + model.BelongSupplier;
             }
-            model.CustomerCode = model.CustomerCode.Replace(" ", "").Replace("；", ";");
-            model.BelongCustomer = model.BelongCustomer.Replace(" ", "").Replace("；", ";");
-            model.BelongSupplier = model.BelongSupplier.Replace(" ", "").Replace("；", ";");
+            if(model.CustomerCode != null)
+                model.CustomerCode = model.CustomerCode.Replace(" ", "").Replace("；", ";");
+            if(model.BelongCustomer != null)
+                model.BelongCustomer = model.BelongCustomer.Replace(" ", "").Replace("；", ";");
+            if (model.BelongSupplier != null)
+                model.BelongSupplier = model.BelongSupplier.Replace(" ", "").Replace("；", ";");
 
             model.Id = 0;
             model.CreateTime = ResultHelper.NowTime;
