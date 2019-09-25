@@ -69,11 +69,11 @@ namespace Apps.Web.Controllers
         [HttpPost]
         public JsonResult Login(string UserName,string Password,string Code)
         {
-            if(Session["Code"]==null)
-                return Json(JsonHandler.CreateMessage(0, "请重新刷新验证码"), JsonRequestBehavior.AllowGet);
+            //if(Session["Code"]==null)
+            //    return Json(JsonHandler.CreateMessage(0, "请重新刷新验证码"), JsonRequestBehavior.AllowGet);
 
-            if (Session["Code"].ToString().ToLower() != Code.ToLower())
-                return Json(JsonHandler.CreateMessage(0, "验证码错误"), JsonRequestBehavior.AllowGet);
+            //if (Session["Code"].ToString().ToLower() != Code.ToLower())
+            //    return Json(JsonHandler.CreateMessage(0, "验证码错误"), JsonRequestBehavior.AllowGet);
             SysUser user = accountBLL.Login(UserName, ValueConvert.MD5(Password));
             if (user == null)
             {
