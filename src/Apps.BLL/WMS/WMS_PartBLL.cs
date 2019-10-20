@@ -12,6 +12,8 @@ using System.Linq.Expressions;
 using Apps.IDAL.Sys;
 using Unity.Attributes;
 
+
+
 namespace Apps.BLL.WMS
 {
     public  partial class WMS_PartBLL
@@ -21,6 +23,8 @@ namespace Apps.BLL.WMS
 
         [Dependency]
         public IDAL.WMS.IWMS_PartRepository m_PartRep { get; set; }
+
+
 
         public override List<WMS_PartModel> CreateModelList(ref IQueryable<WMS_Part> queryData)
         {
@@ -553,6 +557,8 @@ namespace Apps.BLL.WMS
 
             var targetFile = new FileInfo(filePath);
 
+            List<WMS_Part> ts = null;
+
             if (!targetFile.Exists)
             {
                 errors.Add("导入的数据文件不存在");
@@ -567,7 +573,7 @@ namespace Apps.BLL.WMS
                 using (IXLWorksheet wws = wb.Worksheets.First())
                 {
                     //对应列头
-                    excelFile.AddMapping<WMS_PartModel>(x => x.PartCode, "物料编码(必输)");
+                    excelFile.AddMapping<WMS_PartModel>(x => x.CustomerCode, "主机厂编码(必输)");
                     excelFile.AddMapping<WMS_PartModel>(x => x.Volume, "每箱体积(必输)");
 
 
@@ -586,9 +592,11 @@ namespace Apps.BLL.WMS
                             rowIndex += 1;
                             string errorMessage = String.Empty;
                             var model = new WMS_PartModel();
-                            model.Id = row.Id;
-                            if (row.PartCode != null)
-                                model.PartCode = row.PartCode.Replace(" ", "");
+                            model.Id = row.Id;                            
+                            //if (row.PartCode != null)
+                            //    model.PartCode = row.PartCode.Replace(" ", "");
+                            if (row.CustomerCode != null)
+                                model.CustomerCode = row.CustomerCode.Replace(" ", "");
                             model.Volume = row.Volume;
 
 
@@ -603,7 +611,7 @@ namespace Apps.BLL.WMS
                             //执行额外的数据校验
                             try
                             {
-                                AdditionalCheckVolume(db, ref model);
+                                AdditionalCheckVolume(db, ref model,ref ts);
                             }
                             catch (Exception ex)
                             {
@@ -614,28 +622,34 @@ namespace Apps.BLL.WMS
                                 continue;
                             }
 
-                            //写入数据库
-                            WMS_Part entity = m_Rep.GetById(model.Id);
-                            entity.Id = model.Id;
-                            //entity.PartCode = model.PartCode;
-                            entity.Volume = model.Volume;
-                            entity.ModifyPerson = oper;
-                            entity.ModifyTime = DateTime.Now;
-                            m_Rep.Edit(entity);
+                            //写入数据库  
+                            if (ts != null)
+                            {
+                                foreach (var ls in ts)
+                                {
+                                    WMS_Part entity = db.WMS_Part.FirstOrDefault(p =>p.Id == ls.Id);
+                                    //entity.Id = model.Id;
+                                    //entity.PartCode = model.PartCode;
+                                    entity.Volume = model.Volume;
+                                    entity.ModifyPerson = oper;
+                                    entity.ModifyTime = DateTime.Now;
+                                    //m_Rep.Edit(entity);
 
-                            //db.WMS_Part.Add(entity);
-                            try
-                            {
-                                db.SaveChanges();
-                            }
-                            catch (Exception ex)
-                            {
-                                rtn = false;
-                                //将当前报错的entity状态改为分离，类似EF的回滚（忽略之前的Add操作）
-                                db.Entry(entity).State = System.Data.Entity.EntityState.Detached;
-                                errorMessage = ex.InnerException.InnerException.Message;
-                                errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
-                                wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                                    //db.WMS_Part.Add(entity);
+                                    try
+                                    {
+                                        db.SaveChanges();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        rtn = false;
+                                        //将当前报错的entity状态改为分离，类似EF的回滚（忽略之前的Add操作）
+                                        db.Entry(entity).State = System.Data.Entity.EntityState.Detached;
+                                        errorMessage = ex.InnerException.InnerException.Message;
+                                        errors.Add(string.Format("第 {0} 列发现错误：{1}{2}", rowIndex, errorMessage, "<br/>"));
+                                        wws.Cell(rowIndex + 1, excelFile.GetColumnNames("Sheet1").Count()).Value = errorMessage;
+                                    }
+                                }
                             }
                         }
 
@@ -795,33 +809,53 @@ namespace Apps.BLL.WMS
 
         }
 
-        public void AdditionalCheckVolume(DBContainer db, ref WMS_PartModel model)
+        public void AdditionalCheckVolume(DBContainer db, ref WMS_PartModel model, ref List<WMS_Part> ts)
         {
-            //验证物料编码
-            if (!String.IsNullOrEmpty(model.PartCode))
+            ////验证物料编码
+            //if (!String.IsNullOrEmpty(model.PartCode))
+            //{
+            //    var partCode = model.PartCode;
+            //    Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
+
+            //    //var part = m_PartRep.GetSingleWhere(exp);
+            //    var part = db.WMS_Part.FirstOrDefault(exp);
+            //    if (part == null)
+            //    {
+            //        throw new Exception("物料编码不存在！");
+            //    }
+            //    else { model.Id = part.Id; }
+
+            //}
+            //else
+            //{
+            //    throw new Exception("物料编码不能为空！");
+            //}
+
+            //验证主机厂编码
+            if (!String.IsNullOrEmpty(model.CustomerCode))
             {
-                var partCode = model.PartCode;
-                Expression<Func<WMS_Part, bool>> exp = x => x.PartCode == partCode;
-
+                var customerCode = model.CustomerCode;
+                List<WMS_Part> list = db.WMS_Part.Where(p => p.CustomerCode.Contains(customerCode)).ToList();
+                
                 //var part = m_PartRep.GetSingleWhere(exp);
-                var part = db.WMS_Part.FirstOrDefault(exp);
-                if (part == null)
+                //var part = db.WMS_Part.FirstOrDefault(exp);
+                if (list.Count() == 0)
                 {
-                    throw new Exception("物料编码不存在！");
+                    throw new Exception("主机厂编码不存在！");
                 }
-                else { model.Id = part.Id; }
-
+                else { ts = list; }
             }
             else
             {
-                throw new Exception("物料编码不能为空！");
+                throw new Exception("主机厂编码不能为空！");
             }
+
             //安全库存不能为空
             if (model.Volume==0)
             {
                 throw new Exception("每箱体积不能为空！");
             }
-
+            
 
         }
 

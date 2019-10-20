@@ -474,7 +474,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             JArray jObjects = new JArray();
             var jo = new JObject();
-            jo.Add("物料编码(必输)", "");
+            jo.Add("主机厂编码(必输)", "");
             jo.Add("每箱体积(必输)", "");
             jo.Add("导入的错误信息", "");
             jObjects.Add(jo);
