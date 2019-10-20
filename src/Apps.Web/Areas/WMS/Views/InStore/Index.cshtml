@@ -123,6 +123,9 @@
                 }
                 */
             },
+            queryParams: {
+                beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+            },
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
                 { field: 'InspectBillNum', title: '送检单号', width: 80,sortable:true },

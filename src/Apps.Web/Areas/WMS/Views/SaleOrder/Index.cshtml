@@ -82,6 +82,9 @@
             showFooter: true,
             onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
             },
+            queryParams: {
+                beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+            },
             columns: [[
                 { field: 'Id', title: 'Id', width: 80,hidden:true },
                 { field: 'SaleBillNum', title: '销售单号（业务）', width: 60, sortable: true },

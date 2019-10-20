@@ -94,7 +94,10 @@
             striped: true, //奇偶行是否区分
             singleSelect: true,//单选模式
             //rownumbers: true,//行号
-            onLoadSuccess: function(data) {            },
+            onLoadSuccess: function (data) { },
+            queryParams: {
+                beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+            },
             columns: [[
                 { field: 'Id', title: '退货单ID', width: 80,hidden:true },
                 { field: 'InspectBillNum', title: '检验单号', width: 120, sortable: true },
