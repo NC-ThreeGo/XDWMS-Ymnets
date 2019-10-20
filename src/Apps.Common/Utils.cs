@@ -1263,7 +1263,7 @@ namespace Apps.Common
             using (XLWorkbook wb = new XLWorkbook(filePath))
             {
                 //第一个Sheet
-                rtn = wb.Worksheets.First().RowCount();
+                rtn = wb.Worksheets.First().Rows().Count();
             }
 
             return rtn;
