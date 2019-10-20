@@ -230,12 +230,12 @@
         @*else {
             var url = "@Url.Action("SafeStockImport")?filePath="+$("#txtExcelPath").val();
         }*@
-                $.post(url, function(data) {
+        $.post(url, function(data) {
             if (data.type == 1)
             {
-             $("#List").datagrid('load');
-             $('#uploadExcel').window('close');
-             $('#FileUpload').val('');
+                $("#List").datagrid('load');
+                $('#uploadExcel').window('close');
+                $('#FileUpload').val('');
             }
             hideLoading();
             $.messageBox5s('提示', data.message);

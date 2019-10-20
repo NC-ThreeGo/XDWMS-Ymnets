@@ -6,6 +6,8 @@ using System.IO;
 using System.Net;
 using System.Configuration;
 using System.Web;
+using ClosedXML.Excel;
+using System.Linq;
 
 namespace Apps.Common
 {
@@ -1250,6 +1252,21 @@ namespace Apps.Common
                 sw.Close();
                 sw.Dispose();
             }
+        }
+        #endregion
+
+        #region 获取导入EXCEL的记录数
+        public static int GetRowCount(string filePath)
+        {
+            int rtn = 0;
+
+            using (XLWorkbook wb = new XLWorkbook(filePath))
+            {
+                //第一个Sheet
+                rtn = wb.Worksheets.First().RowCount();
+            }
+
+            return rtn;
         }
         #endregion
     }
