@@ -20,14 +20,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [Dependency]
         public IWMS_SupplierBLL m_BLL { get; set; }
         ValidationErrors errors = new ValidationErrors();
-        
+
         [SupportFilter]
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        [SupportFilter(ActionName="Index")]
+        [SupportFilter(ActionName = "Index")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
             List<WMS_SupplierModel> list = m_BLL.GetList(ref pager, queryStr);
@@ -125,7 +125,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter]
         public ActionResult Delete(long id)
         {
-            if(id!=0)
+            if (id != 0)
             {
                 if (m_BLL.Delete(ref errors, id))
                 {
@@ -153,12 +153,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             if (m_BLL.ImportExcelData(GetUserTrueName(), Utils.GetMapPath(filePath), ref errors))
             {
-                 LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Supplier", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
-                 return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
+                LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Supplier", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                return Json(JsonHandler.CreateMessage(1,
+                    Resource.InsertSucceed + "，记录数：" + Utils.GetRowCount(Utils.GetMapPath(filePath)).ToString(),
+                    filePath));
             }
             else
             {
-                 LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Supplier", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Supplier", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
             }
         }
@@ -181,58 +183,58 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             List<WMS_SupplierModel> list = m_BLL.GetList(ref setNoPagerAscById, queryStr);
             JArray jObjects = new JArray();
-                foreach (var item in list)
-                {
-                    var jo = new JObject();
-                    //jo.Add("供应商ID", item.Id);
-                    jo.Add("供应商编码", item.SupplierCode);
-                    jo.Add("供应商简称", item.SupplierShortName);
-                    jo.Add("供应商名称", item.SupplierName);
-                    jo.Add("供应商类型", item.SupplierType);
-                    jo.Add("联系人", item.LinkMan);
-                    jo.Add("联系人电话", item.LinkManTel);
-                    jo.Add("联系人地址", item.LinkManAddress);                    
+            foreach (var item in list)
+            {
+                var jo = new JObject();
+                //jo.Add("供应商ID", item.Id);
+                jo.Add("供应商编码", item.SupplierCode);
+                jo.Add("供应商简称", item.SupplierShortName);
+                jo.Add("供应商名称", item.SupplierName);
+                jo.Add("供应商类型", item.SupplierType);
+                jo.Add("联系人", item.LinkMan);
+                jo.Add("联系人电话", item.LinkManTel);
+                jo.Add("联系人地址", item.LinkManAddress);
                 //jo.Add("状态", item.Status);
                 jo.Add("说明", item.Remark);
-                    //jo.Add("创建人", item.CreatePerson);
-                    //jo.Add("创建时间", item.CreateTime);
-                    //jo.Add("修改人", item.ModifyPerson);
-                    //jo.Add("修改时间", item.ModifyTime);
-                    jObjects.Add(jo);
-                }
-                var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
-                var exportFileName = string.Concat(
-                    RouteData.Values["controller"].ToString() + "_",
-                    DateTime.Now.ToString("yyyyMMddHHmmss"),
-                    ".xlsx");
-                return new ExportExcelResult
-                {
-                    SheetName = "Sheet1",
-                    FileName = exportFileName,
-                    ExportData = dt
-                };
+                //jo.Add("创建人", item.CreatePerson);
+                //jo.Add("创建时间", item.CreateTime);
+                //jo.Add("修改人", item.ModifyPerson);
+                //jo.Add("修改时间", item.ModifyTime);
+                jObjects.Add(jo);
             }
+            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+            var exportFileName = string.Concat(
+                RouteData.Values["controller"].ToString() + "_",
+                DateTime.Now.ToString("yyyyMMddHHmmss"),
+                ".xlsx");
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
         [SupportFilter(ActionName = "Export")]
         public ActionResult ExportTemplate()
         {
             JArray jObjects = new JArray();
             var jo = new JObject();
-              //jo.Add("供应商ID", "");
-              jo.Add("供应商编码(必输)", "");
-              jo.Add("供应商简称(必输)", "");
-              jo.Add("供应商名称(必输)", "");
-              jo.Add("供应商类型", "");
-              jo.Add("联系人", "");
-              jo.Add("联系人电话", "");
-              jo.Add("联系人地址", "");
-              jo.Add("超量接收(允许/不允许)(必输)", "");
+            //jo.Add("供应商ID", "");
+            jo.Add("供应商编码(必输)", "");
+            jo.Add("供应商简称(必输)", "");
+            jo.Add("供应商名称(必输)", "");
+            jo.Add("供应商类型", "");
+            jo.Add("联系人", "");
+            jo.Add("联系人电话", "");
+            jo.Add("联系人地址", "");
+            jo.Add("超量接收(允许/不允许)(必输)", "");
             //jo.Add("状态", "");
             jo.Add("说明", "");
-              //jo.Add("创建人", "");
-              //jo.Add("创建时间", "");
-              //jo.Add("修改人", "");
-              //jo.Add("修改时间", "");
-               jo.Add("导入的错误信息", "");
+            //jo.Add("创建人", "");
+            //jo.Add("创建时间", "");
+            //jo.Add("修改人", "");
+            //jo.Add("修改时间", "");
+            jo.Add("导入的错误信息", "");
             jObjects.Add(jo);
             var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
             //var exportFileName = string.Concat(
@@ -241,12 +243,12 @@ namespace Apps.Web.Areas.WMS.Controllers
             var exportFileName = string.Concat("供应商导入模板",
                    ".xlsx");
             return new ExportExcelResult
-                {
-                    SheetName = "Sheet1",
-                    FileName = exportFileName,
-                    ExportData = dt
-                };
-            }
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
         #endregion
 
         #region 选择供应商
@@ -265,7 +267,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult SupplierGetList(GridPager pager, string supplierCode, string supplierShortName)
         {
-            List<WMS_SupplierModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\" && SupplierCode.Contains(\"" 
+            List<WMS_SupplierModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\" && SupplierCode.Contains(\""
                 + supplierCode + "\") && SupplierShortName.Contains(\"" + supplierShortName + "\")");
             GridRows<WMS_SupplierModel> grs = new GridRows<WMS_SupplierModel>();
             grs.rows = list;
