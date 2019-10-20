@@ -251,7 +251,9 @@ namespace Apps.Web.Areas.WMS.Controllers
             if (m_BLL.ImportExcelData(GetUserId(), Utils.GetMapPath(filePath), ref errors))
             {
                  LogHandler.WriteImportExcelLog(GetUserId(), "WMS_ReturnInspection", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
-                 return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed, filePath));
+                return Json(JsonHandler.CreateMessage(1,
+                   Resource.InsertSucceed + "，记录数：" + Utils.GetRowCount(Utils.GetMapPath(filePath)).ToString(),
+                   filePath));
             }
             else
             {
