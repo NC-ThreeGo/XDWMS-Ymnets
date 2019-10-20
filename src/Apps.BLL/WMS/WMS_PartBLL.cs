@@ -596,7 +596,7 @@ namespace Apps.BLL.WMS
                             //if (row.PartCode != null)
                             //    model.PartCode = row.PartCode.Replace(" ", "");
                             if (row.CustomerCode != null)
-                                model.CustomerCode = row.CustomerCode.Replace(" ", "");
+                                model.CustomerCode = ";"+row.CustomerCode.Replace(" ", "")+";";
                             model.Volume = row.Volume;
 
 
