@@ -16,7 +16,8 @@
         //加载到货单
         $("#btnLoadSaleOrder").click(function ()
         {
-            var billNum = $("#SellBillNum").val();
+            //var billNum = $("#SellBillNum").val();
+            var billNum = $("#SaleBillNum").val();
             $("#List").datagrid("load", { type: "confirm", billNum: billNum });
         });
 
@@ -35,7 +36,7 @@
                     $.ajax({
                         url: "@Url.Action("Confirm")",
                         type: "Post",
-                        data: { sellBillNum: $("#SellBillNum").val() },
+                        data: { saleBillNum: $("#SaleBillNum").val() },
                         dataType: "json",
                         success: function (data)
                         {
@@ -137,10 +138,10 @@
         <tbody>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.SellBillNum)：
+                    @Html.LabelFor(model => model.SaleBillNum)：
                 </th>
                 <td>
-                    <input id="SellBillNum" name="Supplier" type="text" style="width: 200px; display: inline;">
+                    <input id="SaleBillNum" name="Supplier" type="text" style="width: 200px; display: inline;">
                     <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelSaleOrderBillNum()"></a>
                     <script type="text/javascript">
                         function showSelSaleOrderBillNum()
@@ -151,7 +152,7 @@
 
                         function SetSelResult(result, resultName)
                         {
-                            $("#SellBillNum").val(resultName);
+                            $("#SaleBillNum").val(resultName);
                         }
 
                     </script>

@@ -452,7 +452,7 @@ namespace Apps.Web.Areas.WMS.Controllers
               //jo.Add("Id", "");
               jo.Add("销售单号（业务）(必输)", "");
               //jo.Add("销售单号（系统）", "");
-              jo.Add("计划发货日期", "");
+              jo.Add("要求到货日期", "");
               jo.Add("客户名称(必输)", "");
               jo.Add("物料编码(必输)", "");
               jo.Add("数量(必输)", "");
