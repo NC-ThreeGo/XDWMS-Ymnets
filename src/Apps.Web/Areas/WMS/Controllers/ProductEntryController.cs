@@ -55,7 +55,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             //    + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
 
             //增加退货单单据--条件:单据已确认;库存退货单据
-            List<WMS_ReturnOrder_DModel> listRI = _ReturnOrder_DBLL.GetListByWhere(ref pager, "WMS_ReturnOrder.WMS_Part.PartName.Contains(\""
+            List<WMS_ReturnOrder_DModel> listRI = _ReturnOrder_DBLL.GetListByWhere(ref setNoPagerAscById, "WMS_ReturnOrder.WMS_Part.PartName.Contains(\""
                 + partName + "\") && WMS_ReturnOrder.AIID == null && WMS_ReturnOrder.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
                 + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
             //List<WMS_ReturnOrder_DModel> listRI = _ReturnOrder_DBLL.GetListByWhere(ref pager, "1 == 1");

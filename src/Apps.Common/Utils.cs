@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Web;
 using ClosedXML.Excel;
 using System.Linq;
+using LinqToExcel;
 
 namespace Apps.Common
 {
@@ -1260,10 +1261,10 @@ namespace Apps.Common
         {
             int rtn = 0;
 
-            using (XLWorkbook wb = new XLWorkbook(filePath))
+            using (var excelFile = new ExcelQueryFactory(filePath))
             {
                 //第一个Sheet
-                rtn = wb.Worksheets.First().Rows().Count() - 1;
+                rtn = excelFile.Worksheet(0).Count();
             }
 
             return rtn;
