@@ -44,9 +44,10 @@ namespace Apps.Web.Areas.WMS.Controllers
             //grs.rows = list;
             //grs.total = pager.totalRows;
             //return Json(grs);
-            List<WMS_Product_EntryModel> list = m_BLL.GetListByWhere(ref pager, "WMS_Part.PartName.Contains(\""
+            string where = "WMS_Part.PartName.Contains(\""
                 + partName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
-                + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")&& EntryBillNum.Contains(\"" + entryBillNum + "\")");
+                + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")&& EntryBillNum.Contains(\"" + entryBillNum + "\")";
+            List<WMS_Product_EntryModel> list = m_BLL.GetListByWhere(ref pager, where);
             GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
 
             ////增加退货检验单据
@@ -64,6 +65,8 @@ namespace Apps.Web.Areas.WMS.Controllers
             List<WMS_Product_EntryModel> footerList = new List<WMS_Product_EntryModel>();
             //自制件入库数
             decimal productQty = list.Sum(p => p.ProductQty);
+            decimal productQty_All = m_BLL.GetSumByWhere(where, "ProductQty");
+
             //自制件退库数
             decimal returnProductQty = listRI.Sum(p => p.ReturnQty);
 
@@ -71,14 +74,14 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 PartName = "<div style='text-align:right;color:#444'>合计：</div>",
 
-                ProductQty = productQty,
+                ProductQty = productQty_All,
 
                 Lot = "<div style='text-align:left;color:#444'>退货合计：</div>" + returnProductQty.ToString(),
 
                 //InvName = returnProductQty.ToString(),                
                 
             
-                Remark = productQty.ToString() == "0" ? "<div style='text-align:left;color:#444'>退货率：</div>" + "0" : "<div style='text-align:left;color:#444'>退货率：</div>" + (returnProductQty / productQty).ToString("#0.00"),
+                Remark = productQty_All.ToString() == "0" ? "<div style='text-align:left;color:#444'>退货率：</div>" + "0" : "<div style='text-align:left;color:#444'>退货率：</div>" + (returnProductQty / productQty_All).ToString("#0.00"),
 
             //CreatePerson = productQty == 0 ? "0" : (returnProductQty / productQty).ToString(),
 

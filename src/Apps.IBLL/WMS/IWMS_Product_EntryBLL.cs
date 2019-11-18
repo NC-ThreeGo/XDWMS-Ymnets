@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Apps.Common;
 using Apps.Models.WMS;
 
@@ -21,5 +22,13 @@ namespace Apps.IBLL.WMS
          /// <param name="pager"></param>
          /// <param name="whereStr"></param>
          List<WMS_Product_EntryModel> GetListByWhere(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 不分页的合计数
+        /// </summary>
+        /// <param name="where"></param>
+        /// <param name="sumField"></param>
+        /// <returns></returns>
+        decimal GetSumByWhere(string where, string sumField);
     }
 }
