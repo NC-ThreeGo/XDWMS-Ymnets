@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="11/24/2019 17:34:17" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="11/22/2019 14:23:16" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEimmUpC9xLT+9QawVdTxADow==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEilDabFjZ1QM1g7+0mUM0MlQ==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_SaleOrder where SellBillNum=@SellBillNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="PartId" DataType="System.Int32"/>
@@ -68,8 +68,6 @@
       <TextObject Name="Text15" Left="103.95" Top="132.3" Width="170.1" Height="18.9" Text="[Table.CustomerName]" Font="宋体, 10pt"/>
       <TextObject Name="Text16" Left="359.1" Top="160.65" Width="132.3" Height="18.9" Text="[Table.LinkManAddress]" Font="宋体, 10pt"/>
       <BarcodeObject Name="Barcode1" Left="85.05" Top="66.15" Width="305" Height="56.7" Text="[Table.SaleBillNum]" AllowExpressions="true" Barcode="Code128" Barcode.AutoEncode="true"/>
-      <TextObject Name="Text17" Left="604.8" Top="103.95" Width="132.3" Height="18.9" Text="[Table.Remark]"/>
-      <TextObject Name="Text79" Left="529.19" Top="103.95" Width="85.05" Height="18.9" Text="总备注：" Font="Arial, 12pt"/>
     </PageHeaderBand>
     <ColumnHeaderBand Name="ColumnHeader1" Top="206.45" Width="797.58" Height="47.25">
       <TextObject Name="Text18" Width="28.35" Height="47.25" Border.Lines="All" Text="序号" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
