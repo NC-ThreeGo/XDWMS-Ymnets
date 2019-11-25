@@ -65,5 +65,7 @@ namespace Apps.IBLL.WMS
         /// <param name="releaseBillNum"></param>
         /// <returns></returns>
         bool ConfirmFeedList(ref ValidationErrors errors, string opt, string releaseBillNums);
+
+        decimal GetSumByWhere(string where, string sumField);
     }
 }

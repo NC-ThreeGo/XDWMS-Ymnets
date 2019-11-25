@@ -386,6 +386,20 @@ namespace Apps.BLL.WMS
             queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
             return CreateModelList(ref queryData);
         }
+        public decimal GetSumByWhere(string where, string sumField)
+        {
+            ParameterExpression parameter = Expression.Parameter(typeof(WMS_Feed_List), "p");
+            var expression = Expression.Lambda<Func<WMS_Feed_List, decimal>>(Expression.Property(parameter, sumField), parameter);
+            try
+            {
+                decimal total = m_Rep.GetList().Where(where).Sum(expression);
+                return total;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
 
         public string PrintFeedList(ref ValidationErrors errors, string opt, string feedBillNum, int id)
         {

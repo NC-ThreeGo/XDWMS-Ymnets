@@ -63,5 +63,7 @@ namespace Apps.IBLL.WMS
         /// <param name="sellBillNum"></param>
         /// <returns></returns>
         bool ConfirmSaleOrder(ref ValidationErrors errors, string opt, string sellBillNum);
+
+        decimal GetSumByWhere(string where, string sumField);
     }
 }

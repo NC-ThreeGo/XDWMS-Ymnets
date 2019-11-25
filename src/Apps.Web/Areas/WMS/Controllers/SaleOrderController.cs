@@ -68,11 +68,14 @@ namespace Apps.Web.Areas.WMS.Controllers
             //List<WMS_Sale_OrderModel> list = m_BLL.GetListByWhere(ref pager, "1=1");
             GridRows<WMS_Sale_OrderModel> grs = new GridRows<WMS_Sale_OrderModel>();
 
+            decimal Qty_All = m_BLL.GetSumByWhere(query, "Qty");
+
             List<WMS_Sale_OrderModel> footerList = new List<WMS_Sale_OrderModel>();
             footerList.Add(new WMS_Sale_OrderModel()
             {
                 SaleBillNum = "<div style='text-align:right;color:#444'>合计：</div>",
-                Qty = list.Sum(p => p.Qty),
+                //Qty = list.Sum(p => p.Qty),
+                Qty = Qty_All,
             });
 
             grs.rows = list;

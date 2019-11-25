@@ -66,11 +66,15 @@ namespace Apps.Web.Areas.WMS.Controllers
             List<WMS_Feed_ListModel> list = m_BLL.GetListByWhere(ref pager, query);
             GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
 
+            decimal FeedQty_All = m_BLL.GetSumByWhere(query, "FeedQty");
+
             List<WMS_Feed_ListModel> footerList = new List<WMS_Feed_ListModel>();
             footerList.Add(new WMS_Feed_ListModel()
             {
                 FeedBillNum = "<div style='text-align:right;color:#444'>合计：</div>",
-                FeedQty = list.Sum(p => p.FeedQty),
+                //FeedQty = list.Sum(p => p.FeedQty),
+                FeedQty = FeedQty_All,
+
             });
 
             grs.rows = list;

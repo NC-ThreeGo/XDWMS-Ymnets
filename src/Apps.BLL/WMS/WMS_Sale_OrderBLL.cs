@@ -388,7 +388,20 @@ namespace Apps.BLL.WMS
                 return null;
             }
         }
-
+        public decimal GetSumByWhere(string where, string sumField)
+        {
+            ParameterExpression parameter = Expression.Parameter(typeof(WMS_Sale_Order), "p");
+            var expression = Expression.Lambda<Func<WMS_Sale_Order, decimal>>(Expression.Property(parameter, sumField), parameter);
+            try
+            {
+                decimal total = m_Rep.GetList().Where(where).Sum(expression);
+                return total;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
         public bool UnPrintSaleOrder(ref ValidationErrors errors, string opt, string sellBillNum, int id)
         {
             try
