@@ -327,7 +327,15 @@ namespace Apps.BLL.WMS
         {
             ParameterExpression parameter = Expression.Parameter(typeof(WMS_Product_Entry), "p");
             var expression = Expression.Lambda<Func<WMS_Product_Entry, decimal>>(Expression.Property(parameter, sumField), parameter);
-            return m_Rep.GetList().Where(where).Sum(expression);
+            try
+            {
+                decimal total = m_Rep.GetList().Where(where).Sum(expression);
+                return total;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
         }
 
         public override bool Create(ref ValidationErrors errors, WMS_Product_EntryModel model)
