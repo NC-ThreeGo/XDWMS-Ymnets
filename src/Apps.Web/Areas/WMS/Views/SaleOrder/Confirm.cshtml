@@ -16,8 +16,8 @@
         //加载到货单
         $("#btnLoadSaleOrder").click(function ()
         {
-            //var billNum = $("#SellBillNum").val();
-            var billNum = $("#SaleBillNum").val();
+            var billNum = $("#SellBillNum").val();
+            //var billNum = $("#SaleBillNum").val();
             $("#List").datagrid("load", { type: "confirm", billNum: billNum });
         });
 
@@ -36,7 +36,7 @@
                     $.ajax({
                         url: "@Url.Action("Confirm")",
                         type: "Post",
-                        data: { saleBillNum: $("#SaleBillNum").val() },
+                        data: { SellBillNum: $("#SellBillNum").val() },
                         dataType: "json",
                         success: function (data)
                         {
@@ -138,21 +138,21 @@
         <tbody>
             <tr>
                 <th>
-                    @Html.LabelFor(model => model.SaleBillNum)：
+                    @Html.LabelFor(model => model.SellBillNum)：
                 </th>
                 <td>
-                    <input id="SaleBillNum" name="Supplier" type="text" style="width: 200px; display: inline;">
+                    <input id="SellBillNum" name="Supplier" type="text" style="width: 200px; display: inline;">
                     <a class="fa fa-plus-square color-gray fa-lg" id="selExc" href="javascript:showSelSaleOrderBillNum()"></a>
                     <script type="text/javascript">
                         function showSelSaleOrderBillNum()
                         {
                             $("#modalwindow").html("<iframe width='100%' height='100%' scrolling='no' frameborder='0'' src='/WMS/SaleOrder/SaleOrderLookUp?type=confirm'></iframe>");
-                            $("#modalwindow").window({ title: '选择投料单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
+                            $("#modalwindow").window({ title: '选择销售订单', width: 720, height: 488, iconCls: 'fa fa-plus' }).window('open');
                         }
 
                         function SetSelResult(result, resultName)
                         {
-                            $("#SaleBillNum").val(resultName);
+                            $("#SellBillNum").val(resultName);
                         }
 
                     </script>
