@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="12/06/2019 12:32:45" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="11/24/2019 17:34:17" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiY5DbDgQstLBZozkYi0x2pg==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEimmUpC9xLT+9QawVdTxADow==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_SaleOrder where SellBillNum=@SellBillNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="PartId" DataType="System.Int32"/>
@@ -49,7 +49,7 @@
     <Total Name="SumBoxQty" Expression="[Table.BoxQty]" Evaluator="Data1"/>
     <Total Name="SumBoxVolume" Expression="[Table.BoxVolume]" Evaluator="Data1"/>
   </Dictionary>
-  <ReportPage Name="Page1" PaperWidth="241" PaperHeight="350" LeftMargin="15" RightMargin="15">
+  <ReportPage Name="Page1" PaperWidth="241" PaperHeight="280" LeftMargin="15" RightMargin="15">
     <ReportTitleBand Name="ReportTitle1" Width="797.58" Height="9.45" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true"/>
     <PageHeaderBand Name="PageHeader1" Top="13.45" Width="797.58" Height="189">
       <TextObject Name="Text1" Left="132.2" Top="-0.54" Width="396.9" Height="37.8" Text="江西新电汽车空调有限公司" HorzAlign="Center" VertAlign="Center" Font="Arial, 20pt, style=Bold"/>

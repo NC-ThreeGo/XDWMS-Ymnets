@@ -327,6 +327,25 @@ namespace Apps.Web.Areas.WMS.Controllers
                 return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
             }
         }
+
+        [HttpPost]
+        [SupportFilter(ActionName = "Import")]
+        public ActionResult StoreManImport(string filePath)
+        {
+            if (m_BLL.ImportStoreMan(GetUserTrueName(), Utils.GetMapPath(filePath), ref errors))
+            {
+                LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Part", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入成功");
+                return Json(JsonHandler.CreateMessage(1,
+                    Resource.InsertSucceed + "，记录数：" + Utils.GetRowCount(Utils.GetMapPath(filePath)).ToString(),
+                    filePath));
+            }
+            else
+            {
+                LogHandler.WriteImportExcelLog(GetUserTrueName(), "WMS_Part", filePath.Substring(filePath.LastIndexOf('/') + 1), filePath, "导入失败");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail, filePath));
+            }
+        }
+
         [HttpPost]
         [SupportFilter(ActionName = "Export")]
         public JsonResult CheckExportData(string queryStr)
@@ -499,6 +518,26 @@ namespace Apps.Web.Areas.WMS.Controllers
                 ExportData = dt
             };
         }
+        [SupportFilter(ActionName = "Export")]
+        public ActionResult ExportStoreManTemplate()
+        {
+            JArray jObjects = new JArray();
+            var jo = new JObject();
+            jo.Add("物料编码(必输)", "");
+            jo.Add("保管员(必输)", "");
+            jo.Add("导入的错误信息", "");
+            jObjects.Add(jo);
+            var dt = JsonConvert.DeserializeObject<DataTable>(jObjects.ToString());
+            var exportFileName = string.Concat("保管员导入模板",
+                    ".xlsx");
+            return new ExportExcelResult
+            {
+                SheetName = "Sheet1",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
+
         #endregion
 
         #region 选择物料
