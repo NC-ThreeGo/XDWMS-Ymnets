@@ -222,6 +222,22 @@ namespace Apps.BLL.WMS
 
             return rtn;
         }
+
+        public virtual bool UpdateStoreMan(ref ValidationErrors errors, string opt, string o_StoreMan, string n_StoreMan)
+        {
+            try
+            {
+                m_Rep.UpdateStoreMan(opt, o_StoreMan, n_StoreMan);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return false;
+            }
+
+        }
+
         public bool ImportSafeStock(string oper, string filePath, ref ValidationErrors errors)
         {
             bool rtn = true;

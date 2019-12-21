@@ -56,6 +56,7 @@
     @Html.ToolButton("btnBelongSupplierExportTemplate", "fa fa-level-up", "所属供应商模板导出", ref perm, "Export", true)
     @Html.ToolButton("btnVolumeExportTemplate", "fa fa-level-up", "每箱体积模板导出", ref perm, "Export", true)
     @Html.ToolButton("btnStoreManExportTemplate", "fa fa-level-up", "保管员模板导出", ref perm, "Export", true)
+    @Html.ToolButton("btnUpdateStoreMan", "fa fa-pencil", "保管员批量修改", ref perm, "Edit", true)
 </div>
 <table id="List"></table>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
@@ -124,6 +125,12 @@
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
                 $.modalWindow(Lang.Edit, '@Url.Action("Edit")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 440, 'fa fa-pencil');
+            } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnUpdateStoreMan").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.modalWindow(Lang.Edit, '@Url.Action("UpdateStoreMan")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 440, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {

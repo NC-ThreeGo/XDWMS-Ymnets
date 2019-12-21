@@ -1,0 +1,81 @@
+﻿@model Apps.Models.WMS.WMS_PartModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.WMS;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("UpdateStoreMan")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(false);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+function frameReturnByClose() {
+$("#modalwindow").window('close');
+}
+function frameReturnByMes(mes) {
+$.messageBox5s(Lang.Tip, mes);
+}
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:440px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             @Html.HiddenFor(model => model.CreateTime)
+             @Html.HiddenFor(model => model.CreatePerson)
+ <table class="formtable">
+     <tbody>
+         <tr>
+             <th>
+                 原保管员：
+             </th>
+             <td>
+                 @Html.ReadOnlyTextBoxFor(model => model.StoreMan, (bool)ViewBag.EditStatus)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.StoreMan)</td>
+         </tr>
+         <tr>
+             <th>
+                 更新保管员姓名(必输)：
+             </th>
+             <td>
+                 @Html.EditorFor(model => model.Remark)
+             </td>
+             <td>@Html.ValidationMessageFor(model => model.Remark)</td>
+         </tr>         
+     </tbody>
+</table>
+}
+

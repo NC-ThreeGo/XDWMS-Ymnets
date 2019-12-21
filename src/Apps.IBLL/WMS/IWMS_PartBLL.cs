@@ -24,6 +24,7 @@ namespace Apps.IBLL.WMS
 
         bool ImportStoreMan(string oper, string filePath, ref ValidationErrors errors);
 
+        bool UpdateStoreMan(ref ValidationErrors errors, string opt, string o_StoreMan, string n_StoreMan);
         /// <summary>
         /// 对导入进行附加的校验，例如物料编码是否存在等。
         /// </summary>

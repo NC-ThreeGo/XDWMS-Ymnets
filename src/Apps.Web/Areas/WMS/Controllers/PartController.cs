@@ -187,6 +187,48 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         #endregion
 
+        #region 修改
+        [SupportFilter]
+        public ActionResult UpdateStoreMan(long id)
+        {
+            WMS_PartModel entity = m_BLL.GetById(id);
+            ViewBag.EditStatus = true;
+            return View(entity);
+        }
+
+        [HttpPost]
+        [SupportFilter]
+        public JsonResult UpdateStoreMan(WMS_PartModel model)
+        {
+            if (model.Remark != null)
+                model.Remark = model.Remark.Replace(" ", "");
+
+
+            model.ModifyTime = ResultHelper.NowTime;
+            model.ModifyPerson = GetUserTrueName();
+
+            if (model != null && model.Remark != null)
+            {
+
+                if (m_BLL.UpdateStoreMan(ref errors,model.ModifyPerson, model.StoreMan,model.Remark))
+                {
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",PartCode" + model.PartCode, "成功", "修改", "WMS_Part");
+                    return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
+                }
+                else
+                {
+                    string ErrorCol = errors.Error;
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + model.Id + ",PartCode" + model.PartCode + "," + ErrorCol, "失败", "修改", "WMS_Part");
+                    return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
+                }
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
+            }
+        }
+        #endregion
+
         #region 详细
         [SupportFilter]
         public ActionResult Details(long id)
@@ -213,6 +255,33 @@ namespace Apps.Web.Areas.WMS.Controllers
                 {
                     string ErrorCol = errors.Error;
                     LogHandler.WriteServiceLog(GetUserTrueName(), "Id" + id + "," + ErrorCol, "失败", "删除", "WMS_Part");
+                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                }
+            }
+            else
+            {
+                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+            }
+        }
+        #endregion
+
+        #region 修改保管员
+        [HttpPost]
+        [SupportFilter]
+        public ActionResult UpdateStoreMan(string o_StoreMan, string n_StoreMan)
+        {            
+            if (n_StoreMan != "")
+            {
+
+                if (m_BLL.UpdateStoreMan(ref errors, GetUserTrueName(), o_StoreMan, n_StoreMan))
+                {
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "StoreMan:" + n_StoreMan, "成功", "修改", "WMS_Part");
+                    return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+                }
+                else
+                {
+                    string ErrorCol = errors.Error;
+                    LogHandler.WriteServiceLog(GetUserTrueName(), "StoreMan" + n_StoreMan + "," + ErrorCol, "失败", "修改", "WMS_Part");
                     return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
                 }
             }

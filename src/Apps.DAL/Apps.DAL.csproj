@@ -383,6 +383,7 @@
     <Compile Include="WMS\WMS_InvHistoryRepository.cs" />
     <Compile Include="WMS\WMS_InventoryDRepository.cs" />
     <Compile Include="WMS\WMS_InventoryHRepository.cs" />
+    <Compile Include="WMS\WMS_PartRepository.cs" />
     <Compile Include="WMS\WMS_ReturnOrderDRepository.cs" />
     <Compile Include="WMS\WMS_ReturnInspectionRepository.cs" />
     <Compile Include="WMS\WMS_SaleOrderRepository.cs" />
