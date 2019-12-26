@@ -188,7 +188,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         #endregion
 
         #region 修改
-        [SupportFilter]
+        [SupportFilter(ActionName = "Edit")]
         public ActionResult UpdateStoreMan(long id)
         {
             WMS_PartModel entity = m_BLL.GetById(id);
@@ -197,7 +197,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
 
         [HttpPost]
-        [SupportFilter]
+        [SupportFilter(ActionName = "Edit")]
         public JsonResult UpdateStoreMan(WMS_PartModel model)
         {
             if (model.Remark != null)
