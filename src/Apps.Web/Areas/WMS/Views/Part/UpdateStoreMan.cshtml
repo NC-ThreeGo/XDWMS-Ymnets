@@ -71,9 +71,8 @@ $.messageBox5s(Lang.Tip, mes);
                  更新保管员姓名(必输)：
              </th>
              <td>
-                 @Html.EditorFor(model => model.Remark)
+                 <input id="newStoreMan" name="newStoreMan" type="text" style="width: 100px; display: inline;">
              </td>
-             <td>@Html.ValidationMessageFor(model => model.Remark)</td>
          </tr>         
      </tbody>
 </table>
