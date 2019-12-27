@@ -13,8 +13,8 @@ namespace Apps.DAL.WMS
     {
         public bool UpdateStoreMan(string opt, string o_StoreMan, string n_StoreMan)
         {
-            string s = string.Format("update [dbo].[WMS_Part_bk1211] set StoreMan='{1}' where StoreMan ='{0}'", o_StoreMan, n_StoreMan);
-            ExecuteSqlCommand(string.Format("update [dbo].[WMS_Part_bk1211] set StoreMan='{1}' where StoreMan ='{0}'", o_StoreMan, n_StoreMan));
+            //string s = string.Format("update [dbo].[WMS_Part] set StoreMan='{1}' where StoreMan ='{0}'", o_StoreMan, n_StoreMan);
+            ExecuteSqlCommand(string.Format("update [dbo].[WMS_Part] set StoreMan='{1}' where StoreMan ='{0}'", o_StoreMan, n_StoreMan));
             return true;
         }
     }

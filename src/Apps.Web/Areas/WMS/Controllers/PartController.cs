@@ -288,7 +288,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
             else
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+                return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
             }
         }
         #endregion

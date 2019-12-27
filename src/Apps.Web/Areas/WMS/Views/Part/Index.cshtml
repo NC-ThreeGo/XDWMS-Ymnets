@@ -130,7 +130,7 @@
         $("#btnUpdateStoreMan").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $.modalWindow(Lang.Edit, '@Url.Action("UpdateStoreMan")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 440, 'fa fa-pencil');
+                $.modalWindow(Lang.Edit, '@Url.Action("UpdateStoreMan")?id=' + row.Id + '&Ieguid=' + GetGuid(), 400, 140, 'fa fa-pencil');
             } else { $.messageBox5s(Lang.Tip, '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {
