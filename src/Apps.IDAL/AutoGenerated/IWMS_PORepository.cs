@@ -13,6 +13,12 @@ namespace Apps.IDAL.WMS
 {
 	public partial interface IWMS_PORepository:IBaseRepository<WMS_PO>
 	{
-	
-	}
+        /// <summary>
+        /// 删除采购订单（整单删除）
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="PO"></param>
+        /// <returns></returns>
+        string DeletePO(string opt, string PO);
+    }
 }

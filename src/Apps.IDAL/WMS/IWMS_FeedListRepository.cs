@@ -31,5 +31,13 @@ namespace Apps.IDAL.WMS
         /// <param name="opt"></param>
         /// <param name="releaseBillNum"></param>
         string ConfirmFeedList(string opt, string releaseBillNum);
+
+        /// <summary>
+        /// 删除投料单（整单删除）
+        /// </summary>
+        /// <param name="opt"></param>
+        /// <param name="feedBillNum"></param>
+        /// <returns></returns>
+        string DeleteFeedList(string opt, string feedBillNum);
     }
 }

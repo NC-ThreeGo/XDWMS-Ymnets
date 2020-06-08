@@ -154,6 +154,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         #endregion
 
         #region 删除
+        /*
         [HttpPost]
         [SupportFilter]
         public ActionResult Delete(long id)
@@ -177,6 +178,24 @@ namespace Apps.Web.Areas.WMS.Controllers
             else
             {
                 return Json(JsonHandler.CreateMessage(0, "删除失败：订单已入库"));
+            }
+        }
+        */
+
+        [HttpPost]
+        [SupportFilter]
+        public ActionResult Delete(string PO)
+        {
+            if (m_BLL.DeletePO(ref errors, GetUserTrueName(), PO))
+            {
+                LogHandler.WriteServiceLog(GetUserTrueName(), "PO:" + PO, "成功", "删除", "WMS_PO");
+                return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+            }
+            else
+            {
+                string ErrorCol = errors.Error;
+                LogHandler.WriteServiceLog(GetUserTrueName(), "PO" + PO + "," + ErrorCol, "失败", "删除", "WMS_PO");
+                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
             }
         }
         #endregion
