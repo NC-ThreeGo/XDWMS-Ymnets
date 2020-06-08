@@ -1051,5 +1051,31 @@ namespace Apps.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_ProcessReturnInspectBill", userIdParameter, jsonReturnInspectBillParameter, returnValue);
         }
+    
+        public virtual int P_WMS_DeleteFeedList(string userId, string feedBillNum, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var feedBillNumParameter = feedBillNum != null ?
+                new ObjectParameter("FeedBillNum", feedBillNum) :
+                new ObjectParameter("FeedBillNum", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_DeleteFeedList", userIdParameter, feedBillNumParameter, returnValue);
+        }
+    
+        public virtual int P_WMS_DeletePO(string userId, string pO, ObjectParameter returnValue)
+        {
+            var userIdParameter = userId != null ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(string));
+    
+            var pOParameter = pO != null ?
+                new ObjectParameter("PO", pO) :
+                new ObjectParameter("PO", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("P_WMS_DeletePO", userIdParameter, pOParameter, returnValue);
+        }
     }
 }

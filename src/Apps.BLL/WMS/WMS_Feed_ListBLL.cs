@@ -462,6 +462,28 @@ namespace Apps.BLL.WMS
                 return false;
             }
         }
+
+        public bool DeleteFeedList(ref ValidationErrors errors, string opt, string feedBillNum)
+        {
+            try
+            {
+                var rtn = m_Rep.DeleteFeedList(opt, feedBillNum);
+                if (!String.IsNullOrEmpty(rtn))
+                {
+                    errors.Add(rtn);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return false;
+            }
+        }
     }
 }
 

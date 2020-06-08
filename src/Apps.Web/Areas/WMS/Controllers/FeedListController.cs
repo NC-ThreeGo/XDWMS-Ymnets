@@ -294,6 +294,7 @@ namespace Apps.Web.Areas.WMS.Controllers
         #endregion
 
         #region 删除
+        /*
         [HttpPost]
         [SupportFilter]
         public ActionResult Delete(long id)
@@ -350,6 +351,24 @@ namespace Apps.Web.Areas.WMS.Controllers
                 }
             }
                
+        }
+        */
+
+        [HttpPost]
+        [SupportFilter]
+        public ActionResult Delete(string feedBillNum)
+        {
+            if (m_BLL.DeleteFeedList(ref errors, GetUserTrueName(), feedBillNum))
+            {
+                LogHandler.WriteServiceLog(GetUserTrueName(), "feedBillNum:" + feedBillNum, "成功", "删除", "WMS_FeedList");
+                return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
+            }
+            else
+            {
+                string ErrorCol = errors.Error;
+                LogHandler.WriteServiceLog(GetUserTrueName(), "feedBillNum" + feedBillNum + "," + ErrorCol, "失败", "删除", "WMS_FeedList");
+                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+            }
         }
         #endregion
 

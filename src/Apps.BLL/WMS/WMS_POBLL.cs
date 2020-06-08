@@ -341,6 +341,28 @@ namespace Apps.BLL.WMS
             queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
             return CreateModelList(ref queryData);
         }
+
+        public bool DeletePO(ref ValidationErrors errors, string oper, string PO)
+        {
+            try
+            {
+                var rtn = m_Rep.DeletePO(oper, PO);
+                if (!String.IsNullOrEmpty(rtn))
+                {
+                    errors.Add(rtn);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                return false;
+            }
+        }
     }
 }
 

@@ -67,5 +67,14 @@ namespace Apps.IBLL.WMS
         bool ConfirmFeedList(ref ValidationErrors errors, string opt, string releaseBillNums);
 
         decimal GetSumByWhere(string where, string sumField);
+
+        /// <summary>
+        /// 删除投料单（整单删除）
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <param name="opt"></param>
+        /// <param name="feedBillNum"></param>
+        /// <returns></returns>
+        bool DeleteFeedList(ref ValidationErrors errors, string opt, string feedBillNum);
     }
 }

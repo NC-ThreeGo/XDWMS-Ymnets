@@ -36,5 +36,14 @@ namespace Apps.IBLL.WMS
         /// <param name="where"></param>
         /// <returns></returns>
         List<WMS_POModel> GetListByWhereAndGroupBy(ref GridPager pager, string where);
+
+        /// <summary>
+        /// 删除采购订单（整单删除）
+        /// </summary>
+        /// <param name="oper"></param>
+        /// <param name="PO"></param>
+        /// <param name="errors"></param>
+        /// <returns></returns>
+        bool DeletePO(ref ValidationErrors errors, string oper, string PO);
     }
 }
