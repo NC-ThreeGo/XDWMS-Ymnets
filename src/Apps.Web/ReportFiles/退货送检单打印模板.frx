@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="11/24/2019 17:21:58" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="06/03/2020 11:31:56" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiNh0Ynw2LaLQW1mwYpEDpPQ==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEi+dxAOTnQtpoV2KClddfRiw==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_ReturnInspect">
         <Column Name="PartCode" DataType="System.String"/>
         <Column Name="PartName" DataType="System.String"/>
@@ -77,7 +77,7 @@
       <TextObject Name="Text53" Left="160.65" Width="160.65" Height="21.92" Border.Lines="All" Text="[Table.PartName]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text54" Left="321.3" Width="132.3" Height="21.92" Border.Lines="All" Text="[Table.PartCustomerCode]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text55" Left="453.6" Width="141.75" Height="21.92" Border.Lines="All" Text="[Table.PartCode]" HorzAlign="Center" VertAlign="Center"/>
-      <TextObject Name="Text56" Left="623.7" Width="66.15" Height="21.92" Border.Lines="All" Text="[Table.Qty]" HorzAlign="Center" VertAlign="Center"/>
+      <TextObject Name="Text56" Left="623.7" Width="66.15" Height="21.92" Border.Lines="All" Text="[FormatNumber([Table.Qty],1)]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text57" Left="784.35" Width="47.25" Height="21.92" Border.Lines="All" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text68" Left="595.35" Width="28.35" Height="21.92" Border.Lines="All" Text="[Table.Unit]" HorzAlign="Center" VertAlign="Center"/>
       <TextObject Name="Text71" Left="689.85" Width="47.25" Height="21.92" Border.Lines="All" Text="[Table.PCS]" HorzAlign="Center" VertAlign="Center"/>
