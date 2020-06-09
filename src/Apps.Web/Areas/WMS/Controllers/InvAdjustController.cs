@@ -36,6 +36,22 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string invAdjustBillNum, string partCode, string partName, string adjustType, DateTime beginDate, DateTime endDate)
         {
+            if (!String.IsNullOrEmpty(invAdjustBillNum))
+            {
+                invAdjustBillNum = invAdjustBillNum.Trim();
+            }
+            if (!String.IsNullOrEmpty(partName))
+            {
+                partName = partName.Trim();
+            }
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
+            if (!String.IsNullOrEmpty(adjustType))
+            {
+                adjustType = adjustType.Trim();
+            }
             //List<WMS_Inv_AdjustModel> list = m_BLL.GetList(ref pager, queryStr);
             List<WMS_Inv_AdjustModel> list = m_BLL.GetListByWhere(ref pager, "InvAdjustBillNum.Contains(\"" + invAdjustBillNum + "\") && WMS_Part.PartName.Contains(\""
               + partName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& AdjustType.Contains(\"" + adjustType + "\")&& CreateTime>=(\""

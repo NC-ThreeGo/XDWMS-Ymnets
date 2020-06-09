@@ -59,6 +59,14 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         public JsonResult GetInvAmount(GridPager pager, string partcode, string partname)
         {
+            if (!String.IsNullOrEmpty(partcode))
+            {
+                partcode = partcode.Trim();
+            }
+            if (!String.IsNullOrEmpty(partname))
+            {
+                partname = partname.Trim();
+            }
             List<WMS_InvModel> list = m_BLL.InvAmount(ref pager,partcode,partname);
             GridRows<WMS_InvModel> grs = new GridRows<WMS_InvModel>();
             grs.rows = list;
@@ -101,6 +109,22 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         public JsonResult GetSupplierDelivery(GridPager pager, string po,string suppliername,string partcode, string partname, DateTime beginDate, DateTime endDate)
         {
+            if (!String.IsNullOrEmpty(po))
+            {
+                po = po.Trim();
+            }
+            if (!String.IsNullOrEmpty(suppliername))
+            {
+                suppliername = suppliername.Trim();
+            }
+            if (!String.IsNullOrEmpty(partcode))
+            {
+                partcode = partcode.Trim();
+            }
+            if (!String.IsNullOrEmpty(partname))
+            {
+                partname = partname.Trim();
+            }
             List<WMS_AIModel> list = m_BLL.SupplierDelivery(ref pager,po, suppliername, partcode, partname, beginDate, endDate);
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
@@ -147,6 +171,14 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         public JsonResult GetReturnRate(GridPager pager, string partcode, string partname, DateTime beginDate, DateTime endDate, string returnRateType)
         {
+            if (!String.IsNullOrEmpty(partcode))
+            {
+                partcode = partcode.Trim();
+            }
+            if (!String.IsNullOrEmpty(partname))
+            {
+                partname = partname.Trim();
+            }
             List<WMS_Product_EntryModel> list = m_BLL.ReturnRate(ref pager, partcode, partname, beginDate, endDate, returnRateType);
             GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
             grs.rows = list;

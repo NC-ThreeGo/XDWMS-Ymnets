@@ -30,6 +30,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index1")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
+            if (!String.IsNullOrEmpty(queryStr))
+            {
+                queryStr = queryStr.Trim();
+            }
             List<WMS_PartModel> list = m_BLL.GetList(ref pager, queryStr);
             GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
             grs.rows = list;
@@ -41,6 +45,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetListByCode(GridPager pager, string queryStr/*string partCode, string partName*/)
         {
+            if (!String.IsNullOrEmpty(queryStr))
+            {
+                queryStr = queryStr.Trim();
+            }
             List<WMS_PartModel> list = m_BLL.GetList(ref pager, queryStr);
             //List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "PartCode.Contains(\"" + partCode + "\") && PartName.Contains(\"" + partName + "\")");
             GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
@@ -626,6 +634,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult PartGetList(GridPager pager, string partCode, string partName)
         {
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
+            if (!String.IsNullOrEmpty(partName))
+            {
+                partName = partName.Trim();
+            }
             List<WMS_PartModel> list = m_BLL.GetListByWhere(ref pager, "Status == \"有效\" && PartCode.Contains(\"" 
                 + partCode + "\") && PartName.Contains(\"" + partName + "\")");
             GridRows<WMS_PartModel> grs = new GridRows<WMS_PartModel>();
@@ -638,6 +654,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetPartByCode(string partCode)
         {
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
             List<WMS_PartModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Status == \"有效\" && PartCode == \""
                 + partCode + "\"");
             if (list.Count() == 0)

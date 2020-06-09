@@ -30,6 +30,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
+            if (!String.IsNullOrEmpty(queryStr))
+            {
+                queryStr = queryStr.Trim();
+            }
             List<WMS_SupplierModel> list = m_BLL.GetList(ref pager, queryStr);
             GridRows<WMS_SupplierModel> grs = new GridRows<WMS_SupplierModel>();
             grs.rows = list;
@@ -279,6 +283,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetSupplierByCode(string supplierCode)
         {
+            if (!String.IsNullOrEmpty(supplierCode))
+            {
+                supplierCode = supplierCode.Trim();
+            }
             List<WMS_SupplierModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Status == \"有效\" && SupplierCode == \""
                 + supplierCode + "\"");
             if (list.Count() == 0)
@@ -293,6 +301,10 @@ namespace Apps.Web.Areas.WMS.Controllers
 
         public JsonResult GetSupplierByShortName(string supplierShortName)
         {
+            if (!String.IsNullOrEmpty(supplierShortName))
+            {
+                supplierShortName = supplierShortName.Trim();
+            }
             List<WMS_SupplierModel> list = m_BLL.GetListByWhere(ref setNoPagerAscById, "Status == \"有效\" && SupplierShortName == \""
                 + supplierShortName + "\"");
             if (list.Count() == 0)
@@ -311,6 +323,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetSupplierByBelong(string codes)
         {
+            if (!String.IsNullOrEmpty(codes))
+            {
+                codes = codes.Trim();
+            }
             List<WMS_SupplierModel> list = m_BLL.GetListByBelong(ref setNoPagerAscById, codes);
             return Json(list);
         }

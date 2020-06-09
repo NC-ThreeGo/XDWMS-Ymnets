@@ -32,6 +32,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string queryStr,string parentId)
         {
+            if (!String.IsNullOrEmpty(queryStr))
+            {
+                queryStr = queryStr.Trim();
+            }
             List<WMS_LineModel> list = m_BLL.GetListByParentId(ref pager, queryStr,parentId);
             GridRows<WMS_LineModel> grs = new GridRows<WMS_LineModel>();
             grs.rows = list;
@@ -208,6 +212,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetListParent(GridPager pager, string queryStr)
         {
+            if (!String.IsNullOrEmpty(queryStr))
+            {
+                queryStr = queryStr.Trim();
+            }
             List<WMS_HeaderModel> list = m_HeaderBLL.GetList(ref pager, queryStr);
             GridRows<WMS_HeaderModel> grs = new GridRows<WMS_HeaderModel>();
             grs.rows = list;

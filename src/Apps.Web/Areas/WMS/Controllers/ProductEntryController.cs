@@ -39,6 +39,18 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string partName, string partCode, string entryBillNum, DateTime beginDate, DateTime endDate)
         {
+            if (!String.IsNullOrEmpty(partName))
+            {
+                partName = partName.Trim();
+            }
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
+            if (!String.IsNullOrEmpty(entryBillNum))
+            {
+                entryBillNum = entryBillNum.Trim();
+            }
             //List<WMS_Product_EntryModel> list = m_BLL.GetList(ref pager, queryStr);
             //GridRows<WMS_Product_EntryModel> grs = new GridRows<WMS_Product_EntryModel>();
             //grs.rows = list;

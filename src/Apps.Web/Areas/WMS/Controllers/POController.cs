@@ -39,14 +39,27 @@ namespace Apps.Web.Areas.WMS.Controllers
         public JsonResult GetList(GridPager pager, string po,string supplierShortName,string partCode, 
             DateTime beginDate, DateTime endDate)
         {
+            if (!String.IsNullOrEmpty(po))
+            {
+                po = po.Trim();
+            }
+            if (!String.IsNullOrEmpty(supplierShortName))
+            {
+                supplierShortName = supplierShortName.Trim();
+            }
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
+           
             //List<WMS_POModel> list = m_BLL.GetList(ref pager, queryStr);
             //GridRows<WMS_POModel> grs = new GridRows<WMS_POModel>();
             //grs.rows = list;
             //grs.total = pager.totalRows;
             //return Json(grs);
 
-            List<WMS_POModel> list = m_BLL.GetListByWhere(ref pager, "PO.Contains(\"" + po + "\") && WMS_Supplier.SupplierShortName.Contains(\""
-                + supplierShortName + "\")&& WMS_Part.PartCode.Contains(\"" + partCode + "\")&& CreateTime>=(\""
+            List<WMS_POModel> list = m_BLL.GetListByWhere(ref pager, "PO.Contains(\"" + po.Trim() + "\") && WMS_Supplier.SupplierShortName.Contains(\""
+                + supplierShortName.Trim() + "\")&& WMS_Part.PartCode.Contains(\"" + partCode.Trim() + "\")&& CreateTime>=(\""
                 + beginDate + "\")&& CreateTime<=(\"" + endDate.AddDays(1) + "\")");
             GridRows<WMS_POModel> grs = new GridRows<WMS_POModel>();
             grs.rows = list;

@@ -50,6 +50,22 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string returnInspectionNum, string customerCode, string partCode, string partName, string inspectStatus, DateTime beginDate, DateTime endDate)
         {
+            if (!String.IsNullOrEmpty(returnInspectionNum))
+            {
+                returnInspectionNum = returnInspectionNum.Trim();
+            }
+            if (!String.IsNullOrEmpty(customerCode))
+            {
+                customerCode = customerCode.Trim();
+            }
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
+            if (!String.IsNullOrEmpty(partName))
+            {
+                partName = partName.Trim();
+            }
             string query = " 1=1 ";
             query += " && PrintDate>=(\"" + beginDate + "\")&& PrintDate<=(\"" + endDate.AddDays(1) + "\")";
             query += " && ReturnInspectionNum.Contains(\"" + returnInspectionNum + "\")&&WMS_Part.PartCode.Contains(\"" + partCode + "\")";
@@ -425,6 +441,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetReturnInspectBillList(GridPager pager, string returnInspectBillNum)
         {
+            if (!String.IsNullOrEmpty(returnInspectBillNum))
+            {
+                returnInspectBillNum = returnInspectBillNum.Trim();
+            }
             List<WMS_ReturnInspectionModel> list = m_BLL.GetListByWhere(ref pager, "ReturnInspectionNum == \"" + returnInspectBillNum + "\" && InspectStatus == \"" + "未检验" + "\"").ToList();
             GridRows<WMS_ReturnInspectionModel> grs = new GridRows<WMS_ReturnInspectionModel>();
             grs.rows = list;

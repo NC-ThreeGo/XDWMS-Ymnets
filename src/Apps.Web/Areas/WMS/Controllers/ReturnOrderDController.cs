@@ -51,7 +51,23 @@ namespace Apps.Web.Areas.WMS.Controllers
                 string supplierShortName, string returnOrderNum, string partCode,
                 DateTime beginDate, DateTime endDate, string returnOrderStatus)
         {
-            
+            if (!String.IsNullOrEmpty(inspectBillNum))
+            {
+                inspectBillNum = inspectBillNum.Trim();
+            }
+            if (!String.IsNullOrEmpty(supplierShortName))
+            {
+                supplierShortName = supplierShortName.Trim();
+            }
+            if (!String.IsNullOrEmpty(returnOrderNum))
+            {
+                returnOrderNum = returnOrderNum.Trim();
+            }
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
+
             string query = "";
             string selfQuery = " 1=1";
 
@@ -176,6 +192,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Create")]
         public JsonResult GetReturnOrderList(GridPager pager, string returnOrderNum)
         {
+            if (!String.IsNullOrEmpty(returnOrderNum))
+            {
+                returnOrderNum = returnOrderNum.Trim();
+            }
             List<WMS_ReturnOrderModel> list = m_BLL.GetListParentByWhere(ref pager, "1 = 2", "ReturnOrderNum = \"" + returnOrderNum + "\"").ToList();
             GridRows<WMS_ReturnOrderModel> grs = new GridRows<WMS_ReturnOrderModel>();
             grs.rows = list;
@@ -278,6 +298,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetList(GridPager pager, string queryStr, string parentId)
         {
+            if (!String.IsNullOrEmpty(queryStr))
+            {
+                queryStr = queryStr.Trim();
+            }
             List<WMS_ReturnOrder_DModel> list = m_BLL.GetListByParentId(ref pager, queryStr, parentId);
             GridRows<WMS_ReturnOrder_DModel> grs = new GridRows<WMS_ReturnOrder_DModel>();
             grs.rows = list;
@@ -492,6 +516,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Create")]
         public JsonResult SupplierGetList(GridPager pager, string supplierCode, string supplierShortName)
         {
+            if (!String.IsNullOrEmpty(supplierCode))
+            {
+                supplierCode = supplierCode.Trim();
+            }
+            if (!String.IsNullOrEmpty(supplierShortName))
+            {
+                supplierShortName = supplierShortName.Trim();
+            }
             //List<WMS_ReturnOrderModel> list = m_ReturnOrderBLL.GetListByWhere(ref pager, "WMS_Supplier.SupplierCode.Contains(\"" + supplierCode + "\") && WMS_Supplier.SupplierShortName.Contains(\""
             //    + supplierShortName + "\")&&Status != \"无效\"")
             //    .Where(p => Math.Abs(p.AdjustQty) < Math.Abs(p.ReturnQty))
@@ -512,6 +544,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Create")]
         public JsonResult GetReturnOrderListBySupplier(GridPager pager, string supplierId, string supplierShortName)
         {
+            if (!String.IsNullOrEmpty(supplierId))
+            {
+                supplierId = supplierId.Trim();
+            }
+            if (!String.IsNullOrEmpty(supplierShortName))
+            {
+                supplierShortName = supplierShortName.Trim();
+            }
             //TODO：指定供应商，且退货单号为空的退货行
             if (String.IsNullOrEmpty(supplierId) && String.IsNullOrEmpty(supplierShortName))
                 supplierId = "0";
@@ -556,6 +596,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Edit")]
         public JsonResult GetReturnOrderListByNum(GridPager pager, string returnOrderNum)
         {
+            if (!String.IsNullOrEmpty(returnOrderNum))
+            {
+                returnOrderNum = returnOrderNum.Trim();
+            }
             List<WMS_ReturnOrder_DModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderDNum == \"" + returnOrderNum + "\"").ToList();
             GridRows<WMS_ReturnOrder_DModel> grs = new GridRows<WMS_ReturnOrder_DModel>();
             grs.rows = list;

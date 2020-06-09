@@ -32,6 +32,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string queryStr)
         {
+            if (!String.IsNullOrEmpty(queryStr))
+            {
+                queryStr = queryStr.Trim();
+            }
             List<WMS_SubInvInfoModel> list = m_BLL.GetList(ref pager, queryStr);
             GridRows<WMS_SubInvInfoModel> grs = new GridRows<WMS_SubInvInfoModel>();
             grs.rows = list;

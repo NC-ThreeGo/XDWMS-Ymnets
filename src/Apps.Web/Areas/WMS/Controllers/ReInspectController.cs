@@ -34,7 +34,15 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string po, string inspectBillNum)
         {
-           // List<WMS_ReInspectModel> list = m_BLL.GetList(ref pager, queryStr);
+            if (!String.IsNullOrEmpty(po))
+            {
+                po = po.Trim();
+            }
+            if (!String.IsNullOrEmpty(inspectBillNum))
+            {
+                inspectBillNum = inspectBillNum.Trim();
+            }
+            // List<WMS_ReInspectModel> list = m_BLL.GetList(ref pager, queryStr);
             List<WMS_ReInspectModel> list = m_BLL.GetListByWhere(ref pager, "WMS_AI.WMS_PO.PO.Contains(\"" + po + "\")&&WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\")");
             GridRows<WMS_ReInspectModel> grs = new GridRows<WMS_ReInspectModel>();
             grs.rows = list;

@@ -45,6 +45,22 @@ namespace Apps.Web.Areas.WMS.Controllers
         {
             //TODO:显示到货的到货单
             //List<WMS_AIModel> list = m_BLL.GetList(ref pager, queryStr);
+            if (!String.IsNullOrEmpty(po))
+            {
+                po = po.Trim();
+            }
+            if (!String.IsNullOrEmpty(arrivalBillNum))
+            {
+                arrivalBillNum = arrivalBillNum.Trim();
+            }
+            if (!String.IsNullOrEmpty(supplierShortName))
+            {
+                supplierShortName = supplierShortName.Trim();
+            }
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
             
             List <WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "WMS_PO.PO.Contains(\"" + po + "\")&&ArrivalBillNum.Contains(\"" + arrivalBillNum + "\") && WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
                + supplierShortName + "\")&& WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& InspectStatus.Contains(\"" + inspectStatus + "\")&& ArrivalDate>=(\""
@@ -361,6 +377,14 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetPODetailsListByPartCode(string poNo, string partCode)
         {
+            if (!String.IsNullOrEmpty(poNo))
+            {
+                poNo = poNo.Trim();
+            }
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
             var partList = m_PartBLL.GetListByWhere(ref setNoPagerAscById, "PartCode == \"" + partCode + "\"");
             if (partList.Count() == 0)
             {

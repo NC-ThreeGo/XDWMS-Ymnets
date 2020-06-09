@@ -52,6 +52,16 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string feedBillNum, string assemblyPartCode, string subAssemblyPartCode, string printStaus, string confirmStatus, DateTime beginDate, DateTime endDate)
         {
+            if (!String.IsNullOrEmpty(feedBillNum))
+            {
+                feedBillNum = feedBillNum.Trim();
+            }
+
+            if (!String.IsNullOrEmpty(subAssemblyPartCode))
+            {
+                subAssemblyPartCode = subAssemblyPartCode.Trim();
+            }
+
             //List<WMS_Feed_ListModel> list = m_BLL.GetList(ref pager, queryStr);
             string query = " 1=1 ";
             query += " && CreateTime>=(\"" + beginDate + "\")&& CreateTime<=(\"" + endDate + "\")";

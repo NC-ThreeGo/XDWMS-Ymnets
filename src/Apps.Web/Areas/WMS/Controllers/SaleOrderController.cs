@@ -54,6 +54,22 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName="Index")]
         public JsonResult GetList(GridPager pager, string saleBillNum, string sellBillNum, string partCode, string customerShortName, string printStaus, string confirmStatus, DateTime beginDate, DateTime endDate)
         {
+            if (!String.IsNullOrEmpty(saleBillNum))
+            {
+                saleBillNum = saleBillNum.Trim();
+            }
+            if (!String.IsNullOrEmpty(sellBillNum))
+            {
+                sellBillNum = sellBillNum.Trim();
+            }
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
+            if (!String.IsNullOrEmpty(customerShortName))
+            {
+                customerShortName = customerShortName.Trim();
+            }
             //List<WMS_Sale_OrderModel> list = m_BLL.GetList(ref pager, queryStr);
             string query = " 1=1 ";
             if (printStaus == "已打印")
@@ -531,6 +547,10 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Create")]
         public JsonResult GetSaleOrderByBillNum(GridPager pager, string type, string billNum)
         {
+            if (!String.IsNullOrEmpty(billNum))
+            {
+                billNum = billNum.Trim();
+            }
             List<WMS_Sale_OrderModel> list;
 
             if (type == "print")

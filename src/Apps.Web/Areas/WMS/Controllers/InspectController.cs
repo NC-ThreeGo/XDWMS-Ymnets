@@ -37,6 +37,22 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetList(GridPager pager, string inspectBillNum, string po, string supplierShortName, string partCode, DateTime beginDate, DateTime endDate, string inStoreStatus)
         {
+            if (!String.IsNullOrEmpty(po))
+            {
+                po = po.Trim();
+            }
+            if (!String.IsNullOrEmpty(inspectBillNum))
+            {
+                inspectBillNum = inspectBillNum.Trim();
+            }
+            if (!String.IsNullOrEmpty(supplierShortName))
+            {
+                supplierShortName = supplierShortName.Trim();
+            }
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
             //TODO:查询出检验状态=已送检 and 入库状态=未入库 的记录
             //List<WMS_AIModel> list = m_BLL.GetListByWhere(ref pager, "InspectStatus == \"已检验\" && InStoreStatus == \"未入库\" ")
             //    .OrderBy(p => p.InspectBillNum).ToList();

@@ -45,6 +45,22 @@ namespace Apps.Web.Areas.WMS.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetList(GridPager pager, string inspectBillNum, string supplierShortName, string returnOrderNum, string partCode, DateTime beginDate, DateTime endDate,string returnOrderStatus)
         {
+            if (!String.IsNullOrEmpty(inspectBillNum))
+            {
+                inspectBillNum = inspectBillNum.Trim();
+            }
+            if (!String.IsNullOrEmpty(supplierShortName))
+            {
+                supplierShortName = supplierShortName.Trim();
+            }
+            if (!String.IsNullOrEmpty(returnOrderNum))
+            {
+                returnOrderNum = returnOrderNum.Trim();
+            }
+            if (!String.IsNullOrEmpty(partCode))
+            {
+                partCode = partCode.Trim();
+            }
             //List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "1 == 1");
             //List<WMS_ReturnOrderModel> list = m_BLL.GetListByWhere(ref pager, "ReturnOrderNum.Contains(\"" + returnOrderNum + "\")&&WMS_AI.InspectBillNum.Contains(\"" + inspectBillNum + "\") && WMS_AI.WMS_PO.WMS_Supplier.SupplierShortName.Contains(\""
             //  + supplierShortName + "\")&& WMS_AI.WMS_PO.WMS_Part.PartCode.Contains(\"" + partCode + "\")&& PrintStaus.Contains(\"" + returnOrderStatus + "\")&& PrintDate>=(\""
