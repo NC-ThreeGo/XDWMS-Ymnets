@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="06/11/2020 16:42:30" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="06/11/2020 16:50:04" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEi6/9FSS2QyR0tZ+U/Fl9Ksg==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEikzl5nftUWS9WShGRus2WFQ==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_SaleOrder where SellBillNum=@SellBillNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="PartId" DataType="System.Int32"/>
@@ -49,7 +49,7 @@
     <Total Name="SumBoxQty" Expression="[Table.BoxQty]" Evaluator="Data1"/>
     <Total Name="SumBoxVolume" Expression="[Table.BoxVolume]" Evaluator="Data1"/>
   </Dictionary>
-  <ReportPage Name="Page1" PaperWidth="241" PaperHeight="285" LeftMargin="15" RightMargin="15">
+  <ReportPage Name="Page1" PaperWidth="241" PaperHeight="280" LeftMargin="15" RightMargin="15">
     <ReportTitleBand Name="ReportTitle1" Width="797.58" Height="9.45" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true"/>
     <PageHeaderBand Name="PageHeader1" Top="13.45" Width="797.58" Height="189">
       <TextObject Name="Text1" Left="132.2" Top="-0.54" Width="396.9" Height="37.8" Text="江西新电汽车空调有限公司" HorzAlign="Center" VertAlign="Center" Font="Arial, 20pt, style=Bold"/>
@@ -124,7 +124,7 @@
       <TextObject Name="Text75" Left="585.9" Top="37.8" Width="47.25" Height="18.9" Text="____" Font="Arial, 12pt"/>
       <TextObject Name="Text76" Left="642.6" Top="37.8" Width="85.05" Height="18.9" Text="日期：" Font="Arial, 12pt"/>
       <TextObject Name="Text77" Left="718.2" Top="37.8" Width="47.25" Height="18.9" Text="____" Font="Arial, 12pt"/>
-      <TextObject Name="Text78" Left="85.05" Top="66.15" Width="500.85" Height="18.9" Text="第一联:存根(白) 第二联:财务(红) 第三联:仓库(蓝) 第四联:客户(绿) 第五联:回持(黄)" VertAlign="Center"/>
+      <TextObject Name="Text78" Left="85.05" Top="56.7" Width="500.85" Height="18.9" Text="第一联:存根(白) 第二联:财务(红) 第三联:仓库(蓝) 第四联:客户(绿) 第五联:回持(黄)" VertAlign="Center"/>
     </PageFooterBand>
   </ReportPage>
 </Report>
