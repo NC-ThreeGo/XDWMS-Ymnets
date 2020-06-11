@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="12/06/2019 13:53:39" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="06/11/2020 10:31:20" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEieUO+F8E3AdPN0R/ZZImQNg==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiYwmv2jfs7P67jANz0GRRsA==">
       <TableDataSource Name="V_WMS_ReturnOrder" Alias="Table" DataType="System.Int32" Enabled="true" TableName="V_WMS_ReturnOrder" SelectCommand="SELECT V.Id, V.ReturnOrderNum, V.AIID, V.PartID, V.SupplierId, V.InvId, V.SubInvId, V.AdjustQty, V.Remark, V.ConfirmStatus, V.ConfirmMan, V.ConfirmDate, V.Attr1, V.Attr2, V.Attr3, V.Attr4, V.Attr5, V.CreatePerson, V.CreateTime, V.ModifyPerson, V.ModifyTime, V.BatchId, V.ArrivalBillNum, V.ArrivalQty, V.InspectBillNum, V.QualifyQty, V.NoQualifyQty, V.PartCode, V.PartName, V.SupplierCode, V.SupplierShortName, V.SupplierName, V.PO, V.LogisticsCode, V.LinkMan, V.LinkManTel, V.ReturnOrderDNum, V.ReturnQty, V.PrintDate, V.PrintMan, V.QTY, V.CheckOutResult, V.PrintStaus&#13;&#10;FROM &quot;V_WMS_ReturnOrder&quot; V&#13;&#10;">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="ReturnOrderNum" DataType="System.String"/>
@@ -87,8 +87,14 @@
       <TextObject Name="Text40" Left="585.89" Width="75.6" Height="21.92" Border.Lines="All" Text="[Table.ReturnQty]" HorzAlign="Center" VertAlign="Center" WordWrap="false" Trimming="EllipsisCharacter"/>
     </DataBand>
     <PageFooterBand Name="PageFooter1" Top="217.45" Width="835.38" Height="18.9" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
-      <TextObject Name="Text16" Left="481.86" Width="85.05" Height="18.9" Text="退货人：" Font="Arial, 12pt"/>
-      <TextObject Name="Text15" Left="557.55" Width="94.5" Height="18.9" Text="[Table.PrintMan]" Font="Arial, 12pt"/>
+      <TextObject Name="Text16" Left="245.61" Width="85.05" Height="18.9" Text="保管员：" Font="Arial, 12pt"/>
+      <TextObject Name="Text86" Left="444.15" Width="47.25" Height="18.9" Text="____" Font="Arial, 12pt"/>
+      <TextObject Name="Text87" Left="368.55" Width="75.6" Height="18.9" Text="提货人:" Font="Arial, 12pt"/>
+      <TextObject Name="Text88" Left="623.7" Width="85.05" Height="18.9" Text="审核人：" Font="Arial, 12pt"/>
+      <TextObject Name="Text89" Left="699.3" Width="47.25" Height="18.9" Text="____" Font="Arial, 12pt"/>
+      <TextObject Name="Text90" Left="321.3" Width="47.25" Height="18.9" Text="____" Font="Arial, 12pt"/>
+      <TextObject Name="Text91" Left="567" Width="47.25" Height="18.9" Text="____" Font="Arial, 12pt"/>
+      <TextObject Name="Text92" Left="500.85" Width="56.7" Height="18.9" Text="日期:" Font="Arial, 12pt"/>
     </PageFooterBand>
   </ReportPage>
 </Report>
