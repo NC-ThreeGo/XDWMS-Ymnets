@@ -71,14 +71,30 @@ namespace Apps.BLL.WMS
             }
         }
         //供应商交付报表
-        public List<WMS_AIModel> SupplierDelivery(ref GridPager pager, string po, string suppliername, string partcode, string partname, DateTime beginDate, DateTime endDate)
+        public List<WMS_AIModel> SupplierDelivery(ref GridPager pager, string po, string suppliername, string partcode, string partname, DateTime beginDate, DateTime endDate, string deliveryType)
         {
             using (DBContainer db = new DBContainer())
             {
-                DbRawSqlQuery<WMS_AIModel> query = db.Database.SqlQuery<WMS_AIModel>("SELECT  * from V_WMS_Supplierdelivery where PO like '%" + po 
-                    + "%' and SupplierName like '%" + suppliername + "%' and PartCode like '%" + partcode 
-                    + "%' and PartName like '%" + partname + "%' and ((ArrivalDate>=CONVERT(varchar(100), '" + beginDate 
-                    + "', 120) and ArrivalDate<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120)) or ArrivalDate is null )");
+                string s="";
+                //显示到货日期不为空的
+                if (deliveryType == "已到货")
+                {
+                    s = "SELECT* from V_WMS_Supplierdelivery where PO like '%" + po
+                  + "%' and SupplierName like '%" + suppliername + "%' and PartCode like '%" + partcode
+                  + "%' and PartName like '%" + partname + "%' and (ArrivalDate>=CONVERT(varchar(100), '" + beginDate
+                  + "', 120) and ArrivalDate<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120))";
+
+
+                }
+                //显示到货日期为空的
+                if (deliveryType == "全部")
+                {
+                    s = "SELECT* from V_WMS_Supplierdelivery where PO like '%" + po
+                  + "%' and SupplierName like '%" + suppliername + "%' and PartCode like '%" + partcode
+                  + "%' and PartName like '%" + partname + "%' and ((ArrivalDate>=CONVERT(varchar(100), '" + beginDate
+                  + "', 120) and ArrivalDate<=CONVERT(varchar(100), '" + endDate.AddDays(1) + "', 120)) or ArrivalDate is null )";
+                }
+                DbRawSqlQuery<WMS_AIModel> query = db.Database.SqlQuery<WMS_AIModel>(s);
 
                 //启用通用列头过滤
                 pager.totalRows = query.Count();

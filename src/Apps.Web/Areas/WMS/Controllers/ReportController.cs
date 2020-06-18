@@ -33,6 +33,11 @@ namespace Apps.Web.Areas.WMS.Controllers
         }
         public ActionResult SupplierDelivery()
         {
+            List<ReportType> Types = new List<ReportType>();
+            //Types.Add(new ReportType() { Type = 0, Name = "" });
+            Types.Add(new ReportType() { Type = 1, Name = "已到货" });
+            Types.Add(new ReportType() { Type = 2, Name = "全部" });
+            ViewBag.DeliveryType = new SelectList(Types, "Name", "Name");
             return View();
         }
 
@@ -107,7 +112,7 @@ namespace Apps.Web.Areas.WMS.Controllers
             };
         }
 
-        public JsonResult GetSupplierDelivery(GridPager pager, string po,string suppliername,string partcode, string partname, DateTime beginDate, DateTime endDate)
+        public JsonResult GetSupplierDelivery(GridPager pager, string po,string suppliername,string partcode, string partname, DateTime beginDate, DateTime endDate, string deliveryType)
         {
             if (!String.IsNullOrEmpty(po))
             {
@@ -125,15 +130,15 @@ namespace Apps.Web.Areas.WMS.Controllers
             {
                 partname = partname.Trim();
             }
-            List<WMS_AIModel> list = m_BLL.SupplierDelivery(ref pager,po, suppliername, partcode, partname, beginDate, endDate);
+            List<WMS_AIModel> list = m_BLL.SupplierDelivery(ref pager,po, suppliername, partcode, partname, beginDate, endDate, deliveryType);
             GridRows<WMS_AIModel> grs = new GridRows<WMS_AIModel>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult ExportSupplierDelivery(GridPager pager, string po, string suppliername, string partcode, string partname, DateTime beginDate, DateTime endDate)
+        public ActionResult ExportSupplierDelivery(GridPager pager, string po, string suppliername, string partcode, string partname, DateTime beginDate, DateTime endDate, string deliveryType)
         {
-            List<WMS_AIModel> list = m_BLL.SupplierDelivery(ref setNoPagerAscById, po, suppliername, partcode, partname, beginDate, endDate);//m_BLL.GetListByWhere(ref setNoPagerAscById, query);
+            List<WMS_AIModel> list = m_BLL.SupplierDelivery(ref setNoPagerAscById, po, suppliername, partcode, partname, beginDate, endDate, deliveryType);//m_BLL.GetListByWhere(ref setNoPagerAscById, query);
             
             JArray jObjects = new JArray();
             foreach (var item in list)

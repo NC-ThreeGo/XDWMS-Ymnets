@@ -42,8 +42,10 @@
     <input id="txtsupplierName" placeholder="供应商名称:" type="text" class="searchText" />
     <input id="txtpartCode" type="text" placeholder="物料编码:" class="searchText" />
     <input id="txtpartName" placeholder="物料名称:" type="text" class="searchText" />
+    状态：@Html.DropDownList("txtDeliveryType", ViewBag.DeliveryType as SelectList, new { @style = "width:70px;" })
     到货日期从: <input type="text" id="beginDate" style="width:70px;" value="@(DateTimeHelper.FirstDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
     至: <input type="text" id="endDate" style="width:70px;" value="@(DateTimeHelper.LastDayOfMonth())" class="wdate" onclick="WdatePicker({startDate:'1980-05-01'})" />
+    <br>
     @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, true)
     @Html.ToolButton("btnExport", "fa fa-level-up", Resource.Export, true)
     @*@Html.ToolButton("btnExportTemplate", "fa fa-level-up", Resource.ExportTemplate, ref perm, "Export", true)*@
@@ -142,6 +144,7 @@
             var supplierName = $("#txtsupplierName").val();
             var partName = $("#txtpartName").val();
             var partCode = $("#txtpartCode").val();
+            var deliveryType = $("#txtDeliveryType").val();
             if (po == null) {
                 po = "";
             }
@@ -155,7 +158,7 @@
                 partCode = "";
             }
             $("#List").datagrid("load", {
-                po: po, suppliername: supplierName, partcode: partCode, partname: partName, beginDate: $("#beginDate").val(), endDate: $("#endDate").val()
+                po: po, suppliername: supplierName, partcode: partCode, partname: partName, beginDate: $("#beginDate").val(), endDate: $("#endDate").val(), deliveryType: deliveryType
             });
 
         });
@@ -205,6 +208,7 @@
             var supplierName = $("#txtsupplierName").val();
             var partName = $("#txtpartName").val();
             var partCode = $("#txtpartCode").val();
+            var deliveryType = $("#txtdeliveryType").val();
             if (po == null) {
                 po = "";
             }
@@ -221,7 +225,7 @@
                 + "&partName= " + partName, function(data) {*@
                 //if (data.type == 1)
                 //{
-            window.location = "@Url.Action("ExportSupplierDelivery")?po=" + po + "&suppliername=" + supplierName + "&partcode=" + partCode + "&partname=" + partName + "&beginDate=" + $("#beginDate").val()
+            window.location = "@Url.Action("ExportSupplierDelivery")?po=" + po + "&suppliername=" + supplierName + "&partcode=" + partCode + "&partname=" + partName + "&deliveryType=" + deliveryType + "&beginDate=" + $("#beginDate").val()
                 + "&endDate= " + $("#endDate").val();
                 //}
                 //else

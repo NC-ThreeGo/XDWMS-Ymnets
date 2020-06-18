@@ -124,7 +124,7 @@
                 $.modalWindow(Lang.Details, '@Url.Action("Details")?id=' + row.Id + '&Ieguid=' + GetGuid(), 700, 400, 'fa fa-list');
             } else { $.messageBox5s(Lang.Tip, Lang.PleaseSelectTheOperatingRecord); }
 	        });
-        $("#btnQuery").click(function () {            
+        $("#btnQuery").click(function () {
             var partName = $("#txtpartName").val();
             var partCode = $("#txtpartCode").val();
             var entryBillNum = $("#txtentryBillNum").val();
@@ -151,11 +151,11 @@
             $("#uploadExcel").window({ title: '@Resource.Import', width: 450, height: 210, iconCls: 'fa fa-level-down' }).window('open');
         });
         $("#btnExport").click(function() {
-            
+
             var partName = $("#txtpartName").val();
             var partCode = $("#txtpartCode").val();
             var entryBillNum = $("#txtentryBillNum").val();
-           
+
             if (partName == null) {
                 partName = "";
             }
@@ -165,13 +165,13 @@
             if (entryBillNum == null) {
                 entryBillNum = "";
             }
-            $.post("@Url.Action("CheckExportData")?partName=" + partName 
+            $.post("@Url.Action("CheckExportData")?partName=" + partName
                 + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
                 + "&entryBillNum=" + entryBillNum
                 + "&endDate= " + $("#endDate").val(), function(data) {
                 if (data.type == 1)
                 {
-                    window.location = "@Url.Action("Export")?partName=" + partName 
+                    window.location = "@Url.Action("Export")?partName=" + partName
                         + "&partCode=" + partCode + "&beginDate=" + $("#beginDate").val()
                         + "&entryBillNum=" + entryBillNum
                         + "&endDate= " + $("#endDate").val();
@@ -185,7 +185,7 @@
         $("#btnExportTemplate").click(function() {
           window.location = "@Url.Action("ExportTemplate")";
         });
-        $("#btnReport").click(function () {            
+        $("#btnReport").click(function () {
             var list = [];
             var ReportParams1 = {};
             ReportParams1["ParamName"] = "arg_BeginDate";
@@ -195,6 +195,11 @@
             ReportParams2["ParamName"] = "arg_EndDate";
             ReportParams2["DefaultValue"] = $("#endDate").val();
             list.push(ReportParams2);
+            var ReportParams3 = {};
+            ReportParams3["ParamName"] = "arg_EntryBillNum";
+            ReportParams3["DefaultValue"] = "%" + $("#txtentryBillNum").val();
+            list.push(ReportParams3);   
+
             var json = JSON.stringify(list);
             json = escape(json);
 
@@ -219,7 +224,7 @@
             hideLoading();
             $.messageBox5s('提示', data.message);
             $('#importMessage').html(data.message);
-            $('#importResultFile').attr('href', data.value); 
+            $('#importResultFile').attr('href', data.value);
         }, "json");
     }
 </script>

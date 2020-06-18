@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="06/11/2020 16:18:02" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="06/16/2020 11:18:47" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEihqwGSigiMyhOLKFWTVK77g==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiO0dLFpL3sBzEOnCScZdl3Q==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_ProductEntry ">
         <Column Name="CreateTimeToChar" DataType="System.String"/>
         <Column Name="ProductQty" DataType="System.Decimal"/>
@@ -12,6 +12,7 @@
         <Column Name="EntryBillNum" DataType="System.String"/>
         <CommandParameter Name="BeginDate" DataType="22" Size="20"/>
         <CommandParameter Name="EndDate" DataType="22"/>
+        <CommandParameter Name="EntryBillNum" DataType="22"/>
       </TableDataSource>
     </MsSqlDataConnection>
     <Total Name="Total_productQty" Expression="[Table.ProductQty]" Evaluator="Data1" PrintOn="ReportSummary1" ResetAfterPrint="false"/>

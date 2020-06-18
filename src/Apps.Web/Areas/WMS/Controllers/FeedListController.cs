@@ -551,7 +551,15 @@ namespace Apps.Web.Areas.WMS.Controllers
             }
             else
             {
-                list = m_BLL.GetListByWhereAndGroupBy(ref pager, "PrintStaus == \"已打印\" and ConfirmStatus == \"未确认\"");
+                if (String.IsNullOrEmpty(queryStr))
+                {
+                    list = m_BLL.GetListByWhereAndGroupBy(ref pager, "PrintStaus == \"已打印\" && ConfirmStatus == \"未确认\"");
+
+                }
+                else
+                {
+                    list = m_BLL.GetListByWhereAndGroupBy(ref pager, "FeedBillNum = \"" + queryStr + "\" && PrintStaus == \"已打印\" && ConfirmStatus == \"未确认\"");
+                }
             }
             GridRows<WMS_Feed_ListModel> grs = new GridRows<WMS_Feed_ListModel>();
             grs.rows = list;
