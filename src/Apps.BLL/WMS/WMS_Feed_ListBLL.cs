@@ -9,11 +9,14 @@ using LinqToExcel;
 using ClosedXML.Excel;
 using Apps.Models.WMS;
 using System.Linq.Expressions;
+using Apps.IDAL.WMS;
 
 namespace Apps.BLL.WMS
 {
     public  partial class WMS_Feed_ListBLL
     {
+        [Unity.Attributes.Dependency]
+        public IWMS_InvRepository m_InvRep { get; set; }
 
         public override List<WMS_Feed_ListModel> CreateModelList(ref IQueryable<WMS_Feed_List> queryData)
         {
@@ -58,6 +61,33 @@ namespace Apps.BLL.WMS
                                                   InvCode = r.WMS_InvInfo.InvCode,
                                                   InvName = r.WMS_InvInfo.InvName,
                                               }).ToList();
+
+            //获取所以的当前库存数
+            var invList = CacheHelper.Get<List<WMS_Inv>>("WMS_Inv");
+            if (invList == null)
+            {
+                invList = m_InvRep.GetList().ToList();
+                CacheHelper.Insert("WMS_Inv", invList, 30);
+            }
+
+            //遍历投料单，获取当前行的库存数，如果Lot==null，则汇总当前库房、物料的库存数；如果Lot<>null，则当前库房、物料、Lot的库存数
+            decimal invQty = 0;
+            foreach (WMS_Feed_ListModel feedList in modelList)
+            {
+                if (feedList.Lot == null)
+                {
+                    invQty = invList.Where(p => p.InvId == feedList.InvId && p.PartId == feedList.SubAssemblyPartId)
+                        .Sum(p => p.Qty);
+                }
+                else
+                {
+                    invQty = invList.Where(p => p.InvId == feedList.InvId
+                        && p.PartId == feedList.SubAssemblyPartId
+                        && p.Lot == feedList.Lot).FirstOrDefault().Qty;
+                }
+                feedList.InvQty = invQty;
+            }
+
             return modelList;
         }
 

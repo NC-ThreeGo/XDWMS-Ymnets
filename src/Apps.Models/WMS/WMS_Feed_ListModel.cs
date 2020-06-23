@@ -22,6 +22,9 @@ namespace Apps.Models.WMS
 
         [Display(Name = "库房")]
         public string InvName { get; set; }
+
+        [Display(Name = "库存数")]
+        public decimal InvQty { get; set; }
     }
 }
 
