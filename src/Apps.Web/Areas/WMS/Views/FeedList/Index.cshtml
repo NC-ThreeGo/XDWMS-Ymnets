@@ -78,6 +78,11 @@
             striped: true, //奇偶行是否区分
             singleSelect: true,//单选模式
             //rownumbers: true,//行号
+            rowStyler: function (index, row) {
+                if (Number(row.FeedQty) > Number(row.InvQty)) {
+                    return 'background: #D24D57; color: #fff';
+                }
+            },
             showFooter: true,
             onLoadSuccess: function(data) {                @foreach(var r in perm){ if (r.Category == 2) { @Html.Raw("$(this).datagrid('hideColumn','" + r.KeyCode + "'); "); } }
             },
