@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="07/22/2020 15:34:18" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="07/22/2020 15:54:49" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEi5sfdEh5tqA2RtmraRYBWIg==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiEtBUOqiLl31EyTX1W+4J1A==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_ProductEntry ">
         <Column Name="CreateTimeToChar" DataType="System.String"/>
         <Column Name="ProductQty" DataType="System.Decimal"/>
@@ -17,7 +17,7 @@
     </MsSqlDataConnection>
     <Total Name="Total_productQty" Expression="[Table.ProductQty]" Evaluator="Data1" PrintOn="ReportSummary1" ResetAfterPrint="false"/>
   </Dictionary>
-  <ReportPage Name="Page1" PaperWidth="241" PaperHeight="320">
+  <ReportPage Name="Page1" PaperWidth="241" PaperHeight="323">
     <ReportTitleBand Name="ReportTitle1" Width="835.38" Height="9.45" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
       <TextObject Name="Text16" Left="-9450" Top="-9450" Width="652.05" Height="18.9" Text="第一联:存根(白) 第二联:质管部(红) 第三联:物流部(蓝) 第四联:结算(绿) 第五联:财务部(红) 第六联:仓库(黄)" VertAlign="Center"/>
     </ReportTitleBand>
