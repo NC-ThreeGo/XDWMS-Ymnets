@@ -263,13 +263,17 @@ namespace Apps.Web.Areas.WMS.Controllers
                 foreach (var item in list)
                 {
                     var jo = new JObject();
-                    //jo.Add("Id", item.Id);
+                //jo.Add("Id", item.Id);
+                    jo.Add("物料编码", item.PartCode);
+                    //jo.Add("创建时间", );
+                    jo.Add("创建时间", string.Format("{0:d}", item.CreateTime));
                     jo.Add("入库单号（业务）", item.ProductBillNum);
-                    jo.Add("入库单号（系统）", item.EntryBillNum);
-                    jo.Add("本货部门", item.Department);
-                    jo.Add("物料编码", item.Partid);
-                    jo.Add("物料名称", item.PartName);
                     jo.Add("数量", item.ProductQty);
+                //jo.Add("入库单号（系统）", item.EntryBillNum);
+                    jo.Add("本货部门", item.Department);
+                    
+                    jo.Add("物料名称", item.PartName);
+                    
                     jo.Add("库房", item.InvName);
                     //jo.Add("子库存", item.SubInvId);
                     jo.Add("备注", item.Remark);
@@ -279,7 +283,7 @@ namespace Apps.Web.Areas.WMS.Controllers
                     //jo.Add("Attr4", item.Attr4);
                     //jo.Add("Attr5", item.Attr5);
                     jo.Add("创建人", item.CreatePerson);
-                    jo.Add("创建时间", item.CreateTime);
+                    
                     //jo.Add("修改人", item.ModifyPerson);
                     //jo.Add("修改时间", item.ModifyTime);
                     jObjects.Add(jo);

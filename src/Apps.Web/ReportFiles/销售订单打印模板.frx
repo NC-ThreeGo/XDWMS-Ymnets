@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ConvertNulls="false" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="06/17/2020 16:12:16" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ConvertNulls="false" ReportInfo.Created="12/21/2018 17:15:20" ReportInfo.Modified="10/16/2020 13:56:04" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiIk6GYJJeoV4HQd5s4D75cA==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiua2aiwDkPhhdYdNmvbrc0Q==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_SaleOrder where SellBillNum=@SellBillNum">
         <Column Name="Id" DataType="System.Int32"/>
         <Column Name="PartId" DataType="System.Int32"/>
@@ -43,6 +43,7 @@
         <Column Name="Unit" DataType="System.String"/>
         <Column Name="Volume" DataType="System.Decimal"/>
         <Column Name="qty_1" DataType="System.Decimal"/>
+        <Column Name="BoxQty_1" DataType="System.Double"/>
         <CommandParameter Name="SellBillNum" DataType="22" Size="20"/>
       </TableDataSource>
     </MsSqlDataConnection>
@@ -86,8 +87,8 @@
       <TextObject Name="Text7" Width="28.35" Height="18.9" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
       <TextObject Name="Text9" Left="28.35" Width="170.1" Height="18.9" Border.Lines="All" Text="[Table.PartName]" HorzAlign="Center" Font="宋体, 12pt"/>
       <TextObject Name="Text10" Left="198.45" Width="179.55" Height="18.9" Border.Lines="All" Text="[Table.PartCode]" HorzAlign="Center" Font="宋体, 12pt"/>
-      <TextObject Name="Text12" Left="548.08" Width="56.7" Height="18.9" Border.Lines="All" Text="[Table.Qty_1]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
-      <TextObject Name="Text13" Left="642.58" Width="56.7" Height="18.9" Border.Lines="All" Text="[Table.BoxQty]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
+      <TextObject Name="Text12" Left="548.08" Width="56.7" Height="18.9" Border.Lines="All" Text="[Table.qty_1]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
+      <TextObject Name="Text13" Left="642.58" Width="56.7" Height="18.9" Border.Lines="All" Text="[Table.BoxQty_1]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
       <TextObject Name="Text14" Left="699.3" Width="56.7" Height="18.9" Border.Lines="All" Text="[Table.BoxVolume]" HorzAlign="Center" VertAlign="Center" Font="宋体, 12pt"/>
       <TextObject Name="Text40" Left="604.79" Width="37.8" Height="18.9" Border.Lines="All" Text="[Table.Unit]" HorzAlign="Center" Font="宋体, 12pt"/>
       <TextObject Name="Text47" Left="378" Width="170.1" Height="18.9" Border.Lines="All" Text="[Table.CustomerCode]" HorzAlign="Center" Font="宋体, 12pt"/>
