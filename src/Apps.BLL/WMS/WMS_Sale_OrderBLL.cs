@@ -56,7 +56,9 @@ namespace Apps.BLL.WMS
                                                        InvName = r.WMS_InvInfo.InvName,
                                                        CustomerShortName = r.WMS_Customer.CustomerShortName,
                                                        CustomerName = r.WMS_Customer.CustomerName,
-                                                       BoxVolume = Math.Ceiling(r.BoxQty.Value)*r.WMS_Part.Volume,
+                                                       //BoxVolume = Math.Ceiling(r.BoxQty.Value)*r.WMS_Part.Volume,
+                                                       //由于基础信息物料里定义的是3位小数，这里要求是4位小数，就要求导入体积
+                                                       BoxVolume = Math.Ceiling(r.BoxQty.Value) * r.Volume,
                                                        ConfirmMessage = r.ConfirmMessage,
                                               }).ToList();
             return modelList;
