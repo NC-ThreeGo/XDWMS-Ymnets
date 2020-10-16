@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="10/14/2020 16:03:16" ReportInfo.CreatorVersion="2018.3.23.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/13/2019 16:06:04" ReportInfo.Modified="10/16/2020 09:29:03" ReportInfo.CreatorVersion="2018.3.23.0">
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEi/dxniMAloT8Rs69970N7fg==">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqiTpLtvmgTJbV++pU1y3Uboz0WRRU2ZMgwhxIcDlsHQ/ff8Ma78lXqrpusHiGULFzNdjsbFm3e0t02jbNutoMN5MogyqLFP+3DQfWVa3Jek/d6msxwiSR80Yx36mFi2tsfd9n/RPnggR3NENM+57AwMr7IOg/vLGLmNV/c0qcTwrmfM1UaGgPJwTEI395SEEiZXuQZduXJYoIGQaeyxQWsg==">
       <TableDataSource Name="Table" DataType="System.Int32" Enabled="true" SelectCommand="select * from V_WMS_ProductEntry ">
         <Column Name="CreateTimeToChar" DataType="System.String"/>
         <Column Name="ProductQty" DataType="System.Decimal"/>
@@ -37,21 +37,21 @@
       <TextObject Name="Text20" Left="160.6" Width="217.35" Height="37.8" Border.Lines="All" Text="物料名称" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
       <TextObject Name="Text19" Left="28.32" Width="132.3" Height="37.8" Border.Lines="All" Text="物流区号" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
       <TextObject Name="Text18" Width="28.35" Height="37.8" Border.Lines="All" Text="序号" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold"/>
-      <DataBand Name="Data1" Top="167.2" Width="835.38" Height="21.92" DataSource="Table">
-        <TextObject Name="Text7" Width="28.35" Height="21.92" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text52" Left="28.35" Width="132.3" Height="21.92" Border.Lines="All" Text="[Table.LogisticsCode]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text53" Left="160.65" Width="217.35" Height="21.92" Border.Lines="All" Text="[Table.PartName]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text54" Left="378" Width="160.65" Height="21.92" Border.Lines="All" Text="[Table.CustomerCode]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text55" Left="538.65" Width="179.55" Height="21.92" Border.Lines="All" Text="[Table.PartCode]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text56" Left="718.2" Width="66.15" Height="21.92" Border.Lines="All" Text="[Table.ProductQty]" HorzAlign="Center" VertAlign="Center"/>
-        <TextObject Name="Text57" Left="784.35" Width="47.25" Height="21.92" Border.Lines="All" HorzAlign="Center" VertAlign="Center"/>
+      <DataBand Name="Data1" Top="167.2" Width="835.38" Height="28.35" DataSource="Table">
+        <TextObject Name="Text7" Width="28.35" Height="28.35" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text52" Left="28.35" Width="132.3" Height="28.35" Border.Lines="All" Text="[Table.LogisticsCode]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text53" Left="160.65" Width="217.35" Height="28.35" Border.Lines="All" Text="[Table.PartName]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text54" Left="378" Width="160.65" Height="28.35" Border.Lines="All" Text="[Table.CustomerCode]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text55" Left="538.65" Width="179.55" Height="28.35" Border.Lines="All" Text="[Table.PartCode]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text56" Left="718.2" Width="66.15" Height="28.35" Border.Lines="All" Text="[Table.ProductQty]" HorzAlign="Center" VertAlign="Center"/>
+        <TextObject Name="Text57" Left="784.35" Width="47.25" Height="28.35" Border.Lines="All" HorzAlign="Center" VertAlign="Center"/>
       </DataBand>
-      <GroupFooterBand Name="GroupFooter1" Top="193.12" Width="835.38" Height="9.45"/>
+      <GroupFooterBand Name="GroupFooter1" Top="199.55" Width="835.38" Height="9.45"/>
     </GroupHeaderBand>
-    <ReportSummaryBand Name="ReportSummary1" Top="206.57" Width="835.38" Height="18.9">
+    <ReportSummaryBand Name="ReportSummary1" Top="213" Width="835.38" Height="18.9">
       <TextObject Name="Text64" Left="529.2" Width="170.1" Height="18.9" Text="合计数量：[Total_productQty]" Font="Arial, 12pt"/>
     </ReportSummaryBand>
-    <PageFooterBand Name="PageFooter1" Top="229.47" Width="835.38" Height="56.7" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
+    <PageFooterBand Name="PageFooter1" Top="235.9" Width="835.38" Height="56.7" PrintOn="FirstPage, LastPage, OddPages, EvenPages" FirstRowStartsNewPage="true">
       <TextObject Name="Text50" Left="18.9" Top="37.8" Width="652.05" Height="18.9" Text="第一联:存根(白) 第二联:质管部(红) 第三联:物流部(蓝) 第四联:结算(绿) 第五联:财务部(红) 第六联:仓库(黄)" VertAlign="Center"/>
       <TextObject Name="Text51" Left="491.4" Top="9.45" Width="85.05" Height="18.9" Text="制单人：" Font="Arial, 12pt"/>
       <TextObject Name="Text3" Left="567.99" Top="9.45" Width="103.95" Height="18.9" Text="___________"/>
