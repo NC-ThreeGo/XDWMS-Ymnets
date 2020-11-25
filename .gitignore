@@ -267,3 +267,5 @@ __pycache__/
 /src/Apps.Web/upload/201812/03/PO_Template.xlsx
 /src/Apps.Web/upload/201812/03/PO_Template_201812031630232676.xlsx
 *.xlsx
+/src/Apps.Web/upload/202006/10/自动导入物料模板.xls
+/src/Apps.Web/upload/202007/02/自动导入生产计划物料模板.xls
